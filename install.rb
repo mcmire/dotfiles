@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
-# originally from from http://errtheblog.com/posts/89-huba-huba
+# Stolen from Nathan: <https://github.com/aniero/dotfiles/blob/master/install.rb>
+# which was originally taken from <http://errtheblog.com/posts/89-huba-huba>
 
 home = File.expand_path(ENV['HOME'])
 
