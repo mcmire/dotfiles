@@ -1,0 +1,53 @@
+[user]
+  email = elliot.winkler@gmail.com
+  name = Elliot Winkler
+<%- if options[:github_token] -%>
+[github]
+  user = mcmire
+  token = <%= options[:github_token] %>
+<%- end -%>
+[diff "ruby"]
+  funcname = ^ *\\(\\(class\\|module\\|def\\) .*\\)
+[alias]
+  st = status
+  ci = commit
+  br = branch
+  co = checkout
+  cy = cherry-pick -x
+  tree = log --graph --pretty=oneline --abbrev-commit --decorate --color
+  tree-all = log --graph --pretty=format:'%h %Cred(%cD)%Creset%Cgreen%d%Creset %s' --color --all --decorate=full
+  tree-by-date = log --pretty=format:'%h | %cD | %Cgreen%d%Creset %s' --date-order --graph --all --color --decorate=full
+  oneline = log --pretty=format:'%C(bold)%h%Creset (%ci) |%Cgreen%d%Creset %s' --color --decorate=full
+  full-log = log --format=fuller --color
+  oneline-plain = log --pretty=tformat:'%h (%ci) :: %s'
+  cherry-log = log --pretty=tformat:'%H (%ci) :: %s' --reverse
+  root = rev-parse --show-toplevel
+  sh = show --color
+  lg = log --color
+  aliases = !git config -l | grep alias
+  diff-log = log --color -p
+  diff-full-log = log --color -p --format=fuller
+  unstage = reset HEAD
+[branch "master"]
+  remote = origin
+  merge = refs/heads/master
+  rebase = true
+[push]
+  default = current
+[color]
+  branch = auto
+  diff = auto
+  grep = auto
+  interactive = auto
+  showbranch = auto
+  ui = auto
+[color "status"]
+  added = green
+  changed = yellow
+  untracked = cyan
+[http]
+  sslcainfo = /usr/share/curl/curl-ca-bundle.crt
+  sslcapath = /usr/share/curl
+  sslverify = false
+[bash]
+  showdirtystate = true
