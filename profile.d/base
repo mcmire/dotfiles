@@ -1,0 +1,12 @@
+# set unicode stuff
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
+
+# set base path
+export PATH=$HOME/.bin:/usr/local/bin:/usr/local/sbin:$PATH
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+

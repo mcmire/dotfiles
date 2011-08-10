@@ -1,0 +1,4 @@
+# ImageMagick stuff
+#export MAGICK_HOME="/usr/local/imagemagick-6.4.0"
+#export PATH="$MAGICK_HOME/bin:$PATH"
+#export DYLD_LIBRARY_PATH="$MAGICK_HOME/lib"

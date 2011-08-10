@@ -1,0 +1,59 @@
+# set default git editor
+#export GIT_EDITOR=nano
+export GIT_EDITOR=vi
+
+# Add Git stuff to path
+#export PATH=/usr/local/git/bin:$PATH
+#export MANPATH=/usr/local/git/man:$MANPATH
+
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWSTASHSTATE=1
+GIT_PS1_SHOWUNTRACKEDFILES=1
+source ~/.git-completion.sh
+
+#export PS1="$PS1_START\$(__git_ps1)$PS1_END"
+
+export PS1_GIT="\[\033[01;36m\]\$(__git_ps1)\[\033[00m\]"
+export PS1_START="$PS1_START$PS1_GIT"
+export PS1="$PS1_START$PS1_END"
+
+# hubba hubba
+#alias git=hub
+
+git-cat() {
+  file="$1"
+  rev="$2"
+  if [ -z "$file" ]; then
+    echo "Error: File not specified"
+    return
+  fi
+  if [ -z "$rev" ]; then
+    rev="HEAD"
+  fi
+  objid=$(git ls-tree "$rev" "$file" | cut -d " " -f 3 | cut -f 1)
+  if [ -z "$objid" ]; then
+    echo "Couldn't find file '$file' in revision '$rev'"
+  else
+    git cat-file -p "$objid" | less
+  fi
+}
+
+alias git-diff-base="git diff --color --ignore-all-space -M"
+alias git-diff="git-diff-base HEAD"
+alias git-diff-staged="git-diff-base --staged HEAD"
+alias git-log="git log --color"
+alias git-log-diff="git-log -p --color"
+
+git-diff-rev() {
+  git-diff-base $1^..$1
+}
+gitdiffw() {
+  echo "Are you looking for git-diff?"
+}
+gitdiff() {
+  echo "Are you looking for git-diff-staged?"
+}
+git-cherry-script() {
+  proj=$(basename $(git root))
+  git log $@ --reverse --pretty=tformat:"git cherry-pick %H -n%ngit commit -m \"%s [orig $proj#%h]\" --dry-run%n"
+}

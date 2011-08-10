@@ -1,0 +1,75 @@
+" ---- janus overrides -----
+
+" undefine all the custom NERDTree-aware commands,
+" i'd rather do it myself
+cunabbrev cd
+cunabbrev touch
+cunabbrev rm
+cunabbrev e
+cunabbrev mkdir
+
+" undefine the janus gvimrc VimEnter
+" careful, this undefines all other global VimEnters as well!
+autocmd! VimEnter *
+
+colorscheme molokai
+
+if has("gui_macvim")
+
+  " remap these from the broken janus mapping
+  " Command-/ to toggle comments
+  map <D-/> <plug>NERDCommenterToggle
+  imap <D-/> <Esc><plug>NERDCommenterToggle i
+
+endif
+
+" ----- my customizations -----
+
+if has("gui_macvim")
+
+  " interpret option as meta
+  set macmeta
+
+  " size the window so it fills the screen (13" mbp)
+  set columns=181
+  set lines=53
+
+  " set font
+  set guifont=MesloLGM:h11
+
+  set guioptions-=T " disable the toolbars in macvim
+  set guioptions-=r " disable right-hand scrollbar
+  set guioptions-=L " disable left-hand scrollbar
+  set guioptions-=e " disable graphical tabs
+  set guioptions+=c " console prompts instead of dialogs
+
+  " unmap macvim menu first
+  macmenu Tools.List\ Errors key=<nop>
+  nnoremap <D-l> :nohlsearch<CR>
+  inoremap <D-l> <C-O>:nohlsearch<CR>
+
+  " from atmos
+  nnoremap <D-r> :NERDTreeToggle<CR>
+  " 'reveal in project' a la textmate
+  " nnoremap <D-R> :NERDTreeFind<CR>
+  " open the nerd tree window first, in CWD, so the find doesn't change
+  " the tree root.
+  nnoremap <D-R> :NERDTree<CR><C-w>p:NERDTreeFind<CR>
+
+  " Cmd-based shortcuts for switching tabs
+  map <D-j> gT
+  map <D-k> gt
+
+  " set transparency=5
+
+  " make it easy to toggle wrapping
+  map <M-w> :set invwrap<CR>
+
+  " emulate cmd-return in textmate
+  " <http://stackoverflow.com/questions/1526188/how-to-emulate-textmates-command-return-feature-in-vim>
+  macmenu Window.Toggle\ Full\ Screen\ Mode key=<nop>
+  inoremap <D-CR> <C-O>o
+
+  " unmap the fucking hide shortcut, because I hit it all the damn time
+  "macmenu MacVim.Hide\ MacVim=<nop>
+end

@@ -1,0 +1,19 @@
+# # Install gems to this directory
+#export GEM_HOME="/usr/local/lib/ruby/gems/1.8"
+export GEM_HOME="/Library/Ruby/Gems/1.8"
+# When looking up gems, expect to find gems in these locations
+export GEM_PATH="$GEM_HOME"
+# Add the bindir to our path
+export PATH="$GEM_PATH/bin:$PATH"
+##export PATH="/Library/Ruby/Gems/1.8/bin:$PATH"
+
+# Load Rubygems every time Ruby loads
+export RUBYOPT=rubygems
+
+# JRuby stuff
+#export PATH=/opt/jruby/bin:$PATH
+
+ri() {
+   ri -T -f ansi "$@" | less -r
+}
+alias gi="sudo gem install $@ --no-ri --no-rdoc"

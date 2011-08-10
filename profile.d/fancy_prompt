@@ -1,0 +1,11 @@
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+  debian_chroot=$(cat /etc/debian_chroot)
+fi
+# set a fancy prompt
+#export PS1_START="${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;31m\]\w\[\033[00m\]"
+export PS1_USER_AND_HOST="\[\033[01;32m\]\u@\h\[\033[00m\]"
+export PS1_CWD="\[\033[01;31m\]\w\[\033[00m\]"
+export PS1_START="$PS1_USER_AND_HOST:$PS1_CWD"
+export PS1_END="\n\[\033[01;34m\]★\[\033[00m\]  "
+export PS1="$PS1_START$PS1_END"
