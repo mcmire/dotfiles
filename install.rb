@@ -12,9 +12,9 @@ ARGV.each do |arg|
   end
 end
 
-Dir['*'].each do |file|
-  next if file =~ /^\.|install|tags|README/
-  target = File.join(home, ".#{file}")
+dir = "src"
+Dir["#{dir}/*"].each do |file|
+  target = File.join(home, "." + file.sub("#{dir}/", ""))
   full_path = File.expand_path(file)
   puts "#{full_path} -> #{target}"
   if opts[:force] or !File.exist?(target)
