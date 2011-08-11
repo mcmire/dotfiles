@@ -1,4 +1,0 @@
-# Save the current working directory to file
-# so we can use it when creating a new tab
-# http://coderrr.wordpress.com/2010/01/30/how-to-create-a-shortcut-key-to-open-a-new-terminal-window-in-the-current-working-directory-on-osx/
-export PROMPT_COMMAND="pwd > /tmp/cwd.`ps -o tty= -p \$\$`; $PROMPT_COMMAND"

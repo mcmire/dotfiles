@@ -1,7 +1,0 @@
-# Set up MacPorts
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-export MANPATH=/opt/local/share/man:$MANPATH
-# set library paths so that nokogiri can find libxml2 in macports
-#export LIBRARY_PATH=/opt/local/lib:/opt/local/include:/usr/local/lib:/usr/local/include:/usr/lib:/usr/include
-#export LD_LIBRARY_PATH=$LIBRARY_PATH
-

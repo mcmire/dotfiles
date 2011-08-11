@@ -1,2 +1,0 @@
-# add code_swarm to path
-export PATH=/opt/code_swarm/bin:$PATH
