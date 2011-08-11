@@ -8,7 +8,7 @@ export EDITOR=vi
 alias ey-amtees="EYRC=~/code/work/premiere/proj/amtees/.eyrc ey"
 alias ey-pcoll="EYRC=~/code/work/premiere/proj/collectibles/.eyrc ey"
 
-if which brew && test -f $(brew --prefix)/etc/autojump; then \
+if which brew >/dev/null 2>&1 && test -f $(brew --prefix)/etc/autojump; then \
   . $(brew --prefix)/etc/autojump
 fi
 
