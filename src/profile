@@ -5,7 +5,6 @@ source ~/.profile.d/history
 source ~/.profile.d/fancy_prompt
 source ~/.profile.d/handy_shortcuts
 
-source ~/.profile.d/code_swarm
 source ~/.profile.d/dev
 source ~/.profile.d/etc
 source ~/.profile.d/git
