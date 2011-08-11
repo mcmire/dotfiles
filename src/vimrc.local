@@ -64,10 +64,19 @@ set nojoinspaces
 " folding
 set foldenable
 " set foldcolumn=4 " show fold column
-set foldmethod=syntax " syntax / markers
+"set foldmethod=syntax " syntax / markers
+"" NOTE!!!
+"" Setting foldmethod to syntax will cause all sorts of problems.
+"" See: <https://github.com/vim-ruby/vim-ruby/issues/8#issuecomment-327162>
+"" And also: <http://vim.wikia.com/wiki/Keep_folds_closed_while_inserting_text>
+set foldmethod=manual
 set foldlevel=3 " start with no folding, but ready to go
 set foldminlines=0 " Allow folding single lines
 set foldnestmax=3 " Set max fold nesting level
+"" Disable these for now as they're causing some dumb function to fail
+"" when switching focus to a 'special' window (e.g. help window)
+"au! BufReadPost * silent loadview
+"au! BufWritePost * mkview
 
 " show at least 3 lines above/below cursor
 set scrolloff=3
