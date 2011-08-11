@@ -1,0 +1,14 @@
+# set default editor
+<%- if RUBY_PLATFORM =~ /darwin/ -%>
+export EDITOR=mate
+<%- else -%>
+export EDITOR=vi
+<%- end -%>
+
+alias ey-amtees="EYRC=~/code/work/premiere/proj/amtees/.eyrc ey"
+alias ey-pcoll="EYRC=~/code/work/premiere/proj/collectibles/.eyrc ey"
+
+if which brew && test -f $(brew --prefix)/etc/autojump; then \
+  . $(brew --prefix)/etc/autojump
+fi
+
