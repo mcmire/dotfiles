@@ -95,15 +95,18 @@ Dir["#{SOURCE_DIR}/**/*"].each do |file|
   short_source = source.sub(home, "~")
   target = File.join(home, "." + source_basename).sub(/\.erb$/, "")
   short_target = target.sub(home, "~")
+  status = File.exists?(target) ? "skipping" : "installing"
   files << [
     source_basename,
     source,
     short_source,
     target,
-    short_target
+    short_target,
+    status
   ]
 end
-max_file_width = files.map {|f| f[4].length }.max
+#w = files.map {|f| f[4].length }.max
+w = files.map {|f| f[5].length }.max
 
 if options[:dry_run]
   puts "Here's what the output will look like on a 'real' run."
@@ -111,11 +114,16 @@ if options[:dry_run]
   puts
 end
 
+num_files_updated = 0
 files.each do |file|
-  source_basename, source, short_source, target, short_target = file
+  source_basename, source, short_source, target, short_target, status = file
 
-  print ("%#{max_file_width}s: " % short_target)
-  if options[:force] or !File.exists?(target)
+  if status == "skipping"
+    if options[:verbose]
+      puts status.rjust(w).failure + " " + short_target + " (already exists)".unimportant
+    end
+  else
+    puts status.rjust(w).success + " " + short_target
     if File.extname(source) == ".erb"
       template = ERB.new(File.read(source), nil, "-")  # allow <%- ... -%> tags like Rails
       content = template.result(binding).strip
@@ -123,7 +131,6 @@ files.each do |file|
         FileUtils.mkdir_p(File.dirname(target))
         File.open(target, "w") {|f| f.write(content) }
       end
-      puts "written".success
       puts content.debugging if options[:verbose]
     else
       target = File.join(home, "." + source_basename)
@@ -132,14 +139,20 @@ files.each do |file|
       system("rm", "-rf", target)
       cmd = ["ln", "-s", source, target]
       pretty_cmd = cmd.map {|x| x =~ /[ ]/ ? x.inspect : x }.join(" ")
-      puts "symlinked".success + " (to #{short_source})".unimportant
       puts pretty_cmd.debugging if options[:verbose]
       unless options[:dry_run]
         FileUtils.mkdir_p(File.dirname(target))
         system(*cmd)
       end
     end
-  else
-    puts "skipped ".failure + "(already installed)".unimportant
+    num_files_updated += 1
   end
+end
+
+if num_files_updated == 0
+  puts
+  puts "All files are already up to date, you're good!".success
+elsif !options[:dry_run]
+  puts
+  puts "Installation complete!".success
 end
