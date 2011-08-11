@@ -27,6 +27,11 @@ endif
 
 if has("gui_macvim")
 
+  " get rid of the balloon that usually appears when you hover over a
+  " Ruby method, as right now it has an error
+  " See: <http://code.google.com/p/macvim/issues/detail?id=342>
+  set balloondelay=1000000
+
   " interpret option as meta
   set macmeta
 
