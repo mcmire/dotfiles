@@ -119,7 +119,10 @@ files.each do |file|
     if File.extname(source) == ".erb"
       template = ERB.new(File.read(source), nil, "-")  # allow <%- ... -%> tags like Rails
       content = template.result(binding).strip
-      File.open(target, "w") {|f| f.write(content) } unless options[:dry_run]
+      unless options[:dry_run]
+        FileUtils.mkdir_p(File.dirname(target))
+        File.open(target, "w") {|f| f.write(content) }
+      end
       puts "written".success
       puts content.debugging if options[:verbose]
     else
@@ -132,6 +135,7 @@ files.each do |file|
       puts "symlinked".success + " (to #{short_source})".unimportant
       puts pretty_cmd.debugging if options[:verbose]
       unless options[:dry_run]
+        FileUtils.mkdir_p(File.dirname(target))
         system(*cmd)
       end
     end
