@@ -44,10 +44,13 @@ if $has_color
     def debugging
       cyan
     end
+    def emphasis
+      bold.yellow
+    end
   end
 else
   String.class_eval do
-    %w(dry_success unimportant dry_failure success failure filename debugging).each do |method|
+    %w(unimportant dry_success dry_failure success failure filename debugging emphasis).each do |method|
       define_method(method) { self }
     end
   end
@@ -102,7 +105,7 @@ max_file_width = files.map {|f| f[4].length }.max
 
 if options[:dry_run]
   puts "Here's what the output will look like on a 'real' run."
-  puts "Nothing is being written to the filesystem.".bold.yellow
+  puts "Nothing is being written to the filesystem.".emphasis
   puts
 end
 
