@@ -128,7 +128,7 @@ files.each do |file|
       # because if the source and target are a directory, then somehow, a
       # symlink to the source directory shows up a child of the source directory
       # itself in creating the target symlink.
-      File.delete(target) if File.exists?(target)
+      system("rm", "-rf", target)
       cmd = ["ln", "-s", source, target]
       pretty_cmd = cmd.map {|x| x =~ /[ ]/ ? x.inspect : x }.join(" ")
       puts "symlinked".success + " (to #{short_source})".unimportant
