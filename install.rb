@@ -9,6 +9,7 @@ at_exit { puts }
 require 'fileutils'
 require 'erb'
 require 'optparse'
+require 'pp'
 
 begin
   require 'colored'
@@ -87,12 +88,13 @@ end
 SOURCE_DIR = "src"
 
 files = []
-Dir["#{SOURCE_DIR}/*"].each do |file|
+Dir["#{SOURCE_DIR}/**/*"].each do |file|
   source_basename = file.sub("#{SOURCE_DIR}/", "")
   source = File.expand_path(file)
-  short_source = source.sub(home, "$HOME")
+  next if File.directory?(source)
+  short_source = source.sub(home, "~")
   target = File.join(home, "." + source_basename).sub(/\.erb$/, "")
-  short_target = target.sub(home, "$HOME")
+  short_target = target.sub(home, "~")
   files << [
     source_basename,
     source,
@@ -128,8 +130,8 @@ files.each do |file|
       # because if the source and target are a directory, then somehow, a
       # symlink to the source directory shows up a child of the source directory
       # itself in creating the target symlink.
-      system("rm", "-rf", target)
-      cmd = ["ln", "-s", source, target]
+      #system("rm", "-rf", target)
+      cmd = ["ln", "-sf", source, target]
       pretty_cmd = cmd.map {|x| x =~ /[ ]/ ? x.inspect : x }.join(" ")
       puts "symlinked".success + " (to #{short_source})".unimportant
       unless options[:dry_run]
