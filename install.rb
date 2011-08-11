@@ -121,9 +121,7 @@ files.each do |file|
       content = template.result(binding).strip
       File.open(target, "w") {|f| f.write(content) } unless options[:dry_run]
       puts "written".success
-      if options[:verbose]
-        puts content.debugging
-      end
+      puts content.debugging if options[:verbose]
     else
       target = File.join(home, "." + source_basename)
       # If the target already exists, remove it. We can't just use the -f flag
@@ -134,8 +132,8 @@ files.each do |file|
       cmd = ["ln", "-sf", source, target]
       pretty_cmd = cmd.map {|x| x =~ /[ ]/ ? x.inspect : x }.join(" ")
       puts "symlinked".success + " (to #{short_source})".unimportant
+      puts pretty_cmd.debugging if options[:verbose]
       unless options[:dry_run]
-        puts pretty_cmd.debugging if options[:verbose]
         system(*cmd)
       end
     end
