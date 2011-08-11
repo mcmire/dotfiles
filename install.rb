@@ -41,13 +41,13 @@ if $has_color
     def filename
       bold.blue
     end
-    def file_content
+    def debugging
       cyan
     end
   end
 else
   String.class_eval do
-    %w(dry_success unimportant dry_failure success failure filename file_content).each do |method|
+    %w(dry_success unimportant dry_failure success failure filename debugging).each do |method|
       define_method(method) { self }
     end
   end
@@ -66,6 +66,9 @@ parser = OptionParser.new do |opts|
   end
   opts.on("--github-token TOKEN", "Specify your Github API token. It will be placed in .gitconfig.") do |val|
     options[:github_token] = val
+  end
+  opts.on("-V", "--verbose", "Show commands being run") do |val|
+    options[:verbose] = true
   end
   opts.on_tail("-h", "--help") do |val|
     puts parser
@@ -113,10 +116,23 @@ files.each do |file|
       content = template.result(binding).strip
       File.open(target, "w") {|f| f.write(content) } unless options[:dry_run]
       puts "written".success
+      if options[:verbose]
+        puts content.debugging
+      end
     else
       target = File.join(home, "." + source_basename)
-      FileUtils.ln_s(source, target, :force => true) unless options[:dry_run]
+      # If the target already exists, remove it. We can't just use the -f flag
+      # because if the source and target are a directory, then somehow, a
+      # symlink to the source directory shows up a child of the source directory
+      # itself in creating the target symlink.
+      File.delete(target) if File.exists?(target)
+      cmd = ["ln", "-s", source, target]
+      pretty_cmd = cmd.map {|x| x =~ /[ ]/ ? x.inspect : x }.join(" ")
       puts "symlinked".success + " (to #{short_source})".unimportant
+      unless options[:dry_run]
+        puts pretty_cmd.debugging if options[:verbose]
+        system(*cmd)
+      end
     end
   else
     puts "skipped ".failure + "(already installed)".unimportant
