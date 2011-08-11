@@ -124,12 +124,10 @@ files.each do |file|
       puts content.debugging if options[:verbose]
     else
       target = File.join(home, "." + source_basename)
-      # If the target already exists, remove it. We can't just use the -f flag
-      # because if the source and target are a directory, then somehow, a
-      # symlink to the source directory shows up a child of the source directory
-      # itself in creating the target symlink.
-      #system("rm", "-rf", target)
-      cmd = ["ln", "-sf", source, target]
+      # Remove the target manually.
+      # If it's a regular file, ln -f won't remove it.
+      system("rm", "-rf", target)
+      cmd = ["ln", "-s", source, target]
       pretty_cmd = cmd.map {|x| x =~ /[ ]/ ? x.inspect : x }.join(" ")
       puts "symlinked".success + " (to #{short_source})".unimportant
       puts pretty_cmd.debugging if options[:verbose]
