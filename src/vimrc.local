@@ -122,8 +122,8 @@ noremap Q gq
 nnoremap Y y$
 
 " reverse Shift-[ and Shift-] to match j and k
-noremap { }
-noremap } {
+"noremap { }
+"noremap } {
 
 " auto-change CWD when changing tree root
 " let NERDTreeChDirMode=2
