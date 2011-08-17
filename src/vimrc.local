@@ -90,7 +90,7 @@ set foldenable
 "" Setting foldmethod to syntax will cause all sorts of problems.
 "" See: <https://github.com/vim-ruby/vim-ruby/issues/8#issuecomment-327162>
 "" And also: <http://vim.wikia.com/wiki/Keep_folds_closed_while_inserting_text>
-set foldmethod=manual
+set foldmethod=indent
 set foldlevel=3 " start with no folding, but ready to go
 set foldminlines=0 " Allow folding single lines
 set foldnestmax=3 " Set max fold nesting level
