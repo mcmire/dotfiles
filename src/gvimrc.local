@@ -38,7 +38,15 @@ endif
 
 " ----- my customizations -----
 
+" unmap undo/redo since it messes things up in insert mode
+" this is defined in $VIMRUNTIME/menu.vim
+silent! aunmenu &Edit.&Undo
+silent! aunmenu &Edit.&Redo
+
 if has("gui_macvim")
+  " we also have to undo the D-z and D-Z shortcuts
+  "unmap! <D-z>
+  "unmap! <D-Z>
 
   " get rid of the balloon that usually appears when you hover over a
   " Ruby method, as right now it has an error
