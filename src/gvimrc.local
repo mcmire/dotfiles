@@ -61,7 +61,11 @@ if has("gui_macvim")
   set lines=53
 
   " set font
-  set guifont=MesloLGM:h11
+  " set guifont=MesloLGM:h11
+  set guifont=Droid\ Sans\ Mono\ Dotted:h11
+  set linespace=3
+  " set guifont=Inconsolata:h13
+  " set linespace=3
 
   set guioptions-=T " disable the toolbars in macvim
   set guioptions-=r " disable right-hand scrollbar
@@ -96,6 +100,6 @@ if has("gui_macvim")
   macmenu Window.Toggle\ Full\ Screen\ Mode key=<nop>
   inoremap <D-CR> <C-O>o
 
-  " unmap the fucking hide shortcut, because I hit it all the damn time
+  " unmap the hide shortcut, because I hit it all the damn time
   "macmenu MacVim.Hide\ MacVim=<nop>
 end
