@@ -127,7 +127,7 @@ nnoremap Y y$
 
 " auto-change CWD when changing tree root
 " let NERDTreeChDirMode=2
-command -n=? -complete=dir NT NERDTreeToggle <args>
+command! -n=? -complete=dir NT NERDTreeToggle <args>
 
 " include space in comments
 " let g:NERDSpaceDelims = 1
@@ -155,7 +155,7 @@ inoremap <C-L> <C-O>:nohls<CR>
 
 map <silent> <Leader>r :call Refresh()<CR>
 
-function Refresh()
+function! Refresh()
   echo "refreshing tags and files..."
 
   silent !ctags -R
@@ -194,8 +194,8 @@ set splitbelow
 set splitright
 
 " strip leading tabs and trailing whitespace
-command Tr %s/\s\+$//ge | %s/\t/  /ge | nohlsearch
-command FixHashes %s/\(\S\)=>\(\S\)/\1 => \2/ge | %s/\t/  /ge | nohlsearch
+command! Tr %s/\s\+$//ge | %s/\t/  /ge | nohlsearch
+command! FixHashes %s/\(\S\)=>\(\S\)/\1 => \2/ge | %s/\t/  /ge | nohlsearch
 
 " from http://stackoverflow.com/questions/676600/vim-replace-selected-text
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
@@ -207,7 +207,7 @@ map <leader>a :Ack
 map <leader>x :x<CR>
 
 " auto-save everything when vim loses focus
-"au FocusLost * silent! wa
+"autocmd! FocusLost * silent! wa
 
 " http://vim.wikia.com/wiki/Disable_F1_built-in_help_key
 " nmap <F1> :echo<CR>
@@ -217,7 +217,7 @@ map <leader>x :x<CR>
 set autoread
 
 " fix crontab editing
-au BufEnter /private/tmp/crontab.* setl backupcopy=yes
+autocmd! BufEnter /private/tmp/crontab.* setl backupcopy=yes
 
 " post gists privately by default
 " let g:gist_private = 1
@@ -255,10 +255,10 @@ map <leader>sl :call LoadLocalSession()<CR>
 map <leader>sd :DeleteSession<CR>
 
 augroup LocalSession
-  au VimEnter * call SetLocalSessionDirectory()
+  autocmd! VimEnter * call SetLocalSessionDirectory()
 augroup END
 
-function SetLocalSessionDirectory()
+function! SetLocalSessionDirectory()
   " opening up a specific directory, project-style
   if argc() == 1 && isdirectory(argv(0))
     let g:session_directory = fnamemodify(argv(0), ":p")
@@ -267,21 +267,21 @@ function SetLocalSessionDirectory()
   end
 endfunction
 
-function LoadLocalSession()
+function! LoadLocalSession()
   let oldminheight = &winminheight
   set winminheight=1
   OpenSession session
   let &winminheight=oldminheight
 endfunction
 
-function CreateLocalSession()
+function! CreateLocalSession()
   let g:session_directory = getcwd()
   SaveSession session
 endfunction
 
 " ----- Whitespace removal -----
 " Copied from <http://vim.wikia.com/wiki/Remove_unwanted_spaces>
-function TrimWhiteSpace()
+function! TrimWhiteSpace()
   " do not record the whitespace removal in the undo history
   " <http://vim.1045645.n5.nabble.com/there-s-undojoin-how-about-dotjoin-td1203135.html>
   try
@@ -295,10 +295,10 @@ function TrimWhiteSpace()
 endfunction
 
 "set list listchars=trail:.,extends:>
-autocmd FileWritePre * :call TrimWhiteSpace()
-autocmd FileAppendPre * :call TrimWhiteSpace()
-autocmd FilterWritePre * :call TrimWhiteSpace()
-autocmd BufWritePre * :call TrimWhiteSpace()
+autocmd! FileWritePre * :call TrimWhiteSpace()
+autocmd! FileAppendPre * :call TrimWhiteSpace()
+autocmd! FilterWritePre * :call TrimWhiteSpace()
+autocmd! BufWritePre * :call TrimWhiteSpace()
 
 map <silent> <F2> :call TrimWhiteSpace()<CR>
 map! <silent> <F2> :call TrimWhiteSpace()<CR>
@@ -308,11 +308,11 @@ map! <silent> <F2> :call TrimWhiteSpace()<CR>
 
 " this lets 'tt' toggle between tabs
 let g:tabno=tabpagenr()
-au TabLeave * :let g:tabno = tabpagenr()
+autocmd! TabLeave * :let g:tabno = tabpagenr()
 map tt :exec 'normal !'.g:tabno.'gt'<CR>
 
 " map 'tn' to tabnext - a count is relative from current pos
-" function TabNext()
+" function! TabNext()
 "     exec 'tabn'
 " endfunction
 " map tn :call TabNext()<CR>
@@ -333,7 +333,7 @@ map tt :exec 'normal !'.g:tabno.'gt'<CR>
 " map <C-j> :call TabMove(1)<CR>
 " map <C-k> :call TabMove(0)<CR>
 " map <C-l> :call TabMove(0)<CR>
-function TabMove(n)
+function! TabMove(n)
     let nr = tabpagenr()
     let size = tabpagenr('$')
     " do we want to go left?
