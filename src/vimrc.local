@@ -22,9 +22,11 @@ let Tlist_WinWidth = 70
 
 " ----- my settings -----
 
-" easy way to update vim files
+" easy way to update/reload vim files
 nmap <Leader>v :tabe ~/.vimrc.local<CR>
 nmap <Leader>gv :tabe ~/.gvimrc.local<CR>
+" http://vimcasts.org/episodes/updating-your-vimrc-file-on-the-fly/
+autocmd! BufWritePost ~/.vimrc.local,~/.gvimrc.local source %
 nmap <Leader>jr :tabe ~/.janus.rake<CR>
 
 " expand tabs, always
