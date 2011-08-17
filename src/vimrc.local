@@ -37,16 +37,38 @@ set expandtab
 " <http://stackoverflow.com/questions/4768088/automatic-new-line-and-indentation-in-vim-when-inside-braces>
 inoremap <C-Return> <CR><CR><C-o>k<Tab>
 
+" Turn off some line specific stuff that is annoying
+" Using autocmd here since formatoptions may be specified by the
+" filetype - you can see what these options are with :h fo-table
+set formatoptions=tqwvbc
+autocmd! FileType * setl formatoptions=tqwvbc
 " wrap lines at convenient points
 set wrap linebreak showbreak=‣
 " reasonable textwidth (imo)
-set textwidth=120
+set textwidth=80
+"let g:old_textwidth=80
+map <Leader>ww :call ToggleHardWrap()<CR>
 " for wrapped lines, jump to the next row rather than the next line
 nnoremap j gj
+vnoremap j gj
 nnoremap k gk
+vnoremap k gk
 
-" Turn off automatic insertion of comment characters on line breaks
-au FileType * setl fo-=ro
+function! ToggleHardWrap()
+  if &textwidth
+    let g:old_textwidth = &textwidth
+    let &textwidth = 0
+  else
+    let &textwidth = g:old_textwidth
+  endif
+endfunction
+" Wrap comment blocks
+map gqc :call FormatComment()<CR>
+
+" Cut a line without whitespace
+" `"_d` puts the line into the "black-hole" register,
+" see: <http://stackoverflow.com/questions/54255/in-vim-is-there-a-way-to-delete-without-putting-text-in-the-register>
+nmap dl ^v$hd"_dd
 
 " store lots of :cmdline history
 set history=1000
@@ -56,9 +78,6 @@ set wildmenu
 
 " override listchars
 set listchars=tab:→→,trail:⋅,nbsp:⋅,eol:¬,extends:♒
-
-" don't continue comments when pushing o/O
-set formatoptions-=o
 
 " disable two-space joins
 set nojoinspaces
