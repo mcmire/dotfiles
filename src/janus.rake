@@ -41,7 +41,7 @@ def extend_plugin_task(name, &block)
 end
 
 # don't want wycats' fork, i want the source
-override_plugin_task "nerdtree", "git://github.com/scrooloose/nerdtree.git"
+override_plugin_task "nerdtree", "https://github.com/scrooloose/nerdtree.git"
 
 remove_plugin_task "jslint"
 #vim_plugin_task "jshint", "https://github.com/wookiehangover/jshint.vim.git"
@@ -57,10 +57,19 @@ remove_plugin_task "conque"
 # what the fuck, really, carlhuda?
 remove_plugin_task "arduino"
 
-vim_plugin_task "vim-ruby", "https://github.com/vim-ruby/vim-ruby.git"
-vim_plugin_task "ragtag", "git://github.com/tpope/vim-ragtag.git"
-# vim_plugin_task "repeat", "git://github.com/tpope/vim-repeat.git"
-# vim_plugin_task "liquid", "git://github.com/vim-ruby/vim-ruby.git"
+# Nested hashes are currently broken, this fixes them (hopefully)
+vim_plugin_task "vim-ruby", "https://github.com/AndrewRadev/vim-ruby.git"
+namespace "vim-ruby" do
+  task :pull => "tmp/vim-ruby" do
+    Dir.chdir "tmp/vim-ruby" do
+      sh "git co nested-hash-fix"
+    end
+  end
+end
+
+vim_plugin_task "ragtag", "https://github.com/tpope/vim-ragtag.git"
+# vim_plugin_task "repeat", "https://github.com/tpope/vim-repeat.git"
+# vim_plugin_task "liquid", "https://github.com/vim-ruby/vim-ruby.git"
 # vim_plugin_task "ragel", "https://github.com/jayferd/ragel.vim.git"
 vim_plugin_task "scss", "https://github.com/cakebaker/scss-syntax.vim.git"
 vim_plugin_task "sinatra", "https://github.com/hallison/vim-ruby-sinatra.git"
@@ -77,6 +86,8 @@ vim_plugin_task "delimitMate", "https://github.com/Raimondi/delimitMate.git"
 vim_plugin_task "vim-git", "https://github.com/tpope/vim-git.git" do
   content = File.read('ftplugin/gitcommit.vim')
   # this isn't 1976, let's be reasonable here
+  # note: the wrapping options in our .vimrc.local may override this,
+  # so this may not be totally necessary, but, whatever
   content.gsub!('setlocal textwidth=72', 'setlocal textwidth=80')
   File.open('ftplugin/gitcommit.vim', "w") {|f| f.write(content) }
 end
@@ -89,19 +100,19 @@ vim_plugin_task "autotag", "https://github.com/vim-scripts/AutoTag.git"
 #   sh "curl 'http://www.vim.org/scripts/download_script.php?src_id=8828' > plugin/Tabmerge.vim"
 # end
 
-vim_plugin_task "html5-syntax",     "git://github.com/othree/html5-syntax.vim.git"
+vim_plugin_task "html5-syntax",     "https://github.com/othree/html5-syntax.vim.git"
 
 vim_plugin_task "lesscss",          "git://gist.github.com/161047.git" do
   FileUtils.cp "tmp/lesscss/less.vim", "syntax"
 end
 
-vim_plugin_task "html5",            "git://github.com/othree/html5.vim.git" do
+vim_plugin_task "html5",            "https://github.com/othree/html5.vim.git" do
   Dir.chdir "tmp/html5" do
     sh "make install"
   end
 end
 
-vim_plugin_task "bufexplorer",      "git://github.com/vim-scripts/bufexplorer.zip.git"
+vim_plugin_task "bufexplorer",      "https://github.com/vim-scripts/bufexplorer.zip.git"
 
 # Show marks in a column on the side
 vim_plugin_task "showmarks", "https://github.com/vim-scripts/ShowMarks.git"
@@ -158,14 +169,15 @@ end
 
 # disable formatoptions "o" to disallow comment continuation
 # in various ftplugin that enable it
-vim_plugin_task "fo_minus_o" do
-  Dir.mkdir "after/ftplugin" unless File.directory?("after/ftplugin")
-  %w(ruby vim coffee gitconfig javascript).each do |filetype|
-    File.open("after/ftplugin/#{filetype}.vim", "w+") do |f|
-      f.puts "setlocal formatoptions-=o"
-    end
-  end
-end
+### NOTE: our autocmd in .vimrc.local obviates the need for this
+#vim_plugin_task "fo_minus_o" do
+#  Dir.mkdir "after/ftplugin" unless File.directory?("after/ftplugin")
+#  %w(ruby vim coffee gitconfig javascript).each do |filetype|
+#    File.open("after/ftplugin/#{filetype}.vim", "w+") do |f|
+#      f.puts "setlocal formatoptions-=o"
+#    end
+#  end
+#end
 
 vim_plugin_task "lilypond" do
   Dir.mkdir "compiler" unless File.directory?("compiler")
@@ -184,6 +196,9 @@ vim_plugin_task "lilypond" do
 end
 
 vim_plugin_task "simplefold", "https://github.com/vim-scripts/simplefold.git"
+
+vim_plugin_task "format_comment", "https://github.com/vim-scripts/FormatComment.vim.git"
+vim_plugin_task "format_block", "https://github.com/vim-scripts/FormatBlock.git"
 
 #------
 
