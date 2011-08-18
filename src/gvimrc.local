@@ -31,10 +31,6 @@ silent! aunmenu &Edit.&Undo
 silent! aunmenu &Edit.&Redo
 
 if has("gui_macvim")
-  " we also have to undo the D-z and D-Z shortcuts
-  "unmap! <D-z>
-  "unmap! <D-Z>
-
   " get rid of the balloon that usually appears when you hover over a
   " Ruby method, as right now it has an error
   " See: <http://code.google.com/p/macvim/issues/detail?id=342>
@@ -43,9 +39,9 @@ if has("gui_macvim")
   " interpret option as meta
   set macmeta
 
-  " size the window so it fills the screen (13" mbp)
-  set columns=181
-  set lines=53
+  " size the window so it fills the screen (23" monitor)
+  set columns=273
+  set lines=64
 
   " set font
   " set guifont=MesloLGM:h11
