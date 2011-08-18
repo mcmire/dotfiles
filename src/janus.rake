@@ -57,8 +57,22 @@ remove_plugin_task "conque"
 # what the fuck, really, carlhuda?
 remove_plugin_task "arduino"
 
-# Nested hashes are currently broken, this fixes them (hopefully)
-vim_plugin_task "vim-ruby", "https://github.com/AndrewRadev/vim-ruby.git"
+# Indentation of nested hashes are currently broken, this fixes them
+vim_plugin_task "vim-ruby", "https://github.com/AndrewRadev/vim-ruby.git" do
+  content = File.read("indent/ruby.vim")
+  # Fix the indent code so that in calls to methods which are split
+  # across multiple lines, the secondary lines are not aligned with
+  # the open parentheses
+  indent_code_1 = %r!if line\[pos\] == '\('
+\s+call add\(open.parentheses, \{'type': '\(', 'pos': pos\}\)
+\s+elseif line\[pos\] == '\)'
+\s+let open.parentheses = open.parentheses\[0:-2\]
+\s+elseif line\[pos\] == '{'!
+  content.gsub!(indent_code_1, "if line[pos] == '{'")
+  indent_code_2 = "if line =~ '[[({]'"
+  content.gsub!(indent_code_2, "if line =~ '[[{]'")
+  File.open("indent/ruby.vim", "w") {|f| f.write(content) }
+end
 namespace "vim-ruby" do
   task :pull => "tmp/vim-ruby" do
     Dir.chdir "tmp/vim-ruby" do
