@@ -2,24 +2,11 @@
 
 " undefine all the custom NERDTree-aware commands,
 " i'd rather do it myself
-" check for the existence of the abbreviations first before trying to remove
-" them -- there's no "unabbrev!" function in vim
-" Source: <http://stackoverflow.com/questions/4581790/how-to-check-if-a-string-has-earlier-been-set-using-iabbr-full-match>
-if maparg('cd', 'c')
-  cunabbrev cd
-end
-if maparg('touch', 'c')
-  cunabbrev touch
-end
-if maparg('rm', 'c')
-  cunabbrev rm
-end
-if maparg('e', 'c')
-  cunabbrev e
-end
-if maparg('mkdir', 'c')
-  cunabbrev mkdir
-end
+silent! cunabbrev cd
+silent! cunabbrev touch
+silent! cunabbrev rm
+silent! cunabbrev e
+silent! cunabbrev mkdir
 
 " undefine the janus gvimrc VimEnter
 " careful, this undefines all other global VimEnters as well!
