@@ -63,14 +63,32 @@ vim_plugin_task "vim-ruby", "https://github.com/AndrewRadev/vim-ruby.git" do
   # Fix the indent code so that in calls to methods which are split
   # across multiple lines, the secondary lines are not aligned with
   # the open parentheses
-  indent_code_1 = %r!if line\[pos\] == '\('
-\s+call add\(open.parentheses, \{'type': '\(', 'pos': pos\}\)
-\s+elseif line\[pos\] == '\)'
-\s+let open.parentheses = open.parentheses\[0:-2\]
-\s+elseif line\[pos\] == '{'!
-  content.gsub!(indent_code_1, "if line[pos] == '{'")
-  indent_code_2 = "if line =~ '[[({]'"
-  content.gsub!(indent_code_2, "if line =~ '[[{]'")
+  indent_code_1 = %r<if line\[col-1\]=='\)' && col\('\.'\) != col\('\$'\) - 1
+\s+let ind = virtcol\('\.'\) - 1
+\s+else
+\s+let ind = indent\(s:GetMSL\(line\('.'\)\)\)
+\s+endif>
+  content.gsub!(indent_code_1, "let ind = indent(s:GetMSL(line('.')))")
+  indent_code_2 = %r@\s+" If the previous line contained an opening bracket, and we are still in it,
+\s+" add indent depending on the bracket type\.
+\s+if line =~ '\[\[\(\{\]'
+\s+let open = s:FindRightmostOpenBracket\(lnum\)
+\s+if open\.pos != -1
+\s+if open\.type == '\(' && searchpair\('\(', '', '\)', 'bW', s:skip_expr\) > 0
+\s+if col\('\.'\) \+ 1 == col\('\$'\)
+\s+return ind \+ &sw
+\s+else
+\s+return virtcol\('\.'\)
+\s+endif
+\s+else
+\s+let nonspace = matchend\(line, '\\S', open\.pos \+ 1\) - 1
+\s+return nonspace > 0 \? nonspace : ind \+ &sw
+\s+endif
+\s+else
+\s+call cursor\(clnum, vcol\)
+\s+end
+\s+endif\n+@m
+  content.gsub!(indent_code_2, "\n\n")
   File.open("indent/ruby.vim", "w") {|f| f.write(content) }
 end
 namespace "vim-ruby" do
