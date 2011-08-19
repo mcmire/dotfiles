@@ -37,6 +37,11 @@ set expandtab
 " <http://stackoverflow.com/questions/4768088/automatic-new-line-and-indentation-in-vim-when-inside-braces>
 inoremap <C-Return> <CR><CR><C-o>k<Tab>
 
+" convert strings to symbols
+vmap <Leader>csy :s/\v["']([^"']+)["'] \=\> /:\1 => /g<CR>:nohls<CR>
+" convert symbols to strings
+vmap <Leader>cys :s/\v:([^:]+) \=\> /'\1' => /g<CR>:nohls<CR>
+
 " Turn off some line specific stuff that is annoying
 " Using autocmd here since formatoptions may be specified by the
 " filetype - you can see what these options are with :h fo-table
