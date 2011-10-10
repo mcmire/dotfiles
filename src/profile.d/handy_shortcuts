@@ -1,5 +1,5 @@
 # enable color support of ls
-alias ls='ls --color=auto -p'
+alias ls='ls -G -p'
 
 # some more ls aliases
 #alias ll='ls -lT'

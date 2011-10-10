@@ -40,8 +40,10 @@ if has("gui_macvim")
   set macmeta
 
   " size the window so it fills the screen (23" monitor)
-  set columns=273
-  set lines=64
+  " set columns=274
+  " set lines=64
+  set columns=500
+  set lines=100
 
   " set font
   " set guifont=MesloLGM:h11

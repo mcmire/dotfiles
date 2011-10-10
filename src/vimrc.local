@@ -20,6 +20,9 @@ set noswapfile
 let Tlist_Use_Right_Window = 1
 let Tlist_WinWidth = 70
 
+" Remove custom function Janus loads for markdown files
+"autocmd! BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn}
+
 " ----- my settings -----
 
 " easy way to update/reload vim files
@@ -28,6 +31,17 @@ nmap <Leader>gv :tabe ~/.gvimrc.local<CR>
 " http://vimcasts.org/episodes/updating-your-vimrc-file-on-the-fly/
 autocmd! BufWritePost ~/.vimrc.local,~/.gvimrc.local source %
 nmap <Leader>jr :tabe ~/.janus.rake<CR>
+
+" Guardfile is a Ruby file
+autocmd! BufRead,BufNewFile Guardfile set ft=ruby
+
+" Navigate modules, classes, methods and tests in Ruby files
+autocmd! FileType ruby call s:addTestNavMappings()
+fun! s:addTestNavMappings()
+  " don't add nohls to this, it slows it down
+  nmap <buffer> <M-j> /\v^\s*(module\|class\|def\|describe\|context\|it)<CR>
+  nmap <buffer> <M-k> ?\v^\s*(module\|class\|def\|describe\|context\|it)<CR>
+endfun
 
 " expand tabs, always
 set expandtab
@@ -40,13 +54,28 @@ inoremap <C-Return> <CR><CR><C-o>k<Tab>
 " convert strings to symbols
 vmap <Leader>csy :s/\v["']([^"']+)["'] \=\> /:\1 => /g<CR>:nohls<CR>
 " convert symbols to strings
-vmap <Leader>cys :s/\v:([^:]+) \=\> /'\1' => /g<CR>:nohls<CR>
+vmap <Leader>cys :s/\v:([^:]+) \=\>/'\1' =>/g<CR>:nohls<CR>
+
+" join comments so we can easily apply gqc
+vmap <Leader>jc :s/\v[\n ]+#[ ]+/ /g<CR>:nohls<CR>i<Space>#<Space><Esc>
+" a gqc that joins the selected comment lines first
+vmap <Leader>gqc <Leader>jc<S-V>gqc
+
+" easy way to jump out of a string
+fun! s:spaceOutOfString()
+  let ch = getline('.')[col('.')]  " character after cursor
+  if ch == "'" || ch == '"'
+    l
+  endif
+  <Space>
+endfun
+imap <M-l> <Esc>$a
 
 " Turn off some line specific stuff that is annoying
 " Using autocmd here since formatoptions may be specified by the
 " filetype - you can see what these options are with :h fo-table
-set formatoptions=tqwvbc
-autocmd! FileType * setl formatoptions=tqwvbc
+set formatoptions=tcroqvb
+autocmd! FileType * setl formatoptions=tcroqvb
 " wrap lines at convenient points
 set wrap linebreak showbreak=‣
 " reasonable textwidth (imo)
@@ -73,7 +102,11 @@ map gqc :call FormatComment()<CR>
 " Cut a line without whitespace
 " `"_d` puts the line into the "black-hole" register,
 " see: <http://stackoverflow.com/questions/54255/in-vim-is-there-a-way-to-delete-without-putting-text-in-the-register>
-nmap dl ^v$hd"_dd
+nmap <Leader>dl ^v$hd"_dd
+" Paste a string into the next line keeping the same indentation level
+nmap <Leader>po o<Space><Backspace><Esc>p
+" Paste a string into the previous line keeping the same indentation level
+nmap <Leader>Po O<Space><Backspace><Esc>p
 
 " store lots of :cmdline history
 set history=1000
@@ -145,7 +178,10 @@ let g:CommandTMatchWindowAtTop=1
 let g:HammerQuiet=1
 
 " easy escape
-imap jj <Esc>
+" imap jj <Esc>
+
+" I hit this way too often, let's just no-op it
+map K <Esc>
 
 if !has("gui")
   " set custom cursor -- vertical bar in insert mode (iTerm2)
@@ -244,6 +280,11 @@ vnoremap <Leader>'  <ESC>`>a'<ESC>`<i'<ESC>
 vnoremap <Leader>`  <ESC>`>a`<ESC>`<i`<ESC>
 vnoremap <Leader>[  <ESC>`>a]<ESC>`<i[<ESC>
 vnoremap <Leader>]  <ESC>`>a]<ESC>`<i[<ESC>
+
+" Mapping for sweet-rspec-vim
+map <Leader>sa :SweetVimRspecRunFile<CR>
+map <Leader>so :SweetVimRspecRunFocused<CR>
+map <Leader>sp :SweetVimRspecRunPrevious<CR>
 
 " ----- Session management -----
 
@@ -509,10 +550,7 @@ function! StatuslineLongLineWarning()
         let long_line_lens = s:LongLines()
 
         if len(long_line_lens) > 0
-            let b:statusline_long_line_warning = "[" .
-                        \ '#' . len(long_line_lens) . "," .
-                        \ 'm' . s:Median(long_line_lens) . "," .
-                        \ '$' . max(long_line_lens) . "]"
+            let b:statusline_long_line_warning = "[" . '#' . len(long_line_lens) . "," . 'm' . s:Median(long_line_lens) . "," . '$' . max(long_line_lens) . "]"
         else
             let b:statusline_long_line_warning = ""
         endif

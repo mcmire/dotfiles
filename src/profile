@@ -4,6 +4,7 @@ source ~/.profile.d/base
 source ~/.profile.d/history
 source ~/.profile.d/fancy_prompt
 source ~/.profile.d/handy_shortcuts
+source ~/.profile.d/autojump
 
 source ~/.profile.d/dev
 source ~/.profile.d/etc
@@ -12,6 +13,7 @@ source ~/.profile.d/java
 source ~/.profile.d/mysql
 source ~/.profile.d/ruby
 source ~/.profile.d/rvm
+source ~/.profile.d/osx
 source ~/.profile.d/perl6
 source ~/.profile.d/node
 source ~/.profile.d/vim

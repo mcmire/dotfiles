@@ -54,12 +54,14 @@ remove_plugin_task "searchfold"
 remove_plugin_task "scala"
 # i guess this is cool but again, not necessary
 remove_plugin_task "conque"
-# what the fuck, really, carlhuda?
+# wtf, really, carlhuda?
 remove_plugin_task "arduino"
 
-# Indentation of nested hashes are currently broken, this fixes them
-vim_plugin_task "vim-ruby", "https://github.com/AndrewRadev/vim-ruby.git" do
+vim_plugin_task "vim-ruby", "https://github.com/vim-ruby/vim-ruby.git" do
   content = File.read("indent/ruby.vim")
+
+  content.gsub!("ruby_hanging_indent = 1", "ruby_hanging_indent = 0")
+
   # Fix the indent code so that in calls to methods which are split
   # across multiple lines, the secondary lines are not aligned with
   # the open parentheses
@@ -69,6 +71,7 @@ vim_plugin_task "vim-ruby", "https://github.com/AndrewRadev/vim-ruby.git" do
 \s+let ind = indent\(s:GetMSL\(line\('.'\)\)\)
 \s+endif>
   content.gsub!(indent_code_1, "let ind = indent(s:GetMSL(line('.')))")
+
   indent_code_2 = %r@\s+" If the previous line contained an opening bracket, and we are still in it,
 \s+" add indent depending on the bracket type\.
 \s+if line =~ '\[\[\(\{\]'
@@ -89,14 +92,8 @@ vim_plugin_task "vim-ruby", "https://github.com/AndrewRadev/vim-ruby.git" do
 \s+end
 \s+endif\n+@m
   content.gsub!(indent_code_2, "\n\n")
+
   File.open("indent/ruby.vim", "w") {|f| f.write(content) }
-end
-namespace "vim-ruby" do
-  task :pull => "tmp/vim-ruby" do
-    Dir.chdir "tmp/vim-ruby" do
-      sh "git co nested-hash-fix"
-    end
-  end
 end
 
 vim_plugin_task "ragtag", "https://github.com/tpope/vim-ragtag.git"
@@ -156,10 +153,12 @@ override_plugin_task "molokai" do
     f.puts "hi Comment         guifg=#6E858A"
     # Normal bg color is #1B1D1E
     f.puts "hi ColorColumn     guibg=#17191A" # slightly darker
-    # f.puts "hi ColorColumn     guibg=#121414"
     f.puts "hi clear NonText"
     f.puts "hi NonText term=reverse guifg=#3C4143"
     f.puts "hi MatchParen gui=bold guifg=#FD971F guibg=#000000"
+    # coffee-script highlights operators and stuff, it's really annoying
+    f.puts "hi clear Operator"
+    f.puts "hi clear SpecialOp"
   end
 end
 
@@ -231,6 +230,10 @@ vim_plugin_task "simplefold", "https://github.com/vim-scripts/simplefold.git"
 
 vim_plugin_task "format_comment", "https://github.com/vim-scripts/FormatComment.vim.git"
 vim_plugin_task "format_block", "https://github.com/vim-scripts/FormatBlock.git"
+
+vim_plugin_task "greplace", "https://github.com/vim-scripts/greplace.vim.git"
+
+vim_plugin_task "sweet-rspec-vim", "https://github.com/duskhacker/sweet-rspec-vim.git"
 
 #------
 
