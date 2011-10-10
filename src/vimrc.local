@@ -21,7 +21,11 @@ let Tlist_Use_Right_Window = 1
 let Tlist_WinWidth = 70
 
 " Remove custom function Janus loads for markdown files
-"autocmd! BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn}
+" and then since this clears out the filetype setting that vim-markdown
+" defines we have to re-add it
+" Also turn on auto-indentation since vim-markdown does not include this
+autocmd! BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn}
+autocmd! BufRead,BufNewFile *.{md,mkd,mkdn,mark*} setl ft=markdown autoindent
 
 " ----- my settings -----
 
