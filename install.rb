@@ -65,8 +65,12 @@ parser = OptionParser.new do |opts|
   opts.on("-n", "--noop", "--dry-run", "Don't actually copy or write any files.") do |val|
     options[:dry_run] = true
   end
-  opts.on("-f", "--force", "Usually dotfiles that already exist are not overwritten, but this will overwrite them.") do |val|
-    options[:force] = true
+  opts.on("-f", "--force-templates", "Usually dotfiles that already exist are not overwritten. This will only cause
+                                     dotfile templates to be applied (regardless of whether their target files exist or not).") do |val|
+    options[:force] = :templates
+  end
+  opts.on("-F", "--force-all", "Overwrite every target file whether it already exists or not.") do |val|
+    options[:force] = :all
   end
   opts.on("--github-token TOKEN", "Specify your Github API token. It will be placed in .gitconfig.") do |val|
     options[:github_token] = val
@@ -76,6 +80,7 @@ parser = OptionParser.new do |opts|
   end
   opts.on_tail("-h", "--help") do |val|
     puts parser
+    exit
   end
 end
 parser.parse!(ARGV)
@@ -95,17 +100,40 @@ Dir["#{SOURCE_DIR}/**/*"].each do |file|
   short_source = source.sub(home, "~")
   target = File.join(home, "." + source_basename).sub(/\.erb$/, "")
   short_target = target.sub(home, "~")
-  status = File.exists?(target) ? "skipping" : "installing"
+  status = ""
+  reason = 'already exists'
+  if File.extname(source) == '.erb'
+    template = ERB.new(File.read(source), nil, "-")  # allow <%- ... -%> tags like Rails
+    content = template.result(binding).strip
+    if File.exists?(target)
+      existing_content = File.read(target)
+      if content == existing_content
+        status = options[:force] == :all ? 'overwrite' : 'skip'
+      else
+        status = options[:force] == :templates ? 'overwrite' : 'skip'
+      end
+    else
+      status = 'install'
+    end
+    reason = 'same content'
+  else
+    if File.exists?(target)
+      status = options[:force] == :all ? 'overwrite' : 'skip'
+    else
+      status = 'install'
+    end
+  end
   files << [
     source_basename,
     source,
     short_source,
     target,
     short_target,
-    status
+    status,
+    reason,
+    content
   ]
 end
-#w = files.map {|f| f[4].length }.max
 w = files.map {|f| f[5].length }.max
 
 if options[:dry_run]
@@ -114,19 +142,20 @@ if options[:dry_run]
   puts
 end
 
-num_files_updated = 0
-files.each do |file|
-  source_basename, source, short_source, target, short_target, status = file
+num_skipped_files = 0
+num_updated_files = 0
 
-  if status == "skipping"
+files.each do |file|
+  source_basename, source, short_source, target, short_target, status, reason, content = file
+
+  if status == 'skip'
     if options[:verbose]
-      puts status.rjust(w).failure + " " + short_target + " (already exists)".unimportant
+      puts status.rjust(w).failure + " " + short_target + " (#{reason})".unimportant
     end
+    num_skipped_files += 1
   else
     puts status.rjust(w).success + " " + short_target
     if File.extname(source) == ".erb"
-      template = ERB.new(File.read(source), nil, "-")  # allow <%- ... -%> tags like Rails
-      content = template.result(binding).strip
       unless options[:dry_run]
         FileUtils.mkdir_p(File.dirname(target))
         File.open(target, "w") {|f| f.write(content) }
@@ -145,14 +174,21 @@ files.each do |file|
         system(*cmd)
       end
     end
-    num_files_updated += 1
+    num_updated_files += 1
   end
 end
 
-if num_files_updated == 0
-  puts
+if num_updated_files == 0
+  puts if options[:verbose]
   puts "All files are already up to date, you're good!".success
+  unless options[:verbose]
+    puts "Run again with --verbose if you want to know why.".success
+  end
 elsif !options[:dry_run]
-  puts
-  puts "Installation complete!".success
+  puts if options[:verbose]
+  puts "Dotfiles successfully updated!".success
+end
+
+if num_skipped_files > 0
+  puts "Run again with --force-templates or --force-all to force-update skipped files.".success
 end
