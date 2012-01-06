@@ -1,21 +1,9 @@
 #!/bin/bash
 
-source ~/.profile.d/base
-source ~/.profile.d/history
-source ~/.profile.d/fancy_prompt
-source ~/.profile.d/handy_shortcuts
-source ~/.profile.d/autojump
+for file in base history fancy_prompt handy_shortcuts autojump; do
+  source ~/.profile.d/$file
+done
 
-source ~/.profile.d/dev
-source ~/.profile.d/etc
-source ~/.profile.d/git
-source ~/.profile.d/java
-source ~/.profile.d/mysql
-source ~/.profile.d/ruby
-source ~/.profile.d/rvm
-source ~/.profile.d/osx
-source ~/.profile.d/perl6
-source ~/.profile.d/node
-source ~/.profile.d/vim
-
-source ~/.profile.d/echonest
+for file in dev etc osx mysql java echonest perl6 git ruby rvm node vim clojure; do
+  source ~/.profile.d/$file
+done
