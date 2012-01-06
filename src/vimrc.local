@@ -1,7 +1,10 @@
 " ----- janus overrides -----
 
+silent! unmap \rt
+
 " set mapleader, so <Leader>-related stuff can be redefined
 let mapleader = ','
+let maplocalleader = ','
 
 " rewrite mapleader stuff
 map <Leader><Leader> :ZoomWin<CR>
@@ -27,6 +30,9 @@ let Tlist_WinWidth = 70
 autocmd! BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn}
 autocmd! BufRead,BufNewFile *.{md,mkd,mkdn,mark*} setl ft=markdown autoindent
 
+set noignorecase
+set nosmartcase
+
 " ----- my settings -----
 
 " easy way to update/reload vim files
@@ -35,6 +41,40 @@ nmap <Leader>gv :tabe ~/.gvimrc.local<CR>
 " http://vimcasts.org/episodes/updating-your-vimrc-file-on-the-fly/
 autocmd! BufWritePost ~/.vimrc.local,~/.gvimrc.local source %
 nmap <Leader>jr :tabe ~/.janus.rake<CR>
+
+" convert strings to symbols
+vmap <Leader>csy :s/\v["']([^"']+)["'] \=\> /:\1 => /g<CR>:nohls<CR>
+" convert symbols to strings
+vmap <Leader>cys :s/\v:([^:]+) \=\>/'\1' =>/g<CR>:nohls<CR>
+
+" join comments so we can easily apply gqc
+vmap <Leader>jc :s/\v[\n ]+#[ ]+/ /g<CR>:nohls<CR>i<Space>#<Space><Esc>
+" a gqc that joins the selected comment lines first
+vmap <Leader>gqc <Leader>jc<S-V>gqc
+
+" format paragraphs too
+nmap <Leader>gqp vipQ$
+
+" Cut a line without whitespace
+" `"_d` puts the line into the "black-hole" register,
+" see: <http://stackoverflow.com/questions/54255/in-vim-is-there-a-way-to-delete-without-putting-text-in-the-register>
+nmap <Leader>dl ^v$hd"_dd
+" Paste a string into the next line keeping the same indentation level
+nmap <Leader>p> o<Space><Backspace><Esc>p
+" Paste a string into the previous line keeping the same indentation level
+nmap <Leader>P> O<Space><Backspace><Esc>p
+" Open a new line Into the following line (technically at the end)
+nmap <Leader>oi j$a
+" Paste overwriting the current line
+nmap <Leader>pc "_ddP
+nmap <Leader>pd "_ddP
+" Paste overwriting everything to the end of the line ($)
+nmap <Leader>pr "_Dp
+nmap <Leader>p$ "_Dp
+" Paste into the next line replacing it
+nmap <Leader>po j"_ddP
+" Paste into the previous line replacing it
+nmap <Leader>Po k"_ddP
 
 " Guardfile is a Ruby file
 autocmd! BufRead,BufNewFile Guardfile set ft=ruby
@@ -47,6 +87,9 @@ fun! s:addTestNavMappings()
   nmap <buffer> <M-k> ?\v^\s*(module\|class\|def\|describe\|context\|it)<CR>
 endfun
 
+" paste mode
+set pastetoggle=<F3>
+
 " expand tabs, always
 set expandtab
 
@@ -54,16 +97,6 @@ set expandtab
 " on an indented next line, so map this to Ctrl-Enter
 " <http://stackoverflow.com/questions/4768088/automatic-new-line-and-indentation-in-vim-when-inside-braces>
 inoremap <C-Return> <CR><CR><C-o>k<Tab>
-
-" convert strings to symbols
-vmap <Leader>csy :s/\v["']([^"']+)["'] \=\> /:\1 => /g<CR>:nohls<CR>
-" convert symbols to strings
-vmap <Leader>cys :s/\v:([^:]+) \=\>/'\1' =>/g<CR>:nohls<CR>
-
-" join comments so we can easily apply gqc
-vmap <Leader>jc :s/\v[\n ]+#[ ]+/ /g<CR>:nohls<CR>i<Space>#<Space><Esc>
-" a gqc that joins the selected comment lines first
-vmap <Leader>gqc <Leader>jc<S-V>gqc
 
 " easy way to jump out of a string
 fun! s:spaceOutOfString()
@@ -102,15 +135,6 @@ function! ToggleHardWrap()
 endfunction
 " Wrap comment blocks
 map gqc :call FormatComment()<CR>
-
-" Cut a line without whitespace
-" `"_d` puts the line into the "black-hole" register,
-" see: <http://stackoverflow.com/questions/54255/in-vim-is-there-a-way-to-delete-without-putting-text-in-the-register>
-nmap <Leader>dl ^v$hd"_dd
-" Paste a string into the next line keeping the same indentation level
-nmap <Leader>po o<Space><Backspace><Esc>p
-" Paste a string into the previous line keeping the same indentation level
-nmap <Leader>Po O<Space><Backspace><Esc>p
 
 " store lots of :cmdline history
 set history=1000
@@ -198,7 +222,7 @@ endif
 nnoremap <C-L> :nohls<CR><C-L>
 inoremap <C-L> <C-O>:nohls<CR>
 
-map <silent> <Leader>r :call Refresh()<CR>
+" map <silent> <Leader>r :call Refresh()<CR>
 
 function! Refresh()
   echo "refreshing tags and files..."
@@ -593,6 +617,28 @@ function! s:Median(nums)
         return (nums[l/2] + nums[(l/2)-1]) / 2
     endif
 endfunction
+
+"--------------------
+" Clojure
+
+" Settings for the VimClojure plugin
+" https://github.com/daveray/vimclojure-easy/blob/master/vimrc.vim
+let vimclojure#FuzzyIndent=1
+let vimclojure#HighlightBuiltins=1
+let vimclojure#HighlightContrib=1
+let vimclojure#DynamicHighlighting=1
+let vimclojure#ParenRainbow=0
+let vimclojure#WantNailgun=1
+let vimclojure#NailgunClient = $HOME . "/.bin/ng"
+
+au! FileType clojure
+
+au FileType clojure call vimclojure#MakeCommandPlug("n", "RunTestsReloadAll", "vimclojure#RunTests", "1")
+au FileType clojure call vimclojure#MapPlug("n", "rT", "RunTestsReloadAll")
+
+" Turn off delimateMate (which provides auto-closing parens) for Clojure files
+" as they just get in the way
+au FileType clojure let b:loaded_delimitMate=1
 
 "--------------------
 

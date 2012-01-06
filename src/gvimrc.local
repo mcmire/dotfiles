@@ -23,6 +23,10 @@ if has("gui_macvim")
 
 endif
 
+" Do not reload NERDTree after regaining focus on the MacVim app window
+" We can do this manually by switching to the tree and pressing 'R'
+autocmd! FocusGained
+
 " ----- my customizations -----
 
 " unmap undo/redo since it messes things up in insert mode
