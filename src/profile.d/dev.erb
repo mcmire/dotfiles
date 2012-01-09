@@ -5,9 +5,6 @@ export EDITOR=mate
 export EDITOR=vi
 <%- end -%>
 
-# Add ./bin to the PATH for bundle install --binstubs
-export PATH="./bin:$PATH"
-
 if which brew >/dev/null 2>&1 && test -f $(brew --prefix)/etc/autojump; then \
   . $(brew --prefix)/etc/autojump
 fi
