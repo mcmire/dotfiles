@@ -9,6 +9,121 @@ class Rake::Task
   end
 end
 
+# Yes we have to override this whole thing just to tweak one little thing
+def vim_plugin_task(name, repo=nil, options={})
+  vimdir = File.expand_path("~/.vim")
+  tmpdir = "#{vimdir}/tmp/#{name}"
+  subdirs = VIM::Dirs
+
+  namespace(name) do
+    install_repo = lambda do
+      if repo =~ /git$/
+        sh "git clone #{repo} #{tmpdir}"
+        # Here is the actual patch....
+        if ref = (options[:branch] || options[:tag] || options[:ref])
+          sh "git checkout #{ref}"
+        end
+
+      elsif repo =~ /download_script/
+        if filename = `curl --silent --head #{repo} | grep attachment`[/filename=(.+)/,1]
+          filename.strip!
+          sh "curl #{repo} > tmp/#{filename}"
+        else
+          raise ArgumentError, 'unable to determine script type'
+        end
+
+      elsif repo =~ /(tar|gz|vba|zip)$/
+        filename = File.basename(repo)
+        sh "curl #{repo} > tmp/#{filename}"
+
+      else
+        raise ArgumentError, 'unrecognized source url for plugin'
+      end
+
+      case filename
+      when /zip$/
+        sh "unzip -o tmp/#{filename} -d #{tmpdir}"
+
+      when /tar\.gz$/
+        dirname  = File.basename(filename, '.tar.gz')
+
+        sh "tar zxvf tmp/#{filename}"
+        sh "mv #{dirname} #{tmpdir}"
+
+      when /vba(\.gz)?$/
+        if filename =~ /gz$/
+          sh "gunzip -f tmp/#{filename}"
+          filename = File.basename(filename, '.gz')
+        end
+
+        # mkdir_p tmpdir
+        lines = File.readlines("tmp/#{filename}")
+        current = lines.shift until current =~ /finish$/ # find finish line
+
+        while current = lines.shift
+          # first line is the filename (possibly followed by garbage)
+          # some vimballs use win32 style path separators
+          path = current[/^(.+?)(\t\[{3}\d)?$/, 1].gsub '\\', '/'
+
+          # then the size of the payload in lines
+          current = lines.shift
+          num_lines = current[/^(\d+)$/, 1].to_i
+
+          # the data itself
+          data = lines.slice!(0, num_lines).join
+
+          # install the data
+          Dir.chdir tmpdir do
+            mkdir_p File.dirname(path)
+            File.open(path, 'w'){ |f| f.write(data) }
+          end
+        end
+      end
+    end
+
+    if repo
+      task :install => subdirs do
+        FileUtils.mkdir_p File.dirname(tmpdir)
+        FileUtils.rm_rf(tmpdir)
+        FileUtils.mkdir(tmpdir)
+
+        Dir.chdir tmpdir do
+          install_repo.call
+
+          if File.exists?("Rakefile") and `rake -T` =~ /^rake install/
+            sh "rake install"
+          elsif File.exists?("install.sh")
+            sh "sh install.sh"
+          else
+            subdirs.each do |subdir|
+              if File.exists?(subdir)
+                sh "cp -RfL #{subdir}/* #{vimdir}/#{subdir}/"
+              end
+            end
+          end
+        end
+
+        yield if block_given?
+      end
+    else
+      task :install => subdirs do
+        yield if block_given?
+      end
+    end
+  end
+
+  desc "Install #{name} plugin"
+  task name do
+    puts
+    puts "*" * 40
+    puts "*#{"Installing #{name}".center(38)}*"
+    puts "*" * 40
+    puts
+    Rake::Task["#{name}:install"].invoke
+  end
+  task :default => name
+end
+
 def remove_task(task_name)
   Rake::Task[task_name].abandon
   Rake::Task[task_name].prerequisites.clear
@@ -29,9 +144,9 @@ def remove_plugin_task(name)
   file(File.expand_path("tmp/#{name}") => "tmp").clear
 end
 
-def override_plugin_task(name, repo=nil, &block)
+def override_plugin_task(name, repo=nil, options={}, &block)
   remove_plugin_task name
-  vim_plugin_task name, repo, &block
+  vim_plugin_task name, repo, options, &block
 end
 
 def extend_plugin_task(name, &block)
@@ -41,7 +156,7 @@ def extend_plugin_task(name, &block)
 end
 
 # don't want wycats' fork, i want the source
-override_plugin_task "nerdtree", "https://github.com/scrooloose/nerdtree.git"
+override_plugin_task "nerdtree", "https://github.com/scrooloose/nerdtree.git", :tag => '4.1.0'
 
 remove_plugin_task "jslint"
 #vim_plugin_task "jshint", "https://github.com/wookiehangover/jshint.vim.git"
@@ -106,11 +221,15 @@ vim_plugin_task "less", "git://gist.github.com/369178.git"
 # vim_plugin_task "camelcasemotion", "https://github.com/vim-scripts/camelcasemotion.git"
 #vim_plugin_task "zencoding", "https://github.com/mattn/zencoding-vim.git"
 vim_plugin_task "session", "https://github.com/vim-scripts/session.vim--Odding.git"
-vim_plugin_task "delimitMate", "https://github.com/Raimondi/delimitMate.git"
+
+# vim_plugin_task "delimitMate", "https://github.com/Raimondi/delimitMate.git"
+remove_plugin_task "delimitMate"
+
 #vim_plugin_task "css-color", "https://github.com/ap/vim-css-color.git" do
 #  sh "cp after/syntax/{css,less}.vim"
 #  sh "cp after/syntax/{css,scss}.vim"
 #end
+
 #vim_plugin_task "bccalc", "https://github.com/vim-scripts/bccalc.vim.git"
 vim_plugin_task "vim-git", "https://github.com/tpope/vim-git.git" do
   content = File.read('ftplugin/gitcommit.vim')
@@ -234,6 +353,25 @@ vim_plugin_task "format_block", "https://github.com/vim-scripts/FormatBlock.git"
 vim_plugin_task "greplace", "https://github.com/vim-scripts/greplace.vim.git"
 
 vim_plugin_task "sweet-rspec-vim", "https://github.com/duskhacker/sweet-rspec-vim.git"
+
+override_plugin_task 'vim-coffee-script', 'https://github.com/kchmck/vim-coffee-script.git' do
+  File.open("syntax/coffee.vim", "a") do |f|
+    f.write "
+hi link coffeeObject NONE
+hi link coffeeBracket NONE
+hi link coffeeCurly NONE
+hi link coffeeParen NONE
+\"hi link coffeeSpecialVar Identifier
+hi link coffeeSpecialOp NONE
+"
+  end
+end
+
+vim_plugin_task 'yaml', 'https://github.com/avakhov/vim-yaml.git'
+
+vim_plugin_task 'vim-indent-guides', 'https://github.com/nathanaelkane/vim-indent-guides.git'
+
+override_plugin_task 'mustache', 'https://github.com/juvenn/mustache.vim.git'
 
 #------
 

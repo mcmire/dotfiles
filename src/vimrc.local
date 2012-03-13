@@ -76,6 +76,10 @@ nmap <Leader>po j"_ddP
 " Paste into the previous line replacing it
 nmap <Leader>Po k"_ddP
 
+" Search and replace word under cursor
+" http://vim.wikia.com/wiki/Search_and_replace_the_word_under_the_cursor
+nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+
 " Guardfile is a Ruby file
 autocmd! BufRead,BufNewFile Guardfile set ft=ruby
 
@@ -92,6 +96,9 @@ set pastetoggle=<F3>
 
 " expand tabs, always
 set expandtab
+
+" add vendor/ruby to wildignore
+set wildignore+=vendor/ruby/**
 
 " pressing enter while inside {} or [] doesn't always place the cursor
 " on an indented next line, so map this to Ctrl-Enter
@@ -117,6 +124,8 @@ autocmd! FileType * setl formatoptions=tcroqvb
 set wrap linebreak showbreak=‣
 " reasonable textwidth (imo)
 set textwidth=80
+" override textwidth when file is opened
+autocmd! BufRead,BufNewFile * set textwidth=80
 "let g:old_textwidth=80
 map <Leader>ww :call ToggleHardWrap()<CR>
 " for wrapped lines, jump to the next row rather than the next line
@@ -222,12 +231,12 @@ endif
 nnoremap <C-L> :nohls<CR><C-L>
 inoremap <C-L> <C-O>:nohls<CR>
 
-" map <silent> <Leader>r :call Refresh()<CR>
+map <silent> <Leader>r :call Refresh()<CR>
 
 function! Refresh()
-  echo "refreshing tags and files..."
+  echo "Refreshing files..."
 
-  silent !ctags -R
+  " silent !ctags -R
 
   if exists(":CommandTFlush") == 2
     CommandTFlush
@@ -639,6 +648,13 @@ au FileType clojure call vimclojure#MapPlug("n", "rT", "RunTestsReloadAll")
 " Turn off delimateMate (which provides auto-closing parens) for Clojure files
 " as they just get in the way
 au FileType clojure let b:loaded_delimitMate=1
+
+"--------------------
+" vim-indent-guides
+
+let g:indent_guides_enable_on_vim_startup=1
+let g:indent_guides_auto_colors=0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#262325
 
 "--------------------
 
