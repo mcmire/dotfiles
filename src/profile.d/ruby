@@ -1,7 +1,10 @@
 # Load Rubygems every time Ruby loads
-export RUBYOPT=rubygems
+#export RUBYOPT=rubygems
 
-ri() {
-   ri -T -f ansi "$@" | less -r
-}
-alias gi="sudo gem install $@ --no-ri --no-rdoc"
+# Increase memory allocated to Ruby so it screams
+# https://gist.github.com/1688857
+export RUBY_HEAP_MIN_SLOTS=1000000
+export RUBY_HEAP_SLOTS_INCREMENT=1000000
+export RUBY_HEAP_SLOTS_GROWTH_FACTOR=1
+export RUBY_GC_MALLOC_LIMIT=1000000000
+export RUBY_HEAP_FREE_MIN=500000
