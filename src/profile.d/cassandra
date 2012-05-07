@@ -1,0 +1,2 @@
+export CASSANDRA_HOME=/Users/elliot/.datastax/apache-cassandra-1.0.8
+export PATH=$PATH:$CASSANDRA_HOME/bin

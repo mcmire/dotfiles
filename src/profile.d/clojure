@@ -1,0 +1,3 @@
+export PATH=~/.cljr/bin:$PATH
+
+# vim: ft=sh
