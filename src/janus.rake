@@ -373,6 +373,10 @@ vim_plugin_task 'vim-indent-guides', 'https://github.com/nathanaelkane/vim-inden
 
 override_plugin_task 'mustache', 'https://github.com/juvenn/mustache.vim.git'
 
+vim_plugin_task 'slim', 'https://github.com/bbommarito/vim-slim.git'
+
+vim_plugin_task 'scala', 'https://github.com/derekwyatt/vim-scala.git'
+
 #------
 
 =begin
