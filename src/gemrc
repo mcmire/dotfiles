@@ -8,6 +8,6 @@
 :update_sources: true
 :verbose: true
 gem: --no-ri --no-rdoc
-gemcutter_key: d51a479a1f2bcaf851eadccf7ab10be3
 install: --env-shebang
+gemcutter_key: d51a479a1f2bcaf851eadccf7ab10be3
 update: --env-shebang
