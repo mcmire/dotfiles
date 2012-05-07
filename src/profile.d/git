@@ -18,7 +18,7 @@ export PS1_START="$PS1_START$PS1_GIT"
 export PS1="$PS1_START$PS1_END"
 
 # hubba hubba
-#alias git=hub
+alias git=hub
 
 git-cat() {
   file="$1"
