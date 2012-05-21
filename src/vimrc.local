@@ -105,7 +105,7 @@ set pastetoggle=<F3>
 set expandtab
 
 " add vendor/ruby to wildignore
-set wildignore+=vendor/ruby/**,tmp/cache
+set wildignore+=bundle/**,vendor/ruby/**,tmp/cache
 
 " pressing enter while inside {} or [] doesn't always place the cursor
 " on an indented next line, so map this to Ctrl-Enter
@@ -136,8 +136,8 @@ set wrap linebreak showbreak=‣
 
 " reasonable textwidth (imo)
 set textwidth=80
-" override textwidth when file is opened
-" autocmd! BufRead,BufNewFile * set textwidth=80
+" override textwidth when file is opened, Ruby files are somehow set to 72
+autocmd! BufRead,BufNewFile * set textwidth=80
 "let g:old_textwidth=80
 
 map <Leader>ww :call ToggleHardWrap()<CR>
@@ -268,7 +268,7 @@ endfunction
 
 colorscheme molokai
 
-set colorcolumn=80,120
+set colorcolumn=80,100,120
 
 " from evilchelu:
 " get the last pasted text
