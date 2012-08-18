@@ -18,3 +18,4 @@
 --type-set=vim=.vim
 --type-set=cucumber=.feature
 --type-set=textmate=.tmproj
+--type-set=mustache=.mustache

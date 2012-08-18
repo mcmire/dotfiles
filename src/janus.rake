@@ -377,6 +377,10 @@ vim_plugin_task 'slim', 'https://github.com/bbommarito/vim-slim.git'
 
 vim_plugin_task 'scala', 'https://github.com/derekwyatt/vim-scala.git'
 
+vim_plugin_task 'mac-classic-theme', 'https://github.com/nelstrom/vim-mac-classic-theme.git'
+
+vim_plugin_task 'earendel', 'https://github.com/vim-scripts/earendel.git'
+
 #------
 
 =begin

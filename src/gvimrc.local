@@ -12,7 +12,7 @@ silent! cunabbrev mkdir
 " careful, this undefines all other global VimEnters as well!
 autocmd! VimEnter *
 
-colorscheme molokai
+" colorscheme molokai
 
 if has("gui_macvim")
 

@@ -15,6 +15,7 @@ map <Leader>o :e <C-R>=expand("%:p:h") . "/" <CR>
 map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
 let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$', '^tags$']
+" let NERDTreeWinSize=50
 
 " livin' on the edge!
 set noswapfile
@@ -79,6 +80,12 @@ nmap <Leader>po j"_ddP
 " Paste into the previous line replacing it
 nmap <Leader>Po k"_ddP
 
+func! RunRspecTests()
+  exec "!script/drspec --no-color %"
+endfunc
+
+nmap <Leader>rs :call RunRspecTests()<CR>
+
 " http://vim.wikia.com/wiki/Move_to_next/previous_line_with_same_indentation
 nnoremap <M-,> k:call search('^'. matchstr(getline(line('.')+1), '\(\s*\)') .'\S', 'b')<CR>^
 nnoremap <M-.> :call search('^'. matchstr(getline(line('.')), '\(\s*\)') .'\S')<CR>^
@@ -104,8 +111,8 @@ set pastetoggle=<F3>
 " expand tabs, always
 set expandtab
 
-" add vendor/ruby to wildignore
-set wildignore+=bundle/**,vendor/ruby/**,tmp/cache
+" add .DS_Store and vendor/ruby to wildignore so they don't appear in Cmd-T
+set wildignore+=.DS_Store,bundle/**,vendor/ruby/**,tmp/cache
 
 " pressing enter while inside {} or [] doesn't always place the cursor
 " on an indented next line, so map this to Ctrl-Enter
@@ -266,7 +273,11 @@ function! Refresh()
 
 endfunction
 
+autocmd! VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#262325
 colorscheme molokai
+" set background=light
+" autocmd! VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#e5e5e5
+" colorscheme earendel
 
 set colorcolumn=80,100,120
 
@@ -668,8 +679,6 @@ au FileType clojure let b:loaded_delimitMate=1
 
 let g:indent_guides_enable_on_vim_startup=1
 let g:indent_guides_auto_colors=0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#262325
-" autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#dedede
 
 "--------------------
 

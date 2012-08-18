@@ -1,0 +1,51 @@
+
+class Irbrc
+  def run
+    #init_awesome_print
+    init_irb
+  end
+
+  def init_awesome_print
+    with_gem 'awesome_print' do
+      IRB::Irb.class_eval do
+        def output_value
+          ap @context.last_value
+        end
+      end
+    end
+  end
+
+  def init_irb
+    require 'irb/completion'
+    require 'irb/ext/save-history'
+    ARGV.concat [ "--readline", "--prompt-mode", "simple" ]
+    IRB.conf[:SAVE_HISTORY] = 100
+    IRB.conf[:HISTORY_FILE] = "#{ENV['HOME']}/.irb-save-history"
+  end
+
+  def with_gem(name)
+    require name
+    yield
+  rescue LoadError
+    warning <<EOT
+Could not load gem #{name.inspect}.
+If you are running within a `bundle exec` session, please make sure this gem is in your Gemfile.
+I will keep on rolling...
+EOT
+  end
+
+  def warning(msg)
+    puts
+    puts "\e[33mWarning:\e[0m #{msg}"
+    puts
+  end
+
+  def error(status, msg)
+    puts
+    puts "\e[31mERROR!\e[0m #{msg}"
+    puts
+    exit status
+  end
+end
+
+Irbrc.new.run
