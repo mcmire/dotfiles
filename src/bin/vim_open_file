@@ -1,0 +1,5 @@
+#!/bin/bash
+
+vim "$1"
+
+# vim: ft=sh

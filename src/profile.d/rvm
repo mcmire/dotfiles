@@ -15,3 +15,5 @@ function gemdir {
 export PS1_RVM="\[\033[01;33m\]\$(~/.rvm/bin/rvm-prompt)\[\033[00m\]"
 export PS1_START="$PS1_START on $PS1_RVM"
 export PS1="$PS1_START$PS1_END"
+
+# vi: ft=sh

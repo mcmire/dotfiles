@@ -1,3 +1,5 @@
 function timestamp {
   date +"%Y%m%d%H%M%S"
 }
+
+# vi: ft=sh

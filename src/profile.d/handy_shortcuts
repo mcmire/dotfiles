@@ -17,3 +17,5 @@ smartgrep() {
 
 # Make it so ANSI colors will still show up in less
 alias less='less -r'
+
+# vi: ft=sh

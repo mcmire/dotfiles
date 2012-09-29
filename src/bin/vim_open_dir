@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Stolen from Nathan
+
+if [ -n "$1" ]; then
+  if [ -d "$1" ]; then
+    pushd $1 >/dev/null
+    rm -f tags
+    #ctags -R
+    vim -S .vimrc .
+    popd >/dev/null
+  else
+    echo "$1 is not a directory"
+  fi
+else
+  rm -f tags
+  #ctags -R
+  vim -S .vimrc .
+  # echo "specify a directory to edit"
+fi
+
+# vim: ft=sh

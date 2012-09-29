@@ -2,11 +2,4 @@ export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
 
 eval "$(rbenv init -)"
 
-PS1_RBENV="\[\033[01;33m\]"
-PS1_RBENV="${PS1_RBENV}ruby \$(rbenv version | awk '{ print \$1 }')"
-PS1_RBENV="${PS1_RBENV}\$(g=\$(rbenv gemset active 2>/dev/null); if [ ! -z "\$g" ]; then echo "@\${g}"; fi)"
-PS1_RBENV="${PS1_RBENV}\[\033[00m\]"
-export PS1_START="$PS1_START on $PS1_RBENV"
-export PS1="$PS1_START$PS1_END"
-
 # vi: ft=sh

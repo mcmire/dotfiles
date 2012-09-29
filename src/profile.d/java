@@ -3,3 +3,5 @@
 # Provide shortcuts to Rhino for envjs
 alias js="java -cp lib/js.jar:lib/jline.jar jline.ConsoleRunner org.mozilla.javascript.tools.shell.Main -opt -1"
 alias jsd="java -cp lib/js.jar:lib/jline.jar jline.ConsoleRunner org.mozilla.javascript.tools.debugger.Main"
+
+# vi: ft=sh

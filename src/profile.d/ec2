@@ -8,3 +8,4 @@ export EC2_HOME=/opt/ec2-tools
 export EC2_CERT=~/etc/cert-RDVVMUU7Z4HTH4RORRG4JNCAJJLG42S5.pem
 export EC2_PRIVATE_KEY=~/etc/pk-RDVVMUU7Z4HTH4RORRG4JNCAJJLG42S5.pem
 
+# vi: ft=sh

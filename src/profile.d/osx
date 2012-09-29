@@ -13,3 +13,5 @@ nt()
     end tell
   end tell"
 }
+
+# vi: ft=sh

@@ -1,4 +1,7 @@
-alias e='gvim_open_file'
-alias d='gvim_open_dir'
+alias e='gvim_open'
+alias d='gvim_open'
+
+alias vi="mvim -v"
+alias vim="mvim -v"
 
 # vim: ft=sh

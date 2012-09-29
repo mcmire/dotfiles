@@ -11,3 +11,5 @@ export RUBY_HEAP_FREE_MIN=500000
 #export GEM_CERTIFICATE_CHAIN=~/.ssh/gem-public_cert.pem
 export GEM_PRIVATE_KEY=""
 export GEM_CERTIFICATE_CHAIN=""
+
+# vi: ft=sh

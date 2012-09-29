@@ -11,3 +11,5 @@ export PS1_START="$PS1_USER_AND_HOST at $PS1_CWD"
 #export PS1_END="\n\[\033[01;34m\]★\[\033[00m\]  "
 export PS1_END="\n\[\033[01;34m\]☃\[\033[00m\]  "
 export PS1="$PS1_START$PS1_END"
+
+# vi: ft=sh
