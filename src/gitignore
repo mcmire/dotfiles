@@ -2,3 +2,4 @@
 *.tmproj
 *.vim*
 tags
+.rbenv-version
