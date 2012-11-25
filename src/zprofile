@@ -48,3 +48,6 @@ unsetopt inc_append_history
 for file in base autojump dev osx vim git cassandra etc perl6 node clojure echonest; do
   source ~/.profile.d/$file
 done
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
