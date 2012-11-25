@@ -40,8 +40,10 @@ source $ZSH/oh-my-zsh.sh
 
 # Disable autocorrection, it's SUPER annoying
 unsetopt correct_all
-# Disable oh-my-zsh's default, global history setting
-unsetopt SHARE_HISTORY
+# Disable oh-my-zsh's default, global history settings
+unsetopt share_history
+unsetopt append_history
+unsetopt inc_append_history
 
 for file in base autojump dev osx vim git cassandra etc perl6 node clojure echonest; do
   source ~/.profile.d/$file
