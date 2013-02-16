@@ -59,6 +59,9 @@ end
 
 home = File.expand_path(ENV['HOME'])
 
+#-------------------------------------------------------------------------------
+# Parse options
+
 options = {}
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: #{$0} [options]"
@@ -89,6 +92,9 @@ if ARGV.any?
   warn parser
   exit 1
 end
+
+#-------------------------------------------------------------------------------
+# Collect list of files
 
 SOURCE_DIR = "src"
 
@@ -135,6 +141,9 @@ Dir["#{SOURCE_DIR}/**/*"].each do |file|
   ]
 end
 w = files.map {|f| f[5].length }.max
+
+#-------------------------------------------------------------------------------
+# Install files
 
 if options[:dry_run]
   puts "Here's what the output will look like on a 'real' run."
@@ -192,3 +201,4 @@ end
 if num_skipped_files > 0
   puts "Run again with --force-templates or --force-all to force-update skipped files.".success
 end
+
