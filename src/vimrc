@@ -1,0 +1,400 @@
+
+"=== Basic stuff ===
+
+" Initialize Pathogen
+call pathogen#infect()
+call pathogen#helptags()
+syntax on
+
+" Load the plugin and indent settings for the detected filetype
+filetype plugin indent on
+
+set nocompatible
+
+" Set mapleader, so that <Leader>-related stuff can be redefined
+let mapleader = ','
+let maplocalleader = ','
+
+set number
+set ruler
+
+set encoding=utf-8
+
+" Livin' on the edge!
+set noswapfile
+
+" Store lots of :cmdline history
+set history=1000
+
+" Hide buffers when not displayed (vs. unloading them)
+set hidden
+
+" Fix so typing '#' does not jump to start of line
+" http://stackoverflow.com/questions/2063175/vim-insert-mode-comments-go-to-start-of-line
+set nosmartindent
+au! FileType slim setl nosmartindent
+
+" Per-directory .vimrc files
+set exrc            " enable per-directory .vimrc files
+set secure          " disable unsafe commands in local .vimrc files
+
+"=== Magic ===
+
+" Auto-save everything when vim loses focus
+" http://vim.wikia.com/wiki/Auto_save_files_when_focus_is_lost
+autocmd! FocusLost * silent! wa
+
+" Auto-reload any file modified outside vim
+set autoread
+
+"=== Whitespace removal on save ===
+
+" Copied from <http://vim.wikia.com/wiki/Remove_unwanted_spaces>
+function! TrimWhiteSpace()
+  " do not record the whitespace removal in the undo history
+  " <http://vim.1045645.n5.nabble.com/there-s-undojoin-how-about-dotjoin-td1203135.html>
+  try
+    undojoin
+  catch
+    " probably an undo was just issued, and so there's no way to
+    " join the undo. which sucks.
+  endtry
+  %s/\s*$//
+  ''
+endfunction
+
+autocmd! FileWritePre * :call TrimWhiteSpace()
+autocmd! FileAppendPre * :call TrimWhiteSpace()
+autocmd! FilterWritePre * :call TrimWhiteSpace()
+autocmd! BufWritePre * :call TrimWhiteSpace()
+
+noremap <silent> <F2> :call TrimWhiteSpace()<CR>
+
+"=== Colors ===
+
+" The terminal has 256 color support
+" XXX: Do we need to set this before syntax?
+set t_Co=256
+
+colorscheme molokai
+"set background=light
+"colorscheme earendel
+
+set colorcolumn=80,100,120
+hi ColorColumn guibg=#17191A ctermbg=234
+"hi ColorColumn guibg=#c0c0c0 ctermbg=234
+
+set cursorline
+
+"=== Whitespace ===
+
+set tabstop=2 shiftwidth=2
+autocmd! FileType {ruby,css,javascript,coffee,html,xml,markdown,js} set softtabstop=2 expandtab
+
+set list listchars=tab:⊢—,trail:⋅,nbsp:⋅,eol:¬,extends:⨠
+
+" Disable two-space joins
+set nojoinspaces
+
+set wrap linebreak showbreak=‣
+
+" Reasonable textwidth (imo)
+set textwidth=80
+" override textwidth when file is opened, Ruby files are somehow set to 72
+autocmd! BufRead,BufNewFile * set textwidth=80
+"let g:old_textwidth=80
+
+" For wrapped lines, jump to the next row rather than the next line
+nnoremap j gj
+vnoremap j gj
+nnoremap k gk
+vnoremap k gk
+
+" Toggle hard wrap
+function! ToggleHardWrap()
+  if &textwidth
+    let g:old_textwidth = &textwidth
+    let &textwidth = 0
+  else
+    let &textwidth = g:old_textwidth
+  endif
+endfunction
+noremap <Leader>ww :call ToggleHardWrap()<CR>
+
+"=== Searching ===
+
+set hlsearch
+set incsearch
+
+"=== Tab completion ===
+
+set wildmode=list:longest,list:full
+set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,bundle/**,vendor/gems/*,vendor/ruby/**,tmp/cache
+
+" Remember last location in file
+autocmd! BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+  \| exe "normal g'\"" | endif
+
+"=== File type specific settings ===
+
+" make uses real tabs
+autocmd! FileType make setl noexpandtab
+
+" Many Ruby files aren't named that way
+autocmd! BufRead,BufNewFile {config.ru,Gemfile,Guardfile,Rakefile,Thorfile,Vagrantfile} set ft=ruby
+
+" Turn on autoindentation since vim-markdown does not include this
+autocmd! BufRead,BufNewFile *.{md,mkd,mkdn,mark*} setl ft=markdown autoindent
+
+" Add JSON syntax highlighting
+autocmd! BufNewFile,BufRead *.json set ft=javascript
+
+" Make Python follow PEP8 ( http://www.python.org/dev/peps/pep-0008/ )
+autocmd! FileType python set softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79
+
+" Fix crontab editing
+autocmd! BufEnter /private/tmp/crontab.* setl backupcopy=yes
+
+" Use modeline overrides
+set modeline
+set modelines=10
+
+" Allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
+" Paste mode
+set pastetoggle=<F3>
+
+" Turn off some line specific stuff that is annoying
+" Using autocmd here since formatoptions may be specified by the
+" filetype - you can see what these options are with :h fo-table
+set formatoptions=tcroqvb
+autocmd! FileType * setl formatoptions=tcroqvb
+
+" Enable Ctrl-N, Ctrl-P in tab completion
+set wildmenu
+
+"=== Folding ===
+
+set foldenable
+
+"" NOTE!!!
+"" Setting foldmethod to syntax will cause all sorts of problems.
+"" See: <https://github.com/vim-ruby/vim-ruby/issues/8#issuecomment-327162>
+"" And also: <http://vim.wikia.com/wiki/Keep_folds_closed_while_inserting_text>
+set foldmethod=indent
+set foldlevel=6    " start with no folding, but ready to go
+set foldminlines=0 " Allow folding single lines
+set foldnestmax=6  " Set max fold nesting level
+"set foldcolumn=4 " Show fold column
+
+"=== Window/cursor display ===
+
+" Show at least 3 lines above/below cursor
+set scrolloff=3
+" and at least 7 columns next to cursor
+set sidescrolloff=7
+set sidescroll=1
+
+if !has("gui")
+  " Set custom cursor -- vertical bar in insert mode (iTerm2)
+  " From http://www.iterm2.com/#/section/documentation/escape_codes
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
+" Current window always has a nice size
+set winheight=10
+
+" New splits go below the current buffer
+set splitbelow
+" and to the right as well
+set splitright
+
+"=== Various mappings ===
+
+" % to bounce from do to end etc.
+runtime! macros/matchit.vim
+
+" Easy way to update/reload vim files
+nmap <Leader>v :tabe ~/.vimrc<CR>
+nmap <Leader>gv :tabe ~/.gvimrc<CR>
+" http://vimcasts.org/episodes/updating-your-vimrc-file-on-the-fly/
+autocmd! BufWritePost ~/.vimrc,~/.gvimrc source %
+
+" Window movement
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-h> <C-w>h
+noremap <C-l> <C-w>l
+noremap <C-_> <C-w>_
+
+" Tab movement
+noremap <C-e> gT
+noremap <C-t> gt
+
+" Map Q to something useful
+noremap Q gq
+
+" Make Y consistent with C and D
+nnoremap Y y$
+
+" I hit this way too often, let's just no-op it
+" XXX: This is still getting called for some reason...
+noremap K <Esc>
+
+" Make <C-\> clear the highlight as well as redraw
+nnoremap <C-\> :nohls<CR><C-L>
+inoremap <C-\> <C-O>:nohls<CR>
+
+" Cut a line without whitespace
+" `"_d` puts the line into the "black-hole" register,
+" See: <http://stackoverflow.com/questions/54255/in-vim-is-there-a-way-to-delete-without-putting-text-in-the-register>
+nmap <Leader>dl ^v$hd"_dd
+" Paste a string into the next line keeping the same indentation level
+nmap <Leader>p> o<Space><Backspace><Esc>p
+" Paste a string into the previous line keeping the same indentation level
+nmap <Leader>P> O<Space><Backspace><Esc>p
+" Open a new line at the end of the following line
+nmap <Leader>oi j$a
+" Paste overwriting the current selection, without first storing the text to be
+" replaced in the current register
+vmap <Leader>pp "_dP
+" Paste overwriting the current line
+nmap <Leader>pc "_ddP
+nmap <Leader>pd "_ddP
+" Paste overwriting everything to the end of the line ($)
+nmap <Leader>pr "_Dp
+nmap <Leader>p$ "_Dp
+" Paste into the next line replacing it
+nmap <Leader>po j"_ddP
+" Paste into the previous line replacing it
+nmap <Leader>Po k"_ddP
+
+" Convert strings to symbols
+vmap <Leader>csy :s/\v["']([^"']+)["'] \=\> /:\1 => /g<CR>:nohls<CR>
+" Convert symbols to strings
+vmap <Leader>cys :s/\v:([^:]+) \=\>/'\1' =>/g<CR>:nohls<CR>
+
+" Search and replace word under cursor
+" http://vim.wikia.com/wiki/Search_and_replace_the_word_under_the_cursor
+nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+
+" Join comments so we can easily apply gqc
+vmap <Leader>jc :s/\v[\n ]+#[ ]+/ /g<CR>:nohls<CR>i<Space>#<Space><Esc>
+" A form of gqc that joins the selected comment lines first
+vmap <Leader>gqc <Leader>jc<S-V>gqc
+" Format paragraphs too
+nmap <Leader>gqp vipQ$
+
+" From http://stackoverflow.com/questions/676600/vim-replace-selected-text
+vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+vnoremap <C-a> "hy:Ack <C-r>h
+
+" http://vim.wikia.com/wiki/Move_to_next/previous_line_with_same_indentation
+nnoremap <M-,> k:call search('^'. matchstr(getline(line('.')+1), '\(\s*\)') .'\S', 'b')<CR>^
+nnoremap <M-.> :call search('^'. matchstr(getline(line('.')), '\(\s*\)') .'\S')<CR>^
+
+" Shortcuts for scrolling without moving the cursor
+nnoremap <S-M-j> <C-e>
+nnoremap <S-M-k> <C-y>
+
+" Identify syntax group at cursor
+" http://vim.wikia.com/wiki/Identify_the_syntax_highlighting_group_used_at_the_cursor
+map <Leader>syn :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+"=== Plugin configuration ===
+
+"--- NERDTree ---
+
+let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$', '^tags$']
+noremap <Leader>n :NERDTreeToggle<CR>
+" Auto-change cwd when changing tree root
+let NERDTreeChDirMode=2
+"command! -n=? -complete=dir NT NERDTreeToggle <args>
+" Close vim if the only window left open is a NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+"--- Command-T ---
+
+let g:CommandTMaxHeight=20
+" Put Command-T window at the top of the screen
+let g:CommandTMatchWindowAtTop=1
+
+" Command to refresh both Command-T and NERDTree
+" (but mainly Command-T)
+function! Refresh()
+  echo "Refreshing files..."
+
+  " silent !ctags -R
+
+  if exists(":CommandTFlush") == 2
+    CommandTFlush
+  endif
+
+  if exists("t:NERDTreeBufName")
+    let nr = bufwinnr(t:NERDTreeBufName)
+    if nr != -1
+      exe nr . "wincmd w"
+      exe substitute(mapcheck("R"), "<CR>", "", "")
+      wincmd p
+    endif
+  endif
+endfunction
+noremap <silent> <Leader>r :call Refresh()<CR>
+
+"--- FormatComment
+
+noremap <Leader>qc :call FormatComment()<CR>
+
+"--- Clojure ---
+
+" Settings for the VimClojure plugin
+" https://github.com/daveray/vimclojure-easy/blob/master/vimrc.vim
+" let vimclojure#FuzzyIndent=1
+" let vimclojure#HighlightBuiltins=1
+" let vimclojure#HighlightContrib=1
+" let vimclojure#DynamicHighlighting=1
+" let vimclojure#ParenRainbow=0
+" let vimclojure#WantNailgun=1
+" let vimclojure#NailgunClient = $HOME . "/.bin/ng"
+
+" au! FileType clojure
+
+" au FileType clojure call vimclojure#MakeCommandPlug("n", "RunTestsReloadAll", "vimclojure#RunTests", "1")
+" au FileType clojure call vimclojure#MapPlug("n", "rT", "RunTestsReloadAll")
+
+"--- vim-indent-guides ---
+
+let g:indent_guides_enable_on_vim_startup=1
+let g:indent_guides_auto_colors=0
+autocmd! VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#262325 ctermbg=234
+" autocmd! VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#e5e5e5
+
+"--- coffee-script ---
+
+hi link coffeeObject NONE
+hi link coffeeBracket NONE
+hi link coffeeCurly NONE
+hi link coffeeParen NONE
+hi link coffeeSpecialOp NONE
+
+" coffee-script highlights operators and stuff, it's really annoying
+hi clear Operator
+hi clear SpecialOp
+
+"--- powerline ---
+
+let g:Powerline_symbols = 'fancy'
+set laststatus=2   " otherwise the powerline only appears for split windows
+silent! PowerlineReloadColorscheme
+
+"--- ShowMarks ---
+
+hi default ShowMarksHLl cterm=bold ctermfg=darkblue ctermbg=233 "gui=bold guifg=blue guibg=lightblue
+hi default ShowMarksHLu cterm=bold ctermfg=darkblue ctermbg=233 "gui=bold guifg=blue guibg=lightblue
+hi default ShowMarksHLo cterm=bold ctermfg=darkblue ctermbg=233 "gui=bold guifg=blue guibg=lightblue
+hi default ShowMarksHLm cterm=bold ctermfg=darkblue ctermbg=233 "gui=bold guifg=blue guibg=lightblue
+
