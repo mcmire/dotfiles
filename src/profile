@@ -1,9 +1,0 @@
-#!/bin/bash
-
-for file in base history fancy_prompt handy_shortcuts autojump; do
-  source ~/.profile.d/$file
-done
-
-for file in rbenv dev etc osx mysql java echonest perl6 git node vim clojure cassandra; do
-  source ~/.profile.d/$file
-done
