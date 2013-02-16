@@ -2,7 +2,10 @@
 export GIT_EDITOR=vim
 
 # hubba hubba
-#alias git=hub
+alias git=hub
+if type compdef >/dev/null; then
+   compdef hub=git
+fi
 
 git-cat() {
   file="$1"
