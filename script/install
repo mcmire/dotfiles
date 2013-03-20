@@ -67,7 +67,11 @@ class Main
       p.on("-n", "--noop", "--dry-run", "Don't actually copy or write any files.") do |val|
         @options[:dry_run] = true
       end
-      p.on("-f", "--force-templates", "Usually #{NAME} that already exist are not overwritten. This will only cause
+      p.on("-l", "--link", "Usually this script will copy files, but if you want
+                                     to develop on this repo, then it's better to link files.") do
+        @options[:link] = true
+      end
+      p.on("-f", "--force-templates", "Usually dotfiles that already exist are not overwritten. This will only cause
                                      dotfile templates to be applied (regardless of whether their target files exist or not).") do |val|
         @options[:force] = :templates
       end
@@ -173,7 +177,11 @@ class Main
         else
           target = File.join(HOME_DIR, "." + file[:source_basename])
           FileUtils.rm_rf(target)
-          cmd = ["cp", "-R", file[:source], target]
+          if @options[:link]
+            cmd = ["ln", "-s", file[:source], target]
+          else
+            cmd = ["cp", "-R", file[:source], target]
+          end
           pretty_cmd = cmd.map {|x| x =~ /[ ]/ ? x.inspect : x }.join(" ")
           puts c_debugging(pretty_cmd) if @options[:verbose]
           unless @options[:dry_run]
