@@ -9,7 +9,7 @@ First install oh-my-zsh:
 
     git clone http://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 
-Then, run the install script:
+Then, after cloning this repo, run the install script:
 
     script/install
 
