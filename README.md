@@ -61,7 +61,7 @@ Here are the language files I've got installed:
 * Slim
 * YAML
 
-## Installing vimfiles
+## Installation
 
     script/install
 
