@@ -68,7 +68,7 @@ class Main
       p.on("-n", "--noop", "--dry-run", "Don't actually copy or write any files.") do |val|
         @options[:dry_run] = true
       end
-      p.on("-f", "--force-templates", "Usually dotfiles that already exist are not overwritten. This will only cause
+      p.on("-f", "--force-templates", "Usually vimfiles that already exist are not overwritten. This will only cause
                                      dotfile templates to be applied (regardless of whether their target files exist or not).") do |val|
         @options[:force] = :templates
       end
