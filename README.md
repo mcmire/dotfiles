@@ -1,5 +1,12 @@
-Welp, these are my dotfiles. Yup, nothing too crazy going on here.
+# dotfiles
 
-Mostly taken from [Nathan's
-dotfiles](https://github.com/aniero/dotfiles). I think lots of people have this
-setup, though.
+This is where I keep configuration for zsh, RubyGems, git, Clojure, Java, and
+other stuff.
+
+## Installation
+
+    script/install
+
+## Author
+
+Elliot Winkler (<elliot.winkler@gmail.com>)
