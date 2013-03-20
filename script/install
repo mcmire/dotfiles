@@ -100,7 +100,7 @@ class Main
 
   def recurse(dir)
     Dir.entries(dir).each do |path|
-      next if path == '.' or path == '..'
+      next if path =~ %r{^\.}
 
       source = File.join(dir, path)
       source_basename = source.sub("#{SOURCE_DIR}/", "")
