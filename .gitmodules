@@ -97,3 +97,6 @@
 [submodule "src/vim/bundle/FormatBlock"]
 	path = src/vim/bundle/FormatBlock
 	url = https://github.com/vim-scripts/FormatBlock
+[submodule "src/vim/bundle.old/color-sampler"]
+	path = src/vim/bundle.old/color-sampler
+	url = git://github.com/vim-scripts/Color-Sampler-Pack.git
