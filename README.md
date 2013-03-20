@@ -63,9 +63,13 @@ Here are the language files I've got installed:
 
 ## Installation
 
-Then, run the install script:
+Run the install script:
 
     script/install
+
+Then, run:
+
+    git submodule update --init
 
 ## How it works
 
