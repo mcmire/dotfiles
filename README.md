@@ -20,7 +20,7 @@ src/ackrc is copied to ~/.ackrc, src/inputrc is copied to ~/.inputrc, etc. If a
 file ends in .erb it will be evaluated as an ERB template and the resulting
 content will copied to the dotfile (@options refer to the options parsed from
 the command line). The script takes care not to overwrite any files, unless you
-specify --force-update or --force-all. If you want to know what it will do
+specify --force-templates or --force-all. If you want to know what it will do
 before running it for real, say `script/install --verbose --dry-run`.
 
 ## Author
