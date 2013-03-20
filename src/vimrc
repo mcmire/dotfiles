@@ -73,7 +73,6 @@ noremap <silent> <F2> :call TrimWhiteSpace()<CR>
 "=== Colors ===
 
 " The terminal has 256 color support
-" XXX: Do we need to set this before syntax?
 set t_Co=256
 
 colorscheme molokai
@@ -89,7 +88,7 @@ set cursorline
 "=== Whitespace ===
 
 set tabstop=2 shiftwidth=2
-autocmd! FileType {ruby,css,javascript,coffee,html,xml,markdown,js} set softtabstop=2 expandtab
+autocmd! FileType {ruby,css,javascript,coffee,html,xml,markdown,js,haml} set softtabstop=2 expandtab
 
 set list listchars=tab:⊢—,trail:⋅,nbsp:⋅,eol:¬,extends:⨠
 
