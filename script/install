@@ -33,10 +33,8 @@ module ColorHelpers
 end
 
 module NoColorHelpers
-  String.class_eval do
-    %w[c_unimportant c_success c_failure c_filename c_debugging c_emphasis].each do |method|
-      define_method(method) {|arg| arg }
-    end
+  %w[c_unimportant c_success c_failure c_filename c_debugging c_emphasis].each do |method|
+    define_method(method) {|arg| arg }
   end
 end
 
