@@ -1,10 +1,10 @@
 [user]
   email = elliot.winkler@gmail.com
   name = Elliot Winkler
-<%- if options[:github_token] -%>
+<%- if @options[:github_token] -%>
 [github]
   user = mcmire
-  token = <%= options[:github_token] %>
+  token = <%= @options[:github_token] %>
 <%- end -%>
 [diff "ruby"]
   funcname = ^ *\\(\\(class\\|module\\|def\\) .*\\)
