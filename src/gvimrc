@@ -19,7 +19,7 @@ if has("gui_macvim")
 
   " Set font
   set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline:h12
-  set linespace=2
+  set linespace=5
   "set guifont=Mensch\ Regular\ for\ Powerline:h12
   "set linespace=5
 
