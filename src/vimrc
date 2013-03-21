@@ -316,22 +316,18 @@ let NERDTreeChDirMode=2
 " Close vim if the only window left open is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
-"--- Command-T ---
+"--- Ctrl-P ---
 
-let g:CommandTMaxHeight=20
-" Put Command-T window at the top of the screen
-let g:CommandTMatchWindowAtTop=1
+set runtimepath^=~/.vim/bundle/ctrlp
 
 " Command to refresh both Command-T and NERDTree
 " (but mainly Command-T)
 function! Refresh()
   echo "Refreshing files..."
 
-  " silent !ctags -R
-
-  if exists(":CommandTFlush") == 2
-    CommandTFlush
-  endif
+  "if exists(":CommandTFlush") == 2
+  "  CommandTFlush
+  "endif
 
   if exists("t:NERDTreeBufName")
     let nr = bufwinnr(t:NERDTreeBufName)
@@ -343,6 +339,12 @@ function! Refresh()
   endif
 endfunction
 noremap <silent> <Leader>r :call Refresh()<CR>
+
+"--- Command-T ---
+
+let g:CommandTMaxHeight=20
+" Put Command-T window at the top of the screen
+let g:CommandTMatchWindowAtTop=1
 
 "--- FormatComment
 

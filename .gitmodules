@@ -16,9 +16,6 @@
 [submodule "src/vim/bundle/coffeescript"]
 	path = src/vim/bundle/coffeescript
 	url = https://github.com/kchmck/vim-coffee-script.git
-[submodule "src/vim/bundle/command-t"]
-	path = src/vim/bundle/command-t
-	url = https://github.com/wincent/Command-T.git
 [submodule "src/vim/bundle/earendel"]
 	path = src/vim/bundle/earendel
 	url = https://github.com/vim-scripts/earendel.git
@@ -100,3 +97,6 @@
 [submodule "src/vim/bundle.old/color-sampler"]
 	path = src/vim/bundle.old/color-sampler
 	url = git://github.com/vim-scripts/Color-Sampler-Pack.git
+[submodule "src/vim/bundle/ctrlp"]
+	path = src/vim/bundle/ctrlp
+	url = https://github.com/kien/ctrlp.vim.git
