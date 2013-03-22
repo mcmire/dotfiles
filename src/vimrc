@@ -318,6 +318,9 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 
 "--- Ctrl-P ---
 
+let g:ctrlp_match_window_bottom = 0
+let g:ctrlp_match_window_reversed = 0
+let g:ctrlp_max_height = 20
 set runtimepath^=~/.vim/bundle/ctrlp
 
 " Command to refresh both Command-T and NERDTree
