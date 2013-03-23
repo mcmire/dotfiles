@@ -4,10 +4,9 @@
 :bulk_threshold: 1000
 :sources:
 - http://rubygems.org/
-- http://gems.mb
 :update_sources: true
 :verbose: true
-gem: --no-document
+gem: --no-document --no-rdoc --no-ri
 gemcutter_key: d51a479a1f2bcaf851eadccf7ab10be3
 install: --env-shebang
 update: --env-shebang
