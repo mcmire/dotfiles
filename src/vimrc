@@ -232,6 +232,10 @@ noremap <C-_> <C-w>_
 noremap <C-e> gT
 noremap <C-t> gt
 
+" remap < and > so that the visual selection stays
+vnoremap < <gv
+vnoremap > >gv
+
 " Map Q to something useful
 noremap Q gq
 
@@ -239,12 +243,14 @@ noremap Q gq
 nnoremap Y y$
 
 " I hit this way too often, let's just no-op it
-" XXX: This is still getting called for some reason...
 noremap K <Esc>
 
 " Make <C-\> clear the highlight as well as redraw
-nnoremap <C-\> :nohls<CR><C-L>
+nnoremap <C-\> :nohls<CR>
 inoremap <C-\> <C-O>:nohls<CR>
+
+" Make it easy to toggle wrapping
+map <Leader>w :set invwrap<CR>
 
 " Cut a line without whitespace
 " `"_d` puts the line into the "black-hole" register,
@@ -277,7 +283,7 @@ vmap <Leader>cys :s/\v:([^:]+) \=\>/'\1' =>/g<CR>:nohls<CR>
 
 " Search and replace word under cursor
 " http://vim.wikia.com/wiki/Search_and_replace_the_word_under_the_cursor
-nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+nnoremap <Leader>se :%s/\<<C-r><C-w>\>/
 
 " Join comments so we can easily apply gqc
 vmap <Leader>jc :s/\v[\n ]+#[ ]+/ /g<CR>:nohls<CR>i<Space>#<Space><Esc>
@@ -285,18 +291,6 @@ vmap <Leader>jc :s/\v[\n ]+#[ ]+/ /g<CR>:nohls<CR>i<Space>#<Space><Esc>
 vmap <Leader>gqc <Leader>jc<S-V>gqc
 " Format paragraphs too
 nmap <Leader>gqp vipQ$
-
-" From http://stackoverflow.com/questions/676600/vim-replace-selected-text
-vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
-vnoremap <C-a> "hy:Ack <C-r>h
-
-" http://vim.wikia.com/wiki/Move_to_next/previous_line_with_same_indentation
-nnoremap <M-,> k:call search('^'. matchstr(getline(line('.')+1), '\(\s*\)') .'\S', 'b')<CR>^
-nnoremap <M-.> :call search('^'. matchstr(getline(line('.')), '\(\s*\)') .'\S')<CR>^
-
-" Shortcuts for scrolling without moving the cursor
-nnoremap <S-M-j> <C-e>
-nnoremap <S-M-k> <C-y>
 
 " Identify syntax group at cursor
 " http://vim.wikia.com/wiki/Identify_the_syntax_highlighting_group_used_at_the_cursor
@@ -343,11 +337,12 @@ function! Refresh()
 endfunction
 noremap <silent> <Leader>r :call Refresh()<CR>
 
-"--- Command-T ---
+"--- NERDCommenter ---
 
-let g:CommandTMaxHeight=20
-" Put Command-T window at the top of the screen
-let g:CommandTMatchWindowAtTop=1
+nnoremap <Leader>tr :NERDTreeToggle<CR>   " from atmos
+" open the nerd tree window first, in CWD, so the find doesn't change
+" the tree root.
+nnoremap <Leader>Tr :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 
 "--- FormatComment
 
