@@ -88,7 +88,7 @@ set cursorline
 "=== Whitespace ===
 
 set tabstop=2 shiftwidth=2
-autocmd! FileType {ruby,css,javascript,coffee,html,xml,markdown,js,haml,sh} set softtabstop=2 expandtab
+autocmd! FileType {ruby,css,javascript,coffee,html,xml,markdown,js,haml,sh,eruby} set softtabstop=2 expandtab
 
 set list listchars=tab:⊢—,trail:⋅,nbsp:⋅,eol:¬,extends:⨠
 
