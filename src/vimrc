@@ -45,6 +45,7 @@ set secure          " disable unsafe commands in local .vimrc files
 autocmd! FocusLost * silent! wa
 
 " Auto-reload any file modified outside vim
+" XXX: This only works within gvim, not in console vim... yay
 set autoread
 
 "=== Whitespace removal on save ===
@@ -329,9 +330,9 @@ set runtimepath^=~/.vim/bundle/ctrlp
 function! Refresh()
   echo "Refreshing files..."
 
-  "if exists(":CommandTFlush") == 2
-  "  CommandTFlush
-  "endif
+  if exists(":CtrlPClearCache") == 2
+    CtrlPClearCache
+  endif
 
   if exists("t:NERDTreeBufName")
     let nr = bufwinnr(t:NERDTreeBufName)
