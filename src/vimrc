@@ -195,12 +195,10 @@ set scrolloff=3
 set sidescrolloff=7
 set sidescroll=1
 
-if !has("gui")
-  " Set custom cursor -- vertical bar in insert mode (iTerm2)
-  " From http://www.iterm2.com/#/section/documentation/escape_codes
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
+" Set custom cursor -- vertical bar in insert mode (iTerm2)
+" From http://www.iterm2.com/#/section/documentation/escape_codes
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " Current window always has a nice size
 set winheight=10
@@ -232,15 +230,24 @@ noremap <C-_> <C-w>_
 noremap <C-e> gT
 noremap <C-t> gt
 
-" remap < and > so that the visual selection stays
-vnoremap < <gv
-vnoremap > >gv
+" pressing < and > in normal mode repeats the same command on the last visual
+" selection created
+nnoremap < gv<
+nnoremap > gv>
 
 " Map Q to something useful
 noremap Q gq
 
 " Make Y consistent with C and D
 nnoremap Y y$
+
+" Easier way to save
+nnoremap <C-s> :w<CR>
+inoremap <C-s> :w<CR>i
+
+" Easy way to save and close the current buffer
+nnoremap <C-w> :wq<CR>
+inoremap <C-w> <Esc>:wq<CR>
 
 " I hit this way too often, let's just no-op it
 noremap K <Esc>
@@ -396,4 +403,8 @@ hi default ShowMarksHLl cterm=bold ctermfg=darkblue ctermbg=233 "gui=bold guifg=
 hi default ShowMarksHLu cterm=bold ctermfg=darkblue ctermbg=233 "gui=bold guifg=blue guibg=lightblue
 hi default ShowMarksHLo cterm=bold ctermfg=darkblue ctermbg=233 "gui=bold guifg=blue guibg=lightblue
 hi default ShowMarksHLm cterm=bold ctermfg=darkblue ctermbg=233 "gui=bold guifg=blue guibg=lightblue
+
+"--- Hammer
+
+"let g:HAMMER_TEMPLATE = 'sphinx'
 
