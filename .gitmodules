@@ -100,3 +100,6 @@
 [submodule "src/vim/bundle/ctrlp"]
 	path = src/vim/bundle/ctrlp
 	url = https://github.com/kien/ctrlp.vim.git
+[submodule "src/vim/bundle/hammer"]
+	path = src/vim/bundle/hammer
+	url = https://github.com/matthias-guenther/hammer.vim
