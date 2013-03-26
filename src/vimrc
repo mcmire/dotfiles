@@ -231,10 +231,9 @@ noremap <C-_> <C-w>_
 noremap <C-e> gT
 noremap <C-t> gt
 
-" pressing < and > in normal mode repeats the same command on the last visual
-" selection created
-nnoremap < gv<
-nnoremap > gv>
+" pressing < and > in visual mode keeps the selection
+vnoremap < <gv
+vnoremap > >gv
 
 " Map Q to something useful
 noremap Q gq
