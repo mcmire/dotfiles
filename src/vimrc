@@ -246,8 +246,6 @@ autocmd! FileAppendPre * :call TrimWhiteSpace()
 autocmd! FilterWritePre * :call TrimWhiteSpace()
 autocmd! BufWritePre * :call TrimWhiteSpace()
 
-noremap <silent> <F2> :call TrimWhiteSpace()<CR>
-
 "=== Colors ===
 
 " The terminal has 256 color support
@@ -297,6 +295,9 @@ function! ToggleHardWrap()
   endif
 endfunction
 noremap <Leader>ww :call ToggleHardWrap()<CR>
+
+" Make it easy to toggle wrapping
+map <Leader>wi :set invwrap<CR>
 
 "=== Searching ===
 
@@ -392,8 +393,8 @@ set splitright
 runtime! macros/matchit.vim
 
 " Easy way to update/reload vim files
-nmap <Leader>v :tabe ~/.vimrc<CR>
-nmap <Leader>gv :tabe ~/.gvimrc<CR>
+nmap <Leader>ev :tabe ~/.vimrc<CR>
+nmap <Leader>eg :tabe ~/.gvimrc<CR>
 " http://vimcasts.org/episodes/updating-your-vimrc-file-on-the-fly/
 autocmd! BufWritePost ~/.vimrc,~/.gvimrc source %
 
@@ -421,7 +422,6 @@ nnoremap Y y$
 " Easier way to save
 nnoremap <C-s> :w<CR>
 inoremap <C-s> :w<CR>i
-
 " Easy way to save and close the current buffer
 nnoremap <C-q> :wq<CR>
 inoremap <C-q> <Esc>:wq<CR>
@@ -432,9 +432,6 @@ noremap K <Esc>
 " Make <C-\> clear the highlight as well as redraw
 nnoremap <C-\> :nohls<CR>
 inoremap <C-\> <C-O>:nohls<CR>
-
-" Make it easy to toggle wrapping
-map <Leader>w :set invwrap<CR>
 
 " Cut a line without whitespace
 " `"_d` puts the line into the "black-hole" register,
@@ -487,13 +484,12 @@ map <Leader>syn :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '>
 "--- NERDTree ---
 
 let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$', '^tags$']
-nnoremap <Leader>tr :NERDTreeToggle<CR>   " from atmos
-" open the nerd tree window first, in CWD, so the find doesn't change
+nnoremap <silent> <Leader>tt :NERDTreeToggle<CR>
+" Open the nerd tree window first, in CWD, so the find doesn't change
 " the tree root.
-nnoremap <Leader>tf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
+nnoremap <silent> <Leader>tf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 " Auto-change cwd when changing tree root
 let NERDTreeChDirMode=2
-"command! -n=? -complete=dir NT NERDTreeToggle <args>
 " Close vim if the only window left open is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
@@ -522,12 +518,12 @@ function! Refresh()
   endif
 endif
 endfunction
-noremap <silent> <Leader>r :call Refresh()<CR>
+noremap <silent> <Leader>rr :call Refresh()<CR>
 
 "--- NERDCommenter ---
 
-" NERDCommenter already provides mappings. The best one to use
-" is probably <Leader>cl.
+" NERDCommenter already provides mappings. The best one to use is probably
+" <Leader>cl and <Leader>cu.
 
 "--- FormatComment
 
@@ -582,7 +578,9 @@ hi default ShowMarksHLu cterm=bold ctermfg=darkblue ctermbg=233 "gui=bold guifg=
 hi default ShowMarksHLo cterm=bold ctermfg=darkblue ctermbg=233 "gui=bold guifg=blue guibg=lightblue
 hi default ShowMarksHLm cterm=bold ctermfg=darkblue ctermbg=233 "gui=bold guifg=blue guibg=lightblue
 
-"--- Hammer
+"--- vroom
 
-"let g:HAMMER_TEMPLATE = 'sphinx'
+let g:vroom_map_keys = 0
+nnoremap <Leader>ta :VroomRunTestFile<CR>
+nnoremap <Leader>tn :VroomRunNearestTest<CR>
 
