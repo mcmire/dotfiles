@@ -1,6 +1,3 @@
-[submodule "src/vim/bundle/Align"]
-	path = src/vim/bundle/Align
-	url = https://github.com/vim-scripts/Align.git
 [submodule "src/vim/bundle/FormatComment"]
 	path = src/vim/bundle/FormatComment
 	url = https://github.com/vim-scripts/FormatComment.vim.git
@@ -103,3 +100,9 @@
 [submodule "src/vim/bundle/hammer"]
 	path = src/vim/bundle/hammer
 	url = https://github.com/matthias-guenther/hammer.vim
+[submodule "src/vim/bundle/vim-vroom"]
+	path = src/vim/bundle/vim-vroom
+	url = git://github.com/skalnik/vim-vroom.git
+[submodule "src/vim/bundle/vim-rbenv"]
+	path = src/vim/bundle/vim-rbenv
+	url = git://github.com/tpope/vim-rbenv.git
