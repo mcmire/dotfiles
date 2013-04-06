@@ -29,6 +29,9 @@ set history=1000
 " Hide buffers when not displayed (vs. unloading them)
 set hidden
 
+" Disable the splash screen
+set shortmess+=I
+
 " Fix so typing '#' does not jump to start of line
 " http://stackoverflow.com/questions/2063175/vim-insert-mode-comments-go-to-start-of-line
 set nosmartindent
