@@ -45,6 +45,22 @@ unsetopt share_history
 unsetopt append_history
 unsetopt inc_append_history
 
+# vim mode
+bindkey -v
+zle-keymap-select () {
+  if [ $KEYMAP = vicmd ]; then
+    echo -ne "\033]12;Red\007"
+  else
+    echo -ne "\033]12;Grey\007"
+  fi
+}
+zle -N zle-keymap-select
+zle-line-init () {
+  zle -K viins
+  echo -ne "\033]12;Grey\007"
+}
+zle -N zle-line-init
+
 for file in base autojump dev osx vim git cassandra etc perl6 node clojure echonest; do
   source ~/.profile.d/$file
 done
