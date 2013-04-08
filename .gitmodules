@@ -106,3 +106,6 @@
 [submodule "src/vim/bundle/vim-rbenv"]
 	path = src/vim/bundle/vim-rbenv
 	url = git://github.com/tpope/vim-rbenv.git
+[submodule "src/vim/bundle/vimux"]
+	path = src/vim/bundle/vimux
+	url = https://github.com/benmills/vimux.git

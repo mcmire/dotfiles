@@ -590,6 +590,10 @@ hi default ShowMarksHLm cterm=bold ctermfg=darkblue ctermbg=233 "gui=bold guifg=
 "--- vroom
 
 let g:vroom_map_keys = 0
+let g:vroom_spec_command = 'zeus rspec '
+let g:vroom_use_bundle_exec = 0
+let g:vroom_clear_screen = 0
+let g:vroom_use_vimux = 1
 nnoremap <Leader>ta :VroomRunTestFile<CR>
 nnoremap <Leader>tn :VroomRunNearestTest<CR>
 
