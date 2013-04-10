@@ -109,3 +109,15 @@
 [submodule "src/vim/bundle/vimux"]
 	path = src/vim/bundle/vimux
 	url = https://github.com/benmills/vimux.git
+[submodule "src/vim/bundle/vim-surround"]
+	path = src/vim/bundle/vim-surround
+	url = https://github.com/tpope/vim-surround
+[submodule "src/vim/bundle/vim-rails"]
+	path = src/vim/bundle/vim-rails
+	url = https://github.com/tpope/vim-rails
+[submodule "src/vim/bundle/vim-bundler"]
+	path = src/vim/bundle/vim-bundler
+	url = git://github.com/tpope/vim-bundler.git
+[submodule "src/vim/bundle/vim-fugitive"]
+	path = src/vim/bundle/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive
