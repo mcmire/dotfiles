@@ -4,9 +4,6 @@
 [submodule "src/vim/bundle/IndentAnything"]
 	path = src/vim/bundle/IndentAnything
 	url = https://github.com/vim-scripts/IndentAnything
-[submodule "src/vim/bundle/ShowMarks7"]
-	path = src/vim/bundle/ShowMarks7
-	url = https://github.com/vim-scripts/ShowMarks7
 [submodule "src/vim/bundle/ack"]
 	path = src/vim/bundle/ack
 	url = git://github.com/mileszs/ack.vim.git
