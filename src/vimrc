@@ -335,7 +335,7 @@ autocmd BufReadPost *
 autocmd! FileType make setl noexpandtab
 
 " Many Ruby files aren't named that way
-autocmd! BufRead,BufNewFile {config.ru,Gemfile,Guardfile,Rakefile,Thorfile,Vagrantfile} set ft=ruby
+autocmd! BufRead,BufNewFile {config.ru,Gemfile,Guardfile,Rakefile,Thorfile,Vagrantfile,Appraisals} set ft=ruby
 
 " Turn on autoindentation since vim-markdown does not include this
 autocmd! BufRead,BufNewFile *.{md,mkd,mkdn,mark*} setl ft=markdown autoindent
