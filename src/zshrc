@@ -29,12 +29,12 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-flow hub)
+plugins=(git-flow hub)
 
 export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
 
 # Load this first because the suvash theme depends on having rbenv available
-source ~/.profile.d/rbenv
+source ~/.zsh/rbenv
 
 source $ZSH/oh-my-zsh.sh
 
@@ -45,8 +45,8 @@ unsetopt share_history
 unsetopt append_history
 unsetopt inc_append_history
 
-for file in base autojump dev osx vim git cassandra etc perl6 node clojure echonest; do
-  source ~/.profile.d/$file
+for file in base aliases functions autojump dev osx vim git cassandra etc perl6 node clojure echonest; do
+  source ~/.zsh/$file
 done
 
 ### Added by the Heroku Toolbelt

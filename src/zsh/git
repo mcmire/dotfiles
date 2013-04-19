@@ -25,11 +25,12 @@ git-cat() {
   fi
 }
 
-alias git-diff-base="git diff --color --ignore-all-space -M"
-alias git-diff="git-diff-base HEAD"
-alias git-diff-staged="git-diff-base --staged HEAD"
-alias git-log="git log --color"
-alias git-log-diff="git-log -p --color"
+git-diff() {
+  echo "Use gd instead!"
+}
+git-diff-staged() {
+  echo "Use gds instead!"
+}
 
 git-diff-rev() {
   git-diff-base $1^..$1
