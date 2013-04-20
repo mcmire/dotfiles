@@ -14,8 +14,16 @@ function g {
 }
 compdef g=git
 
-function add-alias {
+function aa {
   echo alias $1="\"$@[2,-1]\"" >> ~/.zsh/aliases
+}
+function ar {
+  source ~/.zsh/aliases
+  echo "Aliases reloaded."
+}
+function fr {
+  source ~/.zsh/functions
+  echo "Functions reloaded."
 }
 
 # vi: ft=sh
