@@ -45,7 +45,7 @@ unsetopt share_history
 unsetopt append_history
 unsetopt inc_append_history
 
-for file in base aliases functions autojump dev osx vim git cassandra etc perl6 node clojure echonest; do
+for file in base aliases functions autojump osx vim git cassandra etc perl6 node clojure echonest; do
   source ~/.zsh/$file
 done
 

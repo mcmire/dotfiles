@@ -1,7 +1,0 @@
-# set default editor
-export EDITOR=gvim_open
-
-if which brew >/dev/null 2>&1 && test -f $(brew --prefix)/etc/autojump; then \
-  . $(brew --prefix)/etc/autojump
-fi
-
