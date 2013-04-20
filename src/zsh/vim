@@ -1,5 +1,4 @@
-alias e='gvim_open'
-alias d='gvim_open'
+export EDITOR=vi
 
 alias vi="mvim -v"
 alias vim="mvim -v"
