@@ -1,14 +1,24 @@
-"=== Basic stuff ===
+"=== Pre-configuration ===
 
-" Initialize Pathogen
-call pathogen#infect()
-call pathogen#helptags()
+" Be iMproved
+set nocompatible
+
+" Required for vundle
+filetype off
+
+" Load vundle
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+if filereadable(expand("~/.vimrc.bundles"))
+  source ~/.vimrc.bundles
+endif
+
 syntax on
-
-" Load the plugin and indent settings for the detected filetype
 filetype plugin indent on
 
-set nocompatible
+
+"=== Basic stuff ===
 
 " Set mapleader, so that <Leader>-related stuff can be redefined
 let mapleader = ','
@@ -545,18 +555,18 @@ noremap <Leader>qc :call FormatComment()<CR>
 
 " Settings for the VimClojure plugin
 " https://github.com/daveray/vimclojure-easy/blob/master/vimrc.vim
-" let vimclojure#FuzzyIndent=1
-" let vimclojure#HighlightBuiltins=1
-" let vimclojure#HighlightContrib=1
-" let vimclojure#DynamicHighlighting=1
-" let vimclojure#ParenRainbow=0
-" let vimclojure#WantNailgun=1
-" let vimclojure#NailgunClient = $HOME . "/.bin/ng"
+let vimclojure#FuzzyIndent=1
+let vimclojure#HighlightBuiltins=1
+let vimclojure#HighlightContrib=1
+let vimclojure#DynamicHighlighting=1
+let vimclojure#ParenRainbow=0
+let vimclojure#WantNailgun=1
+let vimclojure#NailgunClient = $HOME . "/.bin/ng"
 
-" au! FileType clojure
+au! FileType clojure
 
-" au FileType clojure call vimclojure#MakeCommandPlug("n", "RunTestsReloadAll", "vimclojure#RunTests", "1")
-" au FileType clojure call vimclojure#MapPlug("n", "rT", "RunTestsReloadAll")
+au FileType clojure call vimclojure#MakeCommandPlug("n", "RunTestsReloadAll", "vimclojure#RunTests", "1")
+au FileType clojure call vimclojure#MapPlug("n", "rT", "RunTestsReloadAll")
 
 "--- vim-indent-guides ---
 
