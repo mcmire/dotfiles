@@ -1,6 +1,8 @@
-bin/
-.DS_Store
 *.tmproj
 *.vim*
-tags
+.DS_Store
 .rbenv-version
+.ruby-version
+.netrwhist
+bin/
+tags
