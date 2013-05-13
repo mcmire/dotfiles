@@ -31,10 +31,6 @@ set hidden
 
 " Disable the splash screen
 set shortmess+=I
-
-" Always use the system clipboard
-set clipboard=unnamed
-
 " Remove delay after pressing Escape and clearing the visual selection
 set timeoutlen=1000 ttimeoutlen=0
 
