@@ -51,7 +51,8 @@
 	url = https://github.com/tpope/vim-ragtag.git
 [submodule "src/vim/bundle/ruby"]
 	path = src/vim/bundle/ruby
-	url = https://github.com/vim-ruby/vim-ruby.git
+	url = git@github.com:mcmire/vim-ruby.git
+	branch = master
 [submodule "src/vim/bundle/scala"]
 	path = src/vim/bundle/scala
 	url = https://github.com/derekwyatt/vim-scala.git
