@@ -11,7 +11,7 @@
 " This script is in after/plugins since it needs to add the autocmd
 " override after the plugin's autocmds are loaded and defined.
 
-function ReplaceNERDTreeIfDirectory()
+function! ReplaceNERDTreeIfDirectory()
   if argc() == 0 || (argc() == 1 && isdirectory(argv(0)))
     " replace the directory browser with an empty buffer
     enew
@@ -21,6 +21,6 @@ function ReplaceNERDTreeIfDirectory()
 endfunction
 
 augroup NERDTreeHijackNetrw
-  au VimEnter * call ReplaceNERDTreeIfDirectory()
+  au VimEnter * if exists(":NERDTree") | call ReplaceNERDTreeIfDirectory() | endif
 augroup END
 
