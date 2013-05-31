@@ -289,7 +289,10 @@ set wrap linebreak showbreak=‣
 set textwidth=80
 " override textwidth when file is opened, Ruby files are somehow set to 72
 autocmd! BufRead,BufNewFile * set textwidth=80
-"let g:old_textwidth=80
+
+" In Clojure, words that contains dots are usually namespaces
+" Source: <http://stackoverflow.com/questions/225266/customising-word-separators-in-vi>
+autocmd! FileType clojure set iskeyword-=.
 
 " For wrapped lines, jump to the next row rather than the next line
 nnoremap j gj
