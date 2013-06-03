@@ -296,10 +296,10 @@ set nojoinspaces
 
 set wrap linebreak showbreak=‣
 
-" Reasonable textwidth (imo)
-set textwidth=80
 " override textwidth when file is opened, Ruby files are somehow set to 72
-autocmd! BufRead,BufNewFile * set textwidth=80
+autocmd! BufRead,BufNewFile * setlocal textwidth=80
+" git commits are the only file type where 72 is okay
+autocmd! BufRead,BufNewFile gitcommit setlocal textwidth=72
 
 " In Clojure, words that contains dots are usually namespaces
 " Source: <http://stackoverflow.com/questions/225266/customising-word-separators-in-vi>
