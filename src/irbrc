@@ -1,18 +1,8 @@
 
 class Irbrc
   def run
-    #init_awesome_print
+    require 'awesome_print' rescue LoadError
     init_irb
-  end
-
-  def init_awesome_print
-    with_gem 'awesome_print' do
-      IRB::Irb.class_eval do
-        def output_value
-          ap @context.last_value
-        end
-      end
-    end
   end
 
   def init_irb
