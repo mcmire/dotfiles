@@ -1,4 +1,3 @@
-
 function history-stats {
   history | sed -E 's/^[ ]+//; s/\|.*//' | cut -d ' ' -f 3- | awk '{ a[$0]++ }
 END { for (i in a) { print a[i] " " i } }' | sort -rn | head
@@ -18,20 +17,30 @@ function gbdr {
   git push origin :$1
 }
 function gbD {
-  gbd
-  gbdr
+  gbd && gbdr
 }
 
-function aa {
+function gaf {
+  ga "$1" && gc "$@"
+}
+
+function add-alias {
   echo alias $1="\"$@[2,-1]\"" >> ~/.zsh/aliases
 }
-function ar {
+function reload-aliases {
   source ~/.zsh/aliases
   echo "Aliases reloaded."
 }
-function fr {
+function reload-functions {
   source ~/.zsh/functions
   echo "Functions reloaded."
+}
+
+function edit-aliases {
+  vi ~/.zsh/aliases
+}
+function edit-functions {
+  vi ~/.zsh/functions
 }
 
 # vi: ft=sh
