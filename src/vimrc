@@ -429,10 +429,11 @@ set splitright
 runtime! macros/matchit.vim
 
 " Easy way to update/reload vim files
-nmap <Leader>ev :tabe ~/.vimrc<CR>
-nmap <Leader>eg :tabe ~/.gvimrc<CR>
+nmap <Leader>evi :tabe ~/.vimrc<CR>
+nmap <Leader>evb :tabe ~/.vimrc.bundles<CR>
+nmap <Leader>evg :tabe ~/.gvimrc<CR>
 " http://vimcasts.org/episodes/updating-your-vimrc-file-on-the-fly/
-autocmd! BufWritePost ~/.vimrc,~/.gvimrc source %
+autocmd! BufWritePost ~/.vimrc,~/.vimrc.bundles,~/.gvimrc source %
 
 " Window movement
 noremap <C-j> <C-w>j
@@ -508,6 +509,9 @@ vmap <Leader>jc :s/\v[\n ]+#[ ]+/ /g<CR>:nohls<CR>i<Space>#<Space><Esc>
 vmap <Leader>gqc <Leader>jc<S-V>gqc
 " Format paragraphs too
 nmap <Leader>gqp vipQ$
+
+" Quick way to close tabs
+nmap <Leader>tc :tabc<CR>
 
 " Identify syntax group at cursor
 " http://vim.wikia.com/wiki/Identify_the_syntax_highlighting_group_used_at_the_cursor
@@ -623,4 +627,22 @@ let g:vroom_clear_screen = 0
 let g:vroom_use_vimux = 1
 nnoremap <Leader>ta :VroomRunTestFile<CR>
 nnoremap <Leader>tn :VroomRunNearestTest<CR>
+
+"--- splitjoin
+
+let g:splitjoin_ruby_curly_braces = 0
+
+"--- vim-session
+
+let g:session_autosave = 'yes'
+let g:session_autosave_periodic = 10
+let g:session_autoload = 'yes'
+let g:session_default_to_last = 'yes'
+nnoremap <Leader>ss :SaveSession<CR>
+nnoremap <Leader>so :OpenSession<CR>
+nnoremap <Leader>sr :RestartVim<CR>
+
+"--- vim-ruby
+"
+let g:ruby_no_hanging_indent = 1
 
