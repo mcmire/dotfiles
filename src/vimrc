@@ -613,7 +613,7 @@ hi clear SpecialOp
 
 let g:Powerline_symbols = 'fancy'
 set laststatus=2   " otherwise the powerline only appears for split windows
-"set noshowmode     " hide default mode text (-- INSERT -- below status line)
+set noshowmode     " hide default mode text (-- INSERT -- below status line)
 silent! PowerlineReloadColorscheme
 
 "--- ShowMarks ---
