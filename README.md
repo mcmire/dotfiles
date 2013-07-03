@@ -86,6 +86,13 @@ Now run the install script:
 
     script/install
 
+Finally, open vim and run
+
+    :BundleInstall
+
+You shouldn't have any problems doing this, but if you do, please [create an
+issue][issues].
+
 ## How it works
 
 The install script will copy over anything in src/ as a dotfile. That is,
@@ -101,3 +108,4 @@ before running it for real, say `script/install --verbose --dry-run`.
 Elliot Winkler (<elliot.winkler@gmail.com>)
 
 [vim-ruby]: http://github.com/mcmire/vim-ruby
+[issues]: http://github.com/mcmire/vimfiles/issues
