@@ -611,10 +611,11 @@ hi clear SpecialOp
 
 "--- powerline ---
 
-let g:Powerline_symbols = 'fancy'
+set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+"let g:Powerline_symbols = 'fancy'
 set laststatus=2   " otherwise the powerline only appears for split windows
 set noshowmode     " hide default mode text (-- INSERT -- below status line)
-silent! PowerlineReloadColorscheme
+"silent! PowerlineReloadColorscheme
 
 "--- ShowMarks ---
 
