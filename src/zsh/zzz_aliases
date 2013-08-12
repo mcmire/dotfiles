@@ -59,3 +59,5 @@ alias sr="spring rspec"
 alias sR="spring rake"
 alias sRm="spring rake db:migrate db:test:prepare"
 alias sRmr="spring rake db:migrate:redo db:test:prepare"
+
+# vi: ft=sh
