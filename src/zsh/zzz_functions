@@ -1,5 +1,10 @@
 function history-stats {
-  history | sed -E 's/^[ ]+//; s/\|.*//' | cut -d ' ' -f 3- | awk '{ a[$0]++ } END { for (i in a) { print a[i] " " i } }' | sort -rn | head
+  history | \
+    sed -E 's/^[ ]+//; s/\|.*//' | \
+    cut -d ' ' -f 3- | \
+    awk '{ a[$0]++ } END { for (i in a) { print a[i] " " i } }' | \
+    sort -rn | \
+    head
 }
 
 # Stolen from r00k
