@@ -6,7 +6,6 @@
 - http://rubygems.org/
 :update_sources: true
 :verbose: true
-gem: --no-document --no-rdoc --no-ri
 gemcutter_key: d51a479a1f2bcaf851eadccf7ab10be3
 install: --env-shebang
 update: --env-shebang
