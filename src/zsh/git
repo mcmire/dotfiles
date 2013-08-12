@@ -7,37 +7,4 @@ if type compdef >/dev/null; then
    compdef hub=git
 fi
 
-git-cat() {
-  file="$1"
-  rev="$2"
-  if [ -z "$file" ]; then
-    echo "Error: File not specified"
-    return
-  fi
-  if [ -z "$rev" ]; then
-    rev="HEAD"
-  fi
-  objid=$(git ls-tree "$rev" "$file" | cut -d " " -f 3 | cut -f 1)
-  if [ -z "$objid" ]; then
-    echo "Couldn't find file '$file' in revision '$rev'"
-  else
-    git cat-file -p "$objid" | less
-  fi
-}
-
-git-diff() {
-  echo "Use gd instead!"
-}
-git-diff-staged() {
-  echo "Use gds instead!"
-}
-
-git-diff-rev() {
-  git-diff-base $1^..$1
-}
-git-cherry-script() {
-  proj=$(basename $(git root))
-  git log $@ --reverse --pretty=tformat:"git cherry-pick %H -n%ngit commit -m \"%s [orig $proj#%h]\" --dry-run%n"
-}
-
 # vi: ft=sh

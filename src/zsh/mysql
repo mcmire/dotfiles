@@ -1,4 +1,0 @@
-# Add MySQL stuff to path
-export PATH=/usr/local/mysql/bin:$PATH
-
-# vi: ft=sh

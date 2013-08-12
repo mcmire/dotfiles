@@ -6,10 +6,4 @@ export RUBY_HEAP_SLOTS_GROWTH_FACTOR=1
 export RUBY_GC_MALLOC_LIMIT=1000000000
 export RUBY_HEAP_FREE_MIN=500000
 
-# Gem private key for Echoe
-#export GEM_PRIVATE_KEY=~/.ssh/gem-private_key.pem
-#export GEM_CERTIFICATE_CHAIN=~/.ssh/gem-public_cert.pem
-export GEM_PRIVATE_KEY=""
-export GEM_CERTIFICATE_CHAIN=""
-
 # vi: ft=sh

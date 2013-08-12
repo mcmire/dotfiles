@@ -1,6 +1,5 @@
 function history-stats {
-  history | sed -E 's/^[ ]+//; s/\|.*//' | cut -d ' ' -f 3- | awk '{ a[$0]++ }
-END { for (i in a) { print a[i] " " i } }' | sort -rn | head
+  history | sed -E 's/^[ ]+//; s/\|.*//' | cut -d ' ' -f 3- | awk '{ a[$0]++ } END { for (i in a) { print a[i] " " i } }' | sort -rn | head
 }
 
 # Stolen from r00k
@@ -24,6 +23,29 @@ function gaf {
   ga "$1" && gc "$@"
 }
 
+function git-cat() {
+  local file="$1"
+  local rev="$2"
+  if [ -z "$file" ]; then
+    echo "Error: File not specified"
+    return
+  fi
+  if [ -z "$rev" ]; then
+    rev="HEAD"
+  fi
+  local objid=$(git ls-tree "$rev" "$file" | cut -d " " -f 3 | cut -f 1)
+  if [ -z "$objid" ]; then
+    echo "Couldn't find file '$file' in revision '$rev'"
+  else
+    git cat-file -p "$objid" | less
+  fi
+}
+
+function git-cherry-script() {
+  local proj=$(basename $(git root))
+  git log $@ --reverse --pretty=tformat:"git cherry-pick %H -n%ngit commit -m \"%s [orig $proj#%h]\" --dry-run%n"
+}
+
 function add-alias {
   echo alias $1="\"$@[2,-1]\"" >> ~/.zsh/aliases
 }
@@ -41,6 +63,25 @@ function edit-aliases {
 }
 function edit-functions {
   vi ~/.zsh/functions
+}
+
+# http://refactormycode.com/codes/63-open-a-new-tab-in-current-directory-from-iterm
+# https://bitbucket.org/vpetro/applescript/raw/7f3ac525ffa0/term
+nt() {
+  osascript -e "
+  tell application \"iTerm\"
+    activate
+    tell the current terminal
+      launch session \"Default Session\"
+      tell the last session
+        write text \"cd $(pwd)\"
+      end tell
+    end tell
+  end tell"
+}
+
+function timestamp {
+  date +"%Y%m%d%H%M%S"
 }
 
 # vi: ft=sh
