@@ -51,7 +51,9 @@ unsetopt share_history
 unsetopt append_history
 unsetopt inc_append_history
 
-source ~/.zsh/*
+for file in ~/.zsh/*; do
+  source $file
+done
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
