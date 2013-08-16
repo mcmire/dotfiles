@@ -278,7 +278,7 @@ else
 endif
 
 " Set color column
-set colorcolumn=80,100,120
+set colorcolumn=72,80,100,120
 if s:color_scheme_type == "dark"
   hi ColorColumn guibg=#17191A ctermbg=234
 else
@@ -299,8 +299,10 @@ set nojoinspaces
 
 set wrap linebreak showbreak=‣
 
-" override textwidth when file is opened, Ruby files are somehow set to 72
-"autocmd! BufRead,BufNewFile * setlocal textwidth=80
+" override textwidth when file is opened, otherwise it will be undefined
+" this list here is godawful but if we just use * then gitcommit will
+" get overridden
+"autocmd! BufRead,BufNewFile ruby,css,javascript,coffee,html,xml,markdown,js,haml,sh,eruby,scss,vim,text,clojure setlocal textwidth=80
 " git commits are the only file type where 72 is okay
 "autocmd! BufRead,BufNewFile gitcommit setlocal textwidth=72
 
