@@ -290,7 +290,7 @@ set cursorline
 "=== Whitespace ===
 
 set tabstop=2 shiftwidth=2
-autocmd! FileType {ruby,css,javascript,coffee,html,xml,markdown,js,haml,sh,eruby,scss,vim} set softtabstop=2 expandtab
+autocmd! FileType {ruby,css,javascript,coffee,html,xml,markdown,ghmarkdown,js,haml,sh,eruby,scss,vim} set softtabstop=2 expandtab
 
 set list listchars=tab:⊢—,trail:⋅,nbsp:⋅,eol:¬,extends:⨠
 
@@ -656,3 +656,10 @@ nnoremap <Leader>sr :RestartVim<CR>
 "--- vim-ruby
 "
 let g:ruby_no_hanging_indent = 1
+
+"--- vim-flavored-markdown
+
+augroup vim-flavored-markdown
+  autocmd!
+  autocmd BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown | setlocal textwidth=80
+augroup END
