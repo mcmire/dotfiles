@@ -317,6 +317,7 @@ nnoremap k gk
 vnoremap k gk
 
 " Toggle hard wrap
+let g:old_textwidth = 0
 function! ToggleHardWrap()
   if &textwidth
     let g:old_textwidth = &textwidth
