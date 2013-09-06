@@ -2,3 +2,4 @@ src/vim/.netrwhist
 src/vim/bundle
 !src/vim/bundle/neobundle.vim
 src/vim/bundle.old
+src/vim/sessions/*
