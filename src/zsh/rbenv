@@ -1,6 +1,6 @@
 export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
 CONFIGURE_OPTS="--with-openssl-dir=`brew --prefix openssl` --without-tcl --without-tk"
 
-eval "$(rbenv init -)"
+eval "$(rbenv init - --no-rehash)"
 
 # vi: ft=sh
