@@ -1,28 +1,6 @@
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-#-- Don't use a theme, we provide our own, thanks.
-
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# Set to this to use case-sensitive completion
-# CASE_SENSITIVE="true"
-
-# Comment this out to disable weekly auto-update checks
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment following line if you want to disable colors in ls
-# DISABLE_LS_COLORS="true"
-
-# Uncomment following line if you want to disable autosetting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
 # Never EVER ask me to update, this is just effing annoying
 DISABLE_AUTO_UPDATE=true
 
@@ -37,11 +15,13 @@ DISABLE_AUTO_UPDATE=true
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(git-flow hub)
 
+# Set sensible starting path
 export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
 
 # Load this first because the suvash theme depends on having rbenv available
 source ~/.zsh/rbenv
 
+# Load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
 # Provide our own theme
