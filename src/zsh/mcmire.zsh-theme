@@ -47,6 +47,16 @@ function Prompt__Fragment__host {
   echo -n '%m'
 }
 
+function Prompt__Fragment__git_branch {
+  #echo -n "$(git_prompt_info)"
+  local ref=""
+  ref="$(git symbolic-ref HEAD 2> /dev/null)"
+  if [[ -z $ref ]]; then
+    ref="$(git rev-parse --short HEAD 2> /dev/null)"
+  fi
+  echo "${ref#refs/heads/}"
+}
+
 function Prompt__Fragment__rbenv_info {
   local out="$(rbenv version | sed -e 's/ (set.*$//')"
 
@@ -81,7 +91,14 @@ function Prompt__username_fragment {
 }
 
 function Prompt__host_fragment {
-  echo -n " on $(Color__yellow "$(Prompt__Fragment__host)")"
+  echo -n "@$(Color__yellow "$(Prompt__Fragment__host)")"
+}
+
+function Prompt__git_branch_fragment {
+  local git_branch="$(Prompt__Fragment__git_branch)"
+  if [[ -n $git_branch ]]; then
+    echo -n " on $(Color__green "$git_branch")"
+  fi
 }
 
 function Prompt__rbenv_info_fragment {
@@ -92,7 +109,7 @@ function Prompt__rbenv_info_fragment {
 }
 
 function Prompt__cwd_fragment {
-  echo -n " at $(Color__green "$(Prompt__Fragment__collapsed_pwd)")"
+  echo -n " at $(Color__blue "$(Prompt__Fragment__collapsed_pwd)")"
 }
 
 function Prompt__rc_char_fragment {
@@ -103,6 +120,7 @@ function Prompt__value {
   echo -n '$(Prompt__username_fragment)'
   echo -n '$(Prompt__host_fragment)'
   echo -n '$(Prompt__cwd_fragment)'
+  echo -n '$(Prompt__git_branch_fragment)'
   echo -n '$(Prompt__rbenv_info_fragment)'
   echo -n "\n"
   echo '$(Prompt__rc_char_fragment)'
