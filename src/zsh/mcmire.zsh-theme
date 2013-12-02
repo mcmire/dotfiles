@@ -87,29 +87,29 @@ function Prompt__rbenv_path {
 }
 
 function Prompt__username_fragment {
-  echo -n "$(Color__magenta "$(Prompt__Fragment__username)")"
+  echo -n "$(Color__blue "$(Prompt__Fragment__username)")"
 }
 
 function Prompt__host_fragment {
-  echo -n "@$(Color__yellow "$(Prompt__Fragment__host)")"
+  echo -n "$(Color__magenta "[$(Prompt__Fragment__host)]")"
 }
 
 function Prompt__git_branch_fragment {
   local git_branch="$(Prompt__Fragment__git_branch)"
   if [[ -n $git_branch ]]; then
-    echo -n " on $(Color__green "$git_branch")"
+    echo -n " on $(Color__yellow "$git_branch")"
   fi
 }
 
 function Prompt__rbenv_info_fragment {
   local rbenv_info="$(Prompt__Fragment__rbenv_info)"
   if [[ -n $rbenv_info ]]; then
-    echo -n " using $(Color__red "$rbenv_info")"
+    echo -n " using $(Color__red "ruby $rbenv_info")"
   fi
 }
 
 function Prompt__cwd_fragment {
-  echo -n " at $(Color__blue "$(Prompt__Fragment__collapsed_pwd)")"
+  echo -n " at $(Color__green "$(Prompt__Fragment__collapsed_pwd)")"
 }
 
 function Prompt__rc_char_fragment {
