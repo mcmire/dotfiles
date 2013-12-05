@@ -256,10 +256,12 @@ function! TrimWhiteSpace()
   ''
 endfunction
 
-autocmd! FileWritePre * :call TrimWhiteSpace()
-autocmd! FileAppendPre * :call TrimWhiteSpace()
-autocmd! FilterWritePre * :call TrimWhiteSpace()
-autocmd! BufWritePre * :call TrimWhiteSpace()
+"autocmd! FileWritePre * :call TrimWhiteSpace()
+"autocmd! FileAppendPre * :call TrimWhiteSpace()
+"autocmd! FilterWritePre * :call TrimWhiteSpace()
+"autocmd! BufWritePre * :call TrimWhiteSpace()
+
+nnoremap <Leader>tw :call TrimWhiteSpace()<CR>
 
 "=== Colors ===
 
@@ -330,6 +332,14 @@ noremap <Leader>ww :call ToggleHardWrap()<CR>
 
 " Make it easy to toggle wrapping
 map <Leader>wi :set invwrap<CR>
+
+" Highlight trailing whitespace
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
 
 "=== Searching ===
 
