@@ -292,7 +292,7 @@ set cursorline
 "=== Whitespace ===
 
 set tabstop=2 shiftwidth=2
-autocmd! FileType {ruby,css,javascript,coffee,html,xml,markdown,ghmarkdown,js,haml,sh,eruby,scss,vim} set softtabstop=2 expandtab
+autocmd! FileType {ruby,css,javascript,coffee,html,xml,markdown,ghmarkdown,js,haml,sh,eruby,scss,vim,stylus,jade} set softtabstop=2 expandtab
 
 set list listchars=tab:⊢—,trail:⋅,nbsp:⋅,eol:¬,extends:⨠
 
@@ -366,6 +366,9 @@ autocmd! FileType make setl noexpandtab
 
 " Many Ruby files aren't named that way
 autocmd! BufRead,BufNewFile {config.ru,Gemfile,Guardfile,Rakefile,Thorfile,Vagrantfile,Appraisals} set ft=ruby
+
+" haml-coffee
+autocmd! BufRead,BufNewFile *.hamlc set ft=haml
 
 " Turn on autoindentation since vim-markdown does not include this
 autocmd! BufRead,BufNewFile *.{md,mkd,mkdn,mark*} setl ft=markdown autoindent
