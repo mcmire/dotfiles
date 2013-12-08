@@ -341,6 +341,10 @@ autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
+" Highlight leading indentation
+highlight Indentation ctermfg=235
+autocmd! ColorScheme * match Indentation /^\s\+/
+
 "=== Searching ===
 
 set hlsearch
