@@ -17,6 +17,10 @@ if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles
 endif
 
+" Clear user-defined autocmd groups
+augroup local
+  autocmd!
+augroup END
 
 "=== Basic stuff ===
 
@@ -57,7 +61,9 @@ set secure          " disable unsafe commands in local .vimrc files
 
 " Auto-save everything when vim loses focus
 " http://vim.wikia.com/wiki/Auto_save_files_when_focus_is_lost
-autocmd! FocusLost * silent! wa
+augroup local
+  autocmd FocusLost * silent! wa
+augroup END
 
 " Auto-reload any file modified outside vim
 
@@ -256,10 +262,12 @@ function! TrimWhiteSpace()
   ''
 endfunction
 
-"autocmd! FileWritePre * :call TrimWhiteSpace()
-"autocmd! FileAppendPre * :call TrimWhiteSpace()
-"autocmd! FilterWritePre * :call TrimWhiteSpace()
-"autocmd! BufWritePre * :call TrimWhiteSpace()
+"augroup local
+"  autocmd FileWritePre * :call TrimWhiteSpace()
+"  autocmd FileAppendPre * :call TrimWhiteSpace()
+"  autocmd FilterWritePre * :call TrimWhiteSpace()
+"  autocmd BufWritePre * :call TrimWhiteSpace()
+"augroup END
 
 nnoremap <Leader>tw :call TrimWhiteSpace()<CR>
 
@@ -292,7 +300,9 @@ set cursorline
 "=== Whitespace ===
 
 set tabstop=2 shiftwidth=2
-autocmd! FileType {ruby,css,javascript,coffee,html,xml,markdown,ghmarkdown,js,haml,sh,eruby,scss,vim,stylus,jade} set softtabstop=2 expandtab
+augroup local
+  autocmd FileType {ruby,css,javascript,coffee,html,xml,markdown,ghmarkdown,js,haml,sh,eruby,scss,vim,stylus,jade} set softtabstop=2 expandtab
+augroup END
 
 set list listchars=tab:⊢—,trail:⋅,nbsp:⋅,eol:¬,extends:⨠
 
@@ -304,13 +314,19 @@ set wrap linebreak showbreak=‣
 " override textwidth when file is opened, otherwise it will be undefined
 " this list here is godawful but if we just use * then gitcommit will
 " get overridden
-"autocmd! BufRead,BufNewFile ruby,css,javascript,coffee,html,xml,markdown,js,haml,sh,eruby,scss,vim,text,clojure setlocal textwidth=80
+"augroup local
+"  autocmd! BufRead,BufNewFile ruby,css,javascript,coffee,html,xml,markdown,js,haml,sh,eruby,scss,vim,text,clojure setlocal textwidth=80
+"augroup END
 " git commits are the only file type where 72 is okay
-"autocmd! BufRead,BufNewFile gitcommit setlocal textwidth=72
+"augroup local
+"  autocmd! BufRead,BufNewFile gitcommit setlocal textwidth=72
+"augroup END
 
 " In Clojure, words that contains dots are usually namespaces
 " Source: <http://stackoverflow.com/questions/225266/customising-word-separators-in-vi>
-autocmd! FileType clojure set iskeyword-=.
+augroup local
+  autocmd FileType clojure set iskeyword-=.
+augroup END
 
 " For wrapped lines, jump to the next row rather than the next line
 nnoremap j gj
@@ -336,14 +352,18 @@ map <Leader>wi :set invwrap<CR>
 " Highlight trailing whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
-autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-autocmd BufWinLeave * call clearmatches()
+augroup local
+  autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+  autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+  autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+  autocmd BufWinLeave * call clearmatches()
+augroup END
 
 " Highlight leading indentation
 highlight Indentation ctermfg=235
-autocmd! ColorScheme * match Indentation /^\s\+/
+augroup local
+  autocmd ColorScheme * match Indentation /^\s\+/
+augroup END
 
 "=== Searching ===
 
@@ -358,33 +378,37 @@ set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,bundle/**,vendor/gems/*,vendor
 " When editing a file, always jump to the last known cursor position.
 " Don't do it for commit messages, when the position is invalid, or when
 " inside an event handler (happens when dropping a file on gvim).
-autocmd BufReadPost *
-  \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
-  \   exe "normal g`\"" |
-  \ endif
+augroup local
+  autocmd BufReadPost *
+    \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+augroup END
 
 "=== File type specific settings ===
 
-" make uses real tabs
-autocmd! FileType make setl noexpandtab
+augroup local
+  " make uses real tabs
+  autocmd FileType make setl noexpandtab
 
-" Many Ruby files aren't named that way
-autocmd! BufRead,BufNewFile {config.ru,Gemfile,Guardfile,Rakefile,Thorfile,Vagrantfile,Appraisals} set ft=ruby
+  " Many Ruby files aren't named that way
+  autocmd BufRead,BufNewFile {config.ru,Gemfile,Guardfile,Rakefile,Thorfile,Vagrantfile,Appraisals} set ft=ruby
 
-" haml-coffee
-autocmd! BufRead,BufNewFile *.hamlc set ft=haml
+  " haml-coffee
+  autocmd BufRead,BufNewFile *.hamlc set ft=haml
 
-" Turn on autoindentation since vim-markdown does not include this
-autocmd! BufRead,BufNewFile *.{md,mkd,mkdn,mark*} setl ft=markdown autoindent
+  " Turn on autoindentation since vim-markdown does not include this
+  autocmd BufRead,BufNewFile *.{md,mkd,mkdn,mark*} setl ft=markdown autoindent
 
-" Add JSON syntax highlighting
-autocmd! BufNewFile,BufRead *.json set ft=javascript
+  " Add JSON syntax highlighting
+  autocmd BufNewFile,BufRead *.json set ft=javascript
 
-" Make Python follow PEP8 ( http://www.python.org/dev/peps/pep-0008/ )
-autocmd! FileType python set softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79
+  " Make Python follow PEP8 ( http://www.python.org/dev/peps/pep-0008/ )
+  autocmd FileType python set softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79
 
-" Fix crontab editing
-autocmd! BufEnter /private/tmp/crontab.* setl backupcopy=yes
+  " Fix crontab editing
+  autocmd BufEnter /private/tmp/crontab.* setl backupcopy=yes
+augroup END
 
 " Use modeline overrides
 set modeline
@@ -400,7 +424,9 @@ set pastetoggle=<F3>
 " Using autocmd here since formatoptions may be specified by the
 " filetype - you can see what these options are with :h fo-table
 set formatoptions=tcroqvb
-autocmd! FileType * setl formatoptions=tcroqvb
+augroup local
+  autocmd FileType * setl formatoptions=tcroqvb
+augroup END
 
 " Enable Ctrl-N, Ctrl-P in tab completion
 set wildmenu
@@ -456,7 +482,9 @@ nmap <Leader>evi :tabe ~/.vimrc<CR>
 nmap <Leader>evb :tabe ~/.vimrc.bundles<CR>
 nmap <Leader>evg :tabe ~/.gvimrc<CR>
 " http://vimcasts.org/episodes/updating-your-vimrc-file-on-the-fly/
-autocmd! BufWritePost ~/.vimrc,~/.vimrc.bundles,~/.gvimrc source %
+augroup local
+  autocmd BufWritePost ~/.vimrc,~/.vimrc.bundles,~/.gvimrc source %
+augroup END
 
 " Window movement
 noremap <C-j> <C-w>j
@@ -554,7 +582,9 @@ nnoremap <silent> <Leader>tf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 " Auto-change cwd when changing tree root
 let NERDTreeChDirMode=2
 " Close vim if the only window left open is a NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+augroup local
+  autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+augroup END
 
 "--- Ctrl-P ---
 
@@ -617,8 +647,9 @@ au FileType clojure call vimclojure#MapPlug("n", "rT", "RunTestsReloadAll")
 
 let g:indent_guides_enable_on_vim_startup=1
 let g:indent_guides_auto_colors=0
-autocmd! VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#262325 ctermbg=234
-" autocmd! VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#e5e5e5
+augroup local
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#262325 ctermbg=234
+augroup END
 
 "--- coffee-script ---
 
@@ -677,7 +708,6 @@ let g:ruby_no_hanging_indent = 1
 
 "--- vim-flavored-markdown
 
-augroup vim-flavored-markdown
-  autocmd!
+augroup local
   autocmd BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown | setlocal textwidth=80
 augroup END
