@@ -65,8 +65,6 @@ let vimclojure#WantNailgun=1
 let vimclojure#NailgunClient = $HOME . "/.bin/ng"
 
 augroup local
-  autocmd FileType clojure
-
   autocmd FileType clojure call vimclojure#MakeCommandPlug("n", "RunTestsReloadAll", "vimclojure#RunTests", "1")
   autocmd FileType clojure call vimclojure#MapPlug("n", "rT", "RunTestsReloadAll")
 augroup END
