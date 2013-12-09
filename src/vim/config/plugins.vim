@@ -64,10 +64,12 @@ let vimclojure#ParenRainbow=0
 let vimclojure#WantNailgun=1
 let vimclojure#NailgunClient = $HOME . "/.bin/ng"
 
-au! FileType clojure
+augroup local
+  autocmd FileType clojure
 
-au FileType clojure call vimclojure#MakeCommandPlug("n", "RunTestsReloadAll", "vimclojure#RunTests", "1")
-au FileType clojure call vimclojure#MapPlug("n", "rT", "RunTestsReloadAll")
+  autocmd FileType clojure call vimclojure#MakeCommandPlug("n", "RunTestsReloadAll", "vimclojure#RunTests", "1")
+  autocmd FileType clojure call vimclojure#MapPlug("n", "rT", "RunTestsReloadAll")
+augroup END
 
 "--- vim-indent-guides ---
 
