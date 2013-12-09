@@ -50,5 +50,8 @@ augroup END
 " Highlight leading indentation
 highlight Indentation ctermfg=235
 augroup local
-  autocmd ColorScheme * match Indentation /^\s\+/
+  " I don't know why we have to do this
+  autocmd BufWinEnter * match Indentation /^\s\+/
+  autocmd InsertEnter * match Indentation /^\s\+/
+  autocmd InsertLeave * match Indentation /^\s\+/
 augroup END
