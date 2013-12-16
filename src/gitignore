@@ -1,8 +1,9 @@
 *.tmproj
 *.vim*
 .DS_Store
+.env
+.netrwhist
 .rbenv-version
 .ruby-version
-.netrwhist
 bin/
 tags
