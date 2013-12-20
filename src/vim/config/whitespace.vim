@@ -37,9 +37,10 @@ noremap <Leader>ww :call ToggleHardWrap()<CR>
 " Make it easy to toggle wrapping
 map <Leader>wi :set invwrap<CR>
 
+
 " Highlight trailing whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
+"match ExtraWhitespace /\s\+$/
 augroup local
   autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
   autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
@@ -47,11 +48,13 @@ augroup local
   autocmd BufWinLeave * call clearmatches()
 augroup END
 
+
 " Highlight leading indentation
-highlight Indentation ctermfg=235
+highlight Indentation ctermfg=237
+function! MatchIndentation()
+  match Indentation /^\s\+/
+endfunction
+"match Indentation /^\s\+/
 augroup local
-  " I don't know why we have to do this
-  autocmd BufWinEnter * match Indentation /^\s\+/
-  autocmd InsertEnter * match Indentation /^\s\+/
-  autocmd InsertLeave * match Indentation /^\s\+/
+  autocmd ColorScheme,BufWinEnter,BufEnter,BufLeave,InsertEnter,InsertLeave * call MatchIndentation()
 augroup END

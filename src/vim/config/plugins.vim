@@ -69,13 +69,10 @@ augroup local
   autocmd FileType clojure call vimclojure#MapPlug("n", "rT", "RunTestsReloadAll")
 augroup END
 
-"--- vim-indent-guides ---
+"--- indentLines ---
 
-let g:indent_guides_enable_on_vim_startup=1
-let g:indent_guides_auto_colors=0
-augroup local
-  autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#262325 ctermbg=234
-augroup END
+let g:indentLine_char = '¦'
+let g:indentLine_color_term = 237
 
 "--- coffee-script ---
 
