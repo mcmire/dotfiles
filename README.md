@@ -55,7 +55,7 @@ Here's a rundown of (almost) everything my configuration does:
 
 * Enable 256-color support
 * Use mokolai color scheme (customized by yours truly)
-* Set three color columns at 72, 80, 100, and 120 characters
+* Set four color columns at 72, 80, 100, and 120 characters
 
 ### Whitespace
 
@@ -63,8 +63,6 @@ Here's a rundown of (almost) everything my configuration does:
   file formats I personally use (Ruby, CSS, JavaScript, CoffeeScript, HTML, XML,
   Markdown, Haml, Shell, ERB, Sass, Vimscript, Stylus, Jade)
 * Display invisible characters: tabs, spaces, and end-of-line
-* For wrapped lines, `j` and `k` jump to the next row rather than the next
-  actual line
 * Highlight trailing whitespace, but provide a way to trim whitespace manually
   (`<Leader>tw`)
 * Change the color of leading tabs to a dark color so it's not so overwhelming
@@ -72,6 +70,8 @@ Here's a rundown of (almost) everything my configuration does:
 ### Line wrapping
 
 * Soft wrap lines
+* For wrapped lines, `j` and `k` jump to the next row rather than the next
+  actual line
 * Don't insert two spaces, but one space, after joining lines
 * Turn on most of the `formatoptions`:
   * Auto-wrap text
@@ -141,7 +141,7 @@ Here's a rundown of (almost) everything my configuration does:
 #### NERDTree
 
 * Map `<Leader>tt` to toggle the NERD tree
-* Map `<Leader>tf` to open the NERD tree and then shows the current file
+* Map `<Leader>tf` to open the NERD tree and then reveal the current file
 * Close vim if the only window left open is a NERD tree
 
 #### Ctrl-P
@@ -156,7 +156,7 @@ Here's a rundown of (almost) everything my configuration does:
 
 #### IndentLines
 
-* Use `¦` to show indentation levels
+* Use `¦` to show indentation levels. (This is more handy than you realize.)
 * Set this token to a dark color so it isn't that noticeable
 
 #### vim-coffee-script
@@ -165,14 +165,14 @@ Here's a rundown of (almost) everything my configuration does:
 
 #### Powerline
 
-* Show the powerline for all windows not just split windows
+* Show the Powerline for all windows not just split windows
 * Tell vim to not show `-- INSERT --` in the status bar, as Powerline already
   shows its own version of which mode you're in
 
 #### splitjoin
 
 * When splitting a line in Ruby that looks like `foo :x => 'y'`, don't
-  add curly braces.
+  add curly braces. (At least I think this is what this does)
 
 #### vim-session
 
@@ -199,6 +199,8 @@ Here's a rundown of (almost) everything my configuration does:
 These are the plugins that I use on a regular basis, in rough order of
 importance:
 
+#### Essentials
+
 * [NeoBundle][vim-neobundle]
 * [NERDTree][vim-nerdtree]
 * [Ctrl-P][vim-ctrl-p]
@@ -207,27 +209,32 @@ importance:
 * [SuperTab][vim-supertab]
 * [vim-git][vim-git]
 * [ragtag][vim-ragtag]
-* [Syntastic][vim-syntastic]
 * [surround][vim-surround]
+
+#### Not-so-essentials but still useful
+
+* [Syntastic][vim-syntastic]
 * [vim-textobj-rubyblock][vim-textobj-rubyblock]
 * [indentLine][vim-indentline]
 * [NERDCommenter][vim-nerdcommenter]
 * [vim-session][vim-session]
 * [ZoomWin][vim-zoomwin]
-* Syntax plugins for:
-  * [CoffeeScript][vim-coffeescript]
-  * [GitHub-flavored Markdown][vim-flavored-markdown]
-  * [HTML5][vim-html5-syntax]
-  * [Haml][vim-haml]
-  * [Jade][vim-jade]
-  * [JavaScript][vim-javascript]
-  * [Mustache][vim-mustache]
-  * [Ruby][vim-ruby]
-  * [Sass][vim-scss-syntax]
-  * [Sinatra][vim-ruby-sinatra]
-  * [Slim][vim-slim]
-  * [Stylus][vim-stylus]
-  * [YAML][vim-yaml]
+
+#### Syntax plugins
+
+* [CoffeeScript][vim-coffeescript]
+* [GitHub-flavored Markdown][vim-flavored-markdown]
+* [HTML5][vim-html5-syntax]
+* [Haml][vim-haml]
+* [Jade][vim-jade]
+* [JavaScript][vim-javascript]
+* [Mustache][vim-mustache]
+* [Ruby][vim-ruby]
+* [Sass][vim-scss-syntax]
+* [Sinatra][vim-ruby-sinatra]
+* [Slim][vim-slim]
+* [Stylus][vim-stylus]
+* [YAML][vim-yaml]
 
 ## Author
 
