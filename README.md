@@ -69,7 +69,7 @@ Here's a rundown of (almost) everything my configuration does:
   (`<Leader>tw`)
 * Change the color of leading tabs to a dark color so it's not so overwhelming
 
-# Line wrapping
+### Line wrapping
 
 * Soft wrap lines
 * Don't insert two spaces, but one space, after joining lines
@@ -128,12 +128,12 @@ Here's a rundown of (almost) everything my configuration does:
 * Map `Ctrl-S` to save, `Ctrl-Q` to save + quit
 * Map `Ctrl-\` to clear the current highlight (no more typing `/asdf` or
   somesuch)
+* Map `<Leader>tc` to close a tab
 * Map `<Leader>p$` to paste and overwrite the rest of the line
 * Map `<Leader>p>` to paste into the next line but keeping the same indentation
   level
 * Map `<Leader>gqc` as a better way of reformatting comments which joins
   everything and then reapplies hard wrapping (so if `Q` doesn't work, try this)
-* Map `<Leader>tc` to close a tab
 * Map `<Leader>syn` to identify the syntax group at the cursor
 
 ### Plugins
@@ -183,7 +183,7 @@ Here's a rundown of (almost) everything my configuration does:
 
 #### vim-ruby
 
-* Don't be so annoying with regard to indentation (using [my fork][vim-ruby]))
+* Don't be so annoying with regard to indentation (using [my fork][vim-ruby])
 
 #### vim-flavored-markdown
 
@@ -249,4 +249,17 @@ Elliot Winkler (<elliot.winkler@gmail.com>)
 [vim-session]: http://github.com/xolox/vim-session
 [vim-zoomwin]: http://github.com/vim-scripts/ZoomWin
 [vim-ruby]: http://github.com/mcmire/vim-ruby
+[vim-coffeescript]: http://github.com/kchmck/vim-coffee-script
+[vim-flavored-markdown]: http://github.com/jtratner/vim-flavored-markdown
+[vim-html5-syntax]: http://github.com/othree/html5-syntax.vim
+[vim-haml]: http://github.com/tpope/vim-haml
+[vim-jade]: http://github.com/digitaltoad/vim-jade
+[vim-javascript]: http://github.com/pangloss/vim-javascript
+[vim-mustache]: http://github.com/juvenn/mustache.vim
+[vim-ruby]: http://github.com/mcmire/vim-ruby
+[vim-scss-syntax]: http://github.com/cakebaker/scss-syntax.vim
+[vim-ruby-sinatra]: http://github.com/hallison/vim-ruby-sinatra
+[vim-slim]: http://github.com/djbender/vim-slim
+[vim-stylus]: http://github.com/wavded/vim-stylus
+[vim-yaml]: http://github.com/avakhov/vim-yaml
 [issues]: http://github.com/mcmire/vimfiles/issues
