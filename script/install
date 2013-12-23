@@ -104,9 +104,6 @@ class Main
       p.on("-F", "--force-all", "Overwrite every target file whether it already exists or not.") do |val|
         @options[:force] = :all
       end
-      p.on("--github-token TOKEN", "Specify your Github API token. It will be placed in .gitconfig.") do |val|
-        @options[:github_token] = val
-      end
       p.on("-V", "--verbose", "Show every command that is run when it is run.") do |val|
         @options[:verbose] = true
       end
