@@ -90,8 +90,8 @@ Here's a rundown of (almost) everything my configuration does:
 
 ### Filetype-based configuration
 
-* Ensure config.ru, Gemfile, Rakefile, Thorfile, Vagrantfile, and Appraisals are
-  all syntax-highlighted as Ruby files
+* Ensure config.ru, Gemfile, Rakefile, Thorfile, Vagrantfile, Appraisals, and
+  Bowerfile are all syntax-highlighted as Ruby files
 * Ensure Haml Coffee files are highlighted as Haml files
 * Ensure JSON files are highlighed as JavaScript files
 * Make Python files follow PEP8
