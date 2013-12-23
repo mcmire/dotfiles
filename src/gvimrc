@@ -1,4 +1,3 @@
-
 if has("gui_macvim")
   " Unmap Undo/Redo since it messes things up in insert mode
   " This is defined in $VIMRUNTIME/menu.vim
@@ -18,10 +17,8 @@ if has("gui_macvim")
   set lines=100
 
   " Set font
-  set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline:h12
+  set guifont=Droid\ Sans\ Mono\ for\ Powerline:h12
   set linespace=5
-  "set guifont=Mensch\ Regular\ for\ Powerline:h12
-  "set linespace=5
 
   set guioptions-=T " disable the toolbars in macvim
   set guioptions-=r " disable right-hand scrollbar

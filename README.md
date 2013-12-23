@@ -19,6 +19,10 @@ Finally, open Vim and run
 You shouldn't have any problems doing this, but if you do, please [create an
 issue][issues].
 
+Finally, if you are using MacVim instead of Terminal Vim, you will need to
+download "Droid Sans Mono for Powerline". You can get that
+[here][powerline-fonts].
+
 ### How the install script works
 
 The install script will copy over anything in src/ as a dotfile. That is,
@@ -271,3 +275,4 @@ Elliot Winkler (<elliot.winkler@gmail.com>)
 [vim-stylus]: http://github.com/wavded/vim-stylus
 [vim-yaml]: http://github.com/avakhov/vim-yaml
 [issues]: http://github.com/mcmire/vimfiles/issues
+[powerline-fonts]: https://github.com/Lokaltog/powerline-fonts
