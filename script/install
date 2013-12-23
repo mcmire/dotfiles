@@ -61,6 +61,32 @@ class Main
     process_file_list
   end
 
+  private
+
+  def load_color
+    begin
+      require 'rainbow'
+      @has_color = true
+    rescue LoadError
+      begin
+        require 'rubygems'
+        require 'rainbow'
+        Sickill::Rainbow.enabled = true
+        @has_color = true
+      rescue LoadError => e
+        warn "Install the 'rainbow' gem if you want colors."
+        warn ""
+        @has_color = false
+      end
+    end
+
+    if @has_color
+      extend ColorHelpers
+    else
+      extend NoColorHelpers
+    end
+  end
+
   def parse_args
     parser = OptionParser.new do |p|
       p.banner = "USAGE: #{$0} [options]"
@@ -206,30 +232,6 @@ class Main
 
     if @num_skipped_files > 0
       puts c_success("Run again with --force-templates or --force-all to force-update skipped files.")
-    end
-  end
-
-  def load_color
-    begin
-      require 'rainbow'
-      @has_color = true
-    rescue LoadError
-      begin
-        require 'rubygems'
-        require 'rainbow'
-        Sickill::Rainbow.enabled = true
-        @has_color = true
-      rescue LoadError => e
-        warn "Install the 'rainbow' gem if you want colors."
-        warn ""
-        @has_color = false
-      end
-    end
-
-    if @has_color
-      extend ColorHelpers
-    else
-      extend NoColorHelpers
     end
   end
 end
