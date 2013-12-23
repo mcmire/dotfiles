@@ -1,9 +1,9 @@
 source ~/.vim/config/pre_config.vim
 source ~/.vim/config/basics.vim
 source ~/.vim/config/magic.vim
-source ~/.vim/config/whitespace_removal_on_save.vim
 source ~/.vim/config/colors.vim
 source ~/.vim/config/whitespace.vim
+source ~/.vim/config/line_wrapping.vim
 source ~/.vim/config/search.vim
 source ~/.vim/config/tab_completion.vim
 source ~/.vim/config/filetype.vim

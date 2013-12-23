@@ -1,8 +1,20 @@
-" Auto-save everything when vim loses focus
-" http://vim.wikia.com/wiki/Auto_save_files_when_focus_is_lost
+" When editing a file, always jump to the last known cursor position.
+" Don't do it for commit messages, when the position is invalid, or when
+" inside an event handler (happens when dropping a file on gvim).
 augroup local
-  autocmd FocusLost * silent! wa
+  autocmd BufReadPost *
+    \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
 augroup END
+
+" Auto-source vim config when modified
+" http://vimcasts.org/episodes/updating-your-vimrc-file-on-the-fly/
+augroup local
+  autocmd BufWritePost ~/.vimrc,~/.vimrc.bundles,~/.gvimrc,~/.vim/config/* source %
+augroup END
+
+"-----------
 
 " Auto-reload any file modified outside vim
 

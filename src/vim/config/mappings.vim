@@ -5,10 +5,9 @@ runtime! macros/matchit.vim
 nmap <Leader>evi :tabe ~/.vimrc<CR>
 nmap <Leader>evb :tabe ~/.vimrc.bundles<CR>
 nmap <Leader>evg :tabe ~/.gvimrc<CR>
-" http://vimcasts.org/episodes/updating-your-vimrc-file-on-the-fly/
-augroup local
-  autocmd BufWritePost ~/.vimrc,~/.vimrc.bundles,~/.gvimrc source %
-augroup END
+
+" Paste mode
+set pastetoggle=<F3>
 
 " Window movement
 noremap <C-j> <C-w>j
@@ -32,11 +31,11 @@ noremap Q gq
 nnoremap Y y$
 
 " Easier way to save
-nnoremap <C-s> :w<CR>
-inoremap <C-s> :w<CR>i
+map <C-s> <Esc>:w<CR>
+imap <C-s> <Esc>:w<CR>i
 " Easy way to save and close the current buffer
-nnoremap <C-q> :wq<CR>
-inoremap <C-q> <Esc>:wq<CR>
+map <C-q> <Esc>:wq<CR>
+imap <C-q> <Esc>:wq<CR>
 
 " I hit this way too often, let's just no-op it
 noremap K <Esc>
@@ -45,38 +44,10 @@ noremap K <Esc>
 nnoremap <C-\> :nohls<CR>
 inoremap <C-\> <C-O>:nohls<CR>
 
-" Cut a line without whitespace
-" `"_d` puts the line into the "black-hole" register,
-" See: <http://stackoverflow.com/questions/54255/in-vim-is-there-a-way-to-delete-without-putting-text-in-the-register>
-nmap <Leader>dl ^v$hd"_dd
+" Paste overwriting everything to the end of the line ($)
+nmap <Leader>p$ "_Dp
 " Paste a string into the next line keeping the same indentation level
 nmap <Leader>p> o<Space><Backspace><Esc>p
-" Paste a string into the previous line keeping the same indentation level
-nmap <Leader>P> O<Space><Backspace><Esc>p
-" Open a new line at the end of the following line
-nmap <Leader>oi j$a
-" Paste overwriting the current selection, without first storing the text to be
-" replaced in the current register
-vmap <Leader>pp "_dP
-" Paste overwriting the current line
-nmap <Leader>pc "_ddP
-nmap <Leader>pd "_ddP
-" Paste overwriting everything to the end of the line ($)
-nmap <Leader>pr "_Dp
-nmap <Leader>p$ "_Dp
-" Paste into the next line replacing it
-nmap <Leader>po j"_ddP
-" Paste into the previous line replacing it
-nmap <Leader>Po k"_ddP
-
-" Convert strings to symbols
-vmap <Leader>csy :s/\v["']([^"']+)["'] \=\> /:\1 => /g<CR>:nohls<CR>
-" Convert symbols to strings
-vmap <Leader>cys :s/\v:([^:]+) \=\>/'\1' =>/g<CR>:nohls<CR>
-
-" Search and replace word under cursor
-" http://vim.wikia.com/wiki/Search_and_replace_the_word_under_the_cursor
-nnoremap <Leader>se :%s/\<<C-r><C-w>\>/
 
 " Join comments so we can easily apply gqc
 vmap <Leader>jc :s/\v[\n ]+#[ ]+/ /g<CR>:nohls<CR>i<Space>#<Space><Esc>

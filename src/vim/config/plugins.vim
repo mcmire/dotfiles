@@ -23,26 +23,6 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
-" Command to refresh both Command-T and NERDTree
-" (but mainly Command-T)
-function! Refresh()
-  echo "Refreshing files..."
-
-  if exists(":CtrlPClearCache") == 2
-    CtrlPClearCache
-  endif
-
-  if exists("t:NERDTreeBufName")
-    let nr = bufwinnr(t:NERDTreeBufName)
-    if nr != -1
-      exe nr . "wincmd w"
-      exe substitute(mapcheck("R"), "<CR>", "", "")
-      wincmd p
-  endif
-endif
-endfunction
-noremap <silent> <Leader>rr :call Refresh()<CR>
-
 "--- NERDCommenter ---
 
 " NERDCommenter already provides mappings. The best one to use is probably
@@ -51,23 +31,6 @@ noremap <silent> <Leader>rr :call Refresh()<CR>
 "--- FormatComment
 
 noremap <Leader>qc :call FormatComment()<CR>
-
-"--- Clojure ---
-
-" Settings for the VimClojure plugin
-" https://github.com/daveray/vimclojure-easy/blob/master/vimrc.vim
-let vimclojure#FuzzyIndent=1
-let vimclojure#HighlightBuiltins=1
-let vimclojure#HighlightContrib=1
-let vimclojure#DynamicHighlighting=1
-let vimclojure#ParenRainbow=0
-let vimclojure#WantNailgun=1
-let vimclojure#NailgunClient = $HOME . "/.bin/ng"
-
-augroup local
-  autocmd FileType clojure call vimclojure#MakeCommandPlug("n", "RunTestsReloadAll", "vimclojure#RunTests", "1")
-  autocmd FileType clojure call vimclojure#MapPlug("n", "rT", "RunTestsReloadAll")
-augroup END
 
 "--- indentLines ---
 
@@ -136,6 +99,7 @@ augroup local
 augroup END
 
 "--- vim-slim ---
+
 augroup local
   autocmd FileType slim setl nosmartindent
 augroup END
