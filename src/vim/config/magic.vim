@@ -11,7 +11,10 @@ augroup END
 " Auto-source vim config when modified
 " http://vimcasts.org/episodes/updating-your-vimrc-file-on-the-fly/
 augroup local
-  autocmd BufWritePost ~/.vimrc,~/.vimrc.bundles,~/.gvimrc,~/.vim/config/* source %
+  autocmd BufWritePost ~/.vimrc source %
+  autocmd BufWritePost ~/.vimrc.bundles source %
+  autocmd BufWritePost ~/.vim/config/*.vim source ~/.vimrc
+  autocmd BufWritePost ~/.gvimrc source %
 augroup END
 
 "-----------
