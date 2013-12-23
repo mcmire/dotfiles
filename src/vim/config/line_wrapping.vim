@@ -1,6 +1,12 @@
 " Soft wrap lines
 set wrap linebreak
 
+" For wrapped lines, jump to the next row rather than the next line
+nnoremap j gj
+vnoremap j gj
+nnoremap k gk
+vnoremap k gk
+
 " Disable two-space joins
 set nojoinspaces
 

@@ -7,12 +7,6 @@ set list listchars=tab:⊢—,trail:⋅,nbsp:⋅,eol:¬,extends:⨠
 
 set showbreak=‣
 
-" For wrapped lines, jump to the next row rather than the next line
-nnoremap j gj
-vnoremap j gj
-nnoremap k gk
-vnoremap k gk
-
 " Highlight trailing whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
 augroup local
