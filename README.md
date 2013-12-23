@@ -163,10 +163,11 @@ Here's a rundown of (almost) everything my configuration does:
 
 * Don't highlight objects, brackets, curly braces, parentheses, or operators
 
-#### Powerline
+#### Airline
 
-* Show the Powerline for all windows not just split windows
-* Tell vim to not show `-- INSERT --` in the status bar, as Powerline already
+* Show the Airline for all windows not just split windows
+* Use Powerline symbols
+* Tell vim to not show `-- INSERT --` in the status bar, as Airline already
   shows its own version of which mode you're in
 
 #### splitjoin
@@ -205,7 +206,7 @@ importance:
 * [NERDTree][vim-nerdtree]
 * [Ctrl-P][vim-ctrl-p]
 * [Ag][vim-ag]
-* [Powerline][vim-powerline]
+* [Airline][vim-airline]
 * [SuperTab][vim-supertab]
 * [vim-git][vim-git]
 * [ragtag][vim-ragtag]
@@ -244,7 +245,7 @@ Elliot Winkler (<elliot.winkler@gmail.com>)
 [vim-nerdtree]: http://github.com/scrooloose/nerdtree
 [vim-ctrl-p]: http://github.com/kien/ctrlp.vim
 [vim-ag]: http://github.com/rking/ag.vim'
-[vim-powerline]: http://github.com/Lokaltog/powerline
+[vim-airline]: http://github.com/bling/vim-airline
 [vim-supertab]: http://github.com/ervandew/supertab
 [vim-git]: http://github.com/tpope/vim-git
 [vim-ragtag]: http://github.com/tpope/vim-ragtag

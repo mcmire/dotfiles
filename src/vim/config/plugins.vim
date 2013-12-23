@@ -49,13 +49,18 @@ hi link coffeeSpecialOp NONE
 hi clear Operator
 hi clear SpecialOp
 
-"--- powerline ---
+"--- Airline ---
 
-set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
-"let g:Powerline_symbols = 'fancy'
-set laststatus=2   " otherwise the powerline only appears for split windows
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols_branch = ''
+let g:airline_symbols_readonly = ''
+let g:airline_symbols_linenr = ''
+let g:airline_theme = 'dark'
+set laststatus=2   " otherwise the airline only appears for split windows
 set noshowmode     " hide default mode text (-- INSERT -- below status line)
-"silent! PowerlineReloadColorscheme
 
 "--- ShowMarks ---
 
