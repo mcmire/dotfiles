@@ -27,10 +27,10 @@ endfunction
 nnoremap <Leader>tw :call TrimWhiteSpace()<CR>
 
 " Highlight leading tabs
-highlight Indentation ctermfg=237
-function! MatchIndentation()
-  match Indentation /^\t\+/
-endfunction
-augroup local
-  autocmd ColorScheme,BufWinEnter,BufEnter,BufLeave,InsertEnter,InsertLeave * call MatchIndentation()
-augroup END
+"highlight Indentation ctermfg=237
+"function! MatchIndentation()
+"  match Indentation /^\t\+/
+"endfunction
+"augroup local
+"  autocmd ColorScheme,BufWinEnter,BufEnter,BufLeave,InsertEnter,InsertLeave * call MatchIndentation()
+"augroup END
