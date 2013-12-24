@@ -23,6 +23,7 @@ augroup END
 " Copied from <http://vim.wikia.com/wiki/Remove_unwanted_spaces>
 function! TrimWhiteSpace()
   %s/\s*$//
+  exec "''"
 endfunction
 nnoremap <Leader>tw :call TrimWhiteSpace()<CR>
 
