@@ -122,7 +122,8 @@ Here's a rundown of (almost) everything my configuration does:
 ### Various mappings
 
 * Map `%` to bounce from `do` to `end` in Ruby files
-* Map `<Leader>evi` to open .vimrc, `<Leader>evb` to open .vimrc.bundles
+* Map `<Leader>evi` to open ~/.vimrc, `<Leader>evb` to open ~/.vimrc.bundles,
+  `<Leader>rv` to reload ~/.vimrc
 * Map `F3` to easily toggle paste mode
 * Map `Ctrl-{h,l,k,j}` to move between windows (left, right, up, down)
 * Map `Ctrl-{e,t}` to move between tabs (left, right)

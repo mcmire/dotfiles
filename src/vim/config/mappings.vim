@@ -5,6 +5,7 @@ runtime! macros/matchit.vim
 nmap <Leader>evi :tabe ~/.vimrc<CR>
 nmap <Leader>evb :tabe ~/.vimrc.bundles<CR>
 nmap <Leader>evg :tabe ~/.gvimrc<CR>
+nmap <Leader>rv :source ~/.vimrc<CR>
 
 " Paste mode
 set pastetoggle=<F3>
