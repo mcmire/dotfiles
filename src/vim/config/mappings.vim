@@ -47,8 +47,10 @@ inoremap <C-\> <C-O>:nohls<CR>
 
 " Paste overwriting everything to the end of the line ($)
 nmap <Leader>p$ "_Dp
-" Paste a string into the next line keeping the same indentation level
-nmap <Leader>p> o<Space><Backspace><Esc>p
+" Open (o) a new line and paste into it
+nmap <Leader>po o<Space><Backspace><Esc>p
+" Paste overwriting the current (c) line
+nmap <Leader>pc "_ddP
 
 " Join comments so we can easily apply gqc
 vmap <Leader>jc :s/\v[\n ]+#[ ]+/ /g<CR>:nohls<CR>i<Space>#<Space><Esc>
