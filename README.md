@@ -176,7 +176,7 @@ Here's a rundown of (almost) everything my configuration does:
 * Map `<Leader>p$` to paste and overwrite the rest of the line
 * Map `<Leader>po` to open a new line and paste into it
 * Map `<Leader>pc` to paste overwriting the current line
-  level
+* Map `<Leader>pw` to paste overwriting the current/next word
 * Map `<Leader>gqc` as a better way of reformatting comments which joins
   everything and then reapplies hard wrapping (so if `Q` doesn't work, try this)
 * Map `<Leader>syn` to identify the syntax group at the cursor

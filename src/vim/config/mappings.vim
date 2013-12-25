@@ -51,6 +51,8 @@ nmap <Leader>p$ "_Dp
 nmap <Leader>po o<Space><Backspace><Esc>p
 " Paste overwriting the current (c) line
 nmap <Leader>pc "_ddP
+" Paste overwriting the current/next word (w)
+nmap <Leader>pw viw"_dP
 
 " Join comments so we can easily apply gqc
 vmap <Leader>jc :s/\v[\n ]+#[ ]+/ /g<CR>:nohls<CR>i<Space>#<Space><Esc>
