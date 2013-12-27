@@ -5,14 +5,14 @@ augroup local
   " Many Ruby files aren't named that way
   autocmd BufRead,BufNewFile {config.ru,Gemfile,Guardfile,Rakefile,Thorfile,Vagrantfile,Appraisals,Bowerfile} set ft=ruby
 
-  " haml-coffee
+  " Highlight Haml Coffee files as Haml
   autocmd BufRead,BufNewFile *.hamlc set ft=haml
 
   " Turn on autoindentation since vim-markdown does not include this
   autocmd BufRead,BufNewFile *.{md,mkd,mkdn,mark*} setl ft=markdown autoindent
 
-  " Add JSON syntax highlighting
-  autocmd BufNewFile,BufRead *.json set ft=javascript
+  " Highlight JSON files, as well as JSHint config files, as JavaScript
+  autocmd BufNewFile,BufRead {*.json,.jshintrc} set ft=javascript
 
   " Make Python files follow PEP8 (http://www.python.org/dev/peps/pep-0008/)
   autocmd FileType python set softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79
