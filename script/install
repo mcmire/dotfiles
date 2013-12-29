@@ -63,25 +63,57 @@ class Main
 
   def parse_args
     parser = OptionParser.new do |p|
-      p.banner = "USAGE: #{$0} [options]"
+      p.banner = <<EOT
+USAGE: #{$0} [options]
+
+This script will copy over anything in src/ as a dotfile. That is, src/vimrc is
+copied to ~/.vimrc, src/vim is copied to ~/.vim, etc. If a file ends in .erb it
+will be evaluated as an ERB template and the resulting content will copied to
+the dotfile (`@options` within a template refers to the options parsed from the
+command line).
+
+Usually files are copied, but if you want to be able to modify the
+configuration (and commit to this repo, etc.) as you go, then it's better to
+create symlinks back to files in this repo instead. You can do that with the
+`--link` option. When files are symlinked they are also usually done so
+recursively; if a directory has a .no-recurse file in it, then the whole
+directory will be symlinked as a whole rather than individual files.
+
+The script takes care not to overwrite any files, unless you specify
+`--force-templates` or `--force-all`.
+
+Finally, if you want to know what the script will do before running it for
+real, use the `--dry-run` option. For further output, use the `--verbose`
+option.
+
+Here's a rundown of all of the options:
+
+*************************************x******************************************
+EOT
       p.on("-n", "--noop", "--dry-run", "Don't actually copy or write any files.") do |val|
         @options[:dry_run] = true
       end
-      p.on("-l", "--link", "Usually this script will copy files, but if you want
-                                     to develop on this repo, then it's better to link files.") do
+      p.on("-l", "--link", "Usually this script will copy files, but
+                                     if you want to develop on this repo, then
+                                     it's better to link files.") do
         @options[:link] = true
       end
-      p.on("-f", "--force-templates", "Usually dotfiles that already exist are not overwritten. This will only cause
-                                     dotfile templates to be applied (regardless of whether their target files exist or not).") do |val|
+      p.on("-f", "--force-templates", "Usually dotfiles that already exist are not
+                                     overwritten. This will only cause dotfile
+                                     templates to be applied (regardless of
+                                     whether their target files exist or not).") do |val|
         @options[:force] = :templates
       end
-      p.on("-F", "--force-all", "Overwrite every target file whether it already exists or not.") do |val|
+      p.on("-F", "--force-all", "Overwrite every target file whether it
+                                     already exists or not.") do |val|
         @options[:force] = :all
       end
-      p.on("--github-token TOKEN", "Specify your Github API token. It will be placed in .gitconfig.") do |val|
+      p.on("--github-token TOKEN", "Specify your GitHub API token. It will be
+                                     placed in .gitconfig.") do |val|
         @options[:github_token] = val
       end
-      p.on("-V", "--verbose", "Show every command that is run when it is run.") do |val|
+      p.on("-V", "--verbose", "Show every command that is run when it is
+                                     run.") do |val|
         @options[:verbose] = true
       end
       p.on_tail("-h", "--help", "You're looking at it!") do |val|

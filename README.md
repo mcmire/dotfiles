@@ -1,27 +1,40 @@
 # dotfiles
 
-This is where I keep configuration for zsh, RubyGems, git, Clojure, Java, and
-other stuff.
+This is where I keep configuration for zsh, RubyGems, git, and other stuff.
 
-## Installation
+## Prerequisites
 
-First install oh-my-zsh:
+This configuration is moderately reliant on zsh, so you'll want to install that
+first. Because I am not a zsh guru, I use oh-my-zsh, so install that first:
 
     git clone http://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 
-Then, after cloning this repo, run the install script:
+Then, set zsh as your default shell:
+
+    chsh -s zsh
+
+## Installation
+
+First, clone this repo somewhere. I recommend you put it in your ~/code folder
+because you may want to come back to it later, or fork it.
+
+Next, run the install script:
 
     script/install
 
-## How it works
+By default this will copy the files to your home directory, but if you've
+forked this repo and plan on developing it further, then you may want to create
+symlinks instead:
 
-The install script will copy over anything in src/ as a dotfile. That is,
-src/ackrc is copied to ~/.ackrc, src/inputrc is copied to ~/.inputrc, etc. If a
-file ends in .erb it will be evaluated as an ERB template and the resulting
-content will copied to the dotfile (@options refer to the options parsed from
-the command line). The script takes care not to overwrite any files, unless you
-specify --force-templates or --force-all. If you want to know what it will do
-before running it for real, say `script/install --verbose --dry-run`.
+    script/install --link
+
+If you want to know what this will do first, say:
+
+    script/install --dry-run
+
+Finally, for further help, say:
+
+    script/install --help
 
 ## Author
 
