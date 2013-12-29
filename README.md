@@ -2,15 +2,68 @@
 
 I use Vim daily. I made my own configuration. And here it is!
 
+## Prerequisites
+
+### Vim / MacVim
+
+This configuration assumes that you are using Terminal Vim. I recommend using
+the MacVim version of Vim as it comes with support for Ruby, Python, etc. You
+can install this via Homebrew:
+
+    brew install macvim
+
+If you are using my [dotfiles][dotfiles] then you can move on to the next step,
+as I've set up both `vim` and `vi` to open MacVim in terminal mode. Otherwise,
+you'll need to add them yourself. Drop this in your ~/.bashrc or ~/.zshrc:
+
+    alias vim="mvim -v"
+    alias vi="vim"
+
+If you are not using Terminal Vim then this configuration will also work for
+MacVim proper, although I don't update ~/.gvimrc anymore.
+
+### iTerm / Terminal
+
+You'll also want to make sure your terminal is using a Powerline-compatible
+font, that is, a font that's patched to support Powerline characters (such as
+arrows and icons and things). There's a list of fonts you can choose from
+[here][powerline-fonts]. Whichever one you download, drop it in ~/Library/Fonts
+and you can use it right away. **NOTE: If you are using iTerm, make sure that
+the "non-ASCII" font is also set to the same Powerline font as the "normal"
+font, otherwise you'll get strange "X" characters in place of the Powerline
+characters.**
+
 ## Installation
 
-Clone this repo, then run:
+First, clone this repo somewhere. I recommend you put it in your ~/code folder
+because you may want to come back to it later, or fork it.
+
+Next, run the install script:
+
+    script/install
+
+By default this will copy the files to your home directory, but if you've
+forked this repo and plan on developing it further, then you may want to create
+symlinks instead:
+
+    script/install --link
+
+If you want to know what this will do first, say:
+
+    script/install --dry-run
+
+For further help, say:
+
+    script/install --help
+
+## Post install
+
+Once all files are in place, run
 
     git submodule update --init
 
-Now run the install script:
-
-    script/install --link
+This will install NeoBundle which is necessary for installing the other Vim
+plugins.
 
 Finally, open Vim and run
 
@@ -18,20 +71,6 @@ Finally, open Vim and run
 
 You shouldn't have any problems doing this, but if you do, please [create an
 issue][issues].
-
-Finally, if you are using MacVim instead of Terminal Vim, you will need to
-download "Droid Sans Mono for Powerline". You can get that
-[here][powerline-fonts].
-
-### How the install script works
-
-The install script will copy over anything in src/ as a dotfile. That is,
-src/vimrc is copied to ~/.vimrc, src/vim is copied to ~/.vim, etc. If a file
-ends in .erb it will be evaluated as an ERB template and the resulting content
-will copied to the dotfile (`@options` refer to the options parsed from the
-command line). The script takes care not to overwrite any files, unless you
-specify `--force-update` or `--force-all`. If you want to know what it will do
-before running it for real, say `script/install --verbose --dry-run`.
 
 ## What's inside
 
@@ -277,4 +316,5 @@ Elliot Winkler (<elliot.winkler@gmail.com>)
 [vim-stylus]: http://github.com/wavded/vim-stylus
 [vim-yaml]: http://github.com/avakhov/vim-yaml
 [issues]: http://github.com/mcmire/vimfiles/issues
+[dotfiles]: http://github.com/mcmire/dotfiles
 [powerline-fonts]: https://github.com/Lokaltog/powerline-fonts
