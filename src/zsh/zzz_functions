@@ -51,25 +51,6 @@ function git-cherry-script() {
   git log $@ --reverse --pretty=tformat:"git cherry-pick %H -n%ngit commit -m \"%s [orig $proj#%h]\" --dry-run%n"
 }
 
-function add-alias {
-  echo alias $1="\"$@[2,-1]\"" >> ~/.zsh/aliases
-}
-function reload-aliases {
-  source ~/.zsh/aliases
-  echo "Aliases reloaded."
-}
-function reload-functions {
-  source ~/.zsh/functions
-  echo "Functions reloaded."
-}
-
-function edit-aliases {
-  vi ~/.zsh/aliases
-}
-function edit-functions {
-  vi ~/.zsh/functions
-}
-
 # http://refactormycode.com/codes/63-open-a-new-tab-in-current-directory-from-iterm
 # https://bitbucket.org/vpetro/applescript/raw/7f3ac525ffa0/term
 nt() {

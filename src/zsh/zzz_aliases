@@ -1,7 +1,11 @@
-alias ae="vi ~/.zsh/aliases"
-alias av="less ~/.zsh/aliases"
-alias fe="vi ~/.zsh/functions"
-alias fv="less ~/.zsh/functions"
+ALIASES_FILE='~/.zsh/zzz_aliases'
+FUNCTIONS_FILE='~/.zsh/zzz_functions'
+
+alias edit-aliases="vi $ALIASES_FILE"
+alias view-aliases="less $ALIASES_FILE"
+alias edit-functions="vi $FUNCTIONS_FILE"
+alias view-functions="less $FUNCTIONS_FILE"
+alias reload-env="source $ALIASES_FILE && source $FUNCTIONS_FILE"
 
 alias be="bundle exec"
 alias b="bundle"
