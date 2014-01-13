@@ -1,5 +1,5 @@
 *.tmproj
-*.vim*
+.lvimrc
 .DS_Store
 .env
 .netrwhist
