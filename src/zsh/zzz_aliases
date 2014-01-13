@@ -39,9 +39,9 @@ alias grmc="git rm --cached"
 alias gsh="git show HEAD"
 
 alias r="rspec"
-alias R="rake"
-alias Rm="zeus rake db:migrate db:test:prepare"
-alias Rmr="zeus rake db:migrate:redo db:test:prepare"
+alias R="be rake"
+alias Rm="be rake db:migrate db:test:prepare"
+alias Rmr="be rake db:migrate:redo db:test:prepare"
 
 alias rs="rbenv shell"
 alias rl="rbenv local"
