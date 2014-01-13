@@ -65,4 +65,7 @@ alias sR="spring rake"
 alias sRm="spring rake db:migrate db:test:prepare"
 alias sRmr="spring rake db:migrate:redo db:test:prepare"
 
+alias spark-push-sandbox="git push heroku HEAD:master -f"
+alias spark-push-branch-and-sandbox="git push -f && spark-push-sandbox"
+
 # vi: ft=sh
