@@ -3,7 +3,7 @@ augroup local
   autocmd FileType {ruby,css,javascript,coffee,html,xml,markdown,ghmarkdown,js,haml,sh,eruby,scss,vim,stylus,jade} set softtabstop=2 expandtab
 augroup END
 
-set list listchars=tab:⊢—,trail:⋅,nbsp:⋅,eol:¬,extends:⨠
+set list listchars=tab:⊢—,trail:⋅,nbsp:⋅,extends:⨠
 
 set showbreak=‣
 
