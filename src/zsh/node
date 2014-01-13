@@ -2,4 +2,6 @@ export NODE_PATH="$NODE_PATH:/usr/local/lib/node:/usr/local/lib/node_modules:./n
 export PATH="./node_modules/.bin:$PATH"
 alias node="env NODE_NO_READLINE=1 rlwrap node"
 
+[ -s $HOME/.nvm/nvm.sh ] && . $HOME/.nvm/nvm.sh # This loads NVM
+
 # vi: ft=sh
