@@ -9,7 +9,7 @@ alias reload-env="source $ALIASES_FILE && source $FUNCTIONS_FILE"
 
 alias be="bundle exec"
 alias b="bundle"
-alias bu="bundle update"
+#alias bu="bundle update"
 
 alias ga="git add"
 alias gap="git add -p"
