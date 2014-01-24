@@ -5,5 +5,4 @@
 .netrwhist
 .rbenv-version
 .ruby-version
-bin/
 tags
