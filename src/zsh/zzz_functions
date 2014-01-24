@@ -21,7 +21,8 @@ function gbdr {
   git push origin :$1
 }
 function gbD {
-  gbd "$1" && gbdr "$1"
+  gbd "$1"
+  gbdr "$1"
 }
 
 function gaf {
