@@ -25,8 +25,9 @@ endif
 
 "--- NERDCommenter ---
 
-" NERDCommenter already provides mappings. The best one to use is probably
-" <Leader>cl and <Leader>cu.
+let g:NERDCustomDelimiters = {
+      \ 'ruby': { 'left': '# ' }
+      \ }
 
 "--- FormatComment
 
