@@ -10,9 +10,11 @@ alias reload-env="source $ALIASES_FILE && source $FUNCTIONS_FILE"
 alias be="bundle exec"
 alias b="bundle"
 
-alias ga="git add"
-alias gap="git add -p"
+alias fr="foreman run"
+
+alias ga="git add -A"
 alias gA="git add -A"
+alias gap="git add -p"
 alias gb="git branch"
 alias gbd="git branch -D"
 alias gbm="git branch -M"
@@ -24,6 +26,7 @@ alias gcob="git checkout -b"
 alias gd="git diff-base"
 alias gdc="git diff-base --cached"
 alias gl="git log"
+alias gm="git merge --ff-only"
 alias gp="git push"
 alias gpf="git push --force"
 alias gpl="git pull"
@@ -64,7 +67,7 @@ alias sRmr="spring rake db:migrate:redo db:test:prepare"
 
 alias psg="ps aux | grep"
 
-alias spark-push-sandbox="git push heroku HEAD:master -f"
+alias spark-push-sandbox="git push sandbox HEAD:master -f"
 alias spark-push-branch-and-sandbox="git push -f && spark-push-sandbox"
 
 # vi: ft=sh
