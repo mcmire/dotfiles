@@ -3,7 +3,7 @@ augroup local
   autocmd FileType make setl noexpandtab
 
   " Many Ruby files aren't named that way
-  autocmd BufRead,BufNewFile {config.ru,Gemfile,Guardfile,Rakefile,Thorfile,Vagrantfile,Appraisals,Bowerfile} set ft=ruby
+  autocmd BufRead,BufNewFile {config.ru,Gemfile,Guardfile,Rakefile,Thorfile,Vagrantfile,Appraisals,Bowerfile,*.gemspec} set ft=ruby
 
   " Highlight Haml Coffee files as Haml
   autocmd BufRead,BufNewFile *.hamlc set ft=haml
