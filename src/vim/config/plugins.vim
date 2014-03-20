@@ -50,6 +50,9 @@ hi link coffeeSpecialOp NONE
 hi clear Operator
 hi clear SpecialOp
 
+" path to coffee
+let coffee_compiler = '/usr/local/bin/coffee'
+
 "--- Airline ---
 
 let g:airline_left_sep = ''
