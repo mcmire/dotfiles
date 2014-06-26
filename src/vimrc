@@ -13,3 +13,4 @@ source ~/.vim/config/scroll.vim
 source ~/.vim/config/cursor.vim
 source ~/.vim/config/mappings.vim
 source ~/.vim/config/plugins.vim
+source ~/.vim/config/optimizations.vim
