@@ -1,6 +1,9 @@
-set tabstop=2 shiftwidth=2
+set tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+
+set textwidth=80
+
 augroup local
-  autocmd FileType {ruby,css,javascript,coffee,html,xml,markdown,ghmarkdown,js,haml,sh,eruby,scss,vim,stylus,jade} set softtabstop=2 expandtab
+  autocmd FileType gitcommit set textwidth=72
 augroup END
 
 set list listchars=tab:⊢—,trail:⋅,nbsp:⋅,extends:⨠
