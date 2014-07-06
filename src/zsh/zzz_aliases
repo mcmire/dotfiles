@@ -22,7 +22,7 @@ alias gca="git commit --amend"
 alias gc="git commit"
 alias gcm="git commit -m"
 alias gco="git checkout"
-alias gcob="git checkout -b"
+alias gcb="git checkout -b"
 alias gd="git diff-base"
 alias gdc="git diff-base --cached"
 alias gl="git log"
@@ -40,6 +40,8 @@ alias grhu="git reset HEAD~"
 alias grm="git rm"
 alias grmc="git rm --cached"
 alias gsh="git show HEAD"
+
+alias hl="heroku logs"
 
 alias r="rspec"
 alias R="be rake"
@@ -68,6 +70,8 @@ alias sRmr="spring rake db:migrate:redo db:test:prepare"
 alias psg="ps aux | grep"
 
 alias spark-push-sandbox="git push sandbox HEAD:master -f"
-alias spark-push-branch-and-sandbox="git push -f && spark-push-sandbox"
+alias spark-push="git push -f && spark-push-sandbox"
+
+alias tail-pg-log="tail -f \`ls /usr/local/var/postgres/pg_log/*.log | head -n 1\`"
 
 # vi: ft=sh
