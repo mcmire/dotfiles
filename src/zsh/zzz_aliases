@@ -13,7 +13,7 @@ alias b="bundle"
 alias fr="foreman run"
 
 alias ga="git add -A"
-alias gA="git add -A"
+alias gA="git add -A ."
 alias gap="git add -p"
 alias gb="git branch"
 alias gbd="git branch -D"
