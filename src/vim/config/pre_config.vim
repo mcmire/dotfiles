@@ -1,11 +1,13 @@
-" Be iMproved
-set nocompatible
-
 " Load NeoBundle
 if has('vim_starting')
+  if &compatible
+    set nocompatible               " Be iMproved
+  endif
+
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
-call neobundle#rc(expand('~/.vim/bundle/'))
+
+call neobundle#begin(expand('~/.vim/bundle/'))
 
 " Let NeoBundle manage NeoBundle
 NeoBundleFetch 'Shougo/neobundle.vim'
@@ -14,6 +16,8 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles
 endif
+
+call neobundle#end()
 
 " Clear user-defined autocmd groups
 augroup local
