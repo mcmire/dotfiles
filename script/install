@@ -167,7 +167,14 @@ EOT
 
       if File.file?(source) && File.extname(source) == '.erb'
         template = ERB.new(File.read(source), nil, "-")  # allow <%- ... -%> tags like Rails
-        content = template.result(binding).strip
+
+        begin
+          content = template.result(binding).strip
+        rescue => error
+          warn "error: Could not compile #{source}"
+          raise error
+        end
+
         if File.exists?(target)
           existing_content = File.read(target)
           if content == existing_content
