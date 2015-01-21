@@ -28,6 +28,7 @@ alias gd="git diff-base"
 alias gdc="git diff-base --cached"
 alias gl="git log"
 alias gm="git merge --ff-only"
+alias gold='git branch -a | grep origin | grep -v HEAD | xargs -n 1 git log --date=iso --pretty=format:"%an %ad %d%n" -1 --decorate | grep -v master | sort'
 alias gP="git push"
 alias gPf="git push --force"
 alias gp="git pull"
