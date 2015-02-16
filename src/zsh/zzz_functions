@@ -17,12 +17,11 @@ function g {
 }
 compdef g=git
 
-function gbdr {
-  git push origin :$1
-}
-function gbD {
-  gbd "$1"
-  gbdr "$1"
+function gbd {
+  for "$branch" in "$@"; do
+    git branch -D "$branch"
+    git push origin :"$branch"
+  done
 }
 
 function gaf {
