@@ -1,4 +1,5 @@
 *.tmproj
+.agignore
 .lvimrc
 .DS_Store
 .env
