@@ -17,7 +17,7 @@ set colorcolumn=72,80,100,120
 if s:color_scheme_type == "dark"
   hi ColorColumn guibg=#17191A ctermbg=234
 else
-  hi ColorColumn guibg=#c0c0c0 ctermbg=234
+  hi ColorColumn guibg=#c0c0c0 ctermbg=231
 endif
 
 set cursorline
