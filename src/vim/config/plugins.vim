@@ -113,11 +113,13 @@ augroup local
   autocmd FileType slim setl nosmartindent
 augroup END
 
-"--- vim-rspec ---
+"--- vim-tmux-runner ---
 
-let g:rspec_command = "Dispatch rspec {spec}"
-let g:rspec_runner = "os_x_iterm"
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
+let g:spec_runner_dispatcher = 'call VtrSendCommand("be {command}")'
+map <leader>t <plug>RunCurrentSpecFile
+map <leader>s <plug>RunFocusedSpec
+map <leader>l <plug>RunMostRecentSpec
+
+" VtrRunner
+nmap <leader>p :VtrKillRunner<CR>
+nmap <leader>o :VtrOpenRunner({'percentage': 20})<CR>
