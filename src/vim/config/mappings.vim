@@ -41,9 +41,9 @@ imap <C-q> <Esc>:wq<CR>
 " I hit this way too often, let's just no-op it
 noremap K <Esc>
 
-" Make <C-\> clear the highlight as well as redraw
-nnoremap <C-\> :nohls<CR>
-inoremap <C-\> <C-O>:nohls<CR>
+" Make ,h clear the highlight as well as redraw
+nnoremap <Leader>h :nohls<CR>
+inoremap <Leader>h <C-O>:nohls<CR>
 
 " Paste overwriting everything to the end of the line ($)
 nmap <Leader>p$ "_Dp
