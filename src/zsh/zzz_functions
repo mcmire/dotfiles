@@ -8,6 +8,7 @@ function history-stats {
 }
 
 # Stolen from r00k
+unalias g
 function g {
   if [[ $# > 0 ]]; then
     git $@
