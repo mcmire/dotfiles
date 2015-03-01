@@ -48,7 +48,6 @@ function Prompt__Fragment__host {
 }
 
 function Prompt__Fragment__git_branch {
-  #echo -n "$(git_prompt_info)"
   local ref=""
   ref="$(git symbolic-ref HEAD 2> /dev/null)"
   if [[ -z $ref ]]; then
@@ -114,7 +113,7 @@ function Prompt__cwd_fragment {
 
 function Prompt__mode_fragment {
   if [[ "$KEYMAP" == "vicmd" ]]; then
-    echo -n "$(Color__yellow " [NORMAL]")"
+    echo -n "$(Color__magenta " [NORMAL]")"
   fi
 }
 

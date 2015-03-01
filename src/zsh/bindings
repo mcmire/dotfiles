@@ -1,17 +1,53 @@
 # Sources:
 # * http://dougblack.io/words/zsh-vi-mode.html
-# * # http://superuser.com/a/648046
+# * http://superuser.com/a/648046
+# * http://ivyl.0xcafe.eu/2013/02/03/refining-zsh/
 
 # Engage Vi mode!
 bindkey -v
 
-function zle-line-init zle-keymap-select {
-  Prompt__set
-  zle reset-prompt
+# helper for setting color including all kinds of terminals
+change_prompt_mode() {
+  if [[ $TERM = "linux" ]]; then
+    # nothing
+  elif [[ $TMUX != '' ]]; then
+    printf '\033Ptmux;\033\033]12;%b\007\033\\' "$1"
+  else
+    echo -ne "\033]12;$1\007"
+    # iTerm specific: set cursor shape
+    echo -ne "\033]50;CursorShape=$2\x7"
+  fi
 }
 
-zle -N zle-line-init
+change_to_command_mode() {
+  change_prompt_mode red 0
+}
+
+change_to_insert_mode() {
+  change_prompt_mode gray 1
+}
+
+# change cursor color basing on vi mode
+zle-keymap-select () {
+  if [ $KEYMAP = vicmd ]; then
+    change_to_command_mode
+  else
+    change_to_insert_mode
+  fi
+}
+
+zle-line-finish() {
+  change_to_insert_mode
+}
+
+zle-line-init () {
+  zle -K viins
+  change_to_insert_mode
+}
+
 zle -N zle-keymap-select
+zle -N zle-line-init
+zle -N zle-line-finish
 
 # Use vim cli mode
 bindkey '^P' up-history
@@ -39,4 +75,4 @@ bindkey -M viins '^X,' _history-complete-newer \
                  '^X/' _history-complete-older \
                  '^X`' _bash_complete-word
 
-# set ft=sh
+# vi: ft=sh
