@@ -112,6 +112,12 @@ function Prompt__cwd_fragment {
   echo -n " at $(Color__green "$(Prompt__Fragment__collapsed_pwd)")"
 }
 
+function Prompt__mode_fragment {
+  if [[ "$KEYMAP" == "vicmd" ]]; then
+    echo -n "$(Color__yellow " [NORMAL]")"
+  fi
+}
+
 function Prompt__rc_char_fragment {
   echo -n "$(Prompt__Fragment__rc_char) "
 }
@@ -122,10 +128,15 @@ function Prompt__value {
   echo -n '$(Prompt__cwd_fragment)'
   echo -n '$(Prompt__git_branch_fragment)'
   echo -n '$(Prompt__rbenv_info_fragment)'
+  echo -n '$(Prompt__mode_fragment)'
   echo -n "\n"
   echo '$(Prompt__rc_char_fragment)'
 }
 
-PROMPT="$(Prompt__value)"
+function Prompt__set {
+  PROMPT="$(Prompt__value)"
+}
+
+Prompt__set
 
 # vi: ft=sh
