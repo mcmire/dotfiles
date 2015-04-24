@@ -125,3 +125,36 @@ let g:spec_runner_dispatcher = 'call VtrSendCommand("bundle exec {command}")'
 map <leader>t <plug>RunCurrentSpecFile
 map <leader>s <plug>RunFocusedSpec
 map <leader>l <plug>RunMostRecentSpec
+
+"--- rainbow_parentheses
+
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['red',         'firebrick3'],
+    \ ['brown',       'RoyalBlue3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+
+"--- vim-sexp
+
+" No auto-pairs, thank you
+let g:sexp_enable_insert_mode_mappings = 0
