@@ -124,6 +124,7 @@ nmap <leader>o :VtrOpenRunner({'orientation': 'h', 'percentage': 35})<CR>
 "--- vim-rspec-runner ---
 
 let g:spec_runner_dispatcher = 'call VtrSendCommand("bundle exec {command}")'
+let g:disable_write_on_spec_run = 1
 map <leader>t <plug>RunCurrentSpecFile
 map <leader>s <plug>RunFocusedSpec
 map <leader>l <plug>RunMostRecentSpec
