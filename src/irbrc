@@ -1,8 +1,13 @@
-
 class Irbrc
   def run
-    require 'awesome_print' rescue LoadError
+    add_awesome_print
     init_irb
+  end
+
+  def add_awesome_print
+    require 'awesome_print'
+    AwesomePrint.irb!
+  rescue LoadError
   end
 
   def init_irb
