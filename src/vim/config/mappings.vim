@@ -18,8 +18,8 @@ noremap <C-l> <C-w>l
 noremap <C-_> <C-w>_
 
 " Tab movement
-noremap <C-e> gT
-noremap <C-t> gt
+"noremap <C-e> gT
+"noremap <C-t> gt
 
 " pressing < and > in visual mode keeps the selection
 vnoremap < <gv
