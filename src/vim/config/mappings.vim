@@ -7,7 +7,7 @@ nmap <Leader>evb :tabe ~/.vimrc.bundles<CR>
 nmap <Leader>evg :tabe ~/.gvimrc<CR>
 nmap <Leader>rv :source ~/.vimrc<CR>
 
-" Paste mode
+" Paste mode (because sometimes I am lazy)
 set pastetoggle=<F3>
 
 " Window movement
@@ -32,11 +32,11 @@ noremap Q gq
 nnoremap Y y$
 
 " Easier way to save
-map <C-s> <Esc>:w<CR>
-imap <C-s> <Esc>:w<CR>i
+"map <C-s> <Esc>:w<CR>
+"imap <C-s> <Esc>:w<CR>i
 " Easy way to save and close the current buffer
-map <C-q> <Esc>:wq<CR>
-imap <C-q> <Esc>:wq<CR>
+"map <C-q> <Esc>:wq<CR>
+"imap <C-q> <Esc>:wq<CR>
 
 " I hit this way too often, let's just no-op it
 noremap K <Esc>
@@ -70,4 +70,5 @@ map <Leader>syn :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '>
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
+" For Those People who don't have Caps Lock set to Escape
 imap jj <Esc>
