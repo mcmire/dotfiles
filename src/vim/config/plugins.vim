@@ -161,3 +161,15 @@ let g:rbpt_colorpairs = [
 
 " No auto-pairs, thank you
 let g:sexp_enable_insert_mode_mappings = 0
+
+"--- syntastic
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_auto_jump = 3
+let g:syntastic_check_on_wq = 1
+let g:syntastic_check_on_open = 0
