@@ -131,10 +131,12 @@ map <leader>l <plug>RunMostRecentSpec
 
 "--- rainbow_parentheses
 
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
+augroup local
+  autocmd VimEnter ruby,clojure RainbowParenthesesToggle
+  autocmd Syntax   ruby,clojure RainbowParenthesesLoadRound
+  autocmd Syntax   ruby,clojure RainbowParenthesesLoadSquare
+  autocmd Syntax   ruby,clojure RainbowParenthesesLoadBraces
+augroup END
 
 let g:rbpt_colorpairs = [
     \ ['brown',       'RoyalBlue3'],
