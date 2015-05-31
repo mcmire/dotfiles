@@ -23,4 +23,6 @@ augroup local
   " In Clojure, words that contains dots are usually namespaces
   " Source: <http://stackoverflow.com/questions/225266/customising-word-separators-in-vi>
   autocmd FileType clojure set iskeyword-=.
+
+  autocmd BufRead,BufNewFile *.skim set ft=slim
 augroup END
