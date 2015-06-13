@@ -13,22 +13,27 @@ Then, set zsh as your default shell:
 
     chsh -s zsh
 
+Next, you'll need to install Powerline, which I use for tmux (not vim, which
+uses airline):
+
+    (sudo) pip install powerline-status
+
 ## Installation
 
-First, clone this repo somewhere. I recommend you put it in your ~/code folder
+Next, clone this repo somewhere. I recommend you put it in your `~/code` folder
 because you may want to come back to it later, or fork it.
 
-Next, run the install script:
+Then run the `install` script. This will copy all of the files in this repo as
+dotfiles in your home directory:
 
     script/install
 
-By default this will copy the files to your home directory, but if you've
-forked this repo and plan on developing it further, then you may want to create
-symlinks instead:
+By default this will copy the files, but if you've forked this repo and plan on
+developing it further, then you may want to create symlinks instead:
 
     script/install --link
 
-If you want to know what this will do first, say:
+If you want to know what this command will do first, say:
 
     script/install --dry-run
 
