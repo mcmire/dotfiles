@@ -18,6 +18,12 @@ uses airline):
 
     (sudo) pip install powerline-status
 
+Finally, ensure that you're using tmux 2.0 or higher (this will make it so that
+when you open a new window it keeps the current working directory). If you
+already have tmux, you can update with:
+
+    brew upgrade tmux
+
 ## Installation
 
 Next, clone this repo somewhere. I recommend you put it in your `~/code` folder
