@@ -13,28 +13,28 @@ require 'pp'
 
 module ColorHelpers
   def c_unimportant(str)
-    str.foreground(:black).bright
+    Rainbow(str).foreground(:black).bright
   end
   def c_success(str)
-    str.foreground(:green)
+    Rainbow(str).foreground(:green)
   end
   def c_failure(str)
-    str.foreground(:red)
+    Rainbow(str).foreground(:red)
   end
   def c_filename(str)
-    str.foreground(:blue).bright
+    Rainbow(str).foreground(:blue).bright
   end
   def c_debugging(str)
-    str.foreground(:cyan)
+    Rainbow(str).foreground(:cyan)
   end
   def c_emphasis(str)
-    str.foreground(:yellow).bright
+    Rainbow(str).foreground(:yellow).bright
   end
 end
 
 module NoColorHelpers
   %w[c_unimportant c_success c_failure c_filename c_debugging c_emphasis].each do |method|
-    define_method(method) {|arg| arg }
+    define_method(method) { |arg| arg }
   end
 end
 
@@ -59,6 +59,31 @@ class Main
     parse_args
     build_file_list
     process_file_list
+  end
+
+  private
+
+  def load_color
+    begin
+      require 'rainbow'
+      @has_color = true
+    rescue LoadError
+      begin
+        require 'rubygems'
+        require 'rainbow'
+        @has_color = true
+      rescue LoadError => e
+        warn "Install the 'rainbow' gem if you want colors."
+        warn ""
+        @has_color = false
+      end
+    end
+
+    if @has_color
+      extend ColorHelpers
+    else
+      extend NoColorHelpers
+    end
   end
 
   def parse_args
@@ -107,10 +132,6 @@ EOT
                                      already exists or not.") do |val|
         @options[:force] = :all
       end
-      p.on("--github-token TOKEN", "Specify your GitHub API token. It will be
-                                     placed in .gitconfig.") do |val|
-        @options[:github_token] = val
-      end
       p.on("-V", "--verbose", "Show every command that is run when it is
                                      run.") do |val|
         @options[:verbose] = true
@@ -146,7 +167,14 @@ EOT
 
       if File.file?(source) && File.extname(source) == '.erb'
         template = ERB.new(File.read(source), nil, "-")  # allow <%- ... -%> tags like Rails
-        content = template.result(binding).strip
+
+        begin
+          content = template.result(binding).strip
+        rescue => error
+          warn "error: Could not compile #{source}"
+          raise error
+        end
+
         if File.exists?(target)
           existing_content = File.read(target)
           if content == existing_content
@@ -237,30 +265,6 @@ EOT
 
     if @num_skipped_files > 0
       puts c_success("Run again with --force-templates or --force-all to force-update skipped files.")
-    end
-  end
-
-  def load_color
-    begin
-      require 'rainbow'
-      @has_color = true
-    rescue LoadError
-      begin
-        require 'rubygems'
-        require 'rainbow'
-        Sickill::Rainbow.enabled = true
-        @has_color = true
-      rescue LoadError => e
-        warn "Install the 'rainbow' gem if you want colors."
-        warn ""
-        @has_color = false
-      end
-    end
-
-    if @has_color
-      extend ColorHelpers
-    else
-      extend NoColorHelpers
     end
   end
 end
