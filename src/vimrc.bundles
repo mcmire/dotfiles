@@ -1,3 +1,4 @@
+"NeoBundle '907th/vim-auto-save'
 "NeoBundle 'ajf/puppet-vim'
 NeoBundle 'AndrewRadev/splitjoin.vim'
 NeoBundle 'avakhov/vim-yaml'

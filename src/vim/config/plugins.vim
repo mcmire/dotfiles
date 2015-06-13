@@ -175,3 +175,10 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_auto_jump = 0
 let g:syntastic_check_on_wq = 1
 let g:syntastic_check_on_open = 0
+
+"--- vim-auto-save
+
+"let g:auto_save = 1
+"let g:auto_save_in_insert_mode = 0
+"let g:auto_save_no_updatetime = 1
+"set updatetime=2000
