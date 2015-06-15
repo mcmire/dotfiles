@@ -182,3 +182,10 @@ let g:syntastic_check_on_open = 0
 "let g:auto_save_in_insert_mode = 0
 "let g:auto_save_no_updatetime = 1
 "set updatetime=2000
+
+"-- auto-pairs
+
+let g:AutoPairsShortcutToggle = "<Leader>apt"
+let g:AutoPairsShortcutFastWrap = "<Leader>apw"
+let g:AutoPairsShortcutJump = "<Leader>apj"
+let g:AutoPairsShortcutBackInsert = "<C-n>"
