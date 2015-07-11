@@ -1,5 +1,5 @@
 " Set custom cursor -- vertical bar in insert mode (iTerm2)
-" From http://www.iterm2.com/#/section/documentation/escape_codes
+" From http://www.iterm2.com/documentation-escape-codes.html
 " Also https://gist.github.com/andyfowler/1195581 for the tmux stuff
 if exists('$TMUX')
   let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"

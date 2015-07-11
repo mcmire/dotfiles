@@ -13,6 +13,8 @@ augroup local
 
   " Highlight JSON files, as well as JSHint config files, as JavaScript
   autocmd BufNewFile,BufRead {*.json,.jshintrc} set ft=javascript
+  " Also highlight .es6 files as JavaScript (sprockets-es6)
+  autocmd BufRead,BufNewFile *.es6 setfiletype javascript
 
   " Make Python files follow PEP8 (http://www.python.org/dev/peps/pep-0008/)
   autocmd FileType python set softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79
@@ -24,5 +26,6 @@ augroup local
   " Source: <http://stackoverflow.com/questions/225266/customising-word-separators-in-vi>
   autocmd FileType clojure set iskeyword-=.
 
+  " Support Skim (Slim for JavaScript)
   autocmd BufRead,BufNewFile *.skim set ft=slim
 augroup END
