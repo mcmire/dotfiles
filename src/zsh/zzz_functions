@@ -54,6 +54,10 @@ function git-cherry-script() {
   git log $@ --reverse --pretty=tformat:"git cherry-pick %H -n%ngit commit -m \"%s [orig $proj#%h]\" --dry-run%n"
 }
 
+function git-undo() {
+  git unstage "$@" && git checkout "$@"
+}
+
 nt() {
   echo "Just use Cmd-T!"
 }
