@@ -8,7 +8,9 @@ function history-stats {
 }
 
 # Stolen from r00k
-unalias g
+if [[ "$(type g)" =~ "alias" ]]; then
+  unalias g
+fi
 function g {
   if [[ $# > 0 ]]; then
     git $@
