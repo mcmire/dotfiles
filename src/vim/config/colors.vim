@@ -1,14 +1,17 @@
 function! s:UseLightTheme()
   let s:color_scheme_type="light"
   set background=light
-  silent! colorscheme earendel
+  silent! colorscheme solarized
   hi ColorColumn guibg=#c0c0c0 ctermbg=231
+  let g:airline_theme="solarized"
 endfunction
 
 function! s:UseDarkTheme()
   let s:color_scheme_type="dark"
-  silent! colorscheme molokai
+  set background=dark
+  silent! colorscheme solarized
   hi ColorColumn guibg=#17191A ctermbg=234
+  let g:airline_theme="solarized"
 endfunction
 
 function! s:ToggleTheme()
@@ -20,6 +23,8 @@ function! s:ToggleTheme()
 endfunction
 
 command! -nargs=0 ToggleTheme call s:ToggleTheme()
+
+nnoremap <Leader>th :ToggleTheme<CR>
 
 " The terminal has 256 color support
 set t_Co=256
