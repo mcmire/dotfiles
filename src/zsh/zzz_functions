@@ -7,10 +7,12 @@ function history-stats {
     head
 }
 
-# Stolen from r00k
-if [[ "$(type g)" =~ "alias" ]]; then
+# Unalias alias that zsh adds
+if [[ "$(which g)" =~ "aliased to git" ]]; then
   unalias g
 fi
+
+# Stolen from r00k
 function g {
   if [[ $# > 0 ]]; then
     git $@
