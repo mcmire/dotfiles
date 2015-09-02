@@ -15,14 +15,8 @@ plugins=(git git-flow hub)
 # Set sensible starting path
 export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
 
-# Load this first because the suvash theme depends on having rbenv available
-source ~/.zsh/rbenv
-
 # Load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
-
-# Provide our own theme
-source ~/.zsh/mcmire.zsh-theme
 
 # Disable autocorrection, it's SUPER annoying
 unsetopt correct_all
@@ -34,3 +28,6 @@ unsetopt inc_append_history
 for file in ~/.zsh/*; do
   source $file
 done
+
+# Provide our own theme
+source ~/.zsh/mcmire.zsh-theme
