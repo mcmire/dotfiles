@@ -11,8 +11,8 @@ augroup local
   " Turn on autoindentation since vim-markdown does not include this
   autocmd BufRead,BufNewFile *.{md,mkd,mkdn,mark*} setl ft=markdown autoindent
 
-  " Highlight JSON files, as well as JSHint config files, as JavaScript
-  autocmd BufNewFile,BufRead {*.json,.jshintrc} set ft=javascript
+  " Highlight JSON files, JSHint/ESLint config files, and JSX files as JavaScript
+  autocmd BufNewFile,BufRead {*.json,.jshintrc,.eslintrc,*.jsx} set ft=javascript
   " Also highlight .es6 files as JavaScript (sprockets-es6)
   autocmd BufRead,BufNewFile *.es6 setfiletype javascript
 

@@ -176,6 +176,8 @@ let g:syntastic_auto_jump = 0
 let g:syntastic_check_on_wq = 1
 let g:syntastic_check_on_open = 0
 
+let g:syntastic_javascript_checkers = ['eslint']
+
 "--- vim-auto-save
 
 "let g:auto_save = 1
