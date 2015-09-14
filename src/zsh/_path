@@ -1,6 +1,8 @@
-# Add ~/.bin to the path
-# This is where we will keep custom executables
-export PATH=$HOME/.bin:/opt/bin:/usr/local/bin:/usr/local/sbin:$PATH
+# Set a sensible default PATH
+# ~/.bin is where we will keep custom executables
+export PATH=$HOME/.bin:/opt/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:$PATH
+
+# Set a sensible default MANPATH as well
 export MANPATH=/opt/man:/opt/share/man:$MANPATH
 
 # vi: ft=sh
