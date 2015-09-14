@@ -1,7 +1,8 @@
 export NODE_PATH="$NODE_PATH:/usr/local/lib/node:/usr/local/lib/node_modules:./node_modules"
 export PATH="./node_modules/.bin:$PATH"
 alias node="env NODE_NO_READLINE=1 rlwrap node"
+export NVM_DIR=~/.nvm
 
-[ -s $HOME/.nvm/nvm.sh ] && . $HOME/.nvm/nvm.sh # This loads NVM
+source $(brew --prefix nvm)/nvm.sh
 
 # vi: ft=sh
