@@ -23,6 +23,7 @@ Plug 'kchmck/vim-coffee-script'
 Plug 'kien/ctrlp.vim'
 Plug 'kien/rainbow_parentheses.vim', { 'for': ['clojure', 'scheme', 'lisp'] }
 Plug 'vim-ruby/vim-ruby'
+Plug 'leafgarland/typescript-vim'
 Plug 'mxw/vim-jsx'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'nicholaides/words-to-avoid.vim'
