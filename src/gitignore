@@ -8,4 +8,5 @@
 .netrwhist
 .rbenv-version
 .ruby-version
+.vimrc
 tags
