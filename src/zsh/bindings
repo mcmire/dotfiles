@@ -75,4 +75,7 @@ bindkey -M viins '^X,' _history-complete-newer \
                  '^X/' _history-complete-older \
                  '^X`' _bash_complete-word
 
+autoload -U select-word-style
+select-word-style bash
+
 # vi: ft=sh
