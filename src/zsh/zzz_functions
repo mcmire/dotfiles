@@ -60,6 +60,10 @@ function git-undo() {
   git unstage "$@" && git checkout "$@"
 }
 
+function git-merge() {
+  gco master && gm $1 && git push && gbd $1
+}
+
 nt() {
   echo "Just use Cmd-T!"
 }
