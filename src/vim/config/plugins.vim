@@ -118,7 +118,6 @@ augroup END
 " --- vim-tmux-runner ---
 
 let g:VtrClearSequence = "clear"
-nmap <leader>p :VtrKillRunner<CR>
 nmap <leader>o :VtrOpenRunner({'orientation': 'h', 'percentage': 35})<CR>
 
 "--- vim-rspec-runner ---
