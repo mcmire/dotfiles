@@ -178,6 +178,9 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_sass_checkers = []
 
+let g:syntastic_eruby_ruby_quiet_messages =
+    \ {'regex': 'possibly useless use of a variable in void context'}
+
 "--- vim-auto-save
 
 "let g:auto_save = 1
