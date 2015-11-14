@@ -194,3 +194,15 @@ let g:AutoPairsShortcutToggle = "<Leader>apt"
 let g:AutoPairsShortcutFastWrap = "<Leader>apw"
 let g:AutoPairsShortcutJump = "<Leader>apj"
 let g:AutoPairsShortcutBackInsert = "<C-n>"
+
+"-- vim-tmux-navigator
+
+" Define these manually so that when this file is re-sourced,
+" these mappings do not mysteriously go away
+
+let g:tmux_navigator_no_mappings = 1
+
+nmap <silent> <C-h> :TmuxNavigateLeft<cr>
+nmap <silent> <C-j> :TmuxNavigateDown<cr>
+nmap <silent> <C-k> :TmuxNavigateUp<cr>
+nmap <silent> <C-l> :TmuxNavigateRight<cr>
