@@ -6,21 +6,19 @@ I use Vim daily. I made my own configuration. And here it is!
 
 ### Neovim
 
-This configuration assumes that you are using Neovim. You can install this using
+First of all, I'm using Neovim, not straight Vim. You can install this using
 Homebrew:
 
     brew install neovim/neovim/neovim
 
-If you are using my [dotfiles][dotfiles] then you can move on to the next step,
-as I've set up both `vim` and `vi` to open Neovim. Otherwise, you'll need to add
-them yourself. Configure your shell to add the following aliases:
+If you are using my [dotfiles][dotfiles], then you can move on to the next step,
+as I've set up `v` to open Neovim. Otherwise, you'll need to add them yourself.
+Configure your shell to add the following alias:
 
-    alias v="neovim"
-    alias vi="neovim"
-    alias vim="neovim"
+    alias v="nvim"
 
-Now you can simply say `v` to start Neovim (or, if you don't like that, you can
-still use `vi` or `vim`).
+Now you can simply say `v` to start Neovim (which I'll simply refer to as Vim
+from here on out).
 
 ### iTerm / Terminal
 
@@ -35,24 +33,26 @@ Powerline characters.**
 
 ## Installation
 
-First, clone this repo somewhere. I recommend placing it in the same place that
-you usually store code because you may want to come back to it later and make
-modifications. If you do plan on making modifications, I recommend forking this
-repo first.
+First, you need to download this repo to your computer somehow. You'll probably
+want to come back to these files later, make modifications to them, and push
+them up, so I recommend forking this repo. Put it in a convenient place you'll
+remember, such as the same place you store code.
 
-Next, run the install script:
+If you already have Vim installed, then you'll want to make sure you remove all
+of those configuration files first. At a minimum, you'll want to run:
 
-    script/install
+    mv ~/.vim ~/.vim.old
+    mv ~/.vimrc ~/.vimrc.old
 
-By default this will copy the files to your home directory, but if you've
-forked this repo and plan on developing it further, then you may want to create
-symlinks instead:
+Next, run the install script. Since you probably forked the repo in the first
+step above, you'll want to symlink all of the files in this repo to appropriate
+places in your HOME directory. You can do that with:
 
     script/install --link
 
 If you want to know what this will do first, say:
 
-    script/install --dry-run
+    script/install --link --dry-run
 
 For further help, say:
 
@@ -60,19 +60,15 @@ For further help, say:
 
 ## Post install
 
-Once all files are in place, run
+Now you're ready to install a bunch of Vim plugins. You can do that by opening
+Vim (remember, `v`) and running:
 
-    git submodule update --init
+    :PlugInstall
 
-This will install NeoBundle which is necessary for installing the other Vim
-plugins.
+After you run this, close Vim and re-open it.
 
-Finally, open Vim and run
-
-    :NeoBundleInstall
-
-You shouldn't have any problems doing this, but if you do, please [create an
-issue][issues].
+You shouldn't have any problems doing this step, but if you do, please [create
+an issue][issues].
 
 ## What's inside
 
@@ -80,7 +76,7 @@ Here's a rundown of (almost) everything my configuration does:
 
 ### Basics
 
-* Use NeoBundle to manage plugins
+* Use VimPlug to manage plugins
 * Show line numbers
 * Show line/column in status bar
 * Hide buffers when they are not displayed (vs. unloading them)
@@ -99,7 +95,7 @@ Here's a rundown of (almost) everything my configuration does:
 ### Colors
 
 * Enable 256-color support
-* Use mokolai color scheme (customized by yours truly)
+* Use [Solarized] color scheme
 * Set four color columns at 72, 80, 100, and 120 characters
 
 ### Whitespace
@@ -191,11 +187,6 @@ Here's a rundown of (almost) everything my configuration does:
 * Open at the top instead of the bottom
 * Use Ag for searching so it's faster
 
-#### FormatComment
-
-* Map `<Leader>qc` to use the FormatComment plugin to format comments. (This may
-  or may not work better than `<Leader>gqc`.)
-
 #### IndentLines
 
 * Use `¦` to show indentation levels. (This is more handy than you realize.)
@@ -217,13 +208,6 @@ Here's a rundown of (almost) everything my configuration does:
 * When splitting a line in Ruby that looks like `foo :x => 'y'`, don't
   add curly braces. (At least I think this is what this does)
 
-#### vim-session
-
-* Save the current session every 10 minutes
-* When opening vim, open the current session if one has been saved
-* Map `<Leader>ss` as a shortcut for `:SaveSession`
-* Map `<Leader>so` as a shortcut for `:OpenSession`
-
 #### vim-flavored-markdown
 
 * Ensure that *.md and *.markdown files are highlighted as GitHub-flavored
@@ -240,7 +224,7 @@ importance:
 
 #### Essentials
 
-* [NeoBundle][vim-neobundle]
+* [VimPlug][vim-plug]
 * [NERDTree][vim-nerdtree]
 * [Ctrl-P][vim-ctrl-p]
 * [Ag][vim-ag]
@@ -279,7 +263,7 @@ importance:
 
 Elliot Winkler (<elliot.winkler@gmail.com>)
 
-[vim-neobundle]: http://github.com/Shougo/NeoBundle
+[vim-plug]: https://github.com/junegunn/vim-plug
 [vim-nerdtree]: http://github.com/scrooloose/nerdtree
 [vim-ctrl-p]: http://github.com/kien/ctrlp.vim
 [vim-ag]: http://github.com/rking/ag.vim'
@@ -311,3 +295,4 @@ Elliot Winkler (<elliot.winkler@gmail.com>)
 [issues]: http://github.com/mcmire/vimfiles/issues
 [dotfiles]: http://github.com/mcmire/dotfiles
 [powerline-fonts]: https://github.com/Lokaltog/powerline-fonts
+[Solarized]: https://github.com/altercation/solarized
