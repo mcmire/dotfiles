@@ -1,5 +1,5 @@
+!src/config/nvim/bundle/neobundle.vim
+src/config/nvim/bundle
+src/config/nvim/bundle/.neobundle
 src/vim/.netrwhist
-src/vim/bundle
-!src/vim/bundle/neobundle.vim
-src/vim/bundle.old
 src/vim/sessions/*

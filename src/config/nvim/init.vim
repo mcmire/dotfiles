@@ -1,0 +1,16 @@
+source ~/.config/nvim/config/pre_config.vim
+source ~/.config/nvim/config/basics.vim
+source ~/.config/nvim/config/magic.vim
+source ~/.config/nvim/config/colors.vim
+source ~/.config/nvim/config/whitespace.vim
+source ~/.config/nvim/config/line_wrapping.vim
+source ~/.config/nvim/config/search.vim
+source ~/.config/nvim/config/tab_completion.vim
+source ~/.config/nvim/config/filetype.vim
+source ~/.config/nvim/config/folding.vim
+source ~/.config/nvim/config/window.vim
+source ~/.config/nvim/config/scroll.vim
+source ~/.config/nvim/config/cursor.vim
+source ~/.config/nvim/config/mappings.vim
+source ~/.config/nvim/config/plugins.vim
+source ~/.config/nvim/config/optimizations.vim

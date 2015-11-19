@@ -2,10 +2,7 @@
 runtime! macros/matchit.vim
 
 " Easy way to update/reload vim files
-nmap <Leader>evi :tabe ~/.vimrc<CR>
 nmap <Leader>evb :tabe ~/.vimrc.bundles<CR>
-nmap <Leader>evg :tabe ~/.gvimrc<CR>
-nmap <Leader>rv :source ~/.vimrc<CR>
 
 " Paste mode (because sometimes I am lazy)
 set pastetoggle=<F3>

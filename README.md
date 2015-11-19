@@ -4,39 +4,41 @@ I use Vim daily. I made my own configuration. And here it is!
 
 ## Prerequisites
 
-### Vim / MacVim
+### Neovim
 
-This configuration assumes that you are using Terminal Vim. I recommend using
-the MacVim version of Vim as it comes with support for Ruby, Python, etc. You
-can install this via Homebrew:
+This configuration assumes that you are using Neovim. You can install this using
+Homebrew:
 
-    brew install macvim
+    brew install neovim/neovim/neovim
 
 If you are using my [dotfiles][dotfiles] then you can move on to the next step,
-as I've set up both `vim` and `vi` to open MacVim in terminal mode. Otherwise,
-you'll need to add them yourself. Drop this in your ~/.bashrc or ~/.zshrc:
+as I've set up both `vim` and `vi` to open Neovim. Otherwise, you'll need to add
+them yourself. Configure your shell to add the following aliases:
 
-    alias vim="mvim -v"
-    alias vi="vim"
+    alias v="neovim"
+    alias vi="neovim"
+    alias vim="neovim"
 
-If you are not using Terminal Vim then this configuration will also work for
-MacVim proper, although I don't update ~/.gvimrc anymore.
+Now you can simply say `v` to start Neovim (or, if you don't like that, you can
+still use `vi` or `vim`).
 
 ### iTerm / Terminal
 
 You'll also want to make sure your terminal is using a Powerline-compatible
 font, that is, a font that's patched to support Powerline characters (such as
 arrows and icons and things). There's a list of fonts you can choose from
-[here][powerline-fonts]. Whichever one you download, drop it in ~/Library/Fonts
-and you can use it right away. **NOTE: If you are using iTerm, make sure that
-the "non-ASCII" font is also set to the same Powerline font as the "normal"
-font, otherwise you'll get strange "X" characters in place of the Powerline
-characters.**
+[here][powerline-fonts]. Whichever one you download, drop it in
+`~/Library/Fonts` and you can use it right away. **NOTE: If you are using iTerm,
+make sure that the "non-ASCII" font is also set to the same Powerline font as
+the "normal" font, otherwise you'll get strange "X" characters in place of the
+Powerline characters.**
 
 ## Installation
 
-First, clone this repo somewhere. I recommend you put it in your ~/code folder
-because you may want to come back to it later, or fork it.
+First, clone this repo somewhere. I recommend placing it in the same place that
+you usually store code because you may want to come back to it later and make
+modifications. If you do plan on making modifications, I recommend forking this
+repo first.
 
 Next, run the install script:
 
@@ -136,7 +138,7 @@ Here's a rundown of (almost) everything my configuration does:
 * Ensure config.ru, Gemfile, Rakefile, Thorfile, Vagrantfile, Appraisals, and
   Bowerfile are all syntax-highlighted as Ruby files
 * Ensure Haml Coffee files are highlighted as Haml files
-* Ensure JSON and .jshintc files are highlighed as JavaScript files
+* Ensure JSON and *.jshintc files are highlighed as JavaScript files
 * Make Python files follow PEP8
 
 ### Folding
@@ -161,11 +163,9 @@ Here's a rundown of (almost) everything my configuration does:
 ### Various mappings
 
 * Map `%` to bounce from `do` to `end` in Ruby files
-* Map `<Leader>evi` to open ~/.vimrc, `<Leader>evb` to open ~/.vimrc.bundles,
-  `<Leader>rv` to reload ~/.vimrc
+* Map `<Leader>evb` to open ~/.vimrc.bundles
 * Map `F3` to easily toggle paste mode
 * Map `Ctrl-{h,l,k,j}` to move between windows (left, right, up, down)
-* Map `Ctrl-{e,t}` to move between tabs (left, right)
 * Map `Q` to re-format the selection
 * Map `Y` to yank to the end of the line (like `C` and `D`)
 * No-op `K` as it doesn't do anything useful
@@ -173,18 +173,15 @@ Here's a rundown of (almost) everything my configuration does:
 * Map `Ctrl-\` to clear the current highlight (no more typing `/asdf` or
   somesuch)
 * Map `<Leader>tc` to close a tab
-* Map `<Leader>p$` to paste and overwrite the rest of the line
 * Map `<Leader>po` to open a new line and paste into it
 * Map `<Leader>pc` to paste overwriting the current line
-* Map `<Leader>pw` to paste overwriting the current/next word
-* Map `<Leader>gqc` as a better way of reformatting comments which joins
-  everything and then reapplies hard wrapping (so if `Q` doesn't work, try this)
-* Map `<Leader>syn` to identify the syntax group at the cursor
 
 ### Plugins
 
 #### NERDTree
 
+* Open NERDTree as soon as you start Vim (I don't like that annoying splash
+  screen)
 * Map `<Leader>tt` to toggle the NERD tree
 * Map `<Leader>tf` to open the NERD tree and then reveal the current file
 * Close vim if the only window left open is a NERD tree
@@ -226,10 +223,6 @@ Here's a rundown of (almost) everything my configuration does:
 * When opening vim, open the current session if one has been saved
 * Map `<Leader>ss` as a shortcut for `:SaveSession`
 * Map `<Leader>so` as a shortcut for `:OpenSession`
-
-#### vim-ruby
-
-* Don't be so annoying with regard to indentation (using [my fork][vim-ruby])
 
 #### vim-flavored-markdown
 
