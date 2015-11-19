@@ -1,6 +1,3 @@
-# set default git editor
-export GIT_EDITOR=vim
-
 # hubba hubba
 alias git=hub
 if type compdef >/dev/null; then
