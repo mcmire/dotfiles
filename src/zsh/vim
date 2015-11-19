@@ -1,7 +1,14 @@
 export EDITOR=nvim
 
-alias vi="nvim"
-alias vim="nvim"
+alias v=nvim
+
+function vi() {
+  echo "Just use v!"
+}
+
+function vim() {
+  echo "Just use v!"
+}
 
 # This fixes neovim so that <Ctrl-H> won't send a backspace
 # if it's overridden to do something else
