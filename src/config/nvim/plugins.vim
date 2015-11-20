@@ -23,7 +23,7 @@ Plug 'juvenn/mustache.vim'
 Plug 'kana/vim-textobj-user'
 Plug 'kchmck/vim-coffee-script'
 Plug 'kien/ctrlp.vim'
-Plug 'kien/rainbow_parentheses.vim', { 'for': ['clojure', 'scheme', 'lisp'] }
+Plug 'kien/rainbow_parentheses.vim'
 Plug 'vim-ruby/vim-ruby'
 Plug 'leafgarland/typescript-vim'
 Plug 'mxw/vim-jsx'
