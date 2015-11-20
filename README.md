@@ -20,18 +20,43 @@ Configure your shell to add the following alias:
 Now you can simply say `v` to start Neovim (which I'll simply refer to as Vim
 from here on out).
 
-### iTerm / Terminal
+### iTerm
 
-You'll also want to make sure your terminal is using a Powerline-compatible
-font, that is, a font that's patched to support Powerline characters (such as
-arrows and icons and things). There's a list of fonts you can choose from
-[here][powerline-fonts]. Whichever one you download, drop it in
-`~/Library/Fonts` and you can use it right away. **NOTE: If you are using iTerm,
-make sure that the "non-ASCII" font is also set to the same Powerline font as
-the "normal" font, otherwise you'll get strange "X" characters in place of the
-Powerline characters.**
+You'll need to use iTerm. Mainly this is because presently, it needs to be
+configured to work with Neovim -- in the future that won't be necessary, but for
+now, that's what works best.
+
+With that out of the way, there are three configuration changes you'll need to
+make with regard to iTerm.
+
+* You'll want to change the color scheme to Solarized Dark/Light. You can
+  download the color scheme files [here][solarized]. Look for a directory that
+  corresponds to iTerm, then double-click on the color scheme files (dark *and*
+  light) to install them.
+
+* You'll want to make sure iTerm is using a Powerline-compatible
+  font, that is, a font that's patched to support Powerline characters (such as
+  arrows and icons and things). There's a list of fonts you can choose from
+  [here][powerline-fonts]. Whichever one you download, drop it in
+  `~/Library/Fonts` and you can use it right away. **Make sure that the
+  "non-ASCII" font is also set to the same Powerline font as the "normal" font,
+  otherwise you'll get strange "X" characters in place of the Powerline
+  characters.**
+
+* You'll also need to go into Preferences and override the mapping for
+  <kbd>Ctrl-H</kbd>. Right now there's a [bug][neovim-bug] in Neovim whereby it
+  treats <kbd>Ctrl-H</kbd> as <kbd>Backspace</kbd>. To fix this, you'll need to
+  make <kbd>Ctrl-H</kbd> equivalent to `<Escape>[104;5u`. To do this:
+
+  1. Inside of **Preferences**, click on **Keys**.
+  2. Press `+` to add a new mapping.
+  3. Click inside of **Keyboard Shortcut**, then press <kbd>Ctrl-H</kbd>.
+  4. For **Action**, choose "Send Escape Action", and for **Esc+**, type
+     `[104;5u`.
 
 ## Installation
+
+Now for the fun stuff.
 
 First, you need to download this repo to your computer somehow. You'll probably
 want to come back to these files later, make modifications to them, and push
@@ -95,7 +120,8 @@ Here's a rundown of (almost) everything my configuration does:
 ### Colors
 
 * Enable 256-color support
-* Use [Solarized] color scheme
+* Use [Solarized][solarized] color scheme -- use `:ToggleTheme` to switch
+  between dark and light
 * Set four color columns at 72, 80, 100, and 120 characters
 
 ### Whitespace
@@ -295,4 +321,6 @@ Elliot Winkler (<elliot.winkler@gmail.com>)
 [issues]: http://github.com/mcmire/vimfiles/issues
 [dotfiles]: http://github.com/mcmire/dotfiles
 [powerline-fonts]: https://github.com/Lokaltog/powerline-fonts
-[Solarized]: https://github.com/altercation/solarized
+[solarized]: https://github.com/altercation/solarized
+[neovim-bug]: https://github.com/neovim/neovim/issues/2048
+[neovim-bugfix-iterm]: https://github.com/neovim/neovim/issues/2048#issuecomment-98192906
