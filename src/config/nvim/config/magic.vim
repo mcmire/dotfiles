@@ -8,13 +8,11 @@ augroup local
     \ endif
 augroup END
 
-" Auto-source vim config when modified
+" Auto-reload configuration files when they're modified
 " http://vimcasts.org/episodes/updating-your-vimrc-file-on-the-fly/
 augroup local
-  autocmd BufWritePost ~/.vimrc source %
-  autocmd BufWritePost ~/.vimrc.bundles source %
-  autocmd BufWritePost ~/.vim/config/*.vim source ~/.vimrc
-  autocmd BufWritePost ~/.gvimrc source %
+  autocmd BufWritePost ~/.config/nvim/{init,plugins}.vim source %
+  autocmd BufWritePost ~/.config/nvim/config/*.vim source ~/.config/nvim/init.vim
 augroup END
 
 "-----------

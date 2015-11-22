@@ -10,7 +10,9 @@ set number
 " Show line and column number in status bar
 set ruler
 " When I enter text, use UTF-8
-set encoding=utf-8
+if &encoding == ""
+  set encoding=utf-8
+endif
 " Livin' on the edge!
 set noswapfile
 " Store lots of :cmdline history
