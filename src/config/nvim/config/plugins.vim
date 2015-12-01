@@ -42,7 +42,7 @@ noremap <Leader>qc :call FormatComment()<CR>
 "--- indentLines ---
 
 let g:indentLine_char = '¦'
-let g:indentLine_color_term = 237
+let g:indentLine_color_term = 10
 
 "--- coffee-script ---
 
@@ -206,4 +206,4 @@ let g:togglecursor_leave = 'block'
 
 "--- pi_paren (which is builtin)
 
-highlight MatchParen ctermbg=61 ctermfg=254
+highlight MatchParen ctermbg=13 ctermfg=0
