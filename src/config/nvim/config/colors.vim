@@ -42,3 +42,6 @@ set cursorline
 call s:UseDarkTheme()
 
 highlight ColorColumn ctermbg=235
+
+highlight SignColumn ctermbg=0
+highlight LineNr ctermbg=0
