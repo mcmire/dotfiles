@@ -1,12 +1,16 @@
 "--- NERDTree ---
 
 let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$', '^tags$']
+
+" Auto-change cwd when changing tree root
+let NERDTreeChDirMode=2
+
 nnoremap <silent> <Leader>tt :NERDTreeToggle<CR>
+
 " Open the nerd tree window first, in CWD, so the find doesn't change
 " the tree root.
 nnoremap <silent> <Leader>tf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
-" Auto-change cwd when changing tree root
-let NERDTreeChDirMode=2
+
 " Close vim if the only window left open is a NERDTree
 augroup local
   autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
@@ -163,31 +167,13 @@ let g:rbpt_colorpairs = [
 " No auto-pairs, thank you
 let g:sexp_enable_insert_mode_mappings = 0
 
-"--- syntastic
+"--- Neomake
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+let g:neomake_error_sign = {'text': '❌ '}
+let g:neomake_warning_sign = {'text': '⚠️ '}
+let g:neomake_message_sign = {'text': 'ℹ️ '}
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_auto_jump = 0
-let g:syntastic_check_on_wq = 1
-let g:syntastic_check_on_open = 0
-
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_sass_checkers = []
-let g:syntastic_vim_checkers = ['vint']
-
-let g:syntastic_eruby_ruby_quiet_messages =
-    \ {'regex': 'possibly useless use of a variable in void context'}
-
-"--- vim-auto-save
-
-"let g:auto_save = 1
-"let g:auto_save_in_insert_mode = 0
-"let g:auto_save_no_updatetime = 1
-"set updatetime=2000
+autocmd! BufWritePost * Neomake
 
 "-- auto-pairs
 
