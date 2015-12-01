@@ -10,7 +10,6 @@ source ~/.config/nvim/config/filetype.vim
 source ~/.config/nvim/config/folding.vim
 source ~/.config/nvim/config/window.vim
 source ~/.config/nvim/config/scroll.vim
-source ~/.config/nvim/config/cursor.vim
 source ~/.config/nvim/config/mappings.vim
 source ~/.config/nvim/config/plugins.vim
 source ~/.config/nvim/config/optimizations.vim

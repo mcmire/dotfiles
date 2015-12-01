@@ -17,8 +17,8 @@ Configure your shell to add the following alias:
 
     alias v="nvim"
 
-Now you can simply say `v` to start Neovim (which I'll simply refer to as Vim
-from here on out).
+Now you can say `v` to start Neovim (which I'll simply refer to as Vim from here
+on out).
 
 ### iTerm
 
@@ -177,11 +177,6 @@ Here's a rundown of (almost) everything my configuration does:
 * Always show at least 3 lines above/below cursor and at least 7 columns next to
   the cursor even when scrolling
 
-### Cursor
-
-* Use a line for the cursor (instead of a block) when entering insert mode under
-  iTerm2, and also make sure this appears under tmux too
-
 ### Various mappings
 
 * Map `%` to bounce from `do` to `end` in Ruby files
@@ -256,18 +251,17 @@ importance:
 * [Ag][vim-ag]
 * [Airline][vim-airline]
 * [SuperTab][vim-supertab]
-* [vim-git][vim-git]
-* [ragtag][vim-ragtag]
+* [togglecursor][vim-togglecursor]
+* [NERDCommenter][vim-nerdcommenter]
+* [endwise][vim-endwise]
 * [surround][vim-surround]
+* [vim-git][vim-git]
+* [vim-textobj-rubyblock][vim-textobj-rubyblock]
 
 #### Not-so-essentials but still useful
 
-* [Syntastic][vim-syntastic]
-* [vim-textobj-rubyblock][vim-textobj-rubyblock]
+* [Neomake][neomake]
 * [indentLine][vim-indentline]
-* [NERDCommenter][vim-nerdcommenter]
-* [vim-session][vim-session]
-* [ZoomWin][vim-zoomwin]
 
 #### Syntax plugins
 
@@ -296,8 +290,7 @@ Elliot Winkler (<elliot.winkler@gmail.com>)
 [vim-airline]: http://github.com/bling/vim-airline
 [vim-supertab]: http://github.com/ervandew/supertab
 [vim-git]: http://github.com/tpope/vim-git
-[vim-ragtag]: http://github.com/tpope/vim-ragtag
-[vim-syntastic]: http://github.com/scrooloose/syntastic
+[neomake]: https://github.com/benekastah/neomake
 [vim-surround]: http://github.com/tpope/vim-surround
 [vim-textobj-rubyblock]: http://github.com/nelstrom/vim-textobj-rubyblock
 [vim-indentline]: http://github.com/Yggdroot/indentLine
@@ -324,3 +317,5 @@ Elliot Winkler (<elliot.winkler@gmail.com>)
 [solarized]: https://github.com/altercation/solarized
 [neovim-bug]: https://github.com/neovim/neovim/issues/2048
 [neovim-bugfix-iterm]: https://github.com/neovim/neovim/issues/2048#issuecomment-98192906
+[vim-togglecursor]: https://github.com/jszakmeister/vim-togglecursor
+[vim-endwise]: https://github.com/tpope/vim-endwise

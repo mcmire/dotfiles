@@ -197,3 +197,9 @@ nmap <silent> <C-l> :TmuxNavigateRight<cr>
 "--- Limelight
 
 let g:limelight_conceal_ctermfg = 239
+
+"--- vim-togglecursor
+
+let g:togglecursor_default = 'block'
+let g:togglecursor_insert = 'line'
+let g:togglecursor_leave = 'block'
