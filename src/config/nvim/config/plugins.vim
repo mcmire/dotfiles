@@ -203,3 +203,7 @@ let g:limelight_conceal_ctermfg = 239
 let g:togglecursor_default = 'block'
 let g:togglecursor_insert = 'line'
 let g:togglecursor_leave = 'block'
+
+"--- pi_paren (which is builtin)
+
+highlight MatchParen ctermbg=61 ctermfg=254
