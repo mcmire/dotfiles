@@ -1,3 +1,6 @@
+" Solarized color values:
+" https://github.com/altercation/vim-colors-solarized/blob/master/colors/solarized.vim#L91
+
 function! s:UseLightTheme()
   let s:color_scheme_type="light"
   set background=light
@@ -37,3 +40,5 @@ set cursorline
 
 " Set default theme
 call s:UseDarkTheme()
+
+highlight ColorColumn ctermbg=235
