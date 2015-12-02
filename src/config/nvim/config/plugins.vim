@@ -207,3 +207,9 @@ let g:togglecursor_leave = 'block'
 "--- pi_paren (which is builtin)
 
 highlight MatchParen ctermbg=13 ctermfg=0
+
+"--- vim-snipmate
+
+let g:snipMate = {}
+let g:snipMate.scope_aliases = {}
+let g:snipMate.scope_aliases['ruby'] = 'ruby,ruby-rails,ruby-2.0'
