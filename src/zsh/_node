@@ -1,0 +1,12 @@
+export NODE_PATH="/usr/local/lib/node:/usr/local/lib/node_modules:./node_modules:$NODE_PATH"
+export NVM_DIR=~/.nvm
+
+if [[ -o login ]]; then
+  export PATH="./node_modules/.bin:$PATH"
+else
+  export PATH="~/.nvm/versions/node/v4.0.0/bin:./node_modules/.bin:$PATH"
+fi
+
+alias node="env NODE_NO_READLINE=1 rlwrap node"
+
+# vi: ft=sh

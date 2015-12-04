@@ -6,4 +6,12 @@ export RUBY_HEAP_SLOTS_GROWTH_FACTOR=1
 export RUBY_GC_MALLOC_LIMIT=1000000000
 export RUBY_HEAP_FREE_MIN=500000
 
+if [[ -o login ]]; then
+  export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
+else
+  export PATH="~/.rbenv/versions/2.2.3/bin:$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
+fi
+
+CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl --without-tcl --without-tk"
+
 # vi: ft=sh

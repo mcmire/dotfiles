@@ -1,9 +1,0 @@
-export NODE_PATH="$NODE_PATH:/usr/local/lib/node:/usr/local/lib/node_modules:./node_modules"
-export PATH="./node_modules/.bin:$PATH"
-export NVM_DIR=~/.nvm
-
-alias node="env NODE_NO_READLINE=1 rlwrap node"
-
-source /usr/local/opt/nvm/nvm.sh
-
-# vi: ft=sh
