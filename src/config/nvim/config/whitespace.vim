@@ -5,7 +5,7 @@ set list listchars=tab:⊢—,trail:⋅,nbsp:⋅,extends:⨠
 set showbreak=‣
 
 " Highlight trailing whitespace
-highlight ExtraWhitespace ctermbg=red guibg=red
+highlight ExtraWhitespace ctermbg=160 ctermfg=230
 augroup local
   autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
   autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
