@@ -31,9 +31,9 @@ set modeline modelines=10
 " http://stackoverflow.com/questions/2063175/vim-insert-mode-comments-go-to-start-of-line
 set nosmartindent
 
-" Per-directory .vimrc files
-set exrc            " enable per-directory .vimrc files
-set secure          " disable unsafe commands in local .vimrc files
+" Per-directory .nvimrc files
+set exrc            " enable per-directory .nvimrc files
+set secure          " disable unsafe commands in local .nvimrc files
 
 " Allow backspacing over everything in insert mode
 set backspace=indent,eol,start
