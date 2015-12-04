@@ -217,3 +217,4 @@ let g:snipMate.scope_aliases['ruby'] = 'ruby,ruby-rails,ruby-2.0'
 "--- vim-diminactive
 
 let g:diminactive_use_syntax = 1
+let g:diminactive_enable_focus = 1
