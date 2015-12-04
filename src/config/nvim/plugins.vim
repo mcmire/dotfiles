@@ -7,7 +7,7 @@ Plug 'blueyed/vim-diminactive'
 Plug 'briancollins/vim-jst'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'christoomey/vim-tmux-runner'
+Plug 'mcmire/vim-tmux-runner', { 'branch': 'ew-add-async' }
 Plug 'ciaranm/detectindent'
 Plug 'djbender/vim-slim'
 Plug 'effkay/argonaut.vim'
