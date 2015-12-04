@@ -37,3 +37,6 @@ set secure          " disable unsafe commands in local .nvimrc files
 
 " Allow backspacing over everything in insert mode
 set backspace=indent,eol,start
+
+" Show partial commands in status line
+set showcmd
