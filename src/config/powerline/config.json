@@ -1,7 +1,8 @@
 {
   "ext": {
     "tmux": {
-      "theme": "mcmire"
+      "theme": "mcmire",
+      "colorscheme": "solarized"
     }
   }
 }
