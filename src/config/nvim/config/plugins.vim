@@ -68,7 +68,6 @@ let g:airline_right_alt_sep = ''
 let g:airline_symbols_branch = ''
 let g:airline_symbols_readonly = ''
 let g:airline_symbols_linenr = ''
-let g:airline_theme = 'dark'
 set laststatus=2   " otherwise the airline only appears for split windows
 set noshowmode     " hide default mode text (-- INSERT -- below status line)
 
@@ -196,6 +195,7 @@ nmap <silent> <C-l> :TmuxNavigateRight<cr>
 
 "--- Limelight
 
+" TODO: Fix this color
 let g:limelight_conceal_ctermfg = 239
 
 "--- vim-togglecursor
@@ -203,10 +203,6 @@ let g:limelight_conceal_ctermfg = 239
 let g:togglecursor_default = 'block'
 let g:togglecursor_insert = 'line'
 let g:togglecursor_leave = 'block'
-
-"--- pi_paren (which is builtin)
-
-highlight MatchParen ctermbg=13 ctermfg=0
 
 "--- vim-snipmate
 

@@ -1,33 +1,41 @@
 " Solarized color values:
 " https://github.com/altercation/vim-colors-solarized/blob/master/colors/solarized.vim#L91
 
-function! s:UseLightTheme()
+function! s:UseLightColorScheme()
   let s:color_scheme_type="light"
   set background=light
   silent! colorscheme solarized
-  hi ColorColumn guibg=#c0c0c0 ctermbg=231
   let g:airline_theme="solarized"
+  let g:airline_solarized_bg="dark"
+  highlight ColorColumn ctermbg=7
+  highlight SignColumn ctermbg=7
+  highlight LineNr ctermbg=7
+  highlight MatchParen ctermbg=13 ctermfg=7
 endfunction
 
-function! s:UseDarkTheme()
+function! s:UseDarkColorScheme()
   let s:color_scheme_type="dark"
   set background=dark
   silent! colorscheme solarized
-  hi ColorColumn guibg=#17191A ctermbg=234
   let g:airline_theme="solarized"
+  let g:airline_solarized_bg="light"
+  highlight ColorColumn ctermbg=0
+  highlight SignColumn ctermbg=0
+  highlight LineNr ctermbg=0
+  highlight MatchParen ctermbg=13 ctermfg=0
 endfunction
 
-function! s:ToggleTheme()
+function! s:ToggleColorScheme()
   if s:color_scheme_type == "dark"
-    call s:UseLightTheme()
+    call s:UseLightColorScheme()
   else
-    call s:UseDarkTheme()
+    call s:UseDarkColorScheme()
   endif
 endfunction
 
-command! -nargs=0 ToggleTheme call s:ToggleTheme()
+command! -nargs=0 ToggleColorScheme call s:ToggleColorScheme()
 
-nnoremap <Leader>th :ToggleTheme<CR>
+nnoremap <Leader>th :ToggleColorScheme<CR>
 
 " The terminal has 256 color support
 set t_Co=256
@@ -39,8 +47,4 @@ set colorcolumn=72,80,100,120
 set cursorline
 
 " Set default theme
-call s:UseDarkTheme()
-
-highlight ColorColumn ctermbg=0
-highlight SignColumn ctermbg=0
-highlight LineNr ctermbg=0
+call s:UseDarkColorScheme()
