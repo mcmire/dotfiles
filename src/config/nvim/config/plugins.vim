@@ -209,3 +209,8 @@ let g:togglecursor_leave = 'block'
 let g:snipMate = {}
 let g:snipMate.scope_aliases = {}
 let g:snipMate.scope_aliases['ruby'] = 'ruby,ruby-rails,ruby-2.0'
+
+"--- ruby_bashrockets
+
+command! -range HashrocketStyle :<line1>,<line2>Bashrockets
+command! -range KeywordArgumentStyle :<line1>,<line2>Hashrockets

@@ -8,6 +8,7 @@ Plug 'cakebaker/scss-syntax.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'mcmire/vim-tmux-runner', { 'branch': 'ew-add-async' }
 Plug 'ciaranm/detectindent'
+Plug 'danchoi/ruby_bashrockets.vim'
 Plug 'djbender/vim-slim'
 Plug 'effkay/argonaut.vim'
 Plug 'elixir-lang/vim-elixir'
