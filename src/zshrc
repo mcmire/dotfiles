@@ -13,6 +13,7 @@ source ~/.zsh/perl6
 source ~/.zsh/rails
 source ~/.zsh/rbenv
 source ~/.zsh/tmux
+source ~/.zsh/torch
 source ~/.zsh/travis
 source ~/.zsh/unicode
 source ~/.zsh/vim
