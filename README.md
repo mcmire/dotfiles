@@ -5,22 +5,18 @@ This is where I keep configuration for zsh, RubyGems, git, and other stuff.
 ## Prerequisites
 
 This configuration is moderately reliant on zsh, so you'll want to install that
-first. Because I am not a zsh guru, I use oh-my-zsh, so install that first:
-
-    git clone http://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-
-Then, set zsh as your default shell:
+first. You can set zsh as your default shell with the following command:
 
     chsh -s zsh
 
-Next, you'll need to install Powerline, which I use for tmux (not vim, which
-uses airline):
+Next, you'll need to install the Powerline support files, which I use for tmux
+(not Vim, which uses Airline):
 
     (sudo) pip install powerline-status
 
 Finally, ensure that you're using tmux 2.0 or higher (this will make it so that
 when you open a new window it keeps the current working directory). If you
-already have tmux, you can update with:
+already have tmux, you can update it with:
 
     brew upgrade tmux
 
