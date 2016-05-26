@@ -10,6 +10,7 @@ source ~/.zsh/java
 source ~/.zsh/mcmire.zsh-theme
 source ~/.zsh/nvm
 source ~/.zsh/perl6
+source ~/.zsh/python
 source ~/.zsh/rails
 source ~/.zsh/rbenv
 source ~/.zsh/tmux

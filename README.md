@@ -12,7 +12,7 @@ first. You can set zsh as your default shell with the following command:
 Next, you'll need to install the Powerline support files, which I use for tmux
 (not Vim, which uses Airline):
 
-    (sudo) pip install powerline-status
+    sudo pip install --user powerline-status
 
 Finally, ensure that you're using tmux 2.0 or higher (this will make it so that
 when you open a new window it keeps the current working directory). If you
@@ -42,6 +42,14 @@ If you want to know what this command will do first, say:
 Finally, for further help, say:
 
     script/install --help
+
+## Known issues
+
+If, after starting tmux, you receive a warning about powerline.conf not being
+able to be loaded, your local Python directory may be owned by root instead of
+you. You can change the ownership like this:
+
+    sudo chown -R $USER:staff ~/Library/Python
 
 ## Author
 
