@@ -11,10 +11,4 @@ function vim() {
   echo "Just use v!"
 }
 
-# This fixes neovim so that <Ctrl-H> won't send a backspace
-# if it's overridden to do something else
-# See: <https://github.com/neovim/neovim/issues/2048>
-#infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > /tmp/$TERM.ti
-#tic /tmp/$TERM.ti
-
 # vim: ft=sh
