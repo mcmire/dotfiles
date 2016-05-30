@@ -2,3 +2,5 @@
 *.tmproj
 *.vim*
 tags
+src/tmux/plugins
+!src/tmux/plugins/tpm

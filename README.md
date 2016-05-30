@@ -25,23 +25,15 @@ already have tmux, you can update it with:
 Next, clone this repo somewhere. I recommend you put it in your `~/code` folder
 because you may want to come back to it later, or fork it.
 
-Then run the `install` script. This will copy all of the files in this repo as
-dotfiles in your home directory:
-
-    script/install
-
-By default this will copy the files, but if you've forked this repo and plan on
-developing it further, then you may want to create symlinks instead:
+Then run the `install` script. The following commands will create symlinks to
+relevant files in the cloned repo so that you can modify them later if need be.
 
     script/install --link
 
-If you want to know what this command will do first, say:
-
-    script/install --dry-run
-
-Finally, for further help, say:
-
-    script/install --help
+Finally, after you've done this, open tmux. You may receive a warning at the top
+of the screen, but ignore that. Press <kbd>Ctrl</kbd> + <kbd>Space<kbd> followed
+by <kbd>Shift</kbd> + <kbd>I<kbd>. This will install plugins that are necessary
+for tmux for fully work.
 
 ## Known issues
 
