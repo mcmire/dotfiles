@@ -1,9 +1,9 @@
 ALIASES_FILE='~/.zsh/zzz_aliases'
 FUNCTIONS_FILE='~/.zsh/zzz_functions'
 
-alias edit-aliases="vi $ALIASES_FILE"
+alias edit-aliases="v $ALIASES_FILE"
 alias view-aliases="less $ALIASES_FILE"
-alias edit-functions="vi $FUNCTIONS_FILE"
+alias edit-functions="v $FUNCTIONS_FILE"
 alias view-functions="less $FUNCTIONS_FILE"
 alias reload-env="source $ALIASES_FILE && source $FUNCTIONS_FILE"
 
