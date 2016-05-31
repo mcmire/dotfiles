@@ -3,17 +3,18 @@
 let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$', '^tags$']
 
 " Auto-change cwd when changing tree root
-let NERDTreeChDirMode=2
+"let NERDTreeChDirMode=2
 
 nnoremap <silent> <Leader>tt :NERDTreeToggle<CR>
 
-" Open the nerd tree window first, in CWD, so the find doesn't change
-" the tree root.
+" <Leader>tf will tell NERDTree to highlight the file that's currently open.
+" The way this works, we open the NERDTree window first in the CWD, so the find
+" command afterward doesn't change the tree root.
 nnoremap <silent> <Leader>tf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 
 " Close vim if the only window left open is a NERDTree
 augroup local
-  autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+  autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isPrimary()) | q | endif
 augroup END
 
 "--- Ctrl-P ---
