@@ -24,6 +24,8 @@ set runtimepath^=~/.vim/bundle/ctrlp
 let g:ctrlp_match_window_bottom = 0
 let g:ctrlp_match_window_reversed = 0
 let g:ctrlp_max_height = 20
+" Use the cwd for CtrlP's working path, not the directory of the open file
+let g:ctrlp_working_path_mode = 'w'
 if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
