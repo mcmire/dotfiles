@@ -1,6 +1,6 @@
 "--- NERDTree ---
 
-let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$', '^tags$']
+let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
 
 " Auto-change cwd when changing tree root
 "let NERDTreeChDirMode=2
