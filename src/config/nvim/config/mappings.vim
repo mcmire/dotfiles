@@ -1,8 +1,8 @@
 " % to bounce from do to end etc.
 runtime! macros/matchit.vim
 
-" Easy way to get to all of the configuration files
-nmap <Leader>evc :tabe ~/.config/nvim<CR>
+" Easy way to reload config
+nmap <Leader>rv :source ~/.config/nvim/init.vim<CR>
 
 " Paste mode (because sometimes I am lazy)
 set pastetoggle=<F3>
