@@ -1,5 +1,5 @@
-" Show at least 3 lines above/below cursor
+" Keep cursor 3 lines away from top and bottom of window
 set scrolloff=3
-" and at least 7 columns next to cursor
-set sidescrolloff=7
+" When soft wrapping is disabled, position cursor horizontally at the edge of
+" the window
 set sidescroll=1
