@@ -1,4 +1,0 @@
-export PATH=$PATH:~/torch/install/bin
-source ~/torch/install/bin/torch-activate
-
-# vi: ft=sh
