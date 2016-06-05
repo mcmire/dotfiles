@@ -32,6 +32,10 @@ endif
 
 noremap <Leader>pt :CtrlPTag<CR>
 
+" Ack.vim
+
+let g:ackprg = 'ag --nogroup --nocolor --column'
+
 "--- NERDCommenter ---
 
 let g:NERDCustomDelimiters = {

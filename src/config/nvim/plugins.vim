@@ -38,7 +38,7 @@ Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'nicholaides/words-to-avoid.vim'
 Plug 'othree/html5-syntax.vim'
 Plug 'pangloss/vim-javascript'
-Plug 'rking/ag.vim', { 'on': 'Ag' }
+Plug 'mileszs/ack.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'tmux-plugins/vim-tmux-focus-events'
