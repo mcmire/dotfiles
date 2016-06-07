@@ -14,8 +14,9 @@ nnoremap <silent> <Leader>tf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 
 " Close vim if the only window left open is a NERDTree
 augroup local
-  autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isPrimary()) | q | endif
+  autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 augroup END
+
 
 "--- Ctrl-P ---
 
