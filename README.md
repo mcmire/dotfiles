@@ -54,6 +54,16 @@ make with regard to iTerm.
   4. For **Action**, choose "Send Escape Action", and for **Esc+**, type
      `[104;5u`.
 
+## Syntax-checking tools
+
+I'm using Neomake as a way to lint source files. In order to lint JavaScript
+files, you'll need executables for these libraries:
+
+* ESLint (`npm install -g eslint`)
+* JSHint (`npm install -g jslint`)
+* Standard JS (`npm install -g standard`)
+* Flow (`brew install flow`)
+
 ## Installation
 
 Now for the fun stuff.
