@@ -176,9 +176,9 @@ let g:sexp_enable_insert_mode_mappings = 0
 
 "--- Neomake
 
-let g:neomake_error_sign = {'text': '❌ '}
-let g:neomake_warning_sign = {'text': '⚠️ '}
-let g:neomake_message_sign = {'text': 'ℹ️ '}
+let g:neomake_error_sign = {'text': 'x'}
+let g:neomake_warning_sign = {'text': '!'}
+let g:neomake_message_sign = {'text': 'i'}
 
 autocmd! BufWritePost * Neomake
 
