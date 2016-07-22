@@ -5,34 +5,36 @@
 # <http://www.acm.uiuc.edu/workshops/zsh/prompt/escapes.html>
 #
 # For help on how colors work, read:
-# <https://wiki.archlinux.org/index.php/zsh#Customizing_the_prompt>
+#
+# * <https://wiki.archlinux.org/index.php/zsh#Customizing_the_prompt>
+# * <https://wiki.archlinux.org/index.php/zsh#Colors>
 
 function Color {
-  echo -ne "\e[${1};1m${2}\e[0m"
+  echo -n "%{$fg[$1]%}$2%{$reset_color%}"
 }
 
 function Color__red {
-  echo "$(Color 31 "$1")"
+  echo "$(Color red "$1")"
 }
 
 function Color__green {
-  echo "$(Color 32 "$1")"
+  echo "$(Color green "$1")"
 }
 
 function Color__yellow {
-  echo "$(Color 33 "$1")"
+  echo "$(Color yellow "$1")"
 }
 
 function Color__blue {
-  echo "$(Color 34 "$1")"
+  echo "$(Color blue "$1")"
 }
 
 function Color__magenta {
-  echo "$(Color 35 "$1")"
+  echo "$(Color magenta "$1")"
 }
 
 function Color__cyan {
-  echo "$(Color 36 "$1")"
+  echo "$(Color cyan "$1")"
 }
 
 function Prompt__Fragment__collapsed_pwd {
@@ -135,6 +137,8 @@ function Prompt__value {
 function Prompt__set {
   PROMPT="$(Prompt__value)"
 }
+
+autoload -Uz colors && colors
 
 Prompt__set
 
