@@ -37,6 +37,10 @@ function Color__cyan {
   echo "$(Color cyan "$1")"
 }
 
+function Color__gray {
+  echo "$(Color black "$1")"
+}
+
 function Prompt__Fragment__collapsed_pwd {
   echo "${PWD/#$HOME/~}"
 }
@@ -91,10 +95,6 @@ function Prompt__username_fragment {
   echo -n "$(Color__blue "$(Prompt__Fragment__username)")"
 }
 
-function Prompt__host_fragment {
-  echo -n "$(Color__magenta "[$(Prompt__Fragment__host)]")"
-}
-
 function Prompt__git_branch_fragment {
   local git_branch="$(Prompt__Fragment__git_branch)"
   if [[ -n $git_branch ]]; then
@@ -115,7 +115,9 @@ function Prompt__cwd_fragment {
 
 function Prompt__mode_fragment {
   if [[ "$KEYMAP" == "vicmd" ]]; then
-    echo -n "$(Color__magenta " [NORMAL]")"
+    echo -n "$(Color__gray " [NORMAL]")"
+  else
+    echo -n "$(Color__cyan " [INSERT]")"
   fi
 }
 
@@ -125,7 +127,6 @@ function Prompt__rc_char_fragment {
 
 function Prompt__value {
   echo -n '$(Prompt__username_fragment)'
-  echo -n '$(Prompt__host_fragment)'
   echo -n '$(Prompt__cwd_fragment)'
   echo -n '$(Prompt__git_branch_fragment)'
   echo -n '$(Prompt__rbenv_info_fragment)'
