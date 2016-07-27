@@ -55,10 +55,14 @@ function Prompt__Fragment__host {
 
 function Prompt__Fragment__git_branch {
   local ref=""
-  ref="$(git symbolic-ref HEAD 2> /dev/null)"
+
+  ref="$(git symbolic-ref HEAD 2>/dev/null)"
+
   if [[ -z $ref ]]; then
-    ref="$(git rev-parse --short HEAD 2> /dev/null)"
+    ref="$(git rev-parse --short HEAD 2>/dev/null)"
   fi
+
+  # remove "refs/heads/" from beginning of $ref
   echo "${ref#refs/heads/}"
 }
 
@@ -71,16 +75,6 @@ function Prompt__Fragment__rbenv_info {
   fi
 
   echo -n "$out"
-}
-
-function Prompt__Fragment__rc_char {
-  local char=""
-  if git branch >/dev/null 2>/dev/null; then
-    char='±'
-  else
-    char='○'
-  fi
-  echo -n "$char"
 }
 
 function Prompt__rvm_prompt_path {
@@ -97,6 +91,7 @@ function Prompt__username_fragment {
 
 function Prompt__git_branch_fragment {
   local git_branch="$(Prompt__Fragment__git_branch)"
+
   if [[ -n $git_branch ]]; then
     echo -n " on $(Color__yellow "$git_branch")"
   fi
@@ -104,6 +99,7 @@ function Prompt__git_branch_fragment {
 
 function Prompt__rbenv_info_fragment {
   local rbenv_info="$(Prompt__Fragment__rbenv_info)"
+
   if [[ -n $rbenv_info ]]; then
     echo -n " using $(Color__red "ruby $rbenv_info")"
   fi
@@ -114,7 +110,7 @@ function Prompt__cwd_fragment {
 }
 
 function Prompt__rc_char_fragment {
-  echo -n "$(Prompt__Fragment__rc_char) "
+  echo -n "$(Prompt__Fragment__rc_char "$1") "
 }
 
 function Prompt__value {
@@ -123,7 +119,7 @@ function Prompt__value {
   echo -n '$(Prompt__git_branch_fragment)'
   echo -n '$(Prompt__rbenv_info_fragment)'
   echo -n "\n"
-  echo '$(Prompt__rc_char_fragment)'
+  echo '∴ '
 }
 
 function Prompt__set {

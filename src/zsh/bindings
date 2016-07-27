@@ -6,45 +6,6 @@
 # Engage Vi mode!
 bindkey -v
 
-# helper for setting color including all kinds of terminals
-change_prompt_mode() {
-  if [[ $TERM = "linux" ]]; then
-    # nothing
-  elif [[ $TMUX != '' ]]; then
-    #echo -n '\033Ptmux;\033'
-    #printf '\033]12;%b\007' "$1"
-    #printf '\033]1337;CursorShape=%b\x7' "$2"
-    #echo -n '\033\\'
-  else
-    #echo -ne "\033]12;$1\007"
-    # iTerm specific: set cursor shape
-    echo -ne "\033]1337;CursorShape=$2\x7"
-  fi
-}
-
-reset_prompt() {
-  # The zsh theme, which sets the prompt, actually checks to see which mode
-  # we're in, so there's no need to do that here
-  zle reset-prompt
-}
-
-zle-keymap-select() {
-  reset_prompt
-}
-
-zle-line-init() {
-  zle -K viins
-  reset_prompt
-}
-
-zle-line-finish() {
-  reset_prompt
-}
-
-zle -N zle-keymap-select
-zle -N zle-line-init
-zle -N zle-line-finish
-
 # Use vim cli mode
 bindkey '^P' up-history
 bindkey '^N' down-history
