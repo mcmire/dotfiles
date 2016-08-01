@@ -1,4 +1,4 @@
-!.env
+!/.env
 *.tmproj
 .agignore
 .ctags
@@ -9,4 +9,4 @@
 .rbenv-version
 .ruby-version
 .vimrc
-tags
+/tags
