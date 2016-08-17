@@ -31,9 +31,9 @@ relevant files in the cloned repo so that you can modify them later if need be.
     script/install --link
 
 Finally, after you've done this, open tmux. You may receive a warning at the top
-of the screen, but ignore that. Press <kbd>Ctrl</kbd> + <kbd>Space<kbd> followed
-by <kbd>Shift</kbd> + <kbd>I<kbd>. This will install plugins that are necessary
-for tmux for fully work.
+of the screen, but ignore that. Press <kbd>Ctrl</kbd> + <kbd>Space</kbd>
+followed by <kbd>Shift</kbd> + <kbd>I</kbd>. This will install plugins that are
+necessary for tmux for fully work.
 
 ## Known issues
 
