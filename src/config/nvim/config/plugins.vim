@@ -35,7 +35,11 @@ noremap <Leader>pt :CtrlPTag<CR>
 
 " Ack.vim
 
-let g:ackprg = 'ag --nogroup --nocolor --column'
+" Actually use Ag for doing the searching instead of Ack
+let g:ackprg = 'ag --vimgrep'
+" Don't jump to the first result automatically
+cnoreabbrev Ack Ack!
+nnoremap <Leader>a :Ack!<Space>
 
 "--- NERDCommenter ---
 
