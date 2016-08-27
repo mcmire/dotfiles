@@ -1,6 +1,6 @@
 # vimfiles
 
-I use Vim daily. I made my own configuration. And here it is!
+I use Vim daily. Here is my own configuration.
 
 ## Prerequisites
 
@@ -17,8 +17,7 @@ Configure your shell to add the following alias:
 
     alias v="nvim"
 
-Now you can say `v` to start Neovim (which I'll simply refer to as Vim from here
-on out).
+Now you can say `v` to start Neovim.
 
 ### iTerm
 
@@ -54,15 +53,19 @@ make with regard to iTerm.
   4. For **Action**, choose "Send Escape Action", and for **Esc+**, type
      `[104;5u`.
 
-## Syntax-checking tools
+### Ag (aka the Silver Searcher)
 
-I'm using Neomake as a way to lint source files. In order to lint JavaScript
-files, you'll need executables for these libraries:
+[Ag][ag] is used for searching through files. In addition, Ctrl-P is hooked up
+to use Ag as its search engine.
 
-* ESLint (`npm install -g eslint`)
-* JSHint (`npm install -g jslint`)
-* Standard JS (`npm install -g standard`)
-* Flow (`brew install flow`)
+You can install Ag by saying:
+
+    brew install ag
+
+If you already have Ag, make sure you're on a recent version. You can upgrade by
+saying:
+
+    brew upgrade ag
 
 ## Installation
 
@@ -73,8 +76,9 @@ want to come back to these files later, make modifications to them, and push
 them up, so I recommend forking this repo. Put it in a convenient place you'll
 remember, such as the same place you store code.
 
-If you already have Vim installed, then you'll want to make sure you remove all
-of those configuration files first. At a minimum, you'll want to run:
+If you already installed Vim at some point in the past, then you'll want to make
+sure you remove all of those configuration files first. At a minimum, you'll
+want to run:
 
     mv ~/.vim ~/.vim.old
     mv ~/.vimrc ~/.vimrc.old
@@ -107,7 +111,24 @@ an issue][issues].
 
 ## What's inside
 
-Here's a rundown of (almost) everything my configuration does:
+### Plugins
+
+These are the plugins that I use on a regular basis, in rough order of
+importance:
+
+* [VimPlug][vim-plug]
+* [NERDTree][vim-nerdtree]
+* [Ctrl-P][vim-ctrl-p]
+* [Ag][vim-ag]
+* [Airline][vim-airline]
+* [SuperTab][vim-supertab]
+* [togglecursor][vim-togglecursor]
+* [NERDCommenter][vim-nerdcommenter]
+* [endwise][vim-endwise]
+* [surround][vim-surround]
+* [vim-git][vim-git]
+* [vim-textobj-rubyblock][vim-textobj-rubyblock]
+* [Neomake][neomake]
 
 ### Basics
 
@@ -121,11 +142,20 @@ Here's a rundown of (almost) everything my configuration does:
   jump to the start of the line
 * Enable per-directory .vimrc's
 
-### Magic
+### Mappings
 
-* Auto-reload files that are modified outside of Vim
-* Auto-source vim config when it's modified
-* Remember the last location in an file when reopening it
+* Map `%` to bounce from `do` to `end` in Ruby files
+* Map `<Leader>evb` to open ~/.vimrc.bundles
+* Map `F3` to easily toggle paste mode
+* Map `Ctrl-{h,l,k,j}` to move between windows and even tmux splits
+* Map `Q` to re-format the selection
+* Map `Y` to yank to the end of the line (like `C` and `D`)
+* No-op `K` as it doesn't do anything useful
+* Map `Ctrl-\` to clear the current highlight (no more typing `/asdf` or
+  somesuch)
+* Map `<Leader>tc` to close a tab
+* Map `<Leader>po` to open a new line and paste into it
+* Map `<Leader>pc` to paste overwriting the current line
 
 ### Colors
 
@@ -133,6 +163,12 @@ Here's a rundown of (almost) everything my configuration does:
 * Use [Solarized][solarized] color scheme -- use `:ToggleTheme` to switch
   between dark and light
 * Set four color columns at 72, 80, 100, and 120 characters
+
+### Magic
+
+* Auto-reload files that are modified outside of Vim
+* Auto-source vim config when it's modified
+* Remember the last location in an file when reopening it
 
 ### Whitespace
 
@@ -165,19 +201,6 @@ Here's a rundown of (almost) everything my configuration does:
 * Show all matches when you search (use `Ctrl-\` to clear)
 * Enable incremental search (when using `/` to search)
 
-### Filetype-based configuration
-
-* Ensure config.ru, Gemfile, Rakefile, Thorfile, Vagrantfile, Appraisals, and
-  Bowerfile are all syntax-highlighted as Ruby files
-* Ensure Haml Coffee files are highlighted as Haml files
-* Ensure JSON and *.jshintc files are highlighed as JavaScript files
-* Make Python files follow PEP8
-
-### Folding
-
-* Enable folding
-* Folding works according to indentation, and the max indentation level is 6
-
 ### Window
 
 * New splits go below the current buffer, and also to the right
@@ -187,107 +210,18 @@ Here's a rundown of (almost) everything my configuration does:
 * Always show at least 3 lines above/below cursor and at least 7 columns next to
   the cursor even when scrolling
 
-### Various mappings
+### Folding
 
-* Map `%` to bounce from `do` to `end` in Ruby files
-* Map `<Leader>evb` to open ~/.vimrc.bundles
-* Map `F3` to easily toggle paste mode
-* Map `Ctrl-{h,l,k,j}` to move between windows (left, right, up, down)
-* Map `Q` to re-format the selection
-* Map `Y` to yank to the end of the line (like `C` and `D`)
-* No-op `K` as it doesn't do anything useful
-* Map `Ctrl-S` to save, `Ctrl-Q` to save + quit
-* Map `Ctrl-\` to clear the current highlight (no more typing `/asdf` or
-  somesuch)
-* Map `<Leader>tc` to close a tab
-* Map `<Leader>po` to open a new line and paste into it
-* Map `<Leader>pc` to paste overwriting the current line
+* Enable folding
+* Folding works according to indentation, and the max indentation level is 6
 
-### Plugins
+### Filetype-based configuration
 
-#### NERDTree
-
-* Open NERDTree as soon as you start Vim (I don't like that annoying splash
-  screen)
-* Map `<Leader>tt` to toggle the NERD tree
-* Map `<Leader>tf` to open the NERD tree and then reveal the current file
-* Close vim if the only window left open is a NERD tree
-
-#### Ctrl-P
-
-* Open at the top instead of the bottom
-* Use Ag for searching so it's faster
-
-#### IndentLines
-
-* Use `¦` to show indentation levels. (This is more handy than you realize.)
-* Set this token to a dark color so it isn't that noticeable
-
-#### vim-coffee-script
-
-* Don't highlight objects, brackets, curly braces, parentheses, or operators
-
-#### Airline
-
-* Show the Airline for all windows not just split windows
-* Use Powerline symbols
-* Tell vim to not show `-- INSERT --` in the status bar, as Airline already
-  shows its own version of which mode you're in
-
-#### splitjoin
-
-* When splitting a line in Ruby that looks like `foo :x => 'y'`, don't
-  add curly braces. (At least I think this is what this does)
-
-#### vim-flavored-markdown
-
-* Ensure that *.md and *.markdown files are highlighted as GitHub-flavored
-  Markdown files and not regular Markdown files.
-
-#### vim-slim
-
-* Turn off smart indenting (I forget why now but it screws something up)
-
-### Plugins
-
-These are the plugins that I use on a regular basis, in rough order of
-importance:
-
-#### Essentials
-
-* [VimPlug][vim-plug]
-* [NERDTree][vim-nerdtree]
-* [Ctrl-P][vim-ctrl-p]
-* [Ag][vim-ag]
-* [Airline][vim-airline]
-* [SuperTab][vim-supertab]
-* [togglecursor][vim-togglecursor]
-* [NERDCommenter][vim-nerdcommenter]
-* [endwise][vim-endwise]
-* [surround][vim-surround]
-* [vim-git][vim-git]
-* [vim-textobj-rubyblock][vim-textobj-rubyblock]
-
-#### Not-so-essentials but still useful
-
-* [Neomake][neomake]
-* [indentLine][vim-indentline]
-
-#### Syntax plugins
-
-* [CoffeeScript][vim-coffeescript]
-* [GitHub-flavored Markdown][vim-flavored-markdown]
-* [HTML5][vim-html5-syntax]
-* [Haml][vim-haml]
-* [Jade][vim-jade]
-* [JavaScript][vim-javascript]
-* [Mustache][vim-mustache]
-* [Ruby][vim-ruby]
-* [Sass][vim-scss-syntax]
-* [Sinatra][vim-ruby-sinatra]
-* [Slim][vim-slim]
-* [Stylus][vim-stylus]
-* [YAML][vim-yaml]
+* Ensure config.ru, Gemfile, Rakefile, Thorfile, Vagrantfile, Appraisals, and
+  Bowerfile are all syntax-highlighted as Ruby files
+* Ensure Haml Coffee files are highlighted as Haml files
+* Ensure JSON and *.jshintc files are highlighed as JavaScript files
+* Make Python files follow PEP8
 
 ## Author
 
@@ -329,3 +263,4 @@ Elliot Winkler (<elliot.winkler@gmail.com>)
 [neovim-bugfix-iterm]: https://github.com/neovim/neovim/issues/2048#issuecomment-98192906
 [vim-togglecursor]: https://github.com/jszakmeister/vim-togglecursor
 [vim-endwise]: https://github.com/tpope/vim-endwise
+[ag]: https://github.com/ggreer/the_silver_searcher
