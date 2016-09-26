@@ -33,7 +33,7 @@ endif
 
 noremap <Leader>pt :CtrlPTag<CR>
 
-" Ack.vim
+"--- Ack.vim ---
 
 " Actually use Ag for doing the searching instead of Ack
 let g:ackprg = 'ag --vimgrep'
