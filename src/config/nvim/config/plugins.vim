@@ -189,6 +189,7 @@ autocmd! BufWritePost * Neomake
 
 "-- auto-pairs
 
+let g:AutoPairs = {}
 let g:AutoPairsShortcutToggle = "<Leader>apt"
 let g:AutoPairsShortcutFastWrap = "<Leader>apw"
 let g:AutoPairsShortcutJump = "<Leader>apj"
