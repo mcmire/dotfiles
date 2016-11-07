@@ -66,6 +66,7 @@ Plug 'vim-scripts/FormatComment.vim'
 Plug 'vim-scripts/IndentAnything'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
+Plug 'vim-airline/vim-airline-themes'
 
 " less
 Plug 'https://gist.github.com/369178.git'
