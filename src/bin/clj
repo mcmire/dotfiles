@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+breakchars="(){}[],^%$#@\"\";:''|\\"
+CLOJURE_DIR=$(brew --prefix clojure)
+CLOJURE_JAR=$CLOJURE_DIR/clojure-1.5.1.jar
+COMPLETIONS_FILE=~/.share/clj_completions
+RC_FILE=~/.share/cljrc.clj
+CLOJURE_CP=$CLASSPATH:$CLOJURE_JAR:$CONTRIB_JAR:$PWD
+
+if [ $# -eq 0 ]; then
+  cmd=""
+  cmd+="rlwrap --remember -c -b $breakchars"
+  if [ -f $COMPLETIONS_FILE ]; then
+    cmd+=" -f $COMPLETIONS_FILE"
+  fi
+  cmd+=" java -cp $CLOJURE_CP clojure.main -i $RC_FILE --repl"
+  exec $cmd
+else
+  exec java -cp $CLOJURE_CP clojure.main $1 -- $@
+fi

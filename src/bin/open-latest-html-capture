@@ -1,0 +1,2 @@
+#!/bin/sh
+open $(ls -t tmp/capybara/*.html | head -n 1)

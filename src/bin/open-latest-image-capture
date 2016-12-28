@@ -1,0 +1,2 @@
+#!/bin/sh
+open $(ls -t tmp/capybara/*.png | head -n 1)
