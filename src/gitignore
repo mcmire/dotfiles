@@ -4,6 +4,7 @@
 /.ctags
 /.lvimrc
 .DS_Store
+/.byebug_history
 /.env.local
 /.netrwhist
 /.rbenv-version
