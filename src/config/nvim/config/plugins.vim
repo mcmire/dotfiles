@@ -228,3 +228,8 @@ let g:snipMate.scope_aliases['ruby'] = 'ruby,ruby-rails,ruby-2.0'
 
 command! -range HashrocketStyle :<line1>,<line2>Bashrockets
 command! -range KeywordArgumentStyle :<line1>,<line2>Hashrockets
+
+"--- Colorizer
+
+let g:colorizer_auto_filetype = 'scss'
+let g:colorizer_skip_comments = 1
