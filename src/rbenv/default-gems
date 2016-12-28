@@ -1,5 +1,4 @@
 bundler
-rbenv-rehash
 rainbow
 rubocop
-suspenders
+hashira-rails
