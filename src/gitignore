@@ -10,4 +10,5 @@
 /.rbenv-version
 /.ruby-version
 /.vimrc
+/npm-debug.log
 /tags
