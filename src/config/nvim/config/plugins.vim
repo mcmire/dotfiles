@@ -103,6 +103,7 @@ nnoremap <Leader>tn :VroomRunNearestTest<CR>
 "--- splitjoin
 
 let g:splitjoin_ruby_curly_braces = 0
+let g:splitjoin_ruby_hanging_args = 0
 
 "--- vim-session
 
