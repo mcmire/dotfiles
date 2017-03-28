@@ -234,3 +234,7 @@ command! -range KeywordArgumentStyle :<line1>,<line2>Hashrockets
 
 let g:colorizer_auto_filetype = 'scss'
 let g:colorizer_skip_comments = 1
+
+"--- vim-jsx
+
+let g:jsx_ext_required = 0
