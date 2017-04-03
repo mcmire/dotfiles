@@ -14,3 +14,4 @@ source ~/.config/nvim/config/mappings.vim
 source ~/.config/nvim/config/plugins.vim
 source ~/.config/nvim/config/optimizations.vim
 source ~/.config/nvim/config/line_width.vim
+source ~/.config/nvim/config/clipboard.vim
