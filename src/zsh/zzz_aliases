@@ -52,6 +52,7 @@ alias sc="spring console"
 alias sg="spring generate"
 alias sr="spring rspec"
 alias sR="spring rails"
+alias sRr="spring rails db:rollback"
 alias sRm="spring rails db:migrate db:test:prepare"
 alias sRmr="spring rails db:migrate:redo db:test:prepare"
 
