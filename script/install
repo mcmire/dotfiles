@@ -97,23 +97,38 @@ will be evaluated as an ERB template and the resulting content will copied to
 the dotfile (`@options` within a template refers to the options parsed from the
 command line).
 
-Usually files are copied, but if you want to be able to modify the
-configuration (and commit to this repo, etc.) as you go, then it's better to
-create symlinks back to files in this repo instead. You can do that with the
-`--link` option. When files are symlinked they are also usually done so
-recursively; if a directory has a .no-recurse file in it, then the whole
-directory will be symlinked as a whole rather than individual files.
+Usually files are copied, but if you want to be able to modify the configuration
+(and commit to this repo, etc.) as you go, then it's better to create symlinks
+back to files in this repo instead. You can do that with the `--link` option.
+When files are symlinked they are also usually done so recursively; if a
+directory has a .no-recurse file in it, then the whole directory will be
+symlinked as a whole rather than individual files.
 
 The script takes care not to overwrite any files, unless you specify
 `--force-templates` or `--force-all`.
 
-Finally, if you want to know what the script will do before running it for
-real, use the `--dry-run` option. For further output, use the `--verbose`
-option.
+Finally, if you want to know what the script will do before running it for real,
+use the `--dry-run` option. For further output, use the `--verbose` option.
 
 Here's a rundown of all of the options:
 
 EOT
+      p.on("--git-email", "The email address that you'll use to author
+                                     Git commits.") do |git_email|
+        @options[:git_email] = git_email
+      end
+      p.on("--git-name", "The name that you'll use to author Git
+                                     commits.") do |git_name|
+        @options[:git_name] = git_name
+      end
+      p.on("--github-user", "Your username on GitHub. Used by tools like
+                                     GitX.") do |github_user|
+        @options[:github_user] = github_user
+      end
+      p.on("--github-token", "Your API token on GitHub. Used by tools
+                                     like GitX.") do |github_token|
+        @options[:github_token] = github_token
+      end
       p.on("-n", "--noop", "--dry-run", "Don't actually copy or write any files.") do |val|
         @options[:dry_run] = true
       end
