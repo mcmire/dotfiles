@@ -1,5 +1,6 @@
-" Soft wrap lines
-set wrap linebreak
+" Don't soft-wrap lines by default, but break lines at word boundaries if it's
+" enabled
+set linebreak
 
 " For wrapped lines, jump to the next row rather than the next line
 nnoremap j gj
