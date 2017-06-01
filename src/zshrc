@@ -4,6 +4,7 @@ source ~/.zsh/cassandra
 source ~/.zsh/clojure
 source ~/.zsh/echonest
 source ~/.zsh/git
+source ~/.zsh/google-cloud-sdk
 source ~/.zsh/heroku
 source ~/.zsh/history
 source ~/.zsh/java
