@@ -1,17 +1,25 @@
-source ~/.config/nvim/config/pre_config.vim
-source ~/.config/nvim/config/basics.vim
-source ~/.config/nvim/config/magic.vim
-source ~/.config/nvim/config/colors.vim
-source ~/.config/nvim/config/whitespace.vim
-source ~/.config/nvim/config/line_wrapping.vim
-source ~/.config/nvim/config/search.vim
-source ~/.config/nvim/config/tab_completion.vim
-source ~/.config/nvim/config/filetype.vim
-source ~/.config/nvim/config/folding.vim
-source ~/.config/nvim/config/window.vim
-source ~/.config/nvim/config/scroll.vim
-source ~/.config/nvim/config/mappings.vim
-source ~/.config/nvim/config/plugins.vim
-source ~/.config/nvim/config/optimizations.vim
-source ~/.config/nvim/config/line_width.vim
-source ~/.config/nvim/config/clipboard.vim
+let s:current_directory = expand("<sfile>:p:h")
+
+function! s:load_file(path) abort
+  let l:full_path = s:current_directory . "/config/" . a:path . ".vim.md"
+  "echo "Loading: " . l:full_path
+  execute literatevim#load(l:full_path)
+endfunction
+
+call s:load_file("start")
+call s:load_file("basics")
+call s:load_file("magic")
+call s:load_file("colors")
+call s:load_file("whitespace")
+call s:load_file("line-wrapping")
+call s:load_file("search")
+call s:load_file("completion")
+call s:load_file("filetype")
+call s:load_file("folding")
+call s:load_file("window")
+call s:load_file("scrolling")
+call s:load_file("mappings")
+call s:load_file("plugin-config")
+call s:load_file("optimizations")
+call s:load_file("line-width")
+call s:load_file("clipboard")

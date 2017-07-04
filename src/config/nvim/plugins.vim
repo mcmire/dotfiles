@@ -66,10 +66,8 @@ Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'tpope/vim-surround'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/FormatBlock'
-Plug 'vim-scripts/FormatComment.vim'
 Plug 'vim-scripts/IndentAnything'
 Plug 'xolox/vim-misc'
-Plug 'xolox/vim-session'
 Plug 'vim-airline/vim-airline-themes'
 
 " less
