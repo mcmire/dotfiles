@@ -1,6 +1,6 @@
 *(← Back to [index](../README.md))*
 
-# Magical settings
+# Magic ✨
 
 No Vim configuration would be complete without a little magic!
 

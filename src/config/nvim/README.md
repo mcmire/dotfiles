@@ -5,7 +5,7 @@ groups:
 
 * [Starting settings](config/start.vim.md#starting-settings)
 * [Basic settings](config/basics.vim.md#basic-settings)
-* [Magical settings](config/magic.vim.md#magical-settings)
+* [Magic](config/magic.vim.md#magic)
 * [Color settings](config/colors.vim.md#color-settings)
 * [Whitespace settings](config/whitespace.vim.md#whitespace-settings)
 * [Line wrapping settings](config/line-wrapping.vim.md#line-wrapping-settings)
