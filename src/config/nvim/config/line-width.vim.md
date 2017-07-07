@@ -37,7 +37,7 @@ set colorcolumn=72,80,100,120
 
 Finally, when a line exceeds the set `textwidth` we mark the characters that are
 past the limit with the `CharsExceedingLineLength` syntax group. (The color for
-this is also defined in [coloris].)
+this is also defined in [colors].)
 
 ``` vim
 function! HighlightCharsExceedingLineLength()
