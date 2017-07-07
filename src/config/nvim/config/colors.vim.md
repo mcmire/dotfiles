@@ -61,7 +61,7 @@ We set dark mode as the default:
 call s:UseDarkColorScheme()
 ```
 
-The `ToggleColorScheme` command (or <kbd>,</kbd><kbd>t</kbd><kbd>h</kbd>) will safdlkjsdlfkj
+The `ToggleColorScheme` command (or <kbd>,</kbd><kbd>t</kbd><kbd>h</kbd>) will
 flip between the two modes:
 
 ```
