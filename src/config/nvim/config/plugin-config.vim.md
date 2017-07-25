@@ -2,8 +2,8 @@
 
 # Plugin configuration
 
-This file is where any settings related to plugins go. (At some point I'd like to
-make these sections more modular, where if I removed the plugin the section
+This file is where any settings related to plugins go. (At some point I'd like
+to make these sections more modular, where if I removed the plugin the section
 would no longer apply, but I haven't removed any of these plugins yet so this
 works great for now.)
 
@@ -362,7 +362,9 @@ let g:neomake_javascript_enabled_makers = ['eslint']
 And we run Neomake automatically when saving files:
 
 ``` vim
-autocmd! BufWritePost * Neomake
+if exists(":Neomake")
+  autocmd! BufWritePost * Neomake
+endif
 ```
 
 ## auto-pairs
