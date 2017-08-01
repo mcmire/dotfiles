@@ -7,6 +7,8 @@ alias edit-functions="v $FUNCTIONS_FILE"
 alias view-functions="less $FUNCTIONS_FILE"
 alias reload-env="source $ALIASES_FILE && source $FUNCTIONS_FILE"
 
+alias ll="ls -l"
+
 alias b="bundle"
 alias be="b exec"
 
@@ -41,12 +43,26 @@ alias zR="zeus rails"
 alias zRm="sR db:migrate db:test:prepare"
 alias zRmr="sR db:migrate:redo db:test:prepare"
 
+alias R="bin/rails"
+alias Rr="R db:rollback"
+alias Rm="R db:migrate db:test:prepare"
+alias Rmr="R db:migrate:redo db:test:prepare"
+alias Rc="R console"
+
 alias s="be spring"
 alias sr="s rspec"
-alias sR="s rails"
-alias sRr="sR db:rollback"
-alias sRm="sR db:migrate db:test:prepare"
-alias sRmr="sR db:migrate:redo db:test:prepare"
+
+alias dex="bin/docker dev exec app"
+alias dcl="bin/docker dev console app"
+alias drn="bin/docker dev run app"
+alias ds="drn bin/spring"
+alias dr="drn rspec"
+alias dsr="ds rspec"
+alias dR="drn bin/rails"
+alias dRr="dR db:rollback"
+alias dRm="dR db:migrate db:test:prepare"
+alias dRmr="dR db:migrate:redo db:test:prepare"
+alias dRc="dR console"
 
 alias is-running="ps aux | grep -v grep | grep"
 
