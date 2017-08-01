@@ -7,6 +7,4 @@ else
   export PATH="~/.nvm/versions/node/v4.0.0/bin:./node_modules/.bin:$PATH"
 fi
 
-alias node="env NODE_NO_READLINE=1 rlwrap node"
-
 # vi: ft=sh
