@@ -1,2 +1,4 @@
 // All notifications are read, all the time
-$(".mail-status").removeClass("unread")
+document.querySelectorAll(".mail-status").forEach(element => {
+  element.classList.remove("unread");
+});

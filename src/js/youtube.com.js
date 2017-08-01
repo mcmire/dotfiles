@@ -1,15 +1,21 @@
-(function () {
-  var playerWidth = $("#placeholder-player > div").width();
+(() => {
+  const player = document.querySelector("#placeholder-player > div");
+  const playerWidth = player.clientWidth;
 
   // Remove "up next". It sucks you in, and turns a two-minute YouTube session
   // into a two-hour one.
-  $("#watch7-sidebar").remove()
+  const sidebar = document.querySelector("#watch7-sidebar");
+  sidebar.remove();
   // Since the sidebar is gone, lengthen the title and description div.
-  $("#watch7-content").width(playerWidth);
+  const titleAndDescription = document.querySelector("#watch7-content");
+  titleAndDescription.clientWidth = playerWidth;
   // Center align title and description.
-  $("#content").width(playerWidth).css("min-width", "initial");
+  const content = document.querySelector("#content");
+  content.clientWidth = playerWidth;
+  content.style.minWidth = "initial";
   // Expand details automatically.
-  $("#action-panel-details").removeClass("yt-uix-expander-collapsed");
+  const details = document.querySelector("#action-panel-details");
+  details.classList.remove("yt-uix-expander-collapsed");
 
   // "Home" is a cesspool of distraction. It's basically a bunch of videos that
   // YouTube thinks you should watch, but you probably shouldn't. Subscriptions
@@ -18,4 +24,4 @@
   if (window.location.pathname === "/") {
     window.location.pathname = "/feed/subscriptions";
   }
-})()
+})();
