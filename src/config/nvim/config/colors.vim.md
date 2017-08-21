@@ -10,7 +10,48 @@ mere eyeballing. (I also use it in my terminal as well.)
 
 [Solarized]: http://ethanschoonover.com/solarized
 
-The full list of colors in the colorscheme are located [here][color-values].
+Solarized has two modes: dark and light. The colors between them are are mostly
+the same except for four colors which trade places with each other. The common
+set of colors are:
+
+| color   | cterm |
+|---------|-------|
+| yellow  |     3 |
+| orange  |     9 |
+| red     |     1 |
+| magenta |     5 |
+| violet  |    13 |
+| blue    |     4 |
+| cyan    |     6 |
+| green   |     2 |
+
+Dark mode has these additional colors:
+
+| color  | cterm | usage            |
+|--------|-------|------------------|
+| base00 |    11 |                  |
+| base01 |    10 |                  |
+| base02 |     0 |                  |
+| base03 |     8 | text background  |
+| base0  |    12 | text foreground  |
+| base1  |    14 |                  |
+| base2  |     7 |                  |
+| base3  |    15 |                  |
+
+Whereas light mode uses these colors:
+
+| color  | cterm | usage            |
+|--------|-------|------------------|
+| base00 |    12 |                  |
+| base01 |    14 |                  |
+| base02 |     7 |                  |
+| base03 |    15 | text background  |
+| base0  |    11 | text foreground  |
+| base1  |    10 |                  |
+| base2  |     0 |                  |
+| base3  |     8 |                  |
+
+(The full list of colors in the colorscheme are located [here][color-values].)
 
 [color-values]: https://github.com/altercation/solarized/blob/e40cd4130e2a82f9b03ada1ca378b7701b1a9110/vim-colors-solarized/colors/solarized.vim#L91
 
@@ -25,12 +66,7 @@ function! s:UseLightColorScheme()
   silent! colorscheme solarized
   let g:airline_theme="solarized"
   let g:airline_solarized_bg="dark"
-  highlight ColorColumn ctermbg=7
-  highlight SignColumn ctermbg=7
-  highlight LineNr ctermbg=7
-  highlight MatchParen ctermbg=13 ctermfg=7
-  " FIXME
-  highlight SpecialKey ctermfg=237
+  highlight SpecialKey ctermfg=14 ctermbg=15
 endfunction
 
 function! s:UseDarkColorScheme()
@@ -39,11 +75,7 @@ function! s:UseDarkColorScheme()
   silent! colorscheme solarized
   let g:airline_theme="solarized"
   let g:airline_solarized_bg="light"
-  highlight ColorColumn ctermbg=0
-  highlight SignColumn ctermbg=0
-  highlight LineNr ctermbg=0
-  highlight MatchParen ctermbg=13 ctermfg=0
-  highlight SpecialKey ctermfg=237
+  highlight SpecialKey ctermfg=10 ctermbg=8
 endfunction
 
 function! s:ToggleColorScheme()
@@ -69,20 +101,13 @@ command! -nargs=0 ToggleColorScheme call s:ToggleColorScheme()
 nnoremap <Leader>th :ToggleColorScheme<CR>
 ```
 
-It's helpful to highlight the current line so we know where we are at any given
-time:
-
-``` vim
-set cursorline
-```
-
 We highlight extra whitespace (tagged in our [whitespace settings])
 using the Solarized red color:
 
 [whitespace settings]: whitespace.vim.md
 
 ``` vim
-highlight ExtraWhitespace ctermbg=160 ctermfg=230
+highlight ExtraWhitespace ctermfg=0 ctermbg=1
 ```
 
 We highlight characters that exceed the line length (tagged in our [line
@@ -91,5 +116,5 @@ width settings]) also using Solarized red:
 [line width settings]: line-width.vim.md
 
 ``` vim
-highlight CharsExceedingLineLength ctermbg=125 ctermfg=230
+highlight CharsExceedingLineLength ctermfg=0 ctermbg=1
 ```

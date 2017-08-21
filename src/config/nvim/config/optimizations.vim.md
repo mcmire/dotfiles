@@ -16,13 +16,13 @@ following the offending line look funny, but it's the price we pay:
 set synmaxcol=128
 ```
 
-Next, we turn on `lazyredraw`, which, according to the help documentation, works
-like this:
-
-> When this option is set, the screen will not be redrawn while executing
-> macros, registers and other commands that have not been typed. Also, updating
-> the window title is postponed.
+Second, we specify the strategy that Vim uses to perform syntax highlighting
+from any point in the file. All of them except one involve backtracking, but you
+can configure what previous part of the file Vim uses to determine the current
+syntax group. Here we tell it to start at 256 lines back in the file and parse
+all of the lines forward. (I'm not certain what the default is for this
+setting.)
 
 ``` vim
-set lazyredraw
+syntax sync minlines=256
 ```

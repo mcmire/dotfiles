@@ -255,6 +255,6 @@ function! WatchForChanges(bufname, ...)
 endfunction
 
 " Always watch for changes
-let autoreadargs={'autoread':1}
-execute WatchForChanges("*",autoreadargs)
+"let autoreadargs={'autoread':1}
+"execute WatchForChanges("*",autoreadargs)
 ```
