@@ -1,4 +1,4 @@
 # I'm not sure why OS X doesn't add this by default
-export PATH=~/Library/Python/2.7/bin:/usr/local/opt/python/libexec/bin:$PATH
+export PATH=~/Library/Python/2.7/bin:$PATH
 
 # vi: ft=sh

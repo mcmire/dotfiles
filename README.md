@@ -28,14 +28,10 @@ pasting within tmux:
 
     brew install reattach-to-user-namespace
 
-Next, you'll need to install Python through Homebrew:
+Finally, you'll need to install the Powerline support files, which I use for
+tmux (you may or may not have to run this with `sudo`):
 
-    brew install python
-
-This is a requirement for the Powerline support files, which you'll need to
-install next (I use these for tmux):
-
-    pip install git+git://github.com/powerline/powerline-status
+    pip install --user powerline-status
 
 ## Installation
 
