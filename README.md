@@ -11,7 +11,7 @@ Homebrew
 
 then set it as your default shell with the following command:
 
-    chsh -s zsh
+    sudo dscl . -create /Users/$USER UserShell /usr/local/bin/zsh
 
 Next, you'll need **tmux 2.5** or higher. (Under tmux 2.0+, new windows will
 keep the working directory, and 2.3+ supports copying to the clipboard
@@ -32,6 +32,12 @@ Finally, you'll need to install the Powerline support files, which I use for
 tmux (you may or may not have to run this with `sudo`):
 
     pip install --user powerline-status
+
+You will also need:
+
+* rbenv
+* nvm
+* autojump
 
 ## Installation
 
