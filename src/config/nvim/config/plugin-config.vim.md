@@ -362,9 +362,7 @@ let g:neomake_javascript_enabled_makers = ['eslint']
 And we run Neomake automatically when saving files:
 
 ``` vim
-if exists(":Neomake")
-  autocmd! BufWritePost * Neomake
-endif
+autocmd! BufWritePost * Neomake
 ```
 
 ## auto-pairs
