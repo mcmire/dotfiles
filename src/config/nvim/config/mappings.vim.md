@@ -158,6 +158,17 @@ imap jk <Esc>
 imap kj <Esc>
 ```
 
+When saving a file that has syntax or other errors, Neomake will populate the
+gutter with symbols, but it will not list the errors in the quickfix window
+unless you say so. <kbd>,</kbd><kbd>e</kbd><kbd>l</kbd> will **l**ist the
+**e**rrors and <kbd>,</kbd><kbd>e</kbd><kbd>f</kbd> will jump to the **f**irst
+**e**rror:
+
+``` vim
+nmap <Leader>el :lopen<CR>
+nmap <Leader>ef :ll 1<CR>
+```
+
 Finally, when modifying a colorscheme, sometimes it's helpful to know which
 syntax group the cursor sits within.
 <kbd>,</kbd><kbd>s</kbd><kbd>y</kbd><kbd>n</kbd> lets us do this
