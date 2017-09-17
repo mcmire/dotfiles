@@ -11,20 +11,20 @@
 [diff "ruby"]
   funcname = ^ *\\(\\(class\\|module\\|def\\) .*\\)
 [alias]
-  st = status
   br = branch
+  branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:white)%(color:bold)%(refname:short)\" refs/remotes
   co = checkout
   cp = cherry-pick
-  unstage = reset HEAD
-  branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:white)%(color:bold)%(refname:short)\" refs/remotes
-  tree = log --graph --pretty=oneline --abbrev-commit --decorate --color
-  tree-all = log --graph --pretty=format:'%h %Cred(%cD)%Creset%Cgreen%d%Creset %s' --color --all --decorate=full
-  tree-by-date = log --pretty=format:'%h | %cD | %Cgreen%d%Creset %s' --date-order --graph --all --color --decorate=full
+  diff-base = diff --ignore-all-space -M --patience
+  diff-branch = diff origin/master..
   oneline = log --pretty=format:'%C(bold)%h%Creset (%ci) |%Cgreen%d%Creset %s' --color --decorate=full
   oneline-plain = log --pretty=tformat:'%h (%ci) :: %s'
   rm-untracked-files = clean -f -d
-  diff-base = diff --ignore-all-space -M --patience
-  diff-branch = diff origin/master..
+  st = status
+  tree = log --graph --pretty=oneline --abbrev-commit --decorate --color
+  tree-all = log --graph --pretty=format:'%h %Cred(%cD)%Creset%Cgreen%d%Creset %s' --color --all --decorate=full
+  tree-by-date = log --pretty=format:'%h | %cD | %Cgreen%d%Creset %s' --date-order --graph --all --color --decorate=full
+  unstage = reset HEAD
 [branch "master"]
   remote = origin
   merge = refs/heads/master
