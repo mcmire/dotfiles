@@ -15,8 +15,14 @@ by the [`matchit`][matchit] plugin, which we have to enable:
 runtime! macros/matchit.vim
 ```
 
-<kbd>,</kbd><kbd>r</kbd><kbd>v</kbd> lets us reload the Vim configuration if we
-need to:
+<kbd>,</kbd><kbd>e</kbd><kbd>p</kbd> lets us **e**dit the list of **p**lugins:
+
+``` vim
+nmap <Leader>ep :tabe ~/.config/nvim/plugins.vim<CR>
+```
+
+<kbd>,</kbd><kbd>r</kbd><kbd>v</kbd> lets us **r**eload the **V**im
+configuration if we need to:
 
 ``` vim
 nmap <Leader>rv :source ~/.config/nvim/init.vim<CR>
@@ -90,7 +96,8 @@ end of the line:
 nmap <Leader>p$ "_Dp
 ```
 
-<kbd>,</kbd><kbd>p</kbd><kbd>o</kbd> will open a new line and paste into that line:
+<kbd>,</kbd><kbd>p</kbd><kbd>o</kbd> will open a new line and paste into that
+line:
 
 ```
 nmap <Leader>po o<Space><Backspace><Esc>p
