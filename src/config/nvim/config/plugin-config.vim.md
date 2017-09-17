@@ -473,3 +473,12 @@ we configure the [jsx] plugin to do this as well:
 ``` vim
 let g:jsx_ext_required = 0
 ```
+
+## neco-ghc
+
+We configure tab completion for Haskell files:
+
+``` vim
+let g:haskellmode_completion_ghc = 1
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+```
