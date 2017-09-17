@@ -1,0 +1,4 @@
+#!/bin/sh
+
+proj=$(basename $(git root))
+git log $@ --reverse --pretty=tformat:"git cherry-pick %H -n%ngit commit -m \"%s [orig $proj#%h]\" --dry-run%n"

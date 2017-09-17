@@ -1,0 +1,6 @@
+#!/bin/sh
+
+for branch in "$@"; do
+  git branch -D "$branch"
+  git push origin :"$branch"
+done

@@ -7,7 +7,7 @@ function history-stats {
     head
 }
 
-# Stolen from r00k
+# Credit: Ben Orenstein
 function g {
   if [[ $# > 0 ]]; then
     git $@
@@ -17,50 +17,12 @@ function g {
 }
 compdef g=git
 
-function gbd {
-  for branch in "$@"; do
-    git branch -D "$branch"
-    git push origin :"$branch"
-  done
+function _git_delete_branch_and_remote {
+  __gitcomp_nl "$(__git_heads)"
 }
 
-function gaf {
-  ga "$1" && gc "$@"
-}
-
-function git-cat() {
-  local file="$1"
-  local rev="$2"
-  if [ -z "$file" ]; then
-    echo "Error: File not specified"
-    return
-  fi
-  if [ -z "$rev" ]; then
-    rev="HEAD"
-  fi
-  local objid=$(git ls-tree "$rev" "$file" | cut -d " " -f 3 | cut -f 1)
-  if [ -z "$objid" ]; then
-    echo "Couldn't find file '$file' in revision '$rev'"
-  else
-    git cat-file -p "$objid" | less
-  fi
-}
-
-function git-cherry-script() {
-  local proj=$(basename $(git root))
-  git log $@ --reverse --pretty=tformat:"git cherry-pick %H -n%ngit commit -m \"%s [orig $proj#%h]\" --dry-run%n"
-}
-
-function git-undo() {
-  git unstage "$@" && git checkout "$@"
-}
-
-function git-merge() {
-  gco master && gm $1 && git push && gbd $1
-}
-
-nt() {
-  echo "Just use Cmd-T!"
+function _git_undo {
+  __gitcomp_nl "$(__git_heads)"
 }
 
 function timestamp {

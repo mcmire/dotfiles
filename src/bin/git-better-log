@@ -1,0 +1,8 @@
+#!/bin/sh
+
+git branch -a | \
+  grep origin | \
+  grep -v HEAD | \
+  xargs -n 1 git log --date=iso --pretty=format:"%an %ad %d%n" -1 --decorate | \
+  grep -v master | \
+  sort

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+file="$1"
+rev="$2"
+
+if [ -z "$file" ]; then
+  echo "Error: File not specified"
+  return
+fi
+
+if [ -z "$rev" ]; then
+  rev="HEAD"
+fi
+
+objid=$(git ls-tree "$rev" "$file" | cut -d " " -f 3 | cut -f 1)
+
+if [ -z "$objid" ]; then
+  echo "Couldn't find file '$file' in revision '$rev'"
+else
+  git cat-file -p "$objid" | less
+fi

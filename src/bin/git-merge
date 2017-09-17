@@ -1,0 +1,3 @@
+#!/bin/sh
+
+gco master && gm "$1" && git push && gbd "$1"
