@@ -5,6 +5,7 @@ source ~/.zsh/clojure
 source ~/.zsh/echonest
 source ~/.zsh/git
 source ~/.zsh/google-cloud-sdk
+source ~/.zsh/haskell
 source ~/.zsh/heroku
 source ~/.zsh/history
 source ~/.zsh/java
