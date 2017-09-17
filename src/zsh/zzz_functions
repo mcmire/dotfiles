@@ -1,4 +1,4 @@
-function history-stats {
+function frequently-used-commands() {
   history | \
     sed -E 's/^[ ]+//; s/\|.*//' | \
     cut -d ' ' -f 3- | \
