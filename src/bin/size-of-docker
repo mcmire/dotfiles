@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ls -lh ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2 | ruby -ne 'puts $_.split(" ")[4]'

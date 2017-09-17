@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Source: <https://github.com/docker/for-mac/issues/371>
+
+docker system prune -f -a && \
+  docker run --rm --net=host --pid=host --privileged -it justincormack/debian nsenter -m -t 1 fstrim /var
