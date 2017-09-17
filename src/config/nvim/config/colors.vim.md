@@ -67,6 +67,7 @@ function! s:UseLightColorScheme()
   let g:airline_theme="solarized"
   let g:airline_solarized_bg="dark"
   highlight SpecialKey ctermfg=14 ctermbg=15
+  highlight SignColumn ctermbg=15
 endfunction
 
 function! s:UseDarkColorScheme()
@@ -76,6 +77,7 @@ function! s:UseDarkColorScheme()
   let g:airline_theme="solarized"
   let g:airline_solarized_bg="light"
   highlight SpecialKey ctermfg=10 ctermbg=8
+  highlight SignColumn ctermbg=8
 endfunction
 
 function! s:ToggleColorScheme()
