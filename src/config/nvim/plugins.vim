@@ -5,7 +5,6 @@ Plug 'avakhov/vim-yaml'
 Plug 'briancollins/vim-jst'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'chr4/nginx.vim'
-"Plug 'chrisbra/Colorizer', { 'for': 'scss' }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'ciaranm/detectindent'
