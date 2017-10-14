@@ -9,11 +9,11 @@ removed in Neovim, so I think we get the optimizations for free now.)
 
 First, the syntax highlighter will get tripped up on files that have super long
 lines, and when this happens, Vim will slow to a halt. To prevent this from
-happening, we stop the highlighting after 128 characters. This can make lines
+happening, we stop the highlighting after 1000 characters. This can make lines
 following the offending line look funny, but it's the price we pay:
 
 ``` vim
-set synmaxcol=128
+set synmaxcol=1000
 ```
 
 Second, we specify the strategy that Vim uses to perform syntax highlighting
