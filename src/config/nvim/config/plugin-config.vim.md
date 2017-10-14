@@ -502,3 +502,10 @@ are weird (and it's clear that none of the authors write any tests):
 ``` vim
 let g:elm_format_autosave = 0
 ```
+
+## UltiSnips
+
+``` vim
+let g:UltiSnipsJumpForwardTrigger="<c-a>"
+let g:UltiSnipsJumpBackwardTrigger="<c-s>"
+```

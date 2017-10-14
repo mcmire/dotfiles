@@ -1,0 +1,35 @@
+snippet rc "React component"
+import React from "react";
+
+class ${1:SomeComponentClass} extends React.Component {
+  render() {
+    return (
+      <${2:tag} ${3:someAttribute}>
+        $4
+      </$2>
+    )
+  }
+}
+endsnippet
+
+snippet rc2 "React component"
+import React from "react";
+
+class ${1:SomeComponentClass} extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <${2:tag} ${3:someAttribute}>
+        $4
+      </$2>
+    )
+  }
+}
+endsnippet
+
+snippet bind "Bind a function"
+this.${1:someMethod} = this.$1.bind(this);
+endsnippet
