@@ -60,31 +60,34 @@ light mode. It's helpful to be able to switch between the two, so first we start
 off with a few functions to do just that:
 
 ``` vim
-function! s:UseLightColorScheme()
-  let s:color_scheme_type="light"
-  set background=light
-  silent! colorscheme solarized
-  let g:airline_theme="solarized"
-  let g:airline_solarized_bg="dark"
-  highlight SpecialKey ctermfg=14 ctermbg=15
-  highlight SignColumn ctermbg=15
-endfunction
+function! s:UseColorScheme(type)
+  if a:type == "light"
+    let s:color_scheme_type="light"
+    set background=light
+    silent! colorscheme solarized
+    let g:airline_theme="solarized"
+    let g:airline_solarized_bg="dark"
+    highlight SpecialKey ctermfg=14 ctermbg=15
+    highlight SignColumn ctermbg=15
+  else
+    let s:color_scheme_type="dark"
+    set background=dark
+    silent! colorscheme solarized
+    let g:airline_theme="solarized"
+    let g:airline_solarized_bg="light"
+    highlight SpecialKey ctermfg=10 ctermbg=8
+    highlight SignColumn ctermbg=8
+  end
 
-function! s:UseDarkColorScheme()
-  let s:color_scheme_type="dark"
-  set background=dark
-  silent! colorscheme solarized
-  let g:airline_theme="solarized"
-  let g:airline_solarized_bg="light"
-  highlight SpecialKey ctermfg=10 ctermbg=8
-  highlight SignColumn ctermbg=8
+  highlight ExtraWhitespace ctermfg=0 ctermbg=1
+  highlight CharsExceedingLineLength ctermfg=1
 endfunction
 
 function! s:ToggleColorScheme()
   if s:color_scheme_type == "dark"
-    call s:UseLightColorScheme()
+    call s:UseColorScheme("light")
   else
-    call s:UseDarkColorScheme()
+    call s:UseColorScheme("dark")
   endif
 endfunction
 ```
@@ -92,7 +95,7 @@ endfunction
 We set dark mode as the default:
 
 ```
-call s:UseDarkColorScheme()
+call s:UseColorScheme("dark")
 ```
 
 The `ToggleColorScheme` command (or <kbd>,</kbd><kbd>t</kbd><kbd>h</kbd>) will
@@ -101,22 +104,4 @@ flip between the two modes:
 ```
 command! -nargs=0 ToggleColorScheme call s:ToggleColorScheme()
 nnoremap <Leader>th :ToggleColorScheme<CR>
-```
-
-We highlight extra whitespace (tagged in our [whitespace settings])
-using the Solarized red color:
-
-[whitespace settings]: whitespace.vim.md
-
-``` vim
-highlight ExtraWhitespace ctermfg=0 ctermbg=1
-```
-
-We highlight characters that exceed the line length (tagged in our [line
-width settings]) also using Solarized red:
-
-[line width settings]: line-width.vim.md
-
-``` vim
-highlight CharsExceedingLineLength ctermfg=0 ctermbg=1
 ```
