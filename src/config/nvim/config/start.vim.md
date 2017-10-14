@@ -12,7 +12,7 @@ gives you a way to defer the loading of plugins until they're used.
 [VimPlug]: https://github.com/junegunn/vim-plug
 
 ``` vim
-call plug#begin(expand('~/.config/nvim/plugins/'))
+call plug#begin(expand('~/.config/nvim/plugged'))
 
 if filereadable(expand('~/.config/nvim/plugins.vim'))
   source ~/.config/nvim/plugins.vim
