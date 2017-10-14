@@ -21,6 +21,12 @@ runtime! macros/matchit.vim
 nmap <Leader>ep :tabe ~/.config/nvim/plugins.vim<CR>
 ```
 
+<kbd>,</kbd><kbd>i</kbd><kbd>p</kbd> lets us **i**nstall **p**lugins:
+
+``` vim
+nmap <Leader>ip :source ~/.config/nvim/plugins.vim<CR> :PlugInstall<CR>
+```
+
 <kbd>,</kbd><kbd>r</kbd><kbd>v</kbd> lets us **r**eload the **V**im
 configuration if we need to:
 
@@ -89,6 +95,7 @@ inoremap <Leader>h <C-O>:nohls<CR>
 ```
 
 Now for a few mappings that make pasting easier.
+
 <kbd>,</kbd><kbd>p</kbd><kbd>$</kbd> will paste, overwriting everything to the
 end of the line:
 
