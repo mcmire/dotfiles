@@ -482,3 +482,13 @@ We configure tab completion for Haskell files:
 let g:haskellmode_completion_ghc = 1
 autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 ```
+
+## elm-vim
+
+When saving a file in Elm, we don't want to automatically run the file through
+`elm-format`. I get the rationale behind `elm-format`, but its indentation rules
+are weird (and it's clear that none of the authors write any tests):
+
+``` vim
+let g:elm_format_autosave = 0
+```

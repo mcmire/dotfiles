@@ -62,6 +62,14 @@ augroup local
 augroup END
 ```
 
+Elm people use 4 spaces instead of 2 as well:
+
+``` vim
+augroup local
+  autocmd FileType elm set softtabstop=4 tabstop=4 shiftwidth=4 textwidth=80
+augroup END
+```
+
 In the event that we edit our crontabs, we ask Vimt o make a backup copy of
 those files in a way that is compatible with `crontab -e`. In truth, I don't
 know when I would do this, but I suppose that it's handy.
