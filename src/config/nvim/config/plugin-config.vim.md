@@ -341,28 +341,38 @@ brackets and braces are not auto-paired:
 let g:sexp_enable_insert_mode_mappings = 0
 ```
 
-## Neomake
+## Ale
 
-We configure [Neomake] to customize the icons that appear in the gutter:
+We configure [Ale] to run applicable linters on the file being edited not as
+it is changed, not even when it is first opened, but only when it is saved:
 
 ``` vim
-let g:neomake_error_sign = {'text': 'x'}
-let g:neomake_warning_sign = {'text': '!'}
-let g:neomake_message_sign = {'text': 'i'}
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_fix_on_save = 1
+let g:ale_lint_on_enter = 0
 ```
 
-[Neomake]: https://github.com/neomake/neomake
+We also customize the icons that appear in the gutter:
+
+``` vim
+let g:ale_sign_error = 'X'
+let g:ale_sign_warning = '!'
+```
+
+[Ale]: https://github.com/w0rp/ale
 
 We also use ESLint for JavaScript files:
 
 ``` vim
-let g:neomake_javascript_enabled_makers = ['eslint']
+let g:ale_linters = {
+\  'javascript': ['eslint'],
+\}
 ```
 
-And we run Neomake automatically when saving files:
+And enable Airline integration:
 
 ``` vim
-autocmd! BufWritePost * Neomake
+let g:airline#extensions#ale#enabled = 1
 ```
 
 ## auto-pairs
