@@ -1,12 +1,12 @@
 # vimfiles
 
-I ❤️ Vim. I use for both professional and personal projects pretty much every
-day. Over time I've created my own configuration, and I thought I might share it
-with you.
+I ❤️ Vim -- I use it for both professional and personal projects nearly every
+day. Before you is my personal configuration that I've crafted with the goal of
+writing code as efficiently as possible. Hopefully you find it useful!
 
-## What's inside
+## Let's see what's inside
 
-### Plugins
+### Handy plugins
 
 I use [VimPlug][vim-plug] to manage my plugins. Here are the ones that I use on
 a regular basis, in rough order of importance:
@@ -14,33 +14,32 @@ a regular basis, in rough order of importance:
 * [NERDTree][vim-nerdtree]
 * [Ctrl-P][vim-ctrl-p]
 * [Ag][vim-ag]
-* [Airline][vim-airline]
 * [SuperTab][vim-supertab]
 * [togglecursor][vim-togglecursor]
 * [NERDCommenter][vim-nerdcommenter]
 * [endwise][vim-endwise]
 * [surround][vim-surround]
 * [vim-textobj-rubyblock][vim-textobj-rubyblock]
-* [Neomake][neomake]
+* [Ale][ale]
 
 [vim-plug]: https://github.com/junegunn/vim-plug
 [vim-nerdtree]: http://github.com/scrooloose/nerdtree
 [vim-ctrl-p]: http://github.com/kien/ctrlp.vim
 [vim-ag]: http://github.com/rking/ag.vim'
-[vim-airline]: http://github.com/bling/vim-airline
 [vim-supertab]: http://github.com/ervandew/supertab
 [vim-togglecursor]: https://github.com/jszakmeister/vim-togglecursor
 [vim-nerdcommenter]: http://github.com/scrooloose/nerdcommenter
 [vim-endwise]: https://github.com/tpope/vim-endwise
 [vim-surround]: http://github.com/tpope/vim-surround
 [vim-textobj-rubyblock]: http://github.com/nelstrom/vim-textobj-rubyblock
-[neomake]: https://github.com/benekastah/neomake
+[ale]: https://github.com/w0rp/ale
 
-### Other stuff
+### Documentation
 
-A while back I found this killer plugin called [literatevimrc]. It lets you
+A while back I found this really neat plugin called [literatevimrc]. It lets you
 document your Vim configuration in Markdown alongside the Vim code itself.
-[Take a look inside][documentation]!
+If you're curious what all of the settings do, [now you can read for
+yourself][documentation]!
 
 [literatevimrc]: https://github.com/thcipriani/literate-vimrc
 [documentation]: src/config/nvim#vim-configuration
@@ -60,24 +59,31 @@ Homebrew:
 
     brew install neovim/neovim/neovim
 
-If you are using my [dotfiles][dotfiles], then you can move on to the next step,
-as I've set up `v` to open Neovim. Otherwise, you'll need to add them yourself.
-Configure your shell to add the following alias:
+I think it's reasonable to assume that whenever you start Vim, you will very
+likely be doing so in the context of a project. To that end, and since my goal
+is for you to be able to use Vim for All the Things, I would recommend adding a
+short alias to your shell:
 
 [dotfiles]: http://github.com/mcmire/dotfiles
 
     alias v="nvim"
 
-Now you can say `v` to start Neovim.
+(If you happen to be using my [dotfiles][dotfiles], then you've already got
+this.)
+
+Now if you're in a directory, you can boot into Vim -- all ready to edit files
+in that directory -- simply by navigating there and saying:
+
+    v
 
 #### iTerm
 
-You'll need to use iTerm. Mainly this is because presently, it needs to be
-configured to work with Neovim -- in the future that won't be necessary, but for
-now, that's what works best.
+I am also using iTerm, not the Terminal app on OS X. While there aren't any
+settings per se in this repo that depend on iTerm, I'm going to assume you're
+using it here.
 
-With that out of the way, there are three configuration changes you'll need to
-make with regard to iTerm.
+Presently, iTerm needs to be configured to work with Neovim. There are three
+changes you need to make:
 
 * You'll want to change the color scheme to Solarized Dark/Light. You can
   download the color scheme files [here][solarized]. Look for a directory that
@@ -87,13 +93,13 @@ make with regard to iTerm.
 [solarized]: https://github.com/altercation/solarized
 
 * You'll want to make sure iTerm is using a Powerline-compatible
-  font, that is, a font that's patched to support Powerline characters (such as
-  arrows and icons and things). There's a list of fonts you can choose from
-  [here][powerline-fonts]. Whichever one you download, drop it in
-  `~/Library/Fonts` and you can use it right away. **Make sure that the
-  "non-ASCII" font is also set to the same Powerline font as the "normal" font,
-  otherwise you'll get strange "X" characters in place of the Powerline
-  characters.**
+  font -- that is, a font that's patched to support Powerline characters (such
+  as arrows and icons and things). There's a list of fonts you can choose from
+  [here][powerline-fonts], or save yourself the trouble and use Fira Code, which
+  is superb. Whichever font you download, simply drop it in `~/Library/Fonts`
+  and you can use it right away. **Make sure that the "non-ASCII" font is also
+  set to the same Powerline font as the "normal" font, otherwise you'll get
+  strange "X" characters in place of the Powerline characters.**
 
 [powerline-fonts]: https://github.com/Lokaltog/powerline-fonts
 
@@ -128,7 +134,7 @@ saying:
 
 ### Installation
 
-Now for the fun stuff.
+Whew. Still here? Now for the fun stuff.
 
 First, you need to download this repo to your computer somehow. You'll probably
 want to come back to these files later, make modifications to them, and push
@@ -158,19 +164,16 @@ For further help, say:
 
 ### Post-installation
 
-Now you're ready to install a bunch of Vim plugins. You can do that by opening
+Almost there! Now you're ready to install plugins. You can do that by opening
 Vim (remember, `v`) and running:
 
     :PlugInstall
 
 After you run this, close Vim and re-open it.
 
-You shouldn't have any problems doing this step, but if you do, please [create
-an issue][issues].
+### And you're done!
+
+If you had any problems, please [create an issue][issues]. Enjoy your shiny new
+Vim installation! 💎
 
 [issues]: http://github.com/mcmire/vimfiles/issues
-
-## Who made this?
-
-Elliot Winkler (<elliot.winkler@gmail.com>)
-
