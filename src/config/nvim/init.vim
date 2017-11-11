@@ -1,9 +1,8 @@
 let s:current_directory = expand("<sfile>:p:h")
 
 function! s:load_file(path) abort
-  let l:full_path = s:current_directory . "/config/" . a:path . ".vim.md"
-  "echo "Loading: " . l:full_path
-  execute literatevim#load(l:full_path)
+  let l:full_path = s:current_directory . "/config/" . a:path . ".vim"
+  exec "source " . l:full_path
 endfunction
 
 call s:load_file("start")
