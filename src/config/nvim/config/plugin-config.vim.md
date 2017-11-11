@@ -343,36 +343,72 @@ let g:sexp_enable_insert_mode_mappings = 0
 
 ## Ale
 
-We configure [Ale] to run applicable linters on the file being edited not as
-it is changed, not even when it is first opened, but only when it is saved:
+[Ale] has two distinct modes: linting and fixing.
+
+[Ale]: https://github.com/w0rp/ale
+
+When Ale lints a file, it checks its syntax (using an external tool) and reports
+any issues within Vim. When it *fixes* a file, it completely rewrites it so that
+it's formatted (again, using an external tool).
+
+So let's start with linting. We configure the plugin to lint the file being
+edited not as it is changed, not even when it is first opened, but only when it
+is saved:
 
 ``` vim
 let g:ale_lint_on_text_changed = 'never'
-let g:ale_fix_on_save = 1
 let g:ale_lint_on_enter = 0
 ```
 
-We also customize the icons that appear in the gutter:
+We use [Prettier][prettier] to lint JavaScript and Sass files, we use [Rubocop]
+for Ruby files, and we use [elm-make] for Elm files:
+
+[prettier]: https://github.com/prettier/prettier
+[elm-make]: https://github.com/elm-lang/elm-make
+
+``` vim
+let g:ale_linters = {
+\  'javascript': ['prettier', 'eslint'],
+\  'css': ['prettier'],
+\  'scss': ['prettier'],
+\  'ruby': ['rubocop'],
+\  'elm': ['make'],
+\}
+```
+
+Finally, we customize the icons that appear in the gutter when issues are
+reported:
 
 ``` vim
 let g:ale_sign_error = 'X'
 let g:ale_sign_warning = '!'
 ```
 
-[Ale]: https://github.com/w0rp/ale
-
-We also use ESLint for JavaScript files:
+Next, fixing. We configure the plugin not to fix files when they are saved:
 
 ``` vim
-let g:ale_linters = {
-\  'javascript': ['eslint'],
-\}
+let g:ale_fix_on_save = 0
 ```
 
-And enable Airline integration:
+Instead, we bind this behavior to <kbd>,</kbd><kbd>f</kbd>:
 
 ``` vim
-let g:airline#extensions#ale#enabled = 1
+nmap <Leader>f <Plug>(ale_fix)
+```
+
+Finally, we configure the plugin to use Prettier to fix JavaScript and Sass
+files, to use Rubocop for Ruby files, and to use [elm-format] for Elm files:
+
+[elm-format]: https://github.com/avh4/elm-format
+
+``` vim
+let g:ale_fixers = {
+\  'javascript': ['prettier', 'eslint'],
+\  'ruby': ['rubocop'],
+\  'css': ['prettier'],
+\  'scss': ['prettier'],
+\  'elm': ['format'],
+\}
 ```
 
 ## auto-pairs
