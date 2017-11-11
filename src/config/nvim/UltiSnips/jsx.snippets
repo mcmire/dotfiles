@@ -1,7 +1,7 @@
 snippet rc "React component"
 import React from "react";
 
-class ${1:SomeComponentClass} extends React.Component {
+export default class ${1:SomeComponentClass} extends React.Component {
   render() {
     return (
       <${2:tag} ${3:someAttribute}>
@@ -15,7 +15,7 @@ endsnippet
 snippet rc2 "React component"
 import React from "react";
 
-class ${1:SomeComponentClass} extends React.Component {
+export default class ${1:SomeComponentClass} extends React.Component {
   constructor(props) {
     super(props);
   }
