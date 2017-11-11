@@ -132,7 +132,7 @@ saying:
 
     brew upgrade ag
 
-### Installation
+## Installation
 
 Whew. Still here? Now for the fun stuff.
 
