@@ -58,7 +58,7 @@ and so we enforce that here:
 
 ``` vim
 augroup local
-  autocmd FileType python set softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79
+  autocmd FileType python setl softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79
 augroup END
 ```
 
@@ -66,7 +66,7 @@ Elm people use 4 spaces instead of 2 as well:
 
 ``` vim
 augroup local
-  autocmd FileType elm set softtabstop=4 tabstop=4 shiftwidth=4 textwidth=80
+  autocmd FileType elm setl softtabstop=4 tabstop=4 shiftwidth=4 textwidth=80
 augroup END
 ```
 
