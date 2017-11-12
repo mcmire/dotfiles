@@ -109,7 +109,7 @@ best way to do this is to click on the Profiles tab and create two new iTerm
 profiles, one called Solarized Light, the other called Solarized Dark. Now you
 can go into each profile, click on the Colors tab, and select a color preset.
 
-[image]
+![iTerm preferences](docs/iterm-prefs.png)
 
 ##### Font
 
