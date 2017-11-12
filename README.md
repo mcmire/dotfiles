@@ -19,8 +19,8 @@ languages, but here are the most important ones:
 * [SuperTab][vim-supertab] -- an autocomplete that's admittedly dumb, but also
   doesn't get in your way
 * [Ale][ale] -- an asychronous linter that can also autoformat files
-* [indentLine][indentLine] -- gives you a horizontal grid so you can quickly
-  tell if a line is misindented
+* [indentLine][indentLine] -- a horizontal grid so you can quickly tell if a
+  line is misindented
 * [surround][vim-surround] -- a way to quickly surround a selection or text
   object with non-pairing or pairing characters (`"`", `'`', `(`, `)`, etc.)
 * [togglecursor][vim-togglecursor] -- makes insert and command modes more
@@ -145,9 +145,9 @@ Now that you have the prerequisites out of the way, you can actually install
 these configuration files and get started Vimming.
 
 First, you need to download this repo somehow. You'll probably want to come back
-to these files later, make modifications to them, and push them up, so fork this
-repo, then clone your fork in a convenient place you'll remember, such as the
-same place you store code. For example:
+to these files later, make modifications to themL and push them up. So start by
+forking this repo, then clone your fork in a convenient place you'll remember,
+such as the same place you store code. For example:
 
     cd myawesomecode
     git clone git://github.com:myusername/vimfiles.git
@@ -174,7 +174,7 @@ nothing's actually happened yet. To confirm the installation, run:
 ### After installing
 
 You're almost there! Now you're ready to install plugins. You can do that by
-opening Vim (remember, you can say `v` since you made an alias) and running:
+opening Vim (remember, you can say `v` since you made an alias), then run:
 
     :PlugInstall
 
