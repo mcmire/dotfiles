@@ -19,7 +19,7 @@ languages, but here are the most important ones:
 * [SuperTab][vim-supertab] -- an autocomplete that's admittedly dumb, but also
   doesn't get in your way
 * [Ale][ale] -- an asychronous linter that can also autoformat files
-* [indentLine][indent-line] -- gives you a horizontal grid so you can quickly
+* [indentLine][indentLine] -- gives you a horizontal grid so you can quickly
   tell if a line is misindented
 * [surround][vim-surround] -- a way to quickly surround a selection or text
   object with non-pairing or pairing characters (`"`", `'`', `(`, `)`, etc.)
