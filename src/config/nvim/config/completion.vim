@@ -8,13 +8,13 @@
 " [ins-completion]: http://vimdoc.sourceforge.net/htmldoc/insert.html#ins-completion
 " [cmdline-completion]: http://vimdoc.sourceforge.net/htmldoc/cmdline.html#cmdline-completion
 "
-" We'll start with Insert-mode completion. [SuperTab] lets us use <kbd>Tab</kbd>
-" to trigger this. The [`wildmode`][wildmode] option controls what happens when
-" you press Tab multiple times when there are multiple matches for the string
-" you've typed. Here we specify that as long as <kbd>Tab</kbd> is pressed, an
-" autocomplete menu should be shown, but that different things should happen the
-" first time versus subsequent times. The first time, the string typed will be
-" compared to the available matches, and the match chosen for autocompletion
+" We'll start with Insert-mode completion. [SuperTab] lets us use `Tab` to
+" trigger this kind of completion. The [`wildmode`][wildmode] option controls
+" what happens when you press Tab multiple times when there are multiple matches
+" for the string you've typed. Here we specify that as long as `Tab` is pressed,
+" an autocomplete menu should be shown, but that different things should happen
+" the first time versus subsequent times. The first time, the string typed will
+" be compared to the available matches, and the match chosen for autocompletion
 " will be the longest subsequence of the string typed. After that, the match
 " chosen for autocompletion will be the first one in the list.
 "
@@ -34,8 +34,7 @@ set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,bundle/**,vendor/gems/*,vendor
 " The [`wildmenu`][wildmenu] option also controls the behavior of filename
 " completion in the sense that it tells Vim to show a menu when there is more
 " than one completion for the string typed. Filenames can be chosen with the
-" arrow keys, <kbd>Tab</kbd>, or <kbd>Ctrl</kbd>-<kbd>P</kbd> and
-" <kbd>Ctrl</kbd>-<kbd>N</kbd>.
+" arrow keys, `Tab`, or `Ctrl-P` and `Ctrl-N`.
 "
 " [wildmenu]: http://vimdoc.sourceforge.net/htmldoc/options.html#'wildmenu'
 

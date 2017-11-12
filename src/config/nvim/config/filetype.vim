@@ -13,33 +13,25 @@ augroup local
 augroup END
 
 " A lot of files that we use in the Ruby world don't end in `.rb`. This is
-" unfortunate, but it means they aren't highlighted like Ruby files, so we do
-" that:
+" unfortunate, but it means they aren't highlighted like Ruby files, so we make
+" them highlighted appropriately:
 
 augroup local
   autocmd BufRead,BufNewFile {config.ru,Gemfile,Guardfile,Rakefile,Thorfile,Vagrantfile,Appraisals,Bowerfile,*.gemspec} set ft=ruby
 augroup END
 
-" Haml Coffee is a version of Haml that uses CoffeeScript instead of ERB, and
-" its files end in `.hamlc`. Since they are mostly Haml files, we highlight them
-" as such:
-
-augroup local
-  autocmd BufRead,BufNewFile *.hamlc set ft=haml
-augroup END
-
-" For some reason, auto-indentation isn't enabled in Markdown files, so we
-" explicitly enable that:
-
-augroup local
-  autocmd BufRead,BufNewFile *.{md,mkd,mkdn,mark*} setl ft=markdown autoindent
-augroup END
-
 " JSHint and ESLint configuration files are JavaScript files, so they need to be
-" highlighted as such:
+" highlighted as such as well:
 
 augroup local
   autocmd BufNewFile,BufRead {.jshintrc,.eslintrc} set ft=javascript
+augroup END
+
+" For some reason, auto-indentation isn't enabled in Markdown files, so we
+" explicitly enable that too:
+
+augroup local
+  autocmd BufRead,BufNewFile *.{md,mkd,mkdn,mark*} setl ft=markdown autoindent
 augroup END
 
 " Python encourages you to use [PEP8](http://www.python.org/dev/peps/pep-0008/)
@@ -53,14 +45,6 @@ augroup END
 
 augroup local
   autocmd FileType elm setl softtabstop=4 tabstop=4 shiftwidth=4 textwidth=80
-augroup END
-
-" In the event that we edit our crontabs, we ask Vimt o make a backup copy of
-" those files in a way that is compatible with `crontab -e`. In truth, I don't
-" know when I would do this, but I suppose that it's handy.
-
-augroup local
-  autocmd BufEnter /private/tmp/crontab.* setl backupcopy=yes
 augroup END
 
 " Usually, `.` is treated as a word boundary. So when using <kbd>w</kbd> or
@@ -82,4 +66,19 @@ augroup END
 
 augroup local
   autocmd BufRead,BufNewFile *.skim set ft=slim
+augroup END
+
+" Haml Coffee is a version of Haml that uses CoffeeScript instead of ERB, and
+" its files end in `.hamlc`. Since they are mostly Haml files, we highlight them
+" as such:
+
+augroup local
+  autocmd BufRead,BufNewFile *.hamlc set ft=haml
+augroup END
+
+" Lastly, in the event that we edit our crontabs, we ask Vim to make a backup
+" copy of those files in a way that is compatible with `crontab -e`:
+
+augroup local
+  autocmd BufEnter /private/tmp/crontab.* setl backupcopy=yes
 augroup END

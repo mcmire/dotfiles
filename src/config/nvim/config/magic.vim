@@ -12,9 +12,9 @@
 " without any arguments. In the first case Vim will start by opening the file
 " you've provided, but in the second case it will start with no files open and
 " wait for you to do something. Using the NERDTree plugin, this isn't exactly
-" desirable, because we might expect to be able to <kbd>Ctrl</kbd>-<kbd>L</kbd>
-" over to switch from the tree pane to the file pane. The following autocommand
-" opens an empty file in this case so that we can do this.
+" desirable, because we might expect to be able to `Ctrl-L` over to switch from
+" the tree pane to the file pane. The following autocommand opens an empty file
+" in this case so that we can do this.
 
 augroup local
   autocmd VimEnter * if empty(argv()) | silent! edit . | endif
@@ -23,13 +23,12 @@ augroup END
 " Next, we make it so that when a file is opened, Vim will place the cursor at
 " the last position that the cursor was when the file was closed. How does this
 " work? It's already built into Vim, actually: the last-known position is stored
-" in the [<kbd>"</kbd> mark][quote-mark]. Normally you can go to a mark with
-" <kbd>\`</kbd>, but this creates a slight annoyance. Whenever you navigate to
-" some location in a file, Vim adds that location to a *[jumplist]*. (You can
-" navigate backward and forward through the jumplist with
-" <kbd>Ctrl</kbd>-<kbd>O</kbd> and <kbd>Ctrl</kbd>-<kbd>I</kbd>.) In this case,
-" we want to jump to the mark, but not add that jump to the jumplist. So instead
-" of using <kbd>\`</kbd>, we use <kbd>g</kbd><kbd>\`</kbd>.
+" in the [`"` mark][quote-mark]. Normally you can go to a mark with `\``, but
+" this creates a slight annoyance. Whenever you navigate to some location in a
+" file, Vim adds that location to a *[jumplist]*. (You can navigate backward and
+" forward through the jumplist with `Ctrl-O` and `Ctrl-I`.) In this case, we
+" want to jump to the mark, but not add that jump to the jumplist. So instead of
+" using `\``, we use `g\``.
 "
 " [quote-mark]: http://vimdoc.sourceforge.net/htmldoc/motion.html#%27quote
 " [jumplist]: http://vimdoc.sourceforge.net/htmldoc/motion.html#jumplist

@@ -7,10 +7,10 @@
 syntax on
 filetype plugin indent on
 
-" Next we'll set our "leader" key, which is comma (<kbd>,</kbd>). Later we'll
+" Next we'll set our "leader" key, which is comma (`,`). Later we'll
 " define some custom mappings, and whenever we use them we will always precede
-" those mappings with a comma. The comma is a pretty easy key to press, so it
-" makes sense to me.
+" those mappings with a comma. The comma is a pretty easy key to press and
+" doesn't require our fingers to do too much work.
 
 let mapleader = ","
 let maplocalleader = ","
@@ -20,12 +20,6 @@ let maplocalleader = ","
 
 set number
 set ruler
-
-" Next we'll set the encoding properly so that we can enter Unicode characters:
-
-" if &encoding == ""
-"   set encoding=utf-8
-" endif
 
 " By default, [Vim periodically saves changes][recover] you've made to a file
 " that you haven't explicitly saved. It does so by keeping a "swap file" -- a
@@ -56,27 +50,26 @@ set history=1000
 
 set hidden
 
-" When Vim starts, it displays a splash screen. I don't know about you, but when
-" I open a file, I don't need to be reminded that I'm using Vim or that Bram
-" Moolenar created it -- I just want to start working.
+" When Vim starts, it displays a splash screen. Surely we don't need to be
+" reminded each time that we're using Vim or that Bram Moolenar created it, do
+" we?
 
 set shortmess+=I
 
-" Of course, when you use Vim, you're bouncing between Insert and Command mode
-" all the time, and so you end up pressing Escape a lot. I actually have my Caps
-" Lock key mapped to Escape, so I don't have to reach for it; a quick pop over
-" with my pinky and I'm out of insert mode. Oftentimes I anticipate wanting to
-" do something immediately after pressing Escape. For some reason, however,
-" there is a slight delay after you do so. This setting disables that so Vim
-" feels more snappy.
+" As you may know, when you use Vim, you're bouncing between Insert and Command
+" mode all the time, and so you end up pressing Escape a lot. You might have
+" even configured your keyboard so you can do this more esaily. " By default,
+" however, there is a slight delay built in after you press the key. This
+" setting disables that delay so Vim feels more snappy.
 
 set timeoutlen=1000 ttimeoutlen=0
 
 " Sometimes it's necessary to tell Vim what type of file you're editing so that
 " it can apply the correct syntax highlighting. These are called "mode lines",
 " and often you'll place them at the bottom of the file in a comment so as not
-" to draw attention. For instance, if I wanted to mark a file as Ruby, I could
-" add `# vi: ft=ruby` at the bottom. This setting enables this feature:
+" to draw attention. For instance, if we wanted to mark a file as Ruby, and the
+" file didn't end in `*.rb`, we could add `# vi: ft=ruby` at the bottom. This
+" setting enables this feature:
 
 set modeline modelines=10
 
@@ -97,16 +90,16 @@ set nosmartindent
 
 set exrc secure
 
-" The following setting configures the behavior of Backspace in Insert mode
-" (which is a bit limited, for some reason) so that we can delete anything:
+" While we don't expect to be using Backspace a lot in Insert mode, sometimes
+" it's handy. For some reason, it's a bit limited in what you can actually
+" delete. The following setting removes that limitation:
 
 set backspace=indent,eol,start
 
 " Finally, one of the more irritating things in Vim is the fact that as you type
-" complex commands (e.g. <kbd>c</kbd><kbd>i</kbd><kbd>w</kbd>,
-" <kbd>v</kbd><kbd>p</kbd>, etc.) there's no way to know what you've typed --
-" and therefore no way to know whether you've typed the right thing -- until
-" you've finished the whole command. This setting places each keystroke in the
-" status bar so you get the missing feedback:
+" complex commands (e.g. `ciw`, `vp`, etc.) there's no way to know what you've
+" typed -- and therefore no way to know whether you've typed the right thing --
+" until you've finished the whole command. This setting places each keystroke in
+" the status bar so you get the missing feedback:
 
 set showcmd

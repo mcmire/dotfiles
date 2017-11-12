@@ -13,7 +13,7 @@ set tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 set list listchars=tab:⊢—,trail:⋅,nbsp:⋅,extends:⨠
 
-" By default, when joining two lines with <kbd>J</kbd>, two spaces will separate
+" By default, when joining two lines with `J`, two spaces will separate
 " the lines. This is a holdover from typewriters and we don't need that anymore:
 
 set nojoinspaces
@@ -32,12 +32,8 @@ augroup local
 augroup END
 
 " Finally, here we provide a simple way to trim trailing whitespace in a file
-" with <kbd>,</kbd><kbd>t</kbd><kbd>w</kbd>. (I used to have this happen
-" automatically, but it turned out to be a bad idea because it created a lot of
-" unnecessary changes in Git, especially when working with other developers who
-" may not have configured their editor to make them aware of trailing
-" whitespace.) The source for this function is the [Vim
-" wiki][remove-unwanted-spaces].
+" with `,tw`. (This function was taken from the [Vim
+" wiki][remove-unwanted-spaces].)
 "
 " [remove-unwanted-spaces]: http://vim.wikia.com/wiki/Remove_unwanted_spaces
 

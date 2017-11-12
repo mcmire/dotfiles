@@ -1,31 +1,39 @@
 # vimfiles
 
-I ❤️ Vim -- I use it for both professional and personal projects nearly every
-day. Before you is my personal configuration that I've crafted with the goal of
-writing code as efficiently as possible. Hopefully you find it useful!
+This is a fully-fledged Neovim configuration, ready to go for Ruby, Rails,
+JavaScript, and JSX, as well as other languages such as Elm, Haskell, and
+Clojure.
 
-## Let's see what's inside
+## What's inside
 
 ### Handy plugins
 
-I use [VimPlug][vim-plug] to manage my plugins. Here are the ones that I use on
-a regular basis, in rough order of importance:
+This configuration comes with a boatload of plugins for various use cases and
+languages, but here are the most important ones:
 
-* [NERDTree][vim-nerdtree]
-* [Ctrl-P][vim-ctrl-p]
-* [Ag][vim-ag]
-* [SuperTab][vim-supertab]
-* [togglecursor][vim-togglecursor]
-* [NERDCommenter][vim-nerdcommenter]
-* [endwise][vim-endwise]
-* [surround][vim-surround]
-* [vim-textobj-rubyblock][vim-textobj-rubyblock]
-* [Ale][ale]
+* [NERDTree][vim-nerdtree] -- a simple file tree
+* [Ctrl-P][vim-ctrl-p] -- a fuzzy file finder for quickly jumping to files
+* [Ack][vim-ack] + [Ag][ag] -- a way to search across a project lightning quick
+* [NERDCommenter][vim-nerdcommenter] -- an easy way to comment out lines and
+  blocks of code and then uncomment them using the same mapping
+* [SuperTab][vim-supertab] -- an autocomplete that's admittedly dumb, but also
+  doesn't get in your way
+* [Ale][ale] -- an asychronous linter that can also autoformat files
+* [indentLine][indent-line] -- gives you a horizontal grid so you can quickly
+  tell if a line is misindented
+* [surround][vim-surround] -- a way to quickly surround a selection or text
+  object with non-pairing or pairing characters (`"`", `'`', `(`, `)`, etc.)
+* [togglecursor][vim-togglecursor] -- makes insert and command modes more
+  obvious by switching the cursor (and does so in both iTerm and tmux)
+* [vim-textobj-rubyblock][vim-textobj-rubyblock] -- adds Ruby blocks as text
+  objects so that they can be manipulated and selected
+* [endwise][vim-endwise] -- automatically adds `end` to a Ruby block in a
+  non-intrusive manner
 
 [vim-plug]: https://github.com/junegunn/vim-plug
 [vim-nerdtree]: http://github.com/scrooloose/nerdtree
 [vim-ctrl-p]: http://github.com/kien/ctrlp.vim
-[vim-ag]: http://github.com/rking/ag.vim'
+[vim-ack]: https://github.com/mileszs/ack.vim
 [vim-supertab]: http://github.com/ervandew/supertab
 [vim-togglecursor]: https://github.com/jszakmeister/vim-togglecursor
 [vim-nerdcommenter]: http://github.com/scrooloose/nerdcommenter
@@ -33,97 +41,96 @@ a regular basis, in rough order of importance:
 [vim-surround]: http://github.com/tpope/vim-surround
 [vim-textobj-rubyblock]: http://github.com/nelstrom/vim-textobj-rubyblock
 [ale]: https://github.com/w0rp/ale
+[indentLine]: https://github.com/Yggdroot/indentLine
 
-### Documentation
+### Sensible defaults
 
-A while back I found this really neat plugin called [literatevimrc]. It lets you
-document your Vim configuration in Markdown alongside the Vim code itself.
-If you're curious what all of the settings do, [now you can read for
-yourself][documentation]!
+* Lines in files of most filetypes are hard-wrapped to 80 characters
+* The system clipboard is used for copying/pasting
+* Incremental search provides more feedback than the default search behavior
+* `Rakefile`, `Gemfile`, and `*.gemspec` files are highlighted as Ruby files
+* `.jshintrc` and `.eslintrc` are highlighted as JSON files
 
-[literatevimrc]: https://github.com/thcipriani/literate-vimrc
-[documentation]: src/config/nvim#vim-configuration
+### Sensible mappings
 
-## You can use it too
+* `,` is the leader key (so no finger gymnastics)
+* `Ctrl-{H,J,K,L}` lets you navigate to windows in Vim *and to panes in tmux*
+* `j` and `k` always place the cursor one line below or above, regardless of
+  whether lines are being wrapped
+* `%` bounces between the start and end of blocks (in languages that make it
+  possible to do so)
+* `<` and `>` no longer lose drop the selection when indenting a selected block
+  of text
+* `Q` lets you reformat paragraphs
+* `Y` provides an analog to `C` and `D`
 
-Want this configuration for yourself? Here's how to make that happen.
+## Making this your own
+
+Want this configuration for yourself? Read on.
 
 ### Prerequisites
 
-There are a few things you'll need first.
+There are a few things you'll need before you can install the files here.
 
 #### Neovim
 
-First of all, I'm using Neovim, not straight Vim. You can install this using
-Homebrew:
+First, this configuration assumes you're using Neovim. You can install this
+using Homebrew:
 
     brew install neovim/neovim/neovim
 
-I think it's reasonable to assume that whenever you start Vim, you will very
-likely be doing so in the context of a project. To that end, and since my goal
-is for you to be able to use Vim for All the Things, I would recommend adding a
-short alias to your shell:
-
-[dotfiles]: http://github.com/mcmire/dotfiles
+If you're using [mcmire/dotfiles][dotfiles], you're good to go here. Otherwise,
+it's recommended that you add a short alias to your shell so that you can start
+Neovim from any directory with `v`:
 
     alias v="nvim"
 
-(If you happen to be using my [dotfiles][dotfiles], then you've already got
-this.)
-
-Now if you're in a directory, you can boot into Vim -- all ready to edit files
-in that directory -- simply by navigating there and saying:
-
-    v
+[dotfiles]: http://github.com/mcmire/dotfiles
 
 #### iTerm
 
-I am also using iTerm, not the Terminal app on OS X. While there aren't any
-settings per se in this repo that depend on iTerm, I'm going to assume you're
-using it here.
+Next, you'll need to install iTerm if you don't already have it. Once you have
+it, you'll want to drop into Preferences and make three changes.
 
-Presently, iTerm needs to be configured to work with Neovim. There are three
-changes you need to make:
+##### Color scheme
 
-* You'll want to change the color scheme to Solarized Dark/Light. You can
-  download the color scheme files [here][solarized]. Look for a directory that
-  corresponds to iTerm, then double-click on the color scheme files (dark *and*
-  light) to install them.
+In this configuration, Vim uses [Solarized] as its color scheme. Solarized is a
+lovely color scheme as it has been finely crafted with **science** (okay,
+light/perception theory) so that the difference between its dark and light modes
+are only a few colors. In order to prevent your colors in Vim from looking off,
+you'll need to configure iTerm to use Solarized as well.
 
-[solarized]: https://github.com/altercation/solarized
+To do this, first, download the color scheme files [here][solarized]. Look for a
+directory that corresponds to iTerm, then double-click on the color scheme files
+(dark *and* light).
 
-* You'll want to make sure iTerm is using a Powerline-compatible
-  font -- that is, a font that's patched to support Powerline characters (such
-  as arrows and icons and things). There's a list of fonts you can choose from
-  [here][powerline-fonts], or save yourself the trouble and use Fira Code, which
-  is superb. Whichever font you download, simply drop it in `~/Library/Fonts`
-  and you can use it right away. **Make sure that the "non-ASCII" font is also
-  set to the same Powerline font as the "normal" font, otherwise you'll get
-  strange "X" characters in place of the Powerline characters.**
+This will install the color scheme files, but now we need to apply them. The
+best way to do this is to click on the Profiles tab and create two new iTerm
+profiles, one called Solarized Light, the other called Solarized Dark. Now you
+can go into each profile, click on the Colors tab, and select a color preset.
 
+[image]
+
+##### Font
+
+Now that you have two profiles, go into each one and configure them to use [Fira
+Code] as the font. Fira Code is a cool font where common combinations of symbols
+that we might use in everyday code (`->`, `...`, and `|>`, just to name a few)
+are implemented as ligatures, so they appear closer together, thereby making it
+possible to scan code more easily. More importantly, Fira Code contains symbols
+that work perfectly with Powerline/Airline (you don't have to bother with any of
+[these][powerline-fonts]).
+
+[Solarized]: https://github.com/altercation/solarized
+[Fira Code]: https://github.com/tonsky/FiraCode
 [powerline-fonts]: https://github.com/Lokaltog/powerline-fonts
-
-* You'll also need to go into Preferences and override the mapping for
-  <kbd>Ctrl-H</kbd>. Right now there's a [bug][neovim-bug] in Neovim whereby it
-  treats <kbd>Ctrl-H</kbd> as <kbd>Backspace</kbd>. To fix this, you'll need to
-  make <kbd>Ctrl-H</kbd> equivalent to `<Escape>[104;5u`. To do this:
-
-  1. Inside of **Preferences**, click on **Keys**.
-  2. Press `+` to add a new mapping.
-  3. Click inside of **Keyboard Shortcut**, then press <kbd>Ctrl-H</kbd>.
-  4. For **Action**, choose "Send Escape Action", and for **Esc+**, type
-     `[104;5u`.
-
-[neovim-bug]: https://github.com/neovim/neovim/issues/2048
 
 #### Ag (aka the Silver Searcher)
 
-[Ag][ag] is used for searching through files. In addition, Ctrl-P is hooked up
-to use Ag as its search engine.
+Vim is configured to use [Ag][ag] for fuzzy file finding, so you'll also need
+this as well. You can install it with Homebrew:
 
 [ag]: https://github.com/ggreer/the_silver_searcher
-
-You can install Ag by saying:
 
     brew install ag
 
@@ -132,14 +139,18 @@ saying:
 
     brew upgrade ag
 
-## Installation
+### Installing
 
-Whew. Still here? Now for the fun stuff.
+Now that you have the prerequisites out of the way, you can actually install
+these configuration files and get started Vimming.
 
-First, you need to download this repo to your computer somehow. You'll probably
-want to come back to these files later, make modifications to them, and push
-them up, so I recommend forking this repo. Put it in a convenient place you'll
-remember, such as the same place you store code.
+First, you need to download this repo somehow. You'll probably want to come back
+to these files later, make modifications to them, and push them up, so fork this
+repo, then clone your fork in a convenient place you'll remember, such as the
+same place you store code. For example:
+
+    cd myawesomecode
+    git clone git://github.com:myusername/vimfiles.git
 
 If you already installed Vim at some point in the past, then you'll want to make
 sure you remove all of those configuration files first. At a minimum, you'll
@@ -148,32 +159,27 @@ want to run:
     mv ~/.vim ~/.vim.old
     mv ~/.vimrc ~/.vimrc.old
 
-Next, run the install script. Since you probably forked the repo in the first
-step above, you'll want to symlink all of the files in this repo to appropriate
-places in your HOME directory. You can do that with:
-
-    script/install --link
-
-If you want to know what this will do first, say:
+Next, run the install script that comes bundled with this repo. Since you forked
+the repo in the first step above, it's best that you install all of the files
+here as *symlinks*. This will allow you to edit them *either* directly *or*
+through your forked repo location:
 
     script/install --link --dry-run
 
-For further help, say:
+You might have been a little scared to run that command, right? Don't worry --
+nothing's actually happened yet. To confirm the installation, run:
 
-    script/install --help
+    script/install --link
 
-### Post-installation
+### After installing
 
-Almost there! Now you're ready to install plugins. You can do that by opening
-Vim (remember, `v`) and running:
+You're almost there! Now you're ready to install plugins. You can do that by
+opening Vim (remember, you can say `v` since you made an alias) and running:
 
     :PlugInstall
 
-After you run this, close Vim and re-open it.
+Now close Vim and re-open it, and you should be good to go!
 
-### And you're done!
+### You're done!
 
-If you had any problems, please [create an issue][issues]. Enjoy your shiny new
-Vim installation! 💎
-
-[issues]: http://github.com/mcmire/vimfiles/issues
+Enjoy your shiny new Vim installation!

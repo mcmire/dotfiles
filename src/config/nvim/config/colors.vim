@@ -1,11 +1,11 @@
 " Color settings
 " ==============
 
-" I use [Solarized] as my color scheme. While it isn't perfect -- namely, the
-" contrast between the colors could be higher -- it is the only color scheme as
-" far as I know that was designed from the start to look good in both dark and
-" light modes and whose colors were set using color theory techniques instead of
-" mere eyeballing. (I also use it in my terminal as well.)
+" While there are certainly many color schemes available for Vim, this
+" configuration makes use of [Solarized]. This color scheme was meticulously
+" designed from the start to look good in both dark and light modes using color
+" theory -- instead of mere eyeballing -- in order to create a harmonious
+" palette.
 "
 " [Solarized]: http://ethanschoonover.com/solarized
 "
@@ -54,9 +54,12 @@
 "
 " [color-values]: https://github.com/altercation/solarized/blob/e40cd4130e2a82f9b03ada1ca378b7701b1a9110/vim-colors-solarized/colors/solarized.vim#L91
 "
-" Usually I use the dark mode, but when I'm outside or in a sunny place, I'll use
-" light mode. It's helpful to be able to switch between the two, so first we start
-" off with a few functions to do just that:
+" Both modes have their uses. We assume that you'll be indoors and that you'll
+" want to use dark mode most of the time. But you may find yourself outdoors and
+" in this case light mode may be more handy.
+"
+" Here we make it possible to switch between the two easily. First, we define a
+" couple of functions:
 
 function! s:UseColorScheme(type)
   if a:type == "light"
@@ -93,8 +96,7 @@ endfunction
 
 call s:UseColorScheme("dark")
 
-" The `ToggleColorScheme` command (or <kbd>,</kbd><kbd>t</kbd><kbd>h</kbd>) will
-" flip between the two modes:
+" But you can use `,th` to flip between the two modes:
 
 command! -nargs=0 ToggleColorScheme call s:ToggleColorScheme()
 nnoremap <Leader>th :ToggleColorScheme<CR>

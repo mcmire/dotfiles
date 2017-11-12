@@ -1,24 +1,21 @@
 " Plugin configuration
 " ====================
 
-" This file is where any settings related to plugins go. (At some point I'd like
-" to make these sections more modular, where if I removed the plugin the section
-" would no longer apply, but I haven't removed any of these plugins yet so this
-" works great for now.)
+" This file is where any settings related to plugins go.
 
 " NERDTree
 " --------
 
-" <kbd>,</kbd><kbd>t</kbd><kbd>t</kbd> toggles the [NERDTree]:
+" `,tt` toggles the [NERDTree]:
 "
 " [NERDTree]: https://github.com/scrooloose/nerdtree
 
 nnoremap <silent> <Leader>tt :NERDTreeToggle<CR>
 
-" <kbd>,</kbd><kbd>t</kbd><kbd>f</kbd> tells NERDTree to open the tree and jump
-" to the file that's currently open. To get this to work properly, we first open
-" the NERDTree in the current working directory, then we jump to the file; this
-" way the find doesn't change the root directory that the tree is set to.
+" `,tf` tells NERDTree to open the tree and jump to the file that's currently
+" open. To get this to work properly, we first open the NERDTree in the current
+" working directory, then we jump to the file; this way the find doesn't change
+" the root directory that the tree is set to.
 
 nnoremap <silent> <Leader>tf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 
@@ -71,9 +68,11 @@ noremap <Leader>pt :CtrlPTag<CR>
 " Ack.vim
 " -------
 
-" I use Ag to search through projects, but in a roundabout way. Here we actually
-" use [Ack.vim], as it's more maintained, but we just override it to use Ag:
+" [Ag] is used to search through projects, but in a roundabout way. Here we
+" actually use [Ack.vim], as it's more maintained, but we just override it to
+" use Ag:
 "
+" [Ag]: https://github.com/ggreer/the_silver_searcher
 " [Ack.vim]: https://github.com/mileszs/ack.vim
 
 let g:ackprg = 'ag --vimgrep'
@@ -111,9 +110,9 @@ let g:indentLine_color_term = 10
 " coffee-script
 " -------------
 
-" I don't like how the [CoffeeScript plugin][coffee-script-vim] highlights
-" things by default -- it's a bit overzealous. Here we turn off highlighting for
-" curly braces, square brackets, parentheses and operators:
+" The [CoffeeScript plugin][coffee-script-vim] is a bit overzealous in its
+" highlighting. Here we turn off highlighting for curly braces, square brackets,
+" parentheses and operators:
 "
 " [coffee-script-vim]: https://github.com/kchmck/vim-coffee-script
 
@@ -217,7 +216,7 @@ augroup END
 
 let g:VtrClearSequence = "clear"
 
-" We also map <kbd>,</kbd><kbd>o</kbd> so that we can easily open a pane that's
+" We also map `,o` so that we can easily open a pane that's
 " 35% of the screen width. You may want to increase this size on larger screens.
 
 nmap <leader>o :VtrOpenRunner({'orientation': 'h', 'percentage': 35})<CR>
@@ -239,9 +238,9 @@ let g:disable_write_on_spec_run = 1
 
 " Finally, we create some mappings:
 "
-" * <kbd>,</kbd><kbd>t</kbd> to run the current spec file
-" * <kbd>,</kbd><kbd>s</kbd> to run just one spec (the one the cursor is within)
-" * <kbd>,</kbd><kbd>l</kbd> to run whichever command was run last
+" * `,t` to run the current spec file
+" * `,s` to run just one spec (the one the cursor is within)
+" * `,l` to run whichever command was run last
 
 map <leader>t <plug>RunCurrentSpecFile
 map <leader>s <plug>RunFocusedSpec
@@ -337,7 +336,7 @@ let g:ale_sign_warning = '!'
 
 let g:ale_fix_on_save = 0
 
-" Instead, we bind this behavior to <kbd>,</kbd><kbd>f</kbd>:
+" Instead, we bind this behavior to `,f`:
 
 nmap <Leader>f <Plug>(ale_fix)
 
@@ -364,7 +363,7 @@ let g:ale_fixers = {
 let g:AutoPairs = {}
 
 " However, we make it so that it can be toggled with
-" <kbd>,</kbd><kbd>a</kbd><kbd>p</kbd><kbd>t</kbd>:
+" `,apt`:
 
 let g:AutoPairsShortcutToggle = "<Leader>apt"
 
@@ -405,8 +404,7 @@ let g:limelight_conceal_ctermfg = 239
 " ----------------
 
 " We configure [togglecursor] so that the default cursor is a non-blinking block
-" in Command mode and a non-blinking vertical line in Insert mode. Note that the
-" line *will* blink under tmux; I'm not sure why this is.
+" in Command mode and a non-blinking vertical line in Insert mode.
 "
 " [togglecursor]: https://github.com/jszakmeister/vim-togglecursor
 
@@ -418,8 +416,8 @@ let g:togglecursor_leave = 'block'
 " ----------------
 
 " [Bashrockets] is nice, but it doesn't have a convenient way to apply
-" conversions across a selection, which is what I end up wanting to do most of
-" the time. These two commands let us do that:
+" conversions across a selection, which is its most common use case. These two
+" commands let us do that:
 "
 " [Bashrockets]: https://github.com/danchoi/ruby_bashrockets.vim
 
@@ -443,8 +441,9 @@ let g:colorizer_skip_comments = 1
 " vim-jsx
 " -------
 
-" My projects are set up such that I can use JSX in regular JavaScript files. So
-" we configure the [jsx] plugin to do this as well:
+" [This plugin][jsx] assumes that JSX files end in .jsx. This doesn't seem to be
+" a standard in the JavaScript community; it makes more sense to allow JSX in
+" any JavaScript file:
 "
 " [jsx]: https://github.com/mxw/vim-jsx
 
@@ -453,17 +452,20 @@ let g:jsx_ext_required = 0
 " neco-ghc
 " --------
 
-" We configure tab completion for Haskell files:
+" Here we configure tab completion for Haskell files:
 
 let g:haskellmode_completion_ghc = 1
 autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 
 " elm-vim
 " -------
-
-" When saving a file in Elm, we don't want to automatically run the file through
-" `elm-format`. I get the rationale behind `elm-format`, but its indentation
-" rules are weird (and it's clear that none of the authors write any tests):
+"
+" [This plugin][elm-vim] causes Elm files you write to reformat themselves by
+" way of elm-format on save. It's better to be explicit than implicit in these
+" kinds of things. We've configured Ale so that you can do this manually with
+" `,f`, so we can disable that behavior here:
+"
+" [elm-vim]: https://github.com/ElmCast/elm-vim
 
 let g:elm_format_autosave = 0
 

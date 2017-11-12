@@ -3,8 +3,8 @@
 
 " Before we start configuring Vim, we need to do a couple of things.
 "
-" First, we need to load some Vim plugins; I keep a list of them in
-" [plugins.vim](../plugins.vim). [VimPlug] is my plugin manager of choice. It
+" First, we need to load the plugins, which are kept
+" [plugins.vim](../plugins.vim). We're using [VimPlug] as the plugin manager. It
 " has some nifty features -- for instance, it installs new plugins in parallel
 " and gives you a way to defer the loading of plugins until they're used.
 "

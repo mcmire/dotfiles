@@ -1,20 +1,22 @@
 " Line width settings
 " ===================
 
-" I don't like seeing long lines when I read code, so I don't like writing long
-" lines, either. The Ruby style guide [recommends][ruby-line-length] using an
-" 80-character limit, and I've found this to be an acceptable length, so we set
-" that here:
+" This configuration espouses the hopefully not too controversial idea that code
+" that contains long lines, lines that cause the reader to scroll horizontally,
+" are undesirable.
+
+" In fact, the unofficial Ruby style guide [recommends][ruby-line-length] using
+" an 80-character limit. This seems like an appropriate length for most code, so
+" we set that across the board:
 "
 " [ruby-line-length]: https://github.com/bbatsov/ruby-style-guide#80-character-limits
 
 set textwidth=80
 
 " However, for Git commit messages, Tim Pope [recommends][git-line-length] using
-" a line length of 72 characters, and GitHub's UI also assumes this length as
-" well when it displays messages for individual commits (I'm not sure where this
-" comes from, but it's likely they took it from Tim Pope). So we set this as
-" well:
+" a line length of 72 characters, and GitHub's UI -- likely inspired by Mr. Pope
+" -- also assumes this length as well when it displays messages for individual
+"  commits. So we set this as well:
 "
 " [git-line-length]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
 
