@@ -1,6 +1,6 @@
 cassandra_version="2.2.0"
 
-export CASSANDRA_HOME="/usr/local/Cellar/$cassandra_version"
-export PATH=$CASSANDRA_HOME/bin:$PATH
+export CASSANDRA_HOME="/usr/local/Cellar/cassandra/$cassandra_version"
+export PATH="$CASSANDRA_HOME/bin:$PATH"
 
 # vi: ft=sh

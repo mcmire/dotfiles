@@ -1,8 +1,9 @@
 # Set a sensible default PATH
-# ~/.bin is where we will keep custom executables
-export PATH=$HOME/.bin:/opt/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:$PATH
+# - /usr/local/bin is where Homebrew puts executables
+# - ~/.bin is where we will keep custom executables
+export PATH=$HOME/.bin:/usr/local/bin:$PATH
 
 # Set a sensible default MANPATH as well
-export MANPATH=/opt/man:/opt/share/man:$MANPATH
+export MANPATH=/opt/man:/opt/share/man
 
 # vi: ft=sh
