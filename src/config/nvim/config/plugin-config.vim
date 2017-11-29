@@ -311,20 +311,30 @@ let g:sexp_enable_insert_mode_mappings = 0
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 0
 
-" We use [Prettier][prettier] to lint JavaScript and Sass files, we use
-" [Rubocop] for Ruby files, and we use [elm-make] for Elm files:
+" Now we configure Ale to use:
 "
-" [prettier]: https://github.com/prettier/prettier
+" * [Rubocop] to lint Ruby files
+" * [ESLint] to lint JavaScript files
+" * [TSLint] to lint TypeScript files
+" * [sass-lint] to lint SCSS files
+" * [csslint] to lint CSS files
+" * [elm-make] to lint Elm files
+
 " [Rubocop]: https://github.com/bbatsov/rubocop
+" [ESLint]: http://eslint.org/
+" [TSLint]: https://github.com/palantir/tslint
+" [sass-lint]: https://www.npmjs.com/package/sass-lint
+" [csslint]: http://csslint.net/
 " [elm-make]: https://github.com/elm-lang/elm-make
 
 let g:ale_linters = {
-\  'javascript': ['prettier', 'eslint'],
-\  'css': ['prettier'],
-\  'scss': ['prettier'],
-\  'ruby': ['rubocop'],
-\  'elm': ['make'],
-\}
+      \  'ruby': ['rubocop'],
+      \  'javascript': ['eslint'],
+      \  'typescript': ['tslint'],
+      \  'scss': ['sass-lint'],
+      \  'css': ['csslint'],
+      \  'elm': ['make'],
+      \}
 
 " Finally, we customize the icons that appear in the gutter when issues are
 " reported:
@@ -340,18 +350,24 @@ let g:ale_fix_on_save = 0
 
 nmap <Leader>f <Plug>(ale_fix)
 
-" Finally, we configure the plugin to use Prettier to fix JavaScript and Sass
-" files, to use Rubocop for Ruby files, and to use [elm-format] for Elm files:
+" Finally, we configure the plugin to use:
 "
+" * [Prettier] to fix JavaScript, TypeScript, SCSS, and CSS files
+" * [Rubocop] to fix Ruby files
+" * [elm-format] to fix Elm files
+"
+" [prettier]: https://github.com/prettier/prettier
+" [Rubocop]: https://github.com/bbatsov/rubocop
 " [elm-format]: https://github.com/avh4/elm-format
 
 let g:ale_fixers = {
-\  'javascript': ['prettier', 'eslint'],
-\  'ruby': ['rubocop'],
-\  'css': ['prettier'],
-\  'scss': ['prettier'],
-\  'elm': ['format'],
-\}
+      \  'ruby': ['rubocop'],
+      \  'javascript': ['prettier'],
+      \  'typescript': ['prettier'],
+      \  'scss': ['prettier'],
+      \  'css': ['prettier'],
+      \  'elm': ['format'],
+      \}
 
 " auto-pairs
 " ----------
