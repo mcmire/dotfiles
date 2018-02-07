@@ -1,19 +1,6 @@
 snippet rc "React component"
 import React from "react";
-
-export default class ${1:SomeComponentClass} extends React.Component {
-  render() {
-    return (
-      <${2:tag} ${3:someAttribute}>
-        $4
-      </$2>
-    )
-  }
-}
-endsnippet
-
-snippet rc2 "React component"
-import React from "react";
+import PropTypes from "prop-types";
 
 export default class ${1:SomeComponentClass} extends React.Component {
   constructor(props) {
@@ -22,12 +9,13 @@ export default class ${1:SomeComponentClass} extends React.Component {
 
   render() {
     return (
-      <${2:tag} ${3:someAttribute}>
-        $4
-      </$2>
+      $0
     )
   }
 }
+
+$1.propTypes = {
+};
 endsnippet
 
 snippet bind "Bind a function"
