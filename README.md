@@ -15,6 +15,11 @@ then set it as your default shell:
 
     sudo dscl . -create /Users/$USER UserShell /usr/local/bin/zsh
 
+In addition, you will need to prevent OS X from loading *its* zsh configuration.
+You can do that by saying:
+
+    sudo mv /etc/zprofile /etc/zprofile.old
+
 ### tmux
 
 Next, you'll need **tmux 2.5** or higher. (Under tmux 2.0+, new windows will
