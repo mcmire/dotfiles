@@ -113,11 +113,11 @@ use the `--dry-run` option. For further output, use the `--verbose` option.
 Here's a rundown of all of the options:
 
 EOT
-      p.on("--git-email", "The email address that you'll use to author
+      p.on("--git-email EMAIL", "The email address that you'll use to author
                                      Git commits.") do |git_email|
         @options[:git_email] = git_email
       end
-      p.on("--git-name", "The name that you'll use to author Git
+      p.on("--git-name NAME", "The name that you'll use to author Git
                                      commits.") do |git_name|
         @options[:git_name] = git_name
       end
