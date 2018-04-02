@@ -4,14 +4,18 @@ This is where I keep configuration for zsh, tmux, git, and other stuff.
 
 ## Prerequisites
 
+### zsh
+
 The configuration here relies on zsh, so you'll need that first. Install it via
 Homebrew
 
     brew install zsh
 
-then set it as your default shell with the following command:
+then set it as your default shell:
 
     sudo dscl . -create /Users/$USER UserShell /usr/local/bin/zsh
+
+### tmux
 
 Next, you'll need **tmux 2.5** or higher. (Under tmux 2.0+, new windows will
 keep the working directory, and 2.3+ supports copying to the clipboard
@@ -19,25 +23,50 @@ automatically when you select stuff with the mouse.) You can install it with:
 
     brew install tmux
 
-If you already have it, you can update it with:
-
-    brew upgrade tmux
+### reattach-to-user-namespace
 
 Next, you'll need `reattach-to-user-namespace`. This helps with copying and
 pasting within tmux:
 
     brew install reattach-to-user-namespace
 
-Finally, you'll need to install the Powerline support files, which I use for
-tmux (you may or may not have to run this with `sudo`):
+### Powerline
+
+You'll also need the Powerline support files for tmux:
 
     pip install --user powerline-status
 
+NOTE: This assumes that you've installed `pip`. As it is not present on new
+Macs, you'll need to install it by [following this guide][installing-pip].
+
+[installing-pip]: https://pip.pypa.io/en/stable/installing/#installing-with-get-pip-py
+
+### Ruby
+
+I use `rbenv` to manage Ruby. You can install it with:
+
+    brew install rbenv
+
+After this, you can install a Ruby version by saying:
+
+    rbenv install SOME_RUBY_VERSION
+
+### Node
+
+I use `nvm` to manage Node. You can install it with:
+
+    brew install nvm
+
+After this, you can install a Node version by saying:
+
+    nvm install 9.10.1   # run `npm ls-remote` and use the last version listed
+
+### Additional packages
+
 You will also need:
 
-* rbenv
-* nvm
-* autojump
+* autojump: `brew install autojump`
+* hub: `brew install hub`
 
 ## Installation
 
@@ -53,9 +82,10 @@ want to provide your Git name and email, which will be used to author commits.
     script/install --link --git-name "Your Name" --git-email "your@email.com"
 
 Finally, after you've done this, open tmux. You may receive a warning at the top
-of the screen, but ignore that. Press <kbd>Ctrl</kbd> + <kbd>Space</kbd>
-followed by <kbd>Shift</kbd> + <kbd>I</kbd>. This will install plugins that are
-necessary for tmux for fully work. Then restart tmux.
+of the screen, but ignore that and press Enter. Press <kbd>Ctrl</kbd> +
+<kbd>Space</kbd> followed by <kbd>Shift</kbd> + <kbd>I</kbd>. After a brief
+delay, plugins will be installed that are necessary for tmux for fully work.
+Then restart tmux, and you should no longer receive the warning.
 
 ## Known issues
 
