@@ -77,7 +77,7 @@ There are a few things you'll need before you can install the files here.
 First, this configuration assumes you're using Neovim. You can install this
 using Homebrew:
 
-    brew install neovim/neovim/neovim
+    brew install neovim
 
 If you're using [mcmire/dotfiles][dotfiles], you're good to go here. Otherwise,
 it's recommended that you add a short alias to your shell so that you can start
@@ -139,7 +139,25 @@ saying:
 
     brew upgrade ag
 
-### Installing
+#### Ruby support
+
+Neovim no longer includes Ruby support, so you'll need to install it.
+You can do that with:
+
+    gem install neovim
+
+#### Python support
+
+Neovim no longer includes Python support, either. You can install this with:
+
+    pip install --user neovim
+
+NOTE: This assumes you have pip installed. As new Macs do not include pip, you
+will want to [follow this guide][installing-pip] to install it first.
+
+[installing-pip]: https://pip.pypa.io/en/stable/installing/#installing-with-get-pip-py
+
+### Running the install script
 
 Now that you have the prerequisites out of the way, you can actually install
 these configuration files and get started Vimming.
