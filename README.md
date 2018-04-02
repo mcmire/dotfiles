@@ -55,7 +55,7 @@ After this, you can install a Ruby version by saying:
 
 I use `nvm` to manage Node. You can install it with:
 
-    brew install nvm
+    brew install node nvm
 
 After this, you can install a Node version by saying:
 
