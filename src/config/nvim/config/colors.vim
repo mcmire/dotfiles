@@ -92,11 +92,15 @@ function! s:ToggleColorScheme()
   endif
 endfunction
 
-" We set dark mode as the default:
-
-call s:UseColorScheme("dark")
-
 " But you can use `,th` to flip between the two modes:
 
 command! -nargs=0 ToggleColorScheme call s:ToggleColorScheme()
 nnoremap <Leader>th :ToggleColorScheme<CR>
+
+" Enable RGB color support:
+
+set termguicolors
+
+" and set dark mode as the default:
+
+call s:UseColorScheme("dark")
