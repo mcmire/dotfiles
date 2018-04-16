@@ -1,0 +1,4 @@
+--recurse=yes
+--exclude=.git
+--exclude=log
+--languages=-javascript,sql
