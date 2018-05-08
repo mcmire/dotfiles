@@ -51,6 +51,7 @@ alias Rc="R console"
 
 alias s="be spring"
 alias sr="s rspec"
+alias sc="s cucumber"
 
 alias dex="bin/docker dev exec app"
 alias dcl="bin/docker dev console app"
