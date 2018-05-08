@@ -3,6 +3,7 @@ source ~/.zsh/bindings
 source ~/.zsh/cassandra
 source ~/.zsh/colors
 source ~/.zsh/clojure
+source ~/.zsh/cucumber
 source ~/.zsh/echonest
 source ~/.zsh/git
 source ~/.zsh/google-cloud-sdk
