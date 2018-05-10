@@ -2,7 +2,7 @@
 AllCops:
   Exclude:
     - db/schema.rb
-  TargetRubyVersion: 2.4.1
+  TargetRubyVersion: 2.4
 Layout/DotPosition:
   EnforcedStyle: trailing
 Layout/ExtraSpacing:
@@ -41,10 +41,6 @@ Lint/FormatParameterMismatch:
   Enabled: false
 Lint/HandleExceptions:
   Enabled: false
-Lint/InvalidCharacterLiteral:
-  Enabled: false
-Lint/LiteralInCondition:
-  Enabled: false
 Lint/LiteralInInterpolation:
   Enabled: false
 Lint/Loop:
@@ -79,6 +75,19 @@ Metrics/ModuleLength:
   Enabled: false
 Metrics/ParameterLists:
   Enabled: false
+Naming/AccessorMethodName:
+  Enabled: false
+Naming/AsciiIdentifiers:
+  Enabled: false
+Naming/BinaryOperatorParameterName:
+  Enabled: false
+Naming/FileName:
+  Enabled: false
+Naming/PredicateName:
+  NamePrefixBlacklist:
+    - is_
+  Exclude:
+    - spec/**/*
 Performance/CaseWhenSplat:
   Enabled: false
 Performance/Count:
@@ -117,15 +126,11 @@ Rails/TimeZone:
   Enabled: false
 Rails/Validation:
   Enabled: false
-Style/AccessorMethodName:
-  Enabled: false
 Style/Alias:
   Enabled: false
 Style/ArrayJoin:
   Enabled: false
 Style/AsciiComments:
-  Enabled: false
-Style/AsciiIdentifiers:
   Enabled: false
 Style/Attr:
   Enabled: false
@@ -164,8 +169,6 @@ Style/EmptyMethod:
 Style/Encoding:
   Enabled: false
 Style/EvenOdd:
-  Enabled: false
-Style/FileName:
   Enabled: false
 Style/FrozenStringLiteralComment:
   Enabled: false
@@ -207,17 +210,10 @@ Style/NumericLiterals:
   Enabled: false
 Style/OneLineConditional:
   Enabled: false
-Style/OpMethod:
-  Enabled: false
 Style/PercentLiteralDelimiters:
   Enabled: false
 Style/PerlBackrefs:
   Enabled: false
-Style/PredicateName:
-  NamePrefixBlacklist:
-    - is_
-  Exclude:
-    - spec/**/*
 Style/PreferredHashMethods:
   Enabled: false
 Style/Proc:
@@ -241,19 +237,13 @@ Style/SpecialGlobalVars:
 Style/StringLiterals:
   EnforcedStyle: double_quotes
   Enabled: true
+Style/SymbolArray:
+  Enabled: false
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
-  SupportedStyles:
-    - comma
-    - consistent_comma
-    - no_comma
   Enabled: true
 Style/TrailingCommaInLiteral:
   EnforcedStyleForMultiline: comma
-  SupportedStyles:
-    - comma
-    - consistent_comma
-    - no_comma
   Enabled: true
 Style/TrivialAccessors:
   Enabled: false
