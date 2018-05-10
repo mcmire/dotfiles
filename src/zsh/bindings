@@ -1,7 +1,8 @@
 # Sources:
 # * http://dougblack.io/words/zsh-vi-mode.html
 # * http://superuser.com/a/648046
-# * http://ivyl.0xcafe.eu/2013/02/03/refining-zsh/
+# * http://ivyl.0xcafe.eu/2013/02/03/refining-zsh
+# * https://emily.st/2013/05/03/zsh-vi-cursor/
 
 # Engage Vi mode!
 bindkey -v
@@ -17,6 +18,9 @@ bindkey '^h' backward-delete-char
 
 # ctrl-w removed word backwards
 bindkey '^w' backward-kill-word
+# But treat dashes, underscores, etc. as delimiters instead of just spaces
+autoload -U select-word-style
+select-word-style bash
 
 # ctrl-r starts searching history backward
 bindkey '^r' history-incremental-search-backward
@@ -25,14 +29,33 @@ bindkey '^r' history-incremental-search-backward
 export KEYTIMEOUT=1
 
 # Tell zsh not to wait after pressing Escape
-bindkey -sM vicmd '^[' '^G'
+bindkey -M vicmd '^[' undefined-key
 # Don't mess with existing widgets
 bindkey -rM viins '^X'
 bindkey -M viins '^X,' _history-complete-newer \
                  '^X/' _history-complete-older \
                  '^X`' _bash_complete-word
 
-autoload -U select-word-style
-select-word-style bash
+# Switch the cursor between line and block modes when going between command and
+# insert mode
+
+function zle-keymap-select zle-line-init {
+  # change cursor shape in iTerm2
+  case $KEYMAP in
+      vicmd)      print -n -- "\E]50;CursorShape=0\C-G";;  # block cursor
+      viins|main) print -n -- "\E]50;CursorShape=1\C-G";;  # line cursor
+  esac
+
+  #zle reset-prompt
+  #zle -R
+}
+
+function zle-line-finish {
+  print -n -- "\E]50;CursorShape=0\C-G"  # block cursor
+}
+
+zle -N zle-line-init
+zle -N zle-line-finish
+zle -N zle-keymap-select
 
 # vi: ft=sh
