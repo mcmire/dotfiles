@@ -77,10 +77,6 @@ function Prompt__Fragment__rbenv_info {
   echo -n "$out"
 }
 
-function Prompt__rvm_prompt_path {
-  echo -n "$(which rvm-prompt &>/dev/null)"
-}
-
 function Prompt__rbenv_path {
   echo -n "$(which rbenv &>/dev/null)"
 }
