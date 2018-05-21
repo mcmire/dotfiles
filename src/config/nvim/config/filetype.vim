@@ -27,6 +27,14 @@ augroup local
   autocmd BufNewFile,BufRead {.jshintrc,.eslintrc} set ft=javascript
 augroup END
 
+" Syntax-highlight JSX in JavaScript and TypeScript files regardless of
+" extension:
+
+augroup local
+  autocmd BufNewFile,BufRead *.{js,jsx} set ft=javascript.jsx
+  autocmd BufNewFile,BufRead *.{ts,tsx} set ft=typescript.jsx
+augroup END
+
 " For some reason, auto-indentation isn't enabled in Markdown files, so we
 " explicitly enable that too:
 
