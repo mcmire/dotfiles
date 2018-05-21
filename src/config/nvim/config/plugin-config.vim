@@ -376,7 +376,7 @@ let g:ale_fixers = {
 "
 " [AutoPairs]: https://github.com/jiangmiao/auto-pairs
 
-let g:AutoPairs = {}
+"let g:AutoPairs = {}
 
 " However, we make it so that it can be toggled with
 " `,apt`:
