@@ -1,4 +1,4 @@
-snippet rc "React component"
+snippet rcc "React component class"
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -16,6 +16,70 @@ export default class ${1:SomeComponentClass} extends React.Component {
 
 $1.propTypes = {
 };
+endsnippet
+
+snippet rccs "React component class with style"
+import React from "react";
+import PropTypes from "prop-types";
+import CSSModules from "react-css-modules";
+
+import styles from "./index.css";
+
+class ${1:SomeComponentClass} extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      $0
+    );
+  }
+}
+
+$1.propTypes = {
+};
+
+export default CSSModules($1, styles);
+endsnippet
+
+snippet rcf "React component function"
+import React from "react";
+import PropTypes from "prop-types";
+
+export default function ${1:SomeComponentClass}(props) {
+  return (
+    $0
+  );
+}
+
+$1.propTypes = {
+};
+endsnippet
+
+snippet rcfs "React component function with style"
+import React from "react";
+import PropTypes from "prop-types";
+import CSSModules from "react-css-modules";
+
+import styles from "./index.css";
+
+function ${1:SomeComponentClass}(props) {
+  return (
+    $0
+  );
+}
+
+$1.propTypes = {
+};
+
+export default CSSModules($1, styles);
+endsnippet
+
+snippet rcons "constructor"
+constructor(props) {
+  super(props);
+}
 endsnippet
 
 snippet bind "Bind a function"
