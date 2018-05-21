@@ -9,7 +9,7 @@
 # prepend, then PATH will explode and have a bunch of duplicates it. This causes
 # issues with NVM such as this one:
 # <https://github.com/creationix/nvm/issues/1652>
-export PATH=$HOME/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH=$HOME/.bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
 
 # Set a sensible default MANPATH as well
 export MANPATH=/opt/man:/opt/share/man
