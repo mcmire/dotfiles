@@ -67,21 +67,31 @@ function! s:UseColorScheme(type)
     set background=light
     silent! colorscheme solarized
     let g:airline_theme="solarized"
-    let g:airline_solarized_bg="dark"
-    highlight SpecialKey ctermfg=14 ctermbg=15
-    highlight SignColumn ctermbg=15
+    let g:airline_solarized_bg="light"
+    " fg=base1, bg=base3
+    highlight SpecialKey guifg=#93a1a1 guibg=#fdf6e3
+    " bg=base3
+    highlight SignColumn guibg=#fdf6e3
+    " fg=base3, bg=red
+    highlight ExtraWhitespace guifg=#fdf6e3 guibg=#dc322f
+    " fg=base3, bg=red
+    highlight CharsExceedingLineLength guifg=#fdf6e3 guibg=#dc322f
   else
     let s:color_scheme_type="dark"
     set background=dark
     silent! colorscheme solarized
     let g:airline_theme="solarized"
-    let g:airline_solarized_bg="light"
-    highlight SpecialKey ctermfg=10 ctermbg=8
-    highlight SignColumn ctermbg=8
+    let g:airline_solarized_bg="dark"
+    " fg=base01, bg=base03
+    highlight SpecialKey guifg=#586e75 guibg=#002b36
+    " bg=base03
+    highlight SignColumn guibg=#002b36
+    " fg=base03, bg=red
+    highlight ExtraWhitespace guifg=#002b36 guibg=#dc322f
+    " fg=base03, bg=red
+    highlight CharsExceedingLineLength guifg=#002b36 guibg=#dc322f
   end
 
-  highlight ExtraWhitespace ctermfg=0 ctermbg=1
-  highlight CharsExceedingLineLength ctermfg=1
 endfunction
 
 function! s:ToggleColorScheme()
