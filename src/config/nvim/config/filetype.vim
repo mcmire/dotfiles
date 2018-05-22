@@ -20,11 +20,17 @@ augroup local
   autocmd BufRead,BufNewFile {config.ru,Gemfile,Guardfile,Rakefile,Thorfile,Vagrantfile,Appraisals,Bowerfile,*.gemspec} set ft=ruby
 augroup END
 
-" JSHint and ESLint configuration files are JavaScript files, so they need to be
-" highlighted as such as well:
+" JSHint, ESLint, and Babel configuration files are JSON files, so they
+" need to be highlighted as such as well:
 
 augroup local
-  autocmd BufNewFile,BufRead {.jshintrc,.eslintrc} set ft=javascript
+  autocmd BufNewFile,BufRead {.jshintrc,.eslintrc,.babelrc} set ft=json
+augroup END
+
+" .js.coffee files are CoffeeScript files too:
+
+augroup local
+  autocmd BufNewFile,BufRead {.js.coffee} set ft=coffee
 augroup END
 
 " Syntax-highlight JSX in JavaScript and TypeScript files regardless of
