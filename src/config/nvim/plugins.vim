@@ -1,6 +1,7 @@
 Plug '~/.config/nvim/plugged/vim-colors-solarized'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Yggdroot/indentLine'
+Plug 'ap/vim-css-color'
 Plug 'avakhov/vim-yaml'
 Plug 'briancollins/vim-jst'
 Plug 'cakebaker/scss-syntax.vim'
