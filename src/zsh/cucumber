@@ -1,1 +1,1 @@
-CUCUMBER_FORMAT='pretty'
+export CUCUMBER_FORMAT='pretty'
