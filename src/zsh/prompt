@@ -6,6 +6,7 @@
 #
 # For help on how colors work, read:
 #
+# * <https://github.com/zsh-users/zsh/blob/master/Functions/Misc/colors>
 # * <https://wiki.archlinux.org/index.php/zsh#Customizing_the_prompt>
 # * <https://wiki.archlinux.org/index.php/zsh#Colors>
 
