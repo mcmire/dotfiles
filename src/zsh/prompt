@@ -45,6 +45,10 @@ function Prompt__Fragment__collapsed_pwd {
   echo "${PWD/#$HOME/~}"
 }
 
+function Prompt__Fragment__time {
+  echo -n '%D{%H:%M:%S %p}'
+}
+
 function Prompt__Fragment__username {
   echo -n '%n'
 }
@@ -81,6 +85,10 @@ function Prompt__rbenv_path {
   echo -n "$(which rbenv &>/dev/null)"
 }
 
+function Prompt__time {
+  echo -n "($(Color__blue "$(Prompt__Fragment__time)")) "
+}
+
 function Prompt__username_fragment {
   echo -n "$(Color__blue "$(Prompt__Fragment__username)")"
 }
@@ -102,7 +110,7 @@ function Prompt__rbenv_info_fragment {
 }
 
 function Prompt__cwd_fragment {
-  echo -n " at $(Color__green "$(Prompt__Fragment__collapsed_pwd)")"
+  echo -n "$(Color__green "$(Prompt__Fragment__collapsed_pwd)")"
 }
 
 function Prompt__rc_char_fragment {
@@ -110,12 +118,12 @@ function Prompt__rc_char_fragment {
 }
 
 function Prompt__value {
-  echo -n '$(Prompt__username_fragment)'
+  echo -n '$(Prompt__time)'
   echo -n '$(Prompt__cwd_fragment)'
   echo -n '$(Prompt__git_branch_fragment)'
   echo -n '$(Prompt__rbenv_info_fragment)'
   echo -n "\n"
-  echo '∴ '
+  echo '➤  '
 }
 
 function Prompt__set {
