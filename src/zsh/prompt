@@ -47,7 +47,7 @@ function Prompt__Fragment__collapsed_pwd {
 }
 
 function Prompt__Fragment__time {
-  echo -n '%D{%H:%M:%S %p}'
+  echo -n '%D{%-I:%M:%S %p}'
 }
 
 function Prompt__Fragment__username {
