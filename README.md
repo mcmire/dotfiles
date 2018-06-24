@@ -148,19 +148,19 @@ You can do that with:
 
 #### Python support
 
-Neovim no longer includes Python support, either. You can install this with:
+Neovim no longer includes Python support. You can install this with:
 
-    pip install --user neovim
+    pip install neovim
 
 NOTE: This assumes you have pip installed. As new Macs do not include pip, you
-will want to [follow this guide][installing-pip] to install it first.
+will want to [do that first][installing-python].
 
-[installing-pip]: https://pip.pypa.io/en/stable/installing/#installing-with-get-pip-py
+[installing-python]: http://github.com/mcmire/dotfiles#python
 
 ### Running the install script
 
 Now that you have the prerequisites out of the way, you can actually install
-these configuration files and get started Vimming.
+these configuration files and get started vimming.
 
 First, you need to download this repo somehow. You'll probably want to come back
 to these files later, make modifications to themL and push them up. So start by
@@ -195,6 +195,9 @@ You're almost there! Now you're ready to install plugins. You can do that by
 opening Vim (remember, you can say `v` since you made an alias), then run:
 
     :PlugInstall
+
+(You may see errors that a plugin failed to be cloned or installed, but if you
+press R to restart the installation then it should report a success.)
 
 Now close Vim and re-open it, and you should be good to go!
 
