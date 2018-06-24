@@ -336,6 +336,9 @@ let g:ale_linters = {
       \  'elm': ['make'],
       \}
 
+" We customize the mapping to go to the next linter error:
+nmap <Leader>n <Plug>(ale_next_wrap)
+
 " Finally, we customize the icons that appear in the gutter when issues are
 " reported:
 
