@@ -375,14 +375,18 @@ let g:ale_fixers = {
 " auto-pairs
 " ----------
 
-" [AutoPairs] used to be enabled by default, but now we disable it:
+" AutoPairs is nice, but it has this weird behavior (especially noticeable in
+" JavaScript files) where if you try to add an if statement, function, etc. in
+" the middle of another function, as soon as you press } then AutoPairs will
+" jump to the next }. This gets super annoying and there's actually a [fork][1]
+" that fixes this behavior so that it will count however many brackets are open
+" and ensure that they're all closed before jumping.
 "
-" [AutoPairs]: https://github.com/jiangmiao/auto-pairs
+" [1]: https://github.com/eapache/auto-pairs
 
-"let g:AutoPairs = {}
+let g:AutoPairsUseInsertedCount = 1
 
-" However, we make it so that it can be toggled with
-" `,apt`:
+" However, we make it so that it can be toggled with `,apt`:
 
 let g:AutoPairsShortcutToggle = "<Leader>apt"
 
