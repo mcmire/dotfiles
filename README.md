@@ -42,7 +42,7 @@ recommend `pyenv`. You can install that with:
 
 To install the latest version of Python, say:
 
-    python_version=$(pyenv install --list | grep -v '\db\d\|dev' | | egrep '^\s+\d' | tail -n 1 | sed -Ee 's/^[ ]+//g')
+    python_version=$(pyenv install --list | grep -v '\db\d\|dev' | egrep '^\s+\d' | tail -n 1 | sed -Ee 's/^[ ]+//g')
     pyenv install $python_version
     pyenv global $python_version
 
