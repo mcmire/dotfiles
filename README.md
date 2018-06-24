@@ -7,11 +7,11 @@ This is where I keep configuration for zsh, tmux, git, and other stuff.
 ### zsh
 
 The configuration here relies on zsh, so you'll need that first. Install it via
-Homebrew
+Homebrew...
 
     brew install zsh
 
-then set it as your default shell:
+...then set it as your default shell:
 
     sudo dscl . -create /Users/$USER UserShell /usr/local/bin/zsh
 
@@ -20,64 +20,91 @@ You can do that by saying:
 
     sudo mv /etc/zprofile /etc/zprofile.old
 
+### Ruby
+
+Although OS X ships with Ruby, it's better to use a version manager. I recommend
+`rbenv`. You can install that with:
+
+    brew install rbenv
+
+To install the latest version of Ruby, say:
+
+    ruby_version=$(rbenv install --list | grep -v 'preview\|dev' | egrep '^\s+\d' | tail -n 1 | sed -Ee 's/^[ ]+//g')
+    rbenv install $ruby_version
+    rbenv global $ruby_version
+
+## Python
+
+Although OS X ships with Python, it's better to use a version manager. I
+recommend `pyenv`. You can install that with:
+
+    brew install pyenv
+
+To install the latest version of Python, say:
+
+    python_version=$(pyenv install --list | grep -v '\db\d\|dev' | | egrep '^\s+\d' | tail -n 1 | sed -Ee 's/^[ ]+//g')
+    pyenv install $python_version
+    pyenv global $python_version
+
+Any Pythons installed via `pyenv` will automatically include Pip. You may need
+to upgrade it, however:
+
+    pip install --upgrade pip
+
+### Node
+
+I use `nvm` to manage Node versions. You can install it with:
+
+    brew install node nvm
+
+To install the latest version of Node, say:
+
+    nvm install $(nvm ls-remote | tail -n 1 | sed -Ee 's/'"$(printf '\x1b')"'\[[[:digit:]]+;[[:digit:]]+m//g' | sed -Ee 's/^->?[ ]+v//')
+
 ### tmux
 
-Next, you'll need **tmux 2.5** or higher. (Under tmux 2.0+, new windows will
-keep the working directory, and 2.3+ supports copying to the clipboard
-automatically when you select stuff with the mouse.) You can install it with:
+You'll need **tmux 2.5** or higher. (Under tmux 2.0+, new windows will keep the
+working directory, and 2.3+ supports copying to the clipboard automatically when
+you select stuff with the mouse.) You can install it with:
 
     brew install tmux
 
-### reattach-to-user-namespace
-
-Next, you'll need `reattach-to-user-namespace`. This helps with copying and
-pasting within tmux:
+To help with copying and pasting within tmux, you'll also want
+`reattach-to-user-namespace`:
 
     brew install reattach-to-user-namespace
 
 ### Powerline
 
-You'll also need the Powerline support files for tmux:
+You'll need the Powerline support files for tmux:
 
-    pip install --user powerline-status
+    pip install powerline-status
 
-NOTE: This assumes that you've installed `pip`. As it is not present on new
-Macs, you'll need to install it by [following this guide][installing-pip].
+### Extra packages
 
-[installing-pip]: https://pip.pypa.io/en/stable/installing/#installing-with-get-pip-py
+There are a few extra utilities that I make use that are super helpful in my
+day-to-day:
 
-### Ruby
+* [autojump] lets you navigate quickly to projects.
+* [fzf] gives you a fuzzy-finder on the command line. Super helpful for running
+  tests.
+* [hub] is `git` but with some extra features, such as being able to check out
+  pull requests by using the URL instead of a branch name.
 
-I use `rbenv` to manage Ruby. You can install it with:
+You can install these with:
 
-    brew install rbenv
+    brew install autojump fzf hub
 
-After this, you can install a Ruby version by saying:
-
-    rbenv install SOME_RUBY_VERSION
-
-### Node
-
-I use `nvm` to manage Node. You can install it with:
-
-    brew install node nvm
-
-After this, you can install a Node version by saying:
-
-    nvm install 9.10.1   # run `npm ls-remote` and use the last version listed
-
-### Additional packages
-
-You will also need:
-
-* autojump: `brew install autojump`
-* hub: `brew install hub`
+[autojump]: https://github.com/wting/autojump
+[fzf]: https://github.com/junegunn/fzf
+[hub]: https://github.com/github/hub
 
 ## Installation
 
-To actually install the configuration inside this repo, you'll need to clone it
-somewhere first. I recommend you put it in your `~/code` folder because you may
-want to come back to it later, or fork it and make it your own.
+Now for the fun part. To actually install the configuration inside this repo,
+you'll need to clone it somewhere first. I recommend you put it in your `~/code`
+folder because you may want to come back to it later, or fork it and make it
+your own.
 
 Then run the `install` script. The `--link` option will create symlinks to
 relevant files in the cloned repo so that you can modify them later if need be.
