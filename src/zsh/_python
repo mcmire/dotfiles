@@ -1,0 +1,3 @@
+export PATH="$HOME/.pyenv/shims:$HOME/.pyenv/bin:$PATH"
+
+# vi: ft=sh
