@@ -42,6 +42,15 @@ function Color__gray {
   echo "$(Color black "$1")"
 }
 
+# Source: <https://stackoverflow.com/questions/1527049/join-elements-of-an-array>
+function join_by {
+  local d=$1
+  shift
+  echo -n "$1"
+  shift
+  printf "%s" "${@/#/$d}"
+}
+
 function Prompt__Fragment__collapsed_pwd {
   echo "${PWD/#$HOME/~}"
 }
@@ -59,27 +68,47 @@ function Prompt__Fragment__host {
 }
 
 function Prompt__Fragment__git_branch {
-  local ref=""
+  if [[ -e .git ]]; then
+    local ref=""
 
-  ref="$(git symbolic-ref HEAD 2>/dev/null)"
+    ref="$(git symbolic-ref HEAD 2>/dev/null)"
 
-  if [[ -z $ref ]]; then
-    ref="$(git rev-parse --short HEAD 2>/dev/null)"
+    if [[ -z $ref ]]; then
+      ref="$(git rev-parse --short HEAD 2>/dev/null)"
+    fi
+
+    # remove "refs/heads/" from beginning of $ref
+    echo "${ref#refs/heads/}"
   fi
-
-  # remove "refs/heads/" from beginning of $ref
-  echo "${ref#refs/heads/}"
 }
 
-function Prompt__Fragment__rbenv_info {
-  local out="$(rbenv version | sed -e 's/ (set.*$//')"
+function Prompt__Fragment__ruby_version {
+  if [[ -e .ruby-version || -e Gemfile ]]; then
+    local out="$(rbenv version | sed -e 's/ (set.*$//')"
 
-  local gemsets="$(rbenv gemset active 2>/dev/null | perl -ne 'print join(", ", split(" ")) . "\n"')"
-  if [[ -n $gemsets ]]; then
-    out+=" (gemsets: $gemsets)"
+    local gemsets="$(rbenv gemset active 2>/dev/null | perl -ne 'print join(", ", split(" ")) . "\n"')"
+    if [[ -n $gemsets ]]; then
+      out+=" (gemsets: $gemsets)"
+    fi
+
+    echo -n "$out"
   fi
+}
 
-  echo -n "$out"
+function Prompt__Fragment__python_version {
+  if [[ -e .python-version || -e Pipfile ]]; then
+    local out="$(pyenv version | sed -e 's/ (set.*$//')"
+
+    echo -n "$out"
+  fi
+}
+
+function Prompt__Fragment__node_version {
+  if [[ -e .nvmrc || -e node_modules ]]; then
+    local out="$(nvm version | sed -e 's/^v//')"
+
+    echo -n "$out"
+  fi
 }
 
 function Prompt__rbenv_path {
@@ -102,11 +131,27 @@ function Prompt__git_branch_fragment {
   fi
 }
 
-function Prompt__rbenv_info_fragment {
-  local rbenv_info="$(Prompt__Fragment__rbenv_info)"
+function Prompt__language_versions_fragment {
+  local ruby_version="$(Prompt__Fragment__ruby_version)"
+  local python_version="$(Prompt__Fragment__python_version)"
+  local node_version="$(Prompt__Fragment__node_version)"
 
-  if [[ -n $rbenv_info ]]; then
-    echo -n " using $(Color__red "ruby $rbenv_info")"
+  pieces=()
+
+  if [[ -n $ruby_version ]]; then
+    pieces+="$(Color__red "ruby $ruby_version")"
+  fi
+
+  if [[ -n $python_version ]]; then
+    pieces+="$(Color__red "python $python_version")"
+  fi
+
+  if [[ -n $node_version ]]; then
+    pieces+="$(Color__red "node $node_version")"
+  fi
+
+  if [[ ${#pieces} -gt 0 ]]; then
+    echo -n " using $(join_by ", " "${pieces[@]}")"
   fi
 }
 
@@ -122,7 +167,7 @@ function Prompt__value {
   echo -n '$(Prompt__time)'
   echo -n '$(Prompt__cwd_fragment)'
   echo -n '$(Prompt__git_branch_fragment)'
-  echo -n '$(Prompt__rbenv_info_fragment)'
+  echo -n '$(Prompt__language_versions_fragment)'
   echo -n "\n"
   echo '➤  '
 }

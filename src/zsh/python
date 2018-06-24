@@ -1,6 +1,4 @@
 # I'm not sure why OS X doesn't add this by default
 export PATH="$HOME/Library/Python/3.6/bin:$HOME/Library/Python/2.7/bin:$PATH"
-# Override default `python` and `pip` executables with ones from Homebrew
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
 # vi: ft=sh
