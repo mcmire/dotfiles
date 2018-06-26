@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -eo pipefail
+
+powerline-daemon -q
+tmux source-file "$(pyenv prefix)/lib/python3.6/site-packages/powerline/bindings/tmux/powerline.conf"

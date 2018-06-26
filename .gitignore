@@ -3,4 +3,5 @@
 *.vim*
 tags
 src/tmux/plugins/*
+!src/tmux/plugins/powerline
 !src/tmux/plugins/tpm
