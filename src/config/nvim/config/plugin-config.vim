@@ -328,7 +328,7 @@ let g:ale_lint_on_enter = 0
 " [elm-make]: https://github.com/elm-lang/elm-make
 
 let g:ale_linters = {
-      \  'ruby': ['rubocop'],
+      \  'ruby': ['rubocop', 'ruby'],
       \  'javascript': ['eslint'],
       \  'typescript': ['tslint'],
       \  'scss': ['sass-lint'],
