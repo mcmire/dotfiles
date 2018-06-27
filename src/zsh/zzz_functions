@@ -29,4 +29,8 @@ function timestamp {
   date +"%Y%m%d%H%M%S"
 }
 
+compare() {
+  colordiff -u "$@" | less -R
+}
+
 # vi: ft=sh
