@@ -2,13 +2,7 @@ export EDITOR=nvim
 export GIT_EDITOR=nvim
 
 alias v=nvim
-
-function vi() {
-  echo "Just use v!"
-}
-
-function vim() {
-  echo "Just use v!"
-}
+alias vi=nvim
+alias vim=nvim
 
 # vim: ft=sh
