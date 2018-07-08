@@ -18,6 +18,7 @@ source ~/.zsh/python
 source ~/.zsh/pyenv
 source ~/.zsh/rails
 source ~/.zsh/rbenv
+source ~/.zsh/rust
 source ~/.zsh/tmux
 source ~/.zsh/travis
 source ~/.zsh/unicode
