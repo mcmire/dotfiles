@@ -52,8 +52,8 @@ zle-line-init () {
   # "6" changes to an underline
   echo -ne "\033[6 q"
 
-  zle reset-prompt
-  zle -R
+  #zle reset-prompt
+  #zle -R
 }
 zle -N zle-line-init
 
@@ -80,8 +80,8 @@ zle-keymap-select () {
     fi
   fi
 
-  zle reset-prompt
-  zle -R
+  #zle reset-prompt
+  #zle -R
 }
 zle -N zle-keymap-select
 
