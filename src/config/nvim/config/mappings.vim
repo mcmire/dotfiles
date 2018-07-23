@@ -119,6 +119,13 @@ imap kj <Esc>
 nmap <Leader>el :lopen<CR>
 nmap <Leader>ef :ll 1<CR>
 
+" When working with hashes in Ruby, it's sometimes useful to be able to quickly
+" convert all of the keys in that hash from symbols to strings, or vice versa.
+" This adds `,sym` and `,str` to let you do that:
+
+vmap <Leader>sym :s/\v["']([^"']+)["'] \=\> /\1: /g<CR>:nohls<CR>
+vmap <Leader>str :s/\v%(:([^:]+) \=\>\|([^[:space:]:]+): )/'\1\2' => /g<CR>:nohls<CR>
+
 " Finally, when modifying a colorscheme, sometimes it's helpful to know which
 " syntax group the cursor sits within. `,syn` lets us do this
 " ([source][identify-syntax-group]):
