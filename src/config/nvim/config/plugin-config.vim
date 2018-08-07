@@ -497,3 +497,9 @@ let g:elm_format_autosave = 0
 
 let g:UltiSnipsJumpForwardTrigger="<c-a>"
 let g:UltiSnipsJumpBackwardTrigger="<c-s>"
+
+" scmindent
+
+augroup local
+  autocmd BufRead,BufNewFile *.rkt execute 'setlocal equalprg="' . g:plugin_dir . '/scmindent/scmindent.rkt"'
+augroup END

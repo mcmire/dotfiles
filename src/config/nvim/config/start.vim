@@ -10,10 +10,13 @@
 "
 " [VimPlug]: https://github.com/junegunn/vim-plug
 
-call plug#begin(expand('~/.config/nvim/plugged'))
+let g:plugin_dir = stdpath('config') . '/plugged'
+let s:plugin_config_file = stdpath('config') . '/plugins.vim'
 
-if filereadable(expand('~/.config/nvim/plugins.vim'))
-  source ~/.config/nvim/plugins.vim
+call plug#begin(g:plugin_dir)
+
+if filereadable(s:plugin_config_file)
+  execute 'source ' . s:plugin_config_file
 endif
 
 call plug#end()
