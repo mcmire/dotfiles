@@ -1,6 +1,6 @@
 ;; Racket keywords
 
 ; describe, context, and it come from rackunit/spec
-(1 describe context it)
+(0 describe context it)
 
 ; vi: ft=scheme
