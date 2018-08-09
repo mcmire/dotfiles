@@ -249,15 +249,17 @@ map <leader>l <plug>RunMostRecentSpec
 " rainbow_parentheses
 " -------------------
 
-" We enable [Rainbow Parentheses] for Ruby and Clojure files:
+" We enable [Rainbow Parentheses] for Lisp, Scheme, Racket, Clojure, and Ruby
+" files:
 "
 " [Rainbow Parentheses]: https://github.com/kien/rainbow_parentheses.vim
 
 augroup local
-  autocmd VimEnter ruby,clojure RainbowParenthesesToggle
-  autocmd Syntax   ruby,clojure RainbowParenthesesLoadRound
-  autocmd Syntax   ruby,clojure RainbowParenthesesLoadSquare
-  autocmd Syntax   ruby,clojure RainbowParenthesesLoadBraces
+  autocmd VimEnter * RainbowParenthesesToggle
+  autocmd FileType lisp,scheme,racket,clojure RainbowParenthesesActivate
+  autocmd Syntax   lisp,scheme,racket,clojure RainbowParenthesesLoadRound
+  autocmd Syntax   lisp,scheme,racket,clojure RainbowParenthesesLoadSquare
+  autocmd Syntax   lisp,scheme,racket,clojure RainbowParenthesesLoadBraces
 augroup END
 
 " We also add a ton more variety to the colors:
@@ -497,9 +499,3 @@ let g:elm_format_autosave = 0
 
 let g:UltiSnipsJumpForwardTrigger="<c-a>"
 let g:UltiSnipsJumpBackwardTrigger="<c-s>"
-
-" scmindent
-
-augroup local
-  autocmd BufRead,BufNewFile *.rkt execute 'setlocal equalprg="' . g:plugin_dir . '/scmindent/scmindent.rkt"'
-augroup END

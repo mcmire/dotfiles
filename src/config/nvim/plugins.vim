@@ -17,6 +17,8 @@ Plug 'eagletmt/neco-ghc'
 Plug 'eapache/auto-pairs'
 Plug 'elixir-lang/vim-elixir'
 Plug 'ElmCast/elm-vim'
+Plug 'eraserhd/parinfer-rust', {'do':
+        \  'cargo build --release'}
 Plug 'ervandew/supertab'
 Plug 'frankier/vim-eve'
 Plug 'gabebw/vim-spec-runner'
