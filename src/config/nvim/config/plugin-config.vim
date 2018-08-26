@@ -216,10 +216,15 @@ augroup END
 
 let g:VtrClearSequence = "clear"
 
-" We also map `,o` so that we can easily open a pane that's
-" 35% of the screen width. You may want to increase this size on larger screens.
+" We map `,ro` so that we can easily open a pane. It'll be opened vertically and
+" will be 35% of the screen width. You may want to increase this size on larger
+" screens.
 
-nmap <leader>o :VtrOpenRunner({'orientation': 'h', 'percentage': 35})<CR>
+nmap <leader>ro :VtrOpenRunner({'orientation': 'v', 'percentage': 35})<CR>
+
+" We also map `,rc` so that we can close this pane.
+
+nmap <leader>rc :VtrKillRunner<CR>
 
 " vim-spec-runner
 " ---------------
@@ -238,13 +243,13 @@ let g:disable_write_on_spec_run = 1
 
 " Finally, we create some mappings:
 "
-" * `,t` to run the current spec file
-" * `,s` to run just one spec (the one the cursor is within)
-" * `,l` to run whichever command was run last
+" * `,tf` to run the current spec file
+" * `,to` to run just one spec (the one the cursor is within)
+" * `,tl` to run whichever command was run last
 
-map <leader>t <plug>RunCurrentSpecFile
-map <leader>s <plug>RunFocusedSpec
-map <leader>l <plug>RunMostRecentSpec
+map <leader>ts <plug>RunCurrentSpecFile
+map <leader>to <plug>RunFocusedSpec
+map <leader>tl <plug>RunMostRecentSpec
 
 " rainbow_parentheses
 " -------------------
