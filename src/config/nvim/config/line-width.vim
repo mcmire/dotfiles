@@ -35,13 +35,21 @@ set colorcolumn=72,80,100,120
 " are past the limit with the `CharsExceedingLineLength` syntax group. (The
 " color for this is also defined in [colors].)
 
+let b:chars_exceeding_line_length_match = 0
+
 function! HighlightCharsExceedingLineLength()
-  call matchadd('CharsExceedingLineLength', '\%>' . &textwidth . 'v.\+', -1)
+  " Remove the existing match in case textwidth is changed
+  if exists('b:chars_exceeding_line_length_match') && b:chars_exceeding_line_length_match > 0
+    call matchdelete(b:chars_exceeding_line_length_match)
+  end
+
+  let b:chars_exceeding_line_length_match = matchadd('CharsExceedingLineLength', '\%>' . &textwidth . 'v.\+', -1)
 endfunction
 
 augroup local
   autocmd BufNewFile * :call HighlightCharsExceedingLineLength()
   autocmd BufRead * :call HighlightCharsExceedingLineLength()
+  autocmd OptionSet textwidth :call HighlightCharsExceedingLineLength()
 augroup END
 
 " [colors]: colors.vim.md
