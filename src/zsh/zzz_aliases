@@ -6,6 +6,10 @@ alias view-aliases="less $ALIASES_FILE"
 alias edit-functions="v $FUNCTIONS_FILE"
 alias view-functions="less $FUNCTIONS_FILE"
 alias reload-env="source $ALIASES_FILE && source $FUNCTIONS_FILE"
+alias is-running="ps aux | grep -v grep | grep"
+# Explicitly tell tmux that Unicode characters are supported
+# Source: <https://askubuntu.com/questions/410048/utf-8-character-not-showing-properly-in-tmux>
+alias tmux="tmux -u"
 
 alias ll="ls -l"
 
@@ -64,7 +68,5 @@ alias dRr="dR db:rollback"
 alias dRm="dR db:migrate db:test:prepare"
 alias dRmr="dR db:migrate:redo db:test:prepare"
 alias dRc="dR console"
-
-alias is-running="ps aux | grep -v grep | grep"
 
 # vi: ft=sh
