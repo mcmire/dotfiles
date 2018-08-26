@@ -76,6 +76,8 @@ function! s:UseColorScheme(type)
     highlight ExtraWhitespace guifg=#fdf6e3 guibg=#dc322f
     " fg=base3, bg=red
     highlight CharsExceedingLineLength guifg=#fdf6e3 guibg=#dc322f
+    " fg=base3, bg=orange
+    highlight IncSearch guifg=#fdf6e3 guibg=#cb4b16
   else
     let s:color_scheme_type="dark"
     set background=dark
@@ -90,6 +92,8 @@ function! s:UseColorScheme(type)
     highlight ExtraWhitespace guifg=#002b36 guibg=#dc322f
     " fg=base03, bg=red
     highlight CharsExceedingLineLength guifg=#002b36 guibg=#dc322f
+    " fg=base03, bg=orange
+    highlight IncSearch guifg=#002b36 guibg=#cb4b16
   end
 
 endfunction
