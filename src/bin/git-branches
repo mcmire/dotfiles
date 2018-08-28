@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]]; then
+  refname="refs/heads"
+else
+  refname="$1"
+fi
+
+git for-each-ref \
+  --sort=committerdate \
+  --format='%(color:bold)%(align:50,left)%(refname:short)%(end)%(color:reset)%(color:blue)%(align:30,left)%(authordate:format:%m/%d/%Y) (%(authordate:relative))%(end)%(color:reset)%(color:yellow)%(authorname)%(color:reset)' "$refname"
