@@ -119,6 +119,17 @@ of the screen, but ignore that and press Enter. Press <kbd>Ctrl</kbd> +
 delay, plugins will be installed that are necessary for tmux for fully work.
 Then restart tmux, and you should no longer receive the warning.
 
+## Post-installation
+
+There are also some little things you'll have to do to make life easier.
+Eventually I'll probably make some kind of script to handle these cases, but for
+now:
+
+* To enable key-repeating for VS Code, run:
+  ```
+  defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+  ```
+
 ## Known issues
 
 If, after starting tmux, you receive a warning about `powerline.conf` not being
