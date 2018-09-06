@@ -1,9 +1,9 @@
 " Line width settings
 " ===================
 
-" This configuration espouses the hopefully not too controversial idea that code
-" that contains long lines, lines that cause the reader to scroll horizontally,
-" are undesirable.
+" This configuration relies on the hopefully not too controversial idea that
+" code that contains long lines, lines that cause the reader to scroll
+" horizontally, are undesirable.
 
 " In fact, the unofficial Ruby style guide [recommends][ruby-line-length] using
 " an 80-character limit. This seems like an appropriate length for most code, so
@@ -21,15 +21,19 @@ set textwidth=80
 " [git-line-length]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
 
 augroup local
-  autocmd FileType gitcommit set textwidth=72
+  autocmd FileType gitcommit setl textwidth=72
 augroup END
 
-" So we use 72 for commit messages and 80 for Ruby files, and generally that
-" works great. However for other, more verbose languages, 100 or even 120
-" characters may be the standard. For ultimate flexibility, we draw a column at
-" all of these points (and the color for this is defined in [colors]):
+" We also set a width of 100 for Cucumber files since those tend to run longer
+" than your average Ruby file:
 
-set colorcolumn=72,80,100,120
+augroup local
+  autocmd FileType cucumber setl textwidth=100
+augroup END
+
+" Whatever the textwidth is set to, we draw a vertical line one column beyond
+" that width (the color for which is defined in [colors]):
+set colorcolumn=+1
 
 " Finally, when a line exceeds the set `textwidth` we mark the characters that
 " are past the limit with the `CharsExceedingLineLength` syntax group. (The
