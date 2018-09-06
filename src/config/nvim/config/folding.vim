@@ -42,11 +42,6 @@ set foldlevel=6
 
 set foldnestmax=6
 
-" We allow single lines to be folded:
+" Finally, we allow single lines to be folded:
 
 set foldminlines=0
-
-" And lastly, we show indicators in the gutter that reveal where the fold
-" boundaries are:
-
-set foldcolumn=6
