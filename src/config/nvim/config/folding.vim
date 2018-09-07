@@ -1,10 +1,10 @@
 " Folding settings
 " ================
 
-" Every once in a while you may find myself in a file that has a lot of sections
-" -- too many sections. Wouldn't you like to be able to focus on one part of the
-" code and collapse everything else? Well, you're in luck, because you can do
-" this with folding.
+" Every once in a while you may find yourself in a file that has a lot of
+" sections -- too many sections. Wouldn't you like to be able to focus on one
+" part of the code and collapse everything else? Well, you're in luck, because
+" you can do this with folding.
 "
 " To use folding, we first have to enable it:
 
@@ -17,7 +17,7 @@ set foldenable
 " One way is to get Vim to reuse the information the syntax highlighter has
 " gleaned about the different parts of code you're writing. For instance, the
 " syntax highlighter might identify that this section corresponds to a "block",
-" and therefore it can be folded. " Unfortunately, [this method causes severe
+" and therefore it can be folded. Unfortunately, [this method causes severe
 " performance problems in Ruby files][no-foldmethod-syntax].
 "
 " [no-foldmethod-syntax]: https://github.com/vim-ruby/vim-ruby/issues/8#issuecomment-327162
@@ -30,7 +30,7 @@ set foldenable
 " is to use the indentation of lines in the file. So all code that is nested
 " under some other code by way of indentation could be collapsed:
 
-set foldmethod=indent
+set foldmethod=syntax
 
 " To do this, we have to place a limit on how deeply indented your code can be.
 " We start by setting the `foldlevel` to the maximum number, meaning that all
