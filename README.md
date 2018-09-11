@@ -11,24 +11,30 @@ Clojure.
 This configuration comes with a boatload of plugins for various use cases and
 languages, but here are the most important ones:
 
-* [NERDTree][vim-nerdtree] -- a simple file tree
-* [Ctrl-P][vim-ctrl-p] -- a fuzzy file finder for quickly jumping to files
-* [Ack][vim-ack] + [Ag][ag] -- a way to search across a project lightning quick
-* [NERDCommenter][vim-nerdcommenter] -- an easy way to comment out lines and
-  blocks of code and then uncomment them using the same mapping
-* [SuperTab][vim-supertab] -- an autocomplete that's admittedly dumb, but also
-  doesn't get in your way
-* [Ale][ale] -- an asychronous linter that can also autoformat files
-* [indentLine][indentLine] -- a horizontal grid so you can quickly tell if a
-  line is misindented
-* [surround][vim-surround] -- a way to quickly surround a selection or text
-  object with non-pairing or pairing characters (`"`", `'`', `(`, `)`, etc.)
-* [togglecursor][vim-togglecursor] -- makes insert and command modes more
-  obvious by switching the cursor (and does so in both iTerm and tmux)
-* [vim-textobj-rubyblock][vim-textobj-rubyblock] -- adds Ruby blocks as text
-  objects so that they can be manipulated and selected
-* [endwise][vim-endwise] -- automatically adds `end` to a Ruby block in a
+* [VimPlug][vim-plug] — a fast plugin manager
+* [NERDTree][vim-nerdtree] — a simple file tree
+* [Ctrl-P][vim-ctrl-p] — a fuzzy file finder for quickly jumping to files
+* [Ack][vim-ack] + [Ag][ag] — a way to search across a project lightning quick
+* [NERDCommenter][vim-nerdcommenter] — an easy way to comment and uncomment
+  lines
+* [SuperTab][vim-supertab] — an autocompleter that stays out of your way
+* [Ale][ale] — an asychronous code linter that works with a bunch of languages
+  (and can also autoformat files in languages that support it)
+* [endwise][vim-endwise] — automatically adds `end` to a Ruby block in a
   non-intrusive manner
+* [AutoPairs][auto-pairs] — adds matching parentheses, braces, brackets, and
+  quotes as you type them (but can be toggled on/off as needed)
+* [indentLine][indentLine] — adds vertical lines at regular indentation levels
+  so that you can quickly tell if a line is misindented
+* [surround][vim-surround] — a way to quickly surround text with quotes,
+  parentheses, braces, etc.
+* [togglecursor][vim-togglecursor] — makes insert and command modes more
+  obvious by switching the cursor
+* [vim-textobj-rubyblock][vim-textobj-rubyblock] — adds Ruby blocks as text
+  objects so that they can be manipulated and selected just like words,
+  paragraphs, etc.
+* [vim-css-color][vim-css-color] — highlights hex color strings in CSS files
+  with the actual colors that they represent
 
 [vim-plug]: https://github.com/junegunn/vim-plug
 [vim-nerdtree]: http://github.com/scrooloose/nerdtree
@@ -42,6 +48,7 @@ languages, but here are the most important ones:
 [vim-textobj-rubyblock]: http://github.com/nelstrom/vim-textobj-rubyblock
 [ale]: https://github.com/w0rp/ale
 [indentLine]: https://github.com/Yggdroot/indentLine
+[auto-pairs]: https://github.com/eapache/auto-pairs
 
 ### Sensible defaults
 
@@ -62,15 +69,12 @@ languages, but here are the most important ones:
 * `<` and `>` no longer lose drop the selection when indenting a selected block
   of text
 * `Q` lets you reformat paragraphs
-* `Y` provides an analog to `C` and `D`
 
 ## Making this your own
 
-Want this configuration for yourself? Read on.
-
 ### Prerequisites
 
-There are a few things you'll need before you can install the files here.
+Want this configuration for yourself? There are a few things you'll need first.
 
 #### Neovim
 
@@ -79,18 +83,19 @@ using Homebrew:
 
     brew install neovim
 
-If you're using [mcmire/dotfiles][dotfiles], you're good to go here. Otherwise,
-it's recommended that you add a short alias to your shell so that you can start
-Neovim from any directory with `v`:
+If you're using my [dotfiles][dotfiles], you're good to go here. Otherwise,
+you'll want to keep in mind that you can use `nvim` to start Neovim. Since this
+is non-standard, I recommend adding a couple of aliases to your shell:
 
-    alias v="nvim"
+    alias vim="nvim"
+    alias vi="nvim"
 
 [dotfiles]: http://github.com/mcmire/dotfiles
 
 #### iTerm
 
 Next, you'll need to install iTerm if you don't already have it. Once you have
-it, you'll want to drop into Preferences and make three changes.
+it, you'll want to drop into Preferences and make three changes:
 
 ##### Color scheme
 
@@ -114,12 +119,12 @@ can go into each profile, click on the Colors tab, and select a color preset.
 ##### Font
 
 Now that you have two profiles, go into each one and configure them to use [Fira
-Code] as the font. Fira Code is a cool font where common combinations of symbols
-that we might use in everyday code (`->`, `...`, and `|>`, just to name a few)
-are implemented as ligatures, so they appear closer together, thereby making it
-possible to scan code more easily. More importantly, Fira Code contains symbols
-that work perfectly with Powerline/Airline (you don't have to bother with any of
-[these][powerline-fonts]).
+Code] as the font. Fira Code is a font where combinations of symbols that are
+frequently used in code (`->`, `...`, and `|>`, just to name a few) are
+implemented as ligatures. This means that they appear as one character instead
+of multiple characters, thereby making it easier to scan code. Fira Code also
+works perfectly with Powerline/Airline, so you don't have to bother with any
+modified fonts such as [these][powerline-fonts].
 
 [Solarized]: https://github.com/altercation/solarized
 [Fira Code]: https://github.com/tonsky/FiraCode
@@ -162,13 +167,13 @@ will want to [do that first][installing-python].
 Now that you have the prerequisites out of the way, you can actually install
 these configuration files and get started vimming.
 
-First, you need to download this repo somehow. You'll probably want to come back
-to these files later, make modifications to themL and push them up. So start by
-forking this repo, then clone your fork in a convenient place you'll remember,
-such as the same place you store code. For example:
+First, you need to download this repo somehow. My goal is to get you on a path
+to creating your own vimfiles, so I would recommend forking this repo so that
+you can push up changes to it later. Clone your fork in a convenient place
+you'll remember, such as the same place you store code:
 
-    cd myawesomecode
-    git clone git://github.com:myusername/vimfiles.git
+    cd ~/your-code-directory
+    git clone git://github.com:yourusername/vimfiles.git
 
 If you already installed Vim at some point in the past, then you'll want to make
 sure you remove all of those configuration files first. At a minimum, you'll
@@ -178,21 +183,16 @@ want to run:
     mv ~/.vimrc ~/.vimrc.old
 
 Next, run the install script that comes bundled with this repo. Since you forked
-the repo in the first step above, it's best that you install all of the files
-here as *symlinks*. This will allow you to edit them *either* directly *or*
-through your forked repo location:
-
-    script/install --link --dry-run
-
-You might have been a little scared to run that command, right? Don't worry --
-nothing's actually happened yet. To confirm the installation, run:
+the repo, it's best that you install all of the files here as *symlinks*. This
+will allow you to edit them *either* directly *or* through your forked repo
+location:
 
     script/install --link
 
-### After installing
+### Post-installation
 
 You're almost there! Now you're ready to install plugins. You can do that by
-opening Vim (remember, you can say `v` since you made an alias), then run:
+opening `vim` and by running:
 
     :PlugInstall
 
