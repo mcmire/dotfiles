@@ -20,10 +20,9 @@ languages, but here are the most important ones:
 * [SuperTab][vim-supertab] — an autocompleter that stays out of your way
 * [Ale][ale] — an asychronous code linter that works with a bunch of languages
   (and can also autoformat files in languages that support it)
-* [endwise][vim-endwise] — automatically adds `end` to a Ruby block in a
-  non-intrusive manner
 * [AutoPairs][auto-pairs] — adds matching parentheses, braces, brackets, and
   quotes as you type them (but can be toggled on/off as needed)
+* [endwise][vim-endwise] — like AutoPairs but for Ruby blocks
 * [indentLine][indentLine] — adds vertical lines at regular indentation levels
   so that you can quickly tell if a line is misindented
 * [surround][vim-surround] — a way to quickly surround text with quotes,
@@ -49,6 +48,7 @@ languages, but here are the most important ones:
 [ale]: https://github.com/w0rp/ale
 [indentLine]: https://github.com/Yggdroot/indentLine
 [auto-pairs]: https://github.com/eapache/auto-pairs
+[vim-css-color]: https://github.com/skammer/vim-css-color
 
 ### Sensible defaults
 
