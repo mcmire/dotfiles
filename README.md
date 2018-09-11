@@ -28,12 +28,9 @@ languages, but here are the most important ones:
 * [surround][vim-surround] — a way to quickly surround text with quotes,
   parentheses, braces, etc.
 * [togglecursor][vim-togglecursor] — makes insert and command modes more
-  obvious by switching the cursor
-* [vim-textobj-rubyblock][vim-textobj-rubyblock] — adds Ruby blocks as text
-  objects so that they can be manipulated and selected just like words,
-  paragraphs, etc.
-* [vim-css-color][vim-css-color] — highlights hex color strings in CSS files
-  with the actual colors that they represent
+  obvious by switching the cursor when switching modes
+* [FastFold][fast-fold] — makes it actually possible to use `foldmethod=syntax`
+  in Ruby files without slowing Vim down to a halt
 
 [vim-plug]: https://github.com/junegunn/vim-plug
 [vim-nerdtree]: http://github.com/scrooloose/nerdtree
@@ -48,7 +45,7 @@ languages, but here are the most important ones:
 [ale]: https://github.com/w0rp/ale
 [indentLine]: https://github.com/Yggdroot/indentLine
 [auto-pairs]: https://github.com/eapache/auto-pairs
-[vim-css-color]: https://github.com/skammer/vim-css-color
+[fast-fold]: https://github.com/Konfekt/FastFold
 
 ### Sensible defaults
 
