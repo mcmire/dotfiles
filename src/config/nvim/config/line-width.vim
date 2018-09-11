@@ -44,7 +44,7 @@ let b:chars_exceeding_line_length_match = 0
 function! HighlightCharsExceedingLineLength()
   " Remove the existing match in case textwidth is changed
   if exists('b:chars_exceeding_line_length_match') && b:chars_exceeding_line_length_match > 0
-    call matchdelete(b:chars_exceeding_line_length_match)
+    silent! call matchdelete(b:chars_exceeding_line_length_match)
   end
 
   let b:chars_exceeding_line_length_match = matchadd('CharsExceedingLineLength', '\%>' . &textwidth . 'v.\+', -1)
