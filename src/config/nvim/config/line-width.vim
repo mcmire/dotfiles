@@ -31,9 +31,9 @@ augroup local
   autocmd FileType cucumber setl textwidth=100
 augroup END
 
-" Whatever the textwidth is set to, we draw a vertical line one column beyond
-" that width (the color for which is defined in [colors]):
-set colorcolumn=+1
+" Whatever the textwidth is set to, we draw a vertical line at that width (the
+" color for which is defined in [colors]):
+set colorcolumn=+0
 
 " Finally, when a line exceeds the set `textwidth` we mark the characters that
 " are past the limit with the `CharsExceedingLineLength` syntax group. (The
