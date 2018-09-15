@@ -12,6 +12,6 @@
 export PATH=$HOME/.bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
 
 # Set a sensible default MANPATH as well
-export MANPATH=/usr/local/share/man:/opt/man:/opt/share/man
+export MANPATH=/usr/local/share/man:/opt/man:/opt/share/man:/usr/share/man
 
 # vi: ft=sh
