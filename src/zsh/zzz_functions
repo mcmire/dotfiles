@@ -1,4 +1,4 @@
-function frequently-used-commands() {
+frequently-used-commands() {
   history | \
     sed -E 's/^[ ]+//; s/\|.*//' | \
     cut -d ' ' -f 3- | \
@@ -8,7 +8,7 @@ function frequently-used-commands() {
 }
 
 # Credit: Ben Orenstein
-function g {
+g() {
   if [[ $# > 0 ]]; then
     git $@
   else
@@ -17,15 +17,15 @@ function g {
 }
 compdef g=git
 
-function _git_delete_branch_and_remote {
+_git_delete_branch_and_remote() {
   __gitcomp_nl "$(__git_heads)"
 }
 
-function _git_undo {
+_git_undo() {
   __gitcomp_nl "$(__git_heads)"
 }
 
-function timestamp {
+timestamp() {
   date +"%Y%m%d%H%M%S"
 }
 
