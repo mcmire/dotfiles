@@ -78,12 +78,12 @@ function! s:UseLightColorScheme()
 endfunction
 
 function! s:SetHighlights()
-  highlight SpecialKey guifg=s:base1 guibg=s:base3
-  highlight SignColumn guibg=s:base3
-  highlight ExtraWhitespace guifg=s:base3 guibg=s:red
-  highlight CharsExceedingLineLength guifg=s:base3 guibg=s:red
-  highlight IncSearch cterm=NONE gui=NONE guifg=s:base3 guibg=s:yellow
-  highlight Search cterm=NONE gui=NONE guifg=s:base3 guibg=s:orange
+  exec 'highlight SpecialKey guifg=' . s:base1 . ' guibg=' . s:base3
+  exec 'highlight SignColumn guibg=' . s:base3
+  exec 'highlight ExtraWhitespace guifg=' . s:base3 . ' guibg=' . s:red
+  exec 'highlight CharsExceedingLineLength guifg=' . s:base3 . ' guibg=' . s:red
+  exec 'highlight IncSearch cterm=NONE gui=NONE guifg=' . s:base03 . ' guibg=' . s:yellow
+  exec 'highlight Search cterm=NONE gui=NONE guifg=' . s:base03 . ' guibg=' . s:orange
 endfunction
 
 function! s:ToggleColorScheme()
