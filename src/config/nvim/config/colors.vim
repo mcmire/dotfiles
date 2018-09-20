@@ -10,111 +10,95 @@
 " [Solarized]: http://ethanschoonover.com/solarized
 "
 " Solarized has two modes: dark and light. The colors between them are are
-" mostly the same except for four colors which trade places with each other. The
+" mostly the same except for two sets of four colors which swap places. The
 " common set of colors are:
-"
-" | color   | cterm |
-" |---------|-------|
-" | yellow  |     3 |
-" | orange  |     9 |
-" | red     |     1 |
-" | magenta |     5 |
-" | violet  |    13 |
-" | blue    |     4 |
-" | cyan    |     6 |
-" | green   |     2 |
-"
-" Dark mode has these additional colors:
-"
-" | color  | cterm | usage            |
-" |--------|-------|------------------|
-" | base00 |    11 |                  |
-" | base01 |    10 |                  |
-" | base02 |     0 |                  |
-" | base03 |     8 | text background  |
-" | base0  |    12 | text foreground  |
-" | base1  |    14 |                  |
-" | base2  |     7 |                  |
-" | base3  |    15 |                  |
-"
-" Whereas light mode uses these colors:
-"
-" | color  | cterm | usage            |
-" |--------|-------|------------------|
-" | base00 |    12 |                  |
-" | base01 |    14 |                  |
-" | base02 |     7 |                  |
-" | base03 |    15 | text background  |
-" | base0  |    11 | text foreground  |
-" | base1  |    10 |                  |
-" | base2  |     0 |                  |
-" | base3  |     8 |                  |
-"
-" (The full list of colors in the colorscheme are located [here][color-values].)
+
+let s:yellow="#b58900"
+let s:orange="#cb4b16"
+let s:red="#dc322f"
+let s:magenta="#d33682"
+let s:violet="#6c71c4"
+let s:blue="#268bd2"
+let s:cyan="#2aa198"
+let s:green="#859900"
+
+" The remaining colors are listed below. (The full list of colors in the
+" colorscheme are located [here][color-values].)
 "
 " [color-values]: https://github.com/altercation/solarized/blob/e40cd4130e2a82f9b03ada1ca378b7701b1a9110/vim-colors-solarized/colors/solarized.vim#L91
 "
 " Both modes have their uses. We assume that you'll be indoors and that you'll
 " want to use dark mode most of the time. But you may find yourself outdoors and
-" in this case light mode may be more handy.
-"
-" Here we make it possible to switch between the two easily. First, we define a
-" couple of functions:
+" in this case light mode may be more handy. So we provide a way to switch
+" between the two easily.
 
-function! s:UseColorScheme(type)
-  if a:type == "light"
-    let s:color_scheme_type="light"
-    set background=light
-    silent! colorscheme solarized
-    let g:airline_theme="solarized"
-    let g:airline_solarized_bg="light"
-    " fg=base1, bg=base3
-    highlight SpecialKey guifg=#93a1a1 guibg=#fdf6e3
-    " bg=base3
-    highlight SignColumn guibg=#fdf6e3
-    " fg=base3, bg=red
-    highlight ExtraWhitespace guifg=#fdf6e3 guibg=#dc322f
-    " fg=base3, bg=red
-    highlight CharsExceedingLineLength guifg=#fdf6e3 guibg=#dc322f
-    " fg=base3, bg=orange
-    highlight IncSearch guifg=#fdf6e3 guibg=#cb4b16
-  else
-    let s:color_scheme_type="dark"
-    set background=dark
-    silent! colorscheme solarized
-    let g:airline_theme="solarized"
-    let g:airline_solarized_bg="dark"
-    " fg=base01, bg=base03
-    highlight SpecialKey guifg=#586e75 guibg=#002b36
-    " bg=base03
-    highlight SignColumn guibg=#002b36
-    " fg=base03, bg=red
-    highlight ExtraWhitespace guifg=#002b36 guibg=#dc322f
-    " fg=base03, bg=red
-    highlight CharsExceedingLineLength guifg=#002b36 guibg=#dc322f
-    " fg=base03, bg=orange
-    highlight IncSearch guifg=#002b36 guibg=#cb4b16
-  end
+" First, we enable RGB color support. This lets us use hex codes for colors
+" instead of numbers:
 
+set termguicolors
+
+" Then we define a few functions:
+
+function! s:UseDarkColorScheme()
+  let s:base03="#002b36"
+  let s:base02="#073642"
+  let s:base01="#586e75"
+  let s:base00="#657b83"
+  let s:base0="#839496"
+  let s:base1="#93a1a1"
+  let s:base2="#eee8d5"
+  let s:base3="#fdf6e3"
+
+  let s:color_scheme_type="dark"
+  set background=dark
+  silent! colorscheme solarized
+  let g:airline_theme="solarized"
+  let g:airline_solarized_bg="dark"
+
+  call s:SetHighlights()
+endfunction
+
+function! s:UseLightColorScheme()
+  let s:base3="#002b36"
+  let s:base2="#073642"
+  let s:base1="#586e75"
+  let s:base0="#657b83"
+  let s:base00="#839496"
+  let s:base01="#93a1a1"
+  let s:base02="#eee8d5"
+  let s:base03="#fdf6e3"
+
+  let s:color_scheme_type="light"
+  set background=light
+  silent! colorscheme solarized
+  let g:airline_theme="solarized"
+  let g:airline_solarized_bg="light"
+
+  call s:SetHighlights()
+endfunction
+
+function! s:SetHighlights()
+  highlight SpecialKey guifg=s:base1 guibg=s:base3
+  highlight SignColumn guibg=s:base3
+  highlight ExtraWhitespace guifg=s:base3 guibg=s:red
+  highlight CharsExceedingLineLength guifg=s:base3 guibg=s:red
+  highlight IncSearch cterm=NONE gui=NONE guifg=s:base3 guibg=s:yellow
+  highlight Search cterm=NONE gui=NONE guifg=s:base3 guibg=s:orange
 endfunction
 
 function! s:ToggleColorScheme()
   if s:color_scheme_type == "dark"
-    call s:UseColorScheme("light")
+    call s:UseLightColorScheme()
   else
-    call s:UseColorScheme("dark")
+    call s:UseDarkColorScheme()
   endif
 endfunction
 
-" But you can use `,th` to flip between the two modes:
+" We set up a mapping so you can use `,th` to flip between the two modes:
 
 command! -nargs=0 ToggleColorScheme call s:ToggleColorScheme()
 nnoremap <Leader>th :ToggleColorScheme<CR>
 
-" Enable RGB color support:
+" Finally, we set dark mode as the default:
 
-set termguicolors
-
-" and set dark mode as the default:
-
-call s:UseColorScheme("dark")
+call s:UseDarkColorScheme()
