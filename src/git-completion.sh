@@ -1,4 +1,3 @@
-#!bash
 #
 # bash completion support for core Git.
 #
@@ -644,8 +643,8 @@ __git_find_on_cmdline ()
 __git_has_doubledash ()
 {
 	local c=1
-	while [ $c -lt $COMP_CWORD ]; do
-		if [ "--" = "${COMP_WORDS[c]}" ]; then
+	while [[ $c -lt $COMP_CWORD ]]; do
+		if [[ "--" == "${COMP_WORDS[c]}" ]]; then
 			return 0
 		fi
 		c=$((++c))
