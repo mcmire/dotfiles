@@ -71,4 +71,6 @@ alias dRm="dR db:migrate db:test:prepare"
 alias dRmr="dR db:migrate:redo db:test:prepare"
 alias dRc="dR console"
 
+compdef _git gbd="git-checkout"
+
 # vi: ft=sh
