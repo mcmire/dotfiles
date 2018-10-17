@@ -761,9 +761,12 @@ _git_bisect ()
 
 _git_branch ()
 {
-	local i c=1 only_local_ref="n" has_r="n"
+	local i
+  local c=1
+  local only_local_ref="n"
+  local has_r="n"
 
-	while [ $c -lt $COMP_CWORD ]; do
+	while [[ $c -lt $COMP_CWORD ]]; do
 		i="${COMP_WORDS[c]}"
 		case "$i" in
 		-d|-m)	only_local_ref="y" ;;
