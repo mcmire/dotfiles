@@ -54,10 +54,25 @@ let g:ctrlp_max_height = 20
 
 let g:ctrlp_working_path_mode = 'w'
 
-" We use Ag to generate search results:
+" We use Ag to generate search results (note: this is the same list as in
+" completion.vim):
 
 if executable('ag')
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:ctrlp_user_command = 'ag %s
+        \ -l
+        \ --nocolor
+        \ --ignore .git
+        \ --ignore .svn
+        \ --ignore "*.class"
+        \ --ignore "*.o"
+        \ --ignore "*.obj"
+        \ --ignore "*.rbc"
+        \ --ignore features/cassettes
+        \ --ignore spec/cassettes
+        \ --ignore tmp/cache
+        \ --ignore vendor/gems
+        \ --ignore vendor/ruby
+        \ -g ""'
 endif
 
 " Lastly, we make it easier to search by tag. (I added this when I was

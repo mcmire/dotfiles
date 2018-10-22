@@ -29,7 +29,7 @@ set wildmode=list:longest,list:full
 "
 " [wildignore]: http://vimdoc.sourceforge.net/htmldoc/options.html#'wildignore'
 
-set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,bundle/**,vendor/gems/*,vendor/ruby/**,tmp/cache
+set wildignore+=.git,.svn,*.class,*.o,*.obj,*.rbc,features/cassettes,spec/cassettes,tmp/cache,vendor/gems/*,vendor/ruby/**
 
 " The [`wildmenu`][wildmenu] option also controls the behavior of filename
 " completion in the sense that it tells Vim to show a menu when there is more
