@@ -231,15 +231,15 @@ augroup END
 
 let g:VtrClearSequence = "clear"
 
-" We map `,ro` so that we can easily open a pane. It'll be opened vertically and
-" will be 35% of the screen width. You may want to increase this size on larger
-" screens.
+" We map `,roh` and `,rov` so that we can easily open a tmux pane within Vim.
+" `,roh` creates a horizontal split and `,rov` creates a vertical split.
 
-nmap <leader>ro :VtrOpenRunner({'orientation': 'v', 'percentage': 35})<CR>
+nmap <leader>roh :VtrOpenRunner({'orientation': 'h', 'percentage': 33})<CR>
+nmap <leader>rov :VtrOpenRunner({'orientation': 'v', 'percentage': 20})<CR>
 
-" We also map `,rc` so that we can close this pane.
+" We also map `,roc` so that we can close this pane.
 
-nmap <leader>rc :VtrKillRunner<CR>
+nmap <leader>roc :VtrKillRunner<CR>
 
 " vim-spec-runner
 " ---------------
