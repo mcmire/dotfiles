@@ -258,12 +258,12 @@ let g:disable_write_on_spec_run = 1
 
 " Finally, we create some mappings:
 "
-" * `,tf` to run the current spec file
-" * `,to` to run just one spec (the one the cursor is within)
-" * `,tl` to run whichever command was run last
+" * `,tA` to run [A]ll of the tests in the current file
+" * `,tr` to run the test that's [R]ight here
+" * `,tl` to run whichever spec was run [L]ast
 
-map <leader>ts <plug>RunCurrentSpecFile
-map <leader>to <plug>RunFocusedSpec
+map <leader>tA <plug>RunCurrentSpecFile
+map <leader>tr <plug>RunFocusedSpec
 map <leader>tl <plug>RunMostRecentSpec
 
 " rainbow_parentheses
