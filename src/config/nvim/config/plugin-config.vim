@@ -269,13 +269,11 @@ map <leader>tl <plug>RunMostRecentSpec
 " rainbow_parentheses
 " -------------------
 
-" We enable [Rainbow Parentheses] for Lisp, Scheme, Racket, Clojure, and Ruby
-" files:
+" We enable [Rainbow Parentheses] for Lisp, Scheme, Racket, and Clojure files:
 "
 " [Rainbow Parentheses]: https://github.com/kien/rainbow_parentheses.vim
 
 augroup local
-  autocmd VimEnter * RainbowParenthesesToggle
   autocmd FileType lisp,scheme,racket,clojure RainbowParenthesesActivate
   autocmd Syntax   lisp,scheme,racket,clojure RainbowParenthesesLoadRound
   autocmd Syntax   lisp,scheme,racket,clojure RainbowParenthesesLoadSquare
