@@ -350,7 +350,7 @@ let g:ale_lint_on_enter = 0
 let g:ale_linters = {
       \  'ruby': ['rubocop', 'ruby'],
       \  'javascript': ['eslint'],
-      \  'typescript': ['tslint'],
+      \  'typescript': ['tsserver'],
       \  'scss': ['sass-lint'],
       \  'css': ['csslint'],
       \  'elm': ['make'],
@@ -375,7 +375,7 @@ nmap <Leader>f <Plug>(ale_fix)
 
 " Finally, we configure the plugin to use:
 "
-" * [Prettier] to fix JavaScript, TypeScript, SCSS, and CSS files
+" * [Prettier] to fix JavaScript, SCSS, and CSS files
 " * [Rubocop] to fix Ruby files
 " * [elm-format] to fix Elm files
 "
@@ -386,7 +386,6 @@ nmap <Leader>f <Plug>(ale_fix)
 let g:ale_fixers = {
       \  'ruby': ['rubocop'],
       \  'javascript': ['prettier'],
-      \  'typescript': ['prettier'],
       \  'scss': ['prettier'],
       \  'css': ['prettier'],
       \  'elm': ['format'],
