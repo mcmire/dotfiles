@@ -542,3 +542,11 @@ let g:javaScript_fold = 1
 " Finally, these two mappings add text objects for folds:
 xnoremap iz :<c-u>FastFoldUpdate<cr><esc>:<c-u>normal! ]zv[z<cr>
 xnoremap az :<c-u>FastFoldUpdate<cr><esc>:<c-u>normal! ]zV[z<cr>
+
+" vim-javascript
+" ==============
+
+" The vim-javascript plugin has built-in support for Flow. We simply need to
+" enable it:
+
+let g:javascript_plugin_flow = 1
