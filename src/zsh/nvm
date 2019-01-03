@@ -1,3 +1,7 @@
 source /usr/local/opt/nvm/nvm.sh
 
+# Make sure that NODE_PATH reflects `npm root -g` -- otherwise when installing
+# Yeoman you will get an error
+export NODE_PATH="$NODE_PATH:$(npm root -g)"
+
 # vi: ft=sh
