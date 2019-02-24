@@ -166,7 +166,7 @@ this configuration.
 
 First, you need to get these files onto your computer somehow. Rather than
 merely cloning this repo and then modifying the files therein, the goal of this
-configuration is to **get you on a path to creating your own dotfiles**.
+configuration is to **get you on a path to creating your own vimfiles**.
 Therefore, you'll want to fork this repo so that you can push changes up to
 it later. Once you've done this, you can then clone your fork in a convenient
 place you'll remember, such as the same place you store code:
