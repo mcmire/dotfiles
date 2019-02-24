@@ -129,7 +129,7 @@ it later. Once you've done this, you can then clone your fork in a convenient
 place you'll remember, such as the same place you store code:
 
     cd ~/your-code-directory
-    git clone git@github.com:yourusername/vimfiles.git
+    git clone git@github.com:yourusername/dotfiles.git
 
 Now, chances are you already have some amount of dotfiles in your home
 directory. In that case, you will probably want to move them out of the way
