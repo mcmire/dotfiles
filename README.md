@@ -82,7 +82,7 @@ using Homebrew:
 
 If you're using my [dotfiles][dotfiles], you're good to go here. Otherwise,
 you'll want to keep in mind that you can use `nvim` to start Neovim. Since this
-is non-standard, I recommend adding a couple of aliases to your shell:
+is non-standard, it's recommended you add a couple of aliases to your shell:
 
     alias vim="nvim"
     alias vi="nvim"
@@ -161,28 +161,29 @@ will want to [do that first][installing-python].
 
 ### Running the install script
 
-Now that you have the prerequisites out of the way, you can actually install
-these configuration files and get started vimming.
+Now that you have the prerequisites out of the way, you can get started using
+this configuration.
 
-First, you need to download this repo somehow. My goal is to get you on a path
-to creating your own vimfiles, so I would recommend forking this repo so that
-you can push up changes to it later. Clone your fork in a convenient place
-you'll remember, such as the same place you store code:
+First, you need to get these files onto your computer somehow. Rather than
+merely cloning this repo and then modifying the files therein, the goal of this
+configuration is to **get you on a path to creating your own dotfiles**.
+Therefore, you'll want to fork this repo so that you can push changes up to
+it later. Once you've done this, you can then clone your fork in a convenient
+place you'll remember, such as the same place you store code:
 
     cd ~/your-code-directory
-    git clone git://github.com:yourusername/vimfiles.git
+    git clone git@github.com:yourusername/vimfiles.git
 
 If you already installed Vim at some point in the past, then you'll want to make
-sure you remove all of those configuration files first. At a minimum, you'll
-want to run:
+sure to move the existing configuration files out of the way first. At a
+minimum, you'll want to run:
 
     mv ~/.vim ~/.vim.old
     mv ~/.vimrc ~/.vimrc.old
 
 Next, run the install script that comes bundled with this repo. Since you forked
-the repo, it's best that you install all of the files here as *symlinks*. This
-will allow you to edit them *either* directly *or* through your forked repo
-location:
+the repo, it's best that you install all of the files here as symlinks. This
+will allow you to edit them through your forked repo location.
 
     script/install --link
 
@@ -194,10 +195,36 @@ opening `vim` and by running:
     :PlugInstall
 
 (You may see errors that a plugin failed to be cloned or installed, but if you
-press R to restart the installation then it should report a success.)
+press <kbd>R</kbd> to restart the installation then it should report a success.)
 
 Now close Vim and re-open it, and you should be good to go!
 
-### You're done!
+## What next?
 
-Enjoy your shiny new Vim installation!
+Once you've installed these files onto your own machine, it's up to you to
+figure out how you want to customize it! Admittedly, this may seem daunting,
+given how much is available here. With that in mind, here are some things to
+focus on:
+
+* **Configuration.** A lot of the configuration is broken out into separate
+  files within [`src/config/nvim/config`](src/config/nvim/config). Here you can
+  learn where the leader key is set to `,`, why `Ctrl-{H,J,K,L}` lets you bounce
+  between panes, how text width gets wrapped at 80 characters except in git
+  commit message windows, and much more. Feel free to modify these files as you
+  see fit. (You can learn more about a particular setting through `:help`. For
+  instance, try `:help textwidth` or `:help colorcolumn`.) You can add any files
+  you want to this folder, as long as you load them in
+  [`src/config/nvim/init.vim`](src/config/nvim/init.vim).
+* **Plugins.** The list of plugins loaded by this configuration are kept in
+  [`src/config/nvim/plugins.vim`](src/config/nvim/plugins.vim), and the
+  settings for these plugins are located at
+  [`src/config/nvim/config/plugins`](src/config/nvim/config/plugins), which are
+  loaded in
+  [`src/config/nvim/config/plugin-config.vim`](src/config/nvim/config/plugin-config.vim).
+  There is a lot here, but don't panic! First, it's probably a good idea to read
+  up on the most frequently used plugins mentioned at the beginning of this
+  README. Learn what they do and how you can make use of them. If you don't feel
+  like you need a plugin, feel free to disable it! You can do this by commenting
+  it out in `plugins.vim`, and if it has a corresponding loader line in
+  `plugin-config.vim`, comment that out, too. Then exit Vim, run `:PlugClean`,
+  and reload Vim again.
