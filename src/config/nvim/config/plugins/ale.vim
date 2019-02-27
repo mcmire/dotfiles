@@ -75,3 +75,22 @@ let g:ale_fixers = {
       \  'css': ['prettier'],
       \  'elm': ['format'],
       \}
+
+augroup local
+  " Here's a problem: Notice how above we have "eslint" enabled as a linter for
+  " JavaScript, but what if a project doesn't have an .eslintrc file? Then
+  " ESLint will run anyway, and it may give you warnings. Ideally Ale should
+  " detect this, but it doesn't. Here's a fix in the meantime, gleaned from
+  " [this comment][ale-fix]:
+  "
+  " [ale-fix]: https://github.com/w0rp/ale/issues/940#issuecomment-380490927
+
+  autocmd FileType javascript let g:ale_linters = {
+  \  'javascript': glob('.eslintrc*', '.;') == '' ? [] : ['eslint']
+  \}
+
+" We do the same thing for Ruby, which has the same problem:
+  autocmd FileType ruby let g:ale_linters = {
+  \  'ruby': findfile('.rubocop.yml', '.;') == '' ? ['ruby'] : ['rubocop', 'ruby']
+  \}
+augroup END
