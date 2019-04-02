@@ -33,27 +33,6 @@ augroup END
 
 " Whatever the textwidth is set to, we draw a vertical line at that width (the
 " color for which is defined in [colors]):
+"
+" [colors]: ./colors.vim
 set colorcolumn=+0
-
-" Finally, when a line exceeds the set `textwidth` we mark the characters that
-" are past the limit with the `CharsExceedingLineLength` syntax group. (The
-" color for this is also defined in [colors].)
-
-let b:chars_exceeding_line_length_match = 0
-
-function! HighlightCharsExceedingLineLength()
-  " Remove the existing match in case textwidth is changed
-  if exists('b:chars_exceeding_line_length_match') && b:chars_exceeding_line_length_match > 0
-    silent! call matchdelete(b:chars_exceeding_line_length_match)
-  end
-
-  let b:chars_exceeding_line_length_match = matchadd('CharsExceedingLineLength', '\%>' . &textwidth . 'v.\+', -1)
-endfunction
-
-augroup local
-  autocmd BufNewFile * :call HighlightCharsExceedingLineLength()
-  autocmd BufRead * :call HighlightCharsExceedingLineLength()
-  autocmd OptionSet textwidth :call HighlightCharsExceedingLineLength()
-augroup END
-
-" [colors]: colors.vim.md
