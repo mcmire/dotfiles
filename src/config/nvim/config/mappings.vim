@@ -1,14 +1,6 @@
 " Mappings
 " ========
 
-" `%` is an essential key mapping: it lets you bounce between the start and end
-" of `if` statements, loops, blocks in Ruby, etc. This mapping is provided by
-" the [`matchit`][matchit] plugin, which we have to enable:
-"
-" [matchit]: https://neovim.io/doc/user/pi_matchit.html
-
-runtime! macros/matchit.vim
-
 " `,ep` lets us **e**dit the list of **p**lugins:
 
 nmap <Leader>ep :tabe ~/.config/nvim/plugins.vim<CR>
