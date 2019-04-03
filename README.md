@@ -104,12 +104,6 @@ To help with copying and pasting within tmux, you'll also want
 
     brew install reattach-to-user-namespace
 
-#### Powerline
-
-You'll need the Powerline support files for tmux:
-
-    pip install powerline-status
-
 #### Extra packages
 
 Finally, you'll want to install the tools mentioned above:
