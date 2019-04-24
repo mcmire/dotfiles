@@ -17,6 +17,28 @@ g() {
 }
 compdef g=git
 
+git-fix-db() {
+  git-undo db/schema.rb
+  Rm
+}
+
+git-fix-rb() {
+  git-undo Gemfile.lock
+  bundle
+}
+
+git-fix-js() {
+  if [[ -f package-lock.json ]]; then
+    git-undo package-lock.json
+    npm install
+  fi
+
+  if [[ -f yarn.lock ]]; then
+    git-undo yarn.lock
+    yarn install
+  fi
+}
+
 _git_delete_branch_and_remote() {
   __gitcomp_nl "$(__git_heads)"
 }
