@@ -118,6 +118,11 @@ nmap <Leader>ef :ll 1<CR>
 vmap <Leader>sym :s/\v["']([^"']+)["'] \=\> /\1: /g<CR>:nohls<CR>
 vmap <Leader>str :s/\v%(:([^:]+) \=\>\|([^[:space:]:]+): )/'\1\2' => /g<CR>:nohls<CR>
 
+" When running tests, it's helpful to know the path of the test file you're
+" working on so you can feed it to `rspec`. `,cp` will copy the path to the
+" clipboard so you can paste it in another terminal window:
+nmap <Leader>cp :let @* = expand("%")<CR>
+
 " Finally, when modifying a colorscheme, sometimes it's helpful to know which
 " syntax group the cursor sits within. `,syn` lets us do this
 " ([source][identify-syntax-group]):
