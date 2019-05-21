@@ -26,20 +26,10 @@ let g:ctrlp_working_path_mode = 'w'
 
 if executable('ag')
   let g:ctrlp_user_command = 'ag %s
-        \ -l
+        \ --path-to-ignore ~/.ignore
+        \ --files-with-matches
         \ --nocolor
-        \ --ignore .git
-        \ --ignore .svn
-        \ --ignore "*.class"
-        \ --ignore "*.o"
-        \ --ignore "*.obj"
-        \ --ignore "*.rbc"
-        \ --ignore features/cassettes
-        \ --ignore spec/cassettes
-        \ --ignore tmp/cache
-        \ --ignore vendor/gems
-        \ --ignore vendor/ruby
-        \ -g ""'
+        \ --filename-pattern ""'
 endif
 
 " Lastly, we make it easier to search by tag. (I added this when I was
