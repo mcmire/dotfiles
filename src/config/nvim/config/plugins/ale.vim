@@ -44,11 +44,13 @@ let g:ale_linters = {
 " We customize the mapping to go to the next linter error:
 nmap <Leader>n <Plug>(ale_next_wrap)
 
-" Finally, we customize the icons that appear in the gutter when issues are
-" reported:
+" And we customize the icons that appear in the gutter when issues are reported:
 
 let g:ale_sign_error = 'X'
 let g:ale_sign_warning = '!'
+
+" We also fix Rubocop so that Bundler is used to run it:
+let g:ale_ruby_rubocop_executable = 'bundle'
 
 " Next, fixing. We configure the plugin not to fix files when they are saved:
 
