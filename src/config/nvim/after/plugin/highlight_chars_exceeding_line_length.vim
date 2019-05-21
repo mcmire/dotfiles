@@ -10,7 +10,7 @@
 
 "call linelength#UnhighlightCharsExceedingLineLength()
 
-augroup local
-  autocmd BufReadPre,BufFilePre,OptionSet *.{rb,js,md} :call linelength#UnhighlightCharsExceedingLineLength()
-  autocmd BufReadPost,BufFilePost,OptionSet,BufNewFile *.{rb,js,md} :call linelength#HighlightCharsExceedingLineLength()
-augroup END
+"augroup local
+  "autocmd BufReadPre,BufFilePre,OptionSet *.{rb,js,md} :call linelength#UnhighlightCharsExceedingLineLength()
+  "autocmd BufReadPost,BufFilePost,OptionSet,BufNewFile *.{rb,js,md} :call linelength#HighlightCharsExceedingLineLength()
+"augroup END
