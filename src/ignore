@@ -1,0 +1,14 @@
+*.class
+*.csv
+*.o
+*.obj
+*.rbc
+.git
+.svn
+features/cassettes
+node_modules
+spec/cassettes
+spec/examples.txt
+tmp/cache
+vendor/gems
+vendor/ruby
