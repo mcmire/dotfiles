@@ -84,6 +84,7 @@ function! s:SetHighlights()
   exec 'highlight CharsExceedingLineLength guifg=' . s:base3 . ' guibg=' . s:red
   exec 'highlight IncSearch cterm=NONE gui=NONE guifg=' . s:base03 . ' guibg=' . s:yellow
   exec 'highlight Search cterm=NONE gui=NONE guifg=' . s:base03 . ' guibg=' . s:orange
+  exec 'highlight MatchParen guifg=' . s:base03 . ' guibg=' . s:base01
 endfunction
 
 function! s:ToggleColorScheme()
