@@ -36,8 +36,8 @@ let g:ale_linters = {
       \  'ruby': ['rubocop', 'ruby'],
       \  'javascript': ['eslint'],
       \  'typescript': ['tsserver'],
-      \  'scss': ['sass-lint'],
-      \  'css': ['csslint'],
+      \  'scss': ['sasslint'],
+      \  'css': ['stylelint'],
       \  'elm': ['make'],
       \}
 
