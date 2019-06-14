@@ -50,7 +50,7 @@ let g:ale_sign_error = 'X'
 let g:ale_sign_warning = '!'
 
 " We also fix Rubocop so that Bundler is used to run it:
-let g:ale_ruby_rubocop_executable = 'rubocop-daemon-wrapper'
+let g:ale_ruby_rubocop_executable = 'bundle'
 
 " Next, fixing. We configure the plugin not to fix files when they are saved:
 
