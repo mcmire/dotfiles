@@ -8,11 +8,10 @@
 
 let g:VtrClearSequence = "clear"
 
-" We map `,roh` and `,rov` so that we can easily open a tmux pane within Vim.
-" `,roh` creates a horizontal split and `,rov` creates a vertical split.
+" We map `,roh` so that we can easily open a tmux pane to the right within Vim.
+" This is useful for running tests.
 
-nmap <leader>roh :VtrOpenRunner({'orientation': 'h', 'percentage': 33})<CR>
-nmap <leader>rov :VtrOpenRunner({'orientation': 'v', 'percentage': 20})<CR>
+nmap <leader>roh :VtrOpenRunner({'orientation': 'h', 'percentage': 36})<CR>
 
 " We also map `,roc` so that we can close this pane.
 
