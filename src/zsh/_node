@@ -1,12 +1,9 @@
 export NODE_PATH="/usr/local/lib/node:/usr/local/lib/node_modules:./node_modules:$NODE_PATH"
-export NVM_DIR=~/.nvm
+
+export PATH="./node_modules/.bin:$PATH"
 
 if [[ -o login ]]; then
-  export PATH="./node_modules/.bin:$PATH"
   export NODE_PATH="$(npm root -g):$NODE_PATH"
-else
-  # TODO: This doesn't make much sense if you don't have 4.0.0 installed
-  export PATH="~/.nvm/versions/node/v4.0.0/bin:./node_modules/.bin:$PATH"
 fi
 
 # vi: ft=sh

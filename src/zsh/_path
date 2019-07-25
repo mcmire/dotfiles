@@ -7,8 +7,9 @@
 # tmux. tmux inherits from the parent shell's PATH. The parent shell has already
 # loaded this file, but tmux will load it all over again. Therefore if we simply
 # prepend, then PATH will explode and have a bunch of duplicates it. This causes
-# issues with NVM such as this one:
-# <https://github.com/creationix/nvm/issues/1652>
+# issues with NVM such as this one
+# (<https://github.com/creationix/nvm/issues/1652>)
+# and nodenv as well.
 export PATH=$HOME/.bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
 
 # Set a sensible default MANPATH as well

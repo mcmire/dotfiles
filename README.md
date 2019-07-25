@@ -85,11 +85,11 @@ upgrade it, you can run:
 This configuration also uses `nvm` to manage Node versions. You can install it
 with:
 
-    brew install node nvm
+    brew install node nodenv
 
 To install the latest version of Node, say:
 
-    nvm install $(nvm ls-remote | tail -n 1 | sed -Ee 's/'"$(printf '\x1b')"'\[[[:digit:]]+;[[:digit:]]+m//g' | sed -Ee 's/^->?[ ]+v//')
+    node-build --definitions | grep -E '^\d+\.\d+\.\d+$' | tail -n 1
 
 #### tmux
 

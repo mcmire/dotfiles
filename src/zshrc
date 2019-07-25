@@ -12,7 +12,7 @@ source ~/.zsh/haskell
 source ~/.zsh/heroku
 source ~/.zsh/history
 source ~/.zsh/java
-source ~/.zsh/nvm
+source ~/.zsh/nodenv
 source ~/.zsh/perl6
 source ~/.zsh/python
 source ~/.zsh/pyenv

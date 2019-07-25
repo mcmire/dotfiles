@@ -84,7 +84,7 @@ function Prompt__Fragment__git_branch {
 
 function Prompt__Fragment__ruby_version {
   if [[ -e .ruby-version || -e Gemfile ]]; then
-    local out="$(rbenv version | sed -e 's/ (set.*$//')"
+    local out="$(rbenv version | sed -Ee 's/ \(.+\)$//')"
 
     local gemsets="$(rbenv gemset active 2>/dev/null | perl -ne 'print join(", ", split(" ")) . "\n"')"
     if [[ -n $gemsets ]]; then
@@ -104,8 +104,8 @@ function Prompt__Fragment__python_version {
 }
 
 function Prompt__Fragment__node_version {
-  if [[ -e .nvmrc || -e node_modules ]]; then
-    local out="$(nvm version | sed -e 's/^v//')"
+  if [[ -e .node-version || -e node_modules ]]; then
+    local out="$(nodenv version | sed -Ee 's/ \(.+\)$//')"
 
     echo -n "$out"
   fi

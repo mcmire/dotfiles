@@ -1,0 +1,3 @@
+eval "$(nodenv init -)"
+
+# vi: ft=sh
