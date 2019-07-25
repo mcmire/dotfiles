@@ -1,3 +1,4 @@
+.DS_Store
 !src/config/nvim/bundle/neobundle.vim
 src/config/nvim/bundle
 src/config/nvim/bundle/.neobundle
