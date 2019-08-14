@@ -42,7 +42,13 @@ let g:ale_linters = {
       \}
 
 " We customize the mapping to go to the next linter error:
-nmap <Leader>n <Plug>(ale_next_wrap)
+nmap <Leader>an <Plug>(ale_next_wrap)
+
+" Elm is known to output detailed error messages. By default, Ale will show
+" errors in a quickfix window, but you can reveal the full error message for a
+" particular line in a larger window with :ALEDetail. Here we make that easier
+" to open:
+nmap <Leader>ae <Plug>(ale_detail)
 
 " And we customize the icons that appear in the gutter when issues are reported:
 
@@ -56,17 +62,17 @@ let g:ale_ruby_rubocop_executable = 'bundle'
 
 let g:ale_fix_on_save = 0
 
-" Instead, we bind this behavior to `,f`:
+" Instead, we bind this behavior to `,af`:
 
-nmap <Leader>f <Plug>(ale_fix)
+nmap <Leader>af <Plug>(ale_fix)
 
-" Finally, we configure the plugin to use:
+" We then configure the plugin to use:
 "
 " * [Prettier] to fix JavaScript, SCSS, and CSS files
 " * [Rubocop] to fix Ruby files
 " * [elm-format] to fix Elm files
 "
-" [prettier]: https://github.com/prettier/prettier
+" [Prettier]: https://github.com/prettier/prettier
 " [Rubocop]: https://github.com/bbatsov/rubocop
 " [elm-format]: https://github.com/avh4/elm-format
 
