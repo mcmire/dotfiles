@@ -8,4 +8,4 @@
 "
 " [elm-vim]: https://github.com/ElmCast/elm-vim
 
-let g:elm_format_autosave = 0
+"let g:elm_format_autosave = 0
