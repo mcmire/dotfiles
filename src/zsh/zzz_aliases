@@ -66,6 +66,7 @@ alias Rc="R console"
 alias Rm="R db:migrate db:test:prepare"
 alias Rmr="R db:migrate:redo db:test:prepare"
 alias Rr="R db:rollback"
+alias Rrbm="R db:rollback_branch_migrations"
 
 # Spring
 alias s="be spring"
