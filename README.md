@@ -159,6 +159,25 @@ will want to [do that first][installing-python].
 
 [installing-python]: http://github.com/mcmire/dotfiles#python
 
+#### Linters
+
+If you plan on writing Ruby, JavaScript, or VimScript, you'll want some linters.
+[Ale][ale] will run these automatically if the appropriate configuration files
+are present in your project.
+
+For Ruby, you'll want Rubocop:
+
+    gem install rubocop
+
+For JavaScript, you'll want ESLint and Prettier:
+
+    npm install -g eslint prettier
+
+For VimScript, you'll want vint (note: you'll want to [install Python and
+pip][installing-python] before doing this):
+
+    pip install vint
+
 ### Running the install script
 
 Now that you have the prerequisites out of the way, you can get started using
