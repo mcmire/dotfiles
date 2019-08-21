@@ -16,6 +16,7 @@ Plug 'djbender/vim-slim'
 Plug 'ds26gte/scmindent'
 Plug 'eagletmt/neco-ghc'
 Plug 'eapache/auto-pairs'
+Plug 'editorconfig/editorconfig-vim'
 Plug 'elixir-lang/vim-elixir'
 Plug 'ElmCast/elm-vim'
 Plug 'eraserhd/parinfer-rust', {'do':
