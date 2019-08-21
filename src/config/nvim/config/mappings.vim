@@ -123,13 +123,19 @@ vmap <Leader>str :s/\v%(:([^:]+) \=\>\|([^[:space:]:]+): )/'\1\2' => /g<CR>:nohl
 " clipboard so you can paste it in another terminal window:
 nmap <Leader>cp :let @* = expand("%")<CR>
 
+" Since we've modified the `syn sync` command to start from 256 lines up from
+" the current line by default (see optimizations.vim), sometimes this messes
+" causes highlighting to get messed up, so we give ourselves a way to
+" reset highlighting for the whole file:
+nmap <Leader>sr :syntax sync fromstart
+
 " Finally, when modifying a colorscheme, sometimes it's helpful to know which
 " syntax group the cursor sits within. `,syn` lets us do this
 " ([source][identify-syntax-group]):
 "
 " [identify-syntax-group]: http://vim.wikia.com/wiki/Identify_the_syntax_highlighting_group_used_at_the_cursor
 
-map <Leader>syn :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+map <Leader>si :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
