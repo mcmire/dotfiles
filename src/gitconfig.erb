@@ -25,27 +25,12 @@
   tree-all = log --graph --pretty=format:'%h %Cred(%cD)%Creset%Cgreen%d%Creset %s' --color --all --decorate=full
   tree-by-date = log --pretty=format:'%h | %cD | %Cgreen%d%Creset %s' --date-order --graph --all --color --decorate=full
   unstage = reset HEAD
-[branch "master"]
-  remote = origin
-  merge = refs/heads/master
-  rebase = true
-[push]
-  default = current
-[color]
-  branch = auto
-  diff = auto
-  grep = auto
-  interactive = auto
-  showbranch = auto
-  ui = auto
 [color "status"]
   added = green
   changed = yellow
   untracked = cyan
-[bash]
-  showdirtystate = true
 [core]
-  excludesfile = ~/.gitignore
+  excludesFile = ~/.gitignore
 [commit]
   template = ~/.gitmessage
 [init]
