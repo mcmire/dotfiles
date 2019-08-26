@@ -1,0 +1,265 @@
+#!/usr/bin/env ruby
+
+require 'net/http'
+require 'yaml'
+require 'pp'
+require 'pry'
+
+module ReportGemDownloads
+  class Main
+    def self.call(args)
+      new(args).call
+    end
+
+    def initialize(args)
+      if args.empty?
+        ReportError.call(:invalid_usage)
+      end
+
+      @gem_name = args.first
+    end
+
+    def call
+      SendNotification.call(gem_name)
+    end
+
+    private
+
+    attr_reader :gem_name
+  end
+
+  class SendNotification
+    CACHE_DIRECTORY = Pathname.new('/usr/local/var/report-gem-downloads')
+    CACHED_DOWNLOAD_COUNT_FILE = CACHE_DIRECTORY.join('downloads.json')
+
+    def self.call(gem_name)
+      new(gem_name).call
+    end
+
+    def initialize(gem_name)
+      @gem_name = gem_name
+    end
+
+    def call
+      CACHE_DIRECTORY.mkpath
+
+      if existing_download_count > 0
+        announce(
+          "There are #{format_number(new_download_count)} new downloads today!"
+        )
+      else
+        announce(
+          "There are #{format_number(latest_download_count)} downloads!"
+        )
+
+        CACHED_DOWNLOAD_COUNT_FILE.write(
+          JSON.generate('count' => latest_download_count)
+        )
+      end
+    end
+
+    private
+
+    attr_reader :gem_name
+
+    def new_download_count
+      latest_download_count - existing_download_count
+    end
+
+    def latest_download_count
+      @_latest_download_count ||= GetLatestDownloadCount.call(gem_name)
+    end
+
+    def existing_download_count
+      @_existing_download_count ||= begin
+        if CACHED_DOWNLOAD_COUNT_FILE.exist?
+          JSON.parse(CACHED_DOWNLOAD_COUNT_FILE.read).fetch('count')
+        else
+          0
+        end
+      end
+    end
+
+    def announce(message)
+      require 'terminal-notifier'
+      TerminalNotifier.notify(message, title: "#{gem_name} downloads")
+    rescue LoadError
+      ReportError.call(
+        :missing_dependencies,
+        gem_name: 'terminal-notifier'
+      )
+    end
+
+    def format_number(number)
+      number.to_s.reverse.gsub(/(\d{3})/, '\1,').reverse
+    end
+  end
+
+  class GetLatestDownloadCount
+    # GEM_CREDENTIALS_FILE = Pathname.new("#{ENV['HOME']}/.gem/credentials")
+    BASE_URI = 'https://rubygems.org'
+
+    def self.call(gem_name)
+      new(gem_name).call
+    end
+
+    def initialize(gem_name)
+      @gem_name = gem_name
+    end
+
+    def call
+      latest_version_downloads
+    end
+
+    private
+
+    attr_reader :gem_name
+
+    def latest_version_downloads
+      data = MakeGetRequest.call(
+        "#{BASE_URI}/api/v1/downloads/#{gem_name}-#{latest_version}.json"
+      )
+      data.fetch('version_downloads')
+    end
+
+    def latest_version
+      @_latest_version ||= begin
+        data = MakeGetRequest.call(
+          "#{BASE_URI}/api/v1/versions/#{gem_name}/latest.json"
+        )
+        data.fetch('version')
+      end
+    end
+
+    # def api_key
+      # if GEM_CREDENTIALS_FILE.exist?
+        # YAML.load_file(GEM_CREDENTIALS_FILE).fetch(:rubygems_api_key)
+      # else
+        # ReportError.call(:missing_gem_credentials_file)
+      # end
+    # end
+  end
+
+  class MakeGetRequest
+    def self.call(url)
+      new(url).call
+    end
+
+    def initialize(url)
+      @url = url
+    end
+
+    def call
+      if response_status == 200
+        response_data
+      else
+        ReportError.call(
+          :failed_request,
+          url: url,
+          response_status: response_status,
+          response_data: response_data
+        )
+      end
+    end
+
+    private
+
+    attr_reader :url
+
+    def response_status
+      response.code.to_i
+    end
+
+    def response_data
+      @_response_data ||= JSON.parse(response.body)
+    end
+
+    def response
+      @_response ||= Net::HTTP.get_response(uri)
+    end
+
+    def uri
+      @_uri ||= URI(url)
+    end
+  end
+
+  class ReportError
+    EXIT_CODES = {
+      failed_request: 1,
+      missing_dependencies: 2,
+      invalid_usage: 3
+    }
+
+    def self.call(type, **args)
+      new(type, **args).call
+    end
+
+    def initialize(type, **args)
+      @type = type
+      @args = args
+    end
+
+    def call
+      warn "\e[31m#{main_message}\e[0m"
+
+      if message_details.any?
+        warn "\n"
+        message_details.each { |line| warn line }
+      end
+
+      exit exit_code
+    end
+
+    private
+
+    attr_reader :type, :args
+
+    def main_message
+      message.fetch(:main)
+    end
+
+    def message_details
+      message.fetch(:details, [])
+    end
+
+    def message
+      if args.empty?
+        send(type)
+      else
+        send(type, **args)
+      end
+    end
+
+    def exit_code
+      EXIT_CODES.fetch(type) do
+        raise ArgumentError, "Invalid error type: #{type}"
+      end
+    end
+
+    def failed_request(url:, response_status:, response_data:)
+      {
+        main: "Could not make request to #{url}.",
+        details: [
+          "Response code: #{response_status}",
+          "Response data:",
+          response_data.pretty_inspect
+        ]
+      }
+    end
+
+    def missing_dependencies(gem_name:)
+      {
+        main: "You need to install '#{gem_name}' first to use this tool."
+      }
+    end
+
+    def invalid_usage
+      {
+        main: "Invalid usage.",
+        details: ["USAGE: #{$0} GEM_NAME"]
+      }
+    end
+  end
+end
+
+ReportGemDownloads::Main.call(ARGV)
