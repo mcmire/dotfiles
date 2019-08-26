@@ -20,6 +20,7 @@ alias ll="ls -l"
 # Bundle
 alias b="bundle"
 alias be="b exec"
+alias r="be rspec"
 
 # Git
 alias gA="g add -A ."
