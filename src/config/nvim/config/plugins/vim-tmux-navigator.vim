@@ -9,7 +9,9 @@
 
 let g:tmux_navigator_no_mappings = 1
 
-nmap <silent> <C-h> :TmuxNavigateLeft<cr>
-nmap <silent> <C-j> :TmuxNavigateDown<cr>
-nmap <silent> <C-k> :TmuxNavigateUp<cr>
-nmap <silent> <C-l> :TmuxNavigateRight<cr>
+"if exists("g:loaded_tmux_navigator")
+  nmap <silent> <C-h> :TmuxNavigateLeft<cr>
+  nmap <silent> <C-j> :TmuxNavigateDown<cr>
+  nmap <silent> <C-k> :TmuxNavigateUp<cr>
+  nmap <silent> <C-l> :TmuxNavigateRight<cr>
+"endif
