@@ -53,16 +53,13 @@ let g:ale_fixers = {
 
 " === Other configuration ===
 
-" When Ale lints a file, it checks its syntax (using an external tool) and
-" reports any issues within Vim. When it *fixes* a file, it completely rewrites
-" it so that it's formatted (again, using an external tool).
-"
-" So let's start with linting. We configure the plugin to lint the file being
-" edited not as it is changed, not even when it is first opened, but only when
-" it is saved:
+" Ale has some default behavior which is undesirable. We only want to lint when
+" a file is saved, not when it is first opened, or when it is changed, or when
+" we leave insert mode:
 
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 0
+let g:ale_lint_on_insert_leave = 0
 
 " And we customize the icons that appear in the gutter when issues are reported:
 
@@ -73,7 +70,7 @@ let g:ale_sign_warning = '!'
 
 let g:ale_ruby_rubocop_executable = 'bundle'
 
-" Next, fixing. We configure the plugin not to fix files when they are saved:
+" Next, we configure the plugin not to fix files when they are saved:
 
 let g:ale_fix_on_save = 0
 
