@@ -30,6 +30,7 @@ Plug 'w0rp/ale'
 
 " Sometimes useful plugins
 
+Plug 'godlygeek/tabular'
 Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-rails'
 
@@ -50,7 +51,6 @@ Plug 'tpope/vim-rails'
         "\  'cargo build --release'}
 "Plug 'frankier/vim-eve'
 "Plug 'gisraptor/vim-lilypond-integrator'
-"Plug 'godlygeek/tabular'
 "Plug 'guns/vim-clojure-highlight'
 "Plug 'guns/vim-clojure-static'
 "Plug 'guns/vim-sexp'
