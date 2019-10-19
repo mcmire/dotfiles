@@ -20,6 +20,10 @@ let g:ruby_fold = 1
 " ...JavaScript
 let g:javaScript_fold = 1
 
+" ...and disabled for Elm, where it really doesn't work right:
+
+let g:fastfold_skip_filetypes=['elm']
+
 " Finally, these two mappings add text objects for folds:
 xnoremap iz :<c-u>FastFoldUpdate<cr><esc>:<c-u>normal! ]zv[z<cr>
 xnoremap az :<c-u>FastFoldUpdate<cr><esc>:<c-u>normal! ]zV[z<cr>
