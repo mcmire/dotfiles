@@ -29,6 +29,7 @@ let g:ale_linters = {
       \  'javascript': ['eslint'],
       \  'typescript': ['tsserver'],
       \  'scss': ['sasslint'],
+      \  'sass': ['sasslint'],
       \  'css': ['stylelint'],
       \  'elm': ['make'],
       \}
@@ -47,6 +48,7 @@ let g:ale_fixers = {
       \  'ruby': ['standardrb'],
       \  'javascript': ['prettier'],
       \  'scss': ['prettier'],
+      \  'sass': ['prettier'],
       \  'css': ['prettier'],
       \  'elm': ['format'],
       \}
