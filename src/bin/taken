@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+if [[ $# -eq 2 ]]; then
+  signal=$1
+  process_name=$2
+else
+  signal=9
+  process_name=$1
+fi
+
+ps x \
+  | grep "$process_name" \
+  | grep -v grep \
+  | grep -v taken \
+  | perl -ne '@lines = split(" ", $_); print @lines[0] . "\n"' \
+  | xargs -I {} kill -$signal {}
