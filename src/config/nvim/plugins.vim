@@ -11,6 +11,7 @@ Plug 'christoomey/vim-tmux-runner'
 Plug 'eapache/auto-pairs'
 Plug 'ervandew/supertab'
 Plug 'gabebw/vim-spec-runner'
+Plug 'godlygeek/tabular'
 Plug 'jszakmeister/vim-togglecursor'
 Plug 'kchmck/vim-coffee-script'
 Plug 'kien/ctrlp.vim'
@@ -37,10 +38,10 @@ Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
 
-" Sometimes useful plugins
+" Sometimes-used plugins
 
-Plug 'godlygeek/tabular'
 Plug 'SirVer/ultisnips'
+Plug 'jeetsukumaran/vim-markology'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rails'
 
