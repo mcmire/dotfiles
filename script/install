@@ -21,7 +21,7 @@ class Main
   HOME_DIR = File.expand_path(ENV['HOME'])
 
   def initialize
-    @options = { link: false }
+    @options = { link: true }
     @files = []
     @num_skipped_files = 0
     @num_updated_files = 0
