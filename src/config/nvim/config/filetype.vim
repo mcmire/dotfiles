@@ -4,37 +4,24 @@
 " Some types of files use different settings. Some files that have a certain
 " extension are incorrectly assigned the wrong file type. This file attempts to
 " address both of these issues.
-"
-" To start with, most files use soft tabs, but Makefiles are different because
-" they literally do not work unless they have real ones:
 
-augroup local
-  autocmd FileType make setl noexpandtab
-augroup END
-
-" A lot of files that we use in the Ruby world don't end in `.rb`. This is
-" unfortunate, but it means they aren't highlighted like Ruby files, so we make
-" them highlighted appropriately:
+" To start with, a lot of files that we use in the Ruby world don't end in
+" `.rb`. This is unfortunate, but it means they aren't highlighted like Ruby
+" files, so we make them highlighted appropriately:
 
 augroup local
   autocmd BufRead,BufNewFile {config.ru,Gemfile,Guardfile,Rakefile,Thorfile,Vagrantfile,Appraisals,Bowerfile,*.gemspec} set ft=ruby
 augroup END
 
-" JSHint, ESLint, and Babel configuration files are JSON files, so they
-" need to be highlighted as such as well:
+" Similiarly, some configuration files are JSON files, even if they aren't named
+" that way:
 
 augroup local
-  autocmd BufNewFile,BufRead {.jshintrc,.eslintrc,.babelrc} set ft=json
+  autocmd BufNewFile,BufRead {.jshintrc,.eslintrc,.babelrc,.prettierrc} set ft=json
 augroup END
 
-" .js.coffee files are CoffeeScript files too:
-
-augroup local
-  autocmd BufNewFile,BufRead {.js.coffee} set ft=coffee
-augroup END
-
-" Syntax-highlight JSX in JavaScript and TypeScript files regardless of
-" extension:
+" Here we make sure that JSX is highlighted in JavaScript and TypeScript files
+" regardless of extension:
 
 augroup local
   autocmd BufNewFile,BufRead *.{js,jsx} set ft=javascript.jsx
@@ -75,6 +62,20 @@ augroup local
   autocmd FileType clojure set iskeyword-=.
 augroup END
 
+" Haml Coffee is a version of Haml that uses CoffeeScript instead of ERB, and
+" its files end in `.hamlc`. Since they are mostly Haml files, we highlight them
+" as such:
+
+augroup local
+  autocmd BufRead,BufNewFile *.hamlc set ft=haml
+augroup END
+
+" Note that .js.coffee files are CoffeeScript files too:
+
+augroup local
+  autocmd BufNewFile,BufRead {.js.coffee} set ft=coffee
+augroup END
+
 " Skim is Slim, but for JavaScript, and its files end in `.skim`. Since the
 " syntax looks just like Slim, we can borrow Slim's syntax highlighting:
 
@@ -82,12 +83,11 @@ augroup local
   autocmd BufRead,BufNewFile *.skim set ft=slim
 augroup END
 
-" Haml Coffee is a version of Haml that uses CoffeeScript instead of ERB, and
-" its files end in `.hamlc`. Since they are mostly Haml files, we highlight them
-" as such:
+" Most files use soft tabs, but Makefiles are different because they literally
+" do not work unless they have real ones:
 
 augroup local
-  autocmd BufRead,BufNewFile *.hamlc set ft=haml
+  autocmd FileType make setl noexpandtab
 augroup END
 
 " Lastly, in the event that we edit our crontabs, we ask Vim to make a backup
