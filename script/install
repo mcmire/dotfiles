@@ -11,33 +11,6 @@ require 'erb'
 require 'optparse'
 require 'pp'
 
-module ColorHelpers
-  def c_unimportant(str)
-    Rainbow(str).foreground(:black).bright
-  end
-  def c_success(str)
-    Rainbow(str).foreground(:green)
-  end
-  def c_failure(str)
-    Rainbow(str).foreground(:red)
-  end
-  def c_filename(str)
-    Rainbow(str).foreground(:blue).bright
-  end
-  def c_debugging(str)
-    Rainbow(str).foreground(:cyan)
-  end
-  def c_emphasis(str)
-    Rainbow(str).foreground(:yellow).bright
-  end
-end
-
-module NoColorHelpers
-  %w[c_unimportant c_success c_failure c_filename c_debugging c_emphasis].each do |method|
-    define_method(method) { |arg| arg }
-  end
-end
-
 class Main
   def self.run
     new.run
@@ -48,8 +21,7 @@ class Main
   HOME_DIR = File.expand_path(ENV['HOME'])
 
   def initialize
-    load_color
-    @options = {}
+    @options = { link: false }
     @files = []
     @num_skipped_files = 0
     @num_updated_files = 0
@@ -63,46 +35,22 @@ class Main
 
   private
 
-  def load_color
-    begin
-      require 'rainbow'
-      @has_color = true
-    rescue LoadError
-      begin
-        require 'rubygems'
-        require 'rainbow'
-        @has_color = true
-      rescue LoadError => e
-        warn "Install the 'rainbow' gem if you want colors."
-        warn ""
-        @has_color = false
-      end
-    end
-
-    if @has_color
-      extend ColorHelpers
-    else
-      extend NoColorHelpers
-    end
-  end
-
   def parse_args
     parser = OptionParser.new do |p|
       p.banner = <<EOT
 USAGE: #{$0} [options]
 
-This script will copy over anything in src/ as a dotfile. That is, src/vimrc is
-copied to ~/.vimrc, src/vim is copied to ~/.vim, etc. If a file ends in .erb it
-will be evaluated as an ERB template and the resulting content will copied to
-the dotfile (`@options` within a template refers to the options parsed from the
-command line).
+This script will symlink over anything in src/ as a dotfile in your home
+directory. That is, src/vimrc is symlinked as ~/.vimrc, src/vim is symlinked as
+~/.vim, etc.
 
-Usually files are copied, but if you want to be able to modify the configuration
-(and commit to this repo, etc.) as you go, then it's better to create symlinks
-back to files in this repo instead. You can do that with the `--link` option.
 When files are symlinked they are also usually done so recursively; if a
 directory has a .no-recurse file in it, then the whole directory will be
 symlinked as a whole rather than individual files.
+
+If a file ends in .erb, it will be evaluated as an ERB template and the
+resulting content will copied to the dotfile (`@options` within a template
+refers to the options parsed from the command line).
 
 The script takes care not to overwrite any files, unless you specify
 `--force-templates` or `--force-all`.
@@ -131,11 +79,6 @@ EOT
       end
       p.on("-n", "--noop", "--dry-run", "Don't actually copy or write any files.") do |val|
         @options[:dry_run] = true
-      end
-      p.on("-l", "--link", "Usually this script will copy files, but
-                                     if you want to develop on this repo, then
-                                     it's better to link files.") do
-        @options[:link] = true
       end
       p.on("-f", "--force-templates", "Usually dotfiles that already exist are not
                                      overwritten. This will only cause dotfile
@@ -271,7 +214,7 @@ EOT
       puts if @options[:verbose]
       puts c_success("All files are already up to date, you're good!")
       unless @options[:verbose]
-        puts c_success("Run again with --verbose if you want to know why.")
+        puts "Run again with --verbose if you want to know why."
       end
     elsif !@options[:dry_run]
       puts if @options[:verbose]
@@ -279,10 +222,33 @@ EOT
     end
 
     if @num_skipped_files > 0
-      puts c_success("Run again with --force-templates or --force-all to force-update skipped files.")
+      puts "Run again with --force-templates or --force-all to force-update skipped files."
     end
+  end
+
+  def c_unimportant(str)
+    "\e[37m#{str}\e[0m"
+  end
+
+  def c_success(str)
+    "\e[32m#{str}\e[0m"
+  end
+
+  def c_failure(str)
+    "\e[31m#{str}\e[0m"
+  end
+
+  def c_filename(str)
+    "\e[34m#{str}\e[0m"
+  end
+
+  def c_debugging(str)
+    "\e[36m#{str}\e[0m"
+  end
+
+  def c_emphasis(str)
+    "\e[33m#{str}\e[0m"
   end
 end
 
 Main.run
-
