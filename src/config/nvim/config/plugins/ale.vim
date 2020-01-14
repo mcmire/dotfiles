@@ -83,7 +83,7 @@ let g:ale_fix_on_save = 0
 "
 " [ale-fix]: https://github.com/w0rp/ale/issues/940#issuecomment-380490927
 
-function! s:DiscoverRubyLinters()
+function! s:DiscoverRubyLinters() abort
   let linters = []
 
   if findfile('.standard.yml', '.;') !=# ''
@@ -99,10 +99,11 @@ function! s:DiscoverRubyLinters()
   let g:ale_linters = { 'ruby': l:linters }
 endfunction
 
-function! s:DiscoverJavaScriptLinters()
+function! s:DiscoverJavaScriptLinters() abort
   let linters = []
+  let eslint_config_files = globpath('.', '.eslintrc*', 0, 1)
 
-  if glob('.eslintrc*', '.;') !=# ''
+  if len(l:eslint_config_files) > 0 && len(join(readfile(l:eslint_config_files[0], '', 1), '\n')) > 0
     call add(l:linters, 'eslint')
   endif
 
