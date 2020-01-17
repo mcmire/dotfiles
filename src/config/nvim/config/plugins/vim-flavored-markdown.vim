@@ -7,5 +7,5 @@
 " [vim-flavored-markdown]: https://github.com/jtratner/vim-flavored-markdown
 
 "augroup local
-  "autocmd BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown | setlocal textwidth=80
+  "autocmd BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
 "augroup END
