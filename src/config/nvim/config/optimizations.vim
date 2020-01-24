@@ -17,4 +17,4 @@ set synmaxcol=1000
 " current syntax group. Here we tell it to start at 256 lines back in the file
 " and parse all of the lines forward.
 
-"syntax sync minlines=256
+syntax sync minlines=256
