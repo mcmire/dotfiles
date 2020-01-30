@@ -21,19 +21,6 @@ let maplocalleader = ","
 set number
 set ruler
 
-" By default, [Vim periodically saves changes][recover] you've made to a file
-" that you haven't explicitly saved. It does so by keeping a "swap file" -- a
-" copy of the current file, plus your new changes, in the same directory as that
-" file. While this sounds like a great feature, it's completely useless if you
-" get into a habit of saving all the time. It's also a bit of a pain, because
-" very commonly you'll open a file only to get a message informing you that
-" contents of the file are in conflict with the contents of the swap file. For
-" this reason, it's better to simply disable swap files:
-"
-" [recover]: http://vimdoc.sourceforge.net/htmldoc/recover.html
-
-set noswapfile
-
 " Vim, like the shell, remembers commands you've run in the past. There are five
 " different categories of commands it remembers, including Ex commands (which
 " are always preceded by `:`) and search strings. You can adjust how many
