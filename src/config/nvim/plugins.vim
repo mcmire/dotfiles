@@ -30,6 +30,7 @@ Plug 'w0rp/ale'
 " Language-specific plugins
 
 Plug 'ElmCast/elm-vim'
+Plug 'cespare/vim-toml'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'gabrielelana/vim-markdown'
 "Plug 'jtratner/vim-flavored-markdown'
