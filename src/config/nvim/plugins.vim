@@ -30,6 +30,7 @@ Plug 'w0rp/ale'
 " Language-specific plugins
 
 Plug 'ElmCast/elm-vim'
+Plug 'avakhov/vim-yaml'
 Plug 'cespare/vim-toml'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jtratner/vim-flavored-markdown'
@@ -47,7 +48,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rails'
 
 "Plug 'ap/vim-css-color'
-"Plug 'avakhov/vim-yaml'
 "Plug 'briancollins/vim-jst'
 "Plug 'cakebaker/scss-syntax.vim'
 "Plug 'chr4/nginx.vim'
