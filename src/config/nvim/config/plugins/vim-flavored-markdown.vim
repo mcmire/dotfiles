@@ -6,6 +6,6 @@
 "
 " [vim-flavored-markdown]: https://github.com/jtratner/vim-flavored-markdown
 
-"augroup local
-  "autocmd BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
-"augroup END
+augroup local
+  autocmd BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
+augroup END
