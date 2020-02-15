@@ -37,6 +37,7 @@ Plug 'jtratner/vim-flavored-markdown'
 Plug 'mitsuhiko/vim-json'
 Plug 'mxw/vim-jsx'
 Plug 'pangloss/vim-javascript'
+Plug 'tbastos/vim-lua'
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
 
