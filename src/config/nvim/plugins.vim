@@ -38,6 +38,9 @@ Plug 'mitsuhiko/vim-json'
 Plug 'mxw/vim-jsx'
 Plug 'pangloss/vim-javascript'
 Plug 'tbastos/vim-lua'
+" Make sure this is listed BEFORE vim-rails!
+" See: <https://github.com/tpope/vim-rails/issues/330>
+Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
 
