@@ -1,13 +1,3 @@
-<%- if @options[:git_email] && @options[:git_name] %>
-[user]
-  email = <%= @options[:git_email] %>
-  name = <%= @options[:git_name] %>
-<%- end %>
-<%- if @options[:github_token] %>
-[github]
-  user = <%= @options[:github_user] %>
-  token = <%= @options[:github_token] %>
-<%- end %>
 [diff "ruby"]
   funcname = ^ *\\(\\(class\\|module\\|def\\) .*\\)
 [alias]

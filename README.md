@@ -82,8 +82,8 @@ upgrade it, you can run:
 
 #### Node
 
-This configuration also uses `nvm` to manage Node versions. You can install it
-with:
+This configuration also uses `nodenv` to manage Node versions. You can install
+it with:
 
     brew install node nodenv
 
@@ -94,8 +94,8 @@ To install the latest version of Node, say:
 #### tmux
 
 tmux is invaluable for managing different sessions within a project (and for
-grouping projects together so that you can work on multiple at the same time).
-For instance, you might 
+grouping projects together so that you can work on multiple projects at the same
+time). You'll want to install tmux by saying:
 
     brew install tmux
 
@@ -110,7 +110,7 @@ Finally, you'll want to install the tools mentioned above:
 
     brew install autojump fzf hub
 
-### Running the install script
+### Installing symlinks
 
 Now that you have the prerequisites out of the way, you can get started using
 this configuration.
@@ -130,13 +130,18 @@ directory. In that case, you will probably want to move them out of the way
 before you go any further (you can remove them later, at your leisure, of
 course).
 
-Next, run the install script that comes bundled with this repo. Since you forked
-the repo, it's best that you install all of the files here as symlinks. This
-will allow you to edit them through your forked repo location. Furthermore,
-since you're probably running this for the first time, you'll want to provide
-your Git name and email, which will be used to author commits:
+Next, you will want to run the script that comes bundled with this repo. Since
+you forked the repo, it's best that you install all of the files here as
+symlinks. This will allow you to edit them through your forked repo location.
+Furthermore, since you're probably running this for the first time, you'll want
+to provide your Git name and email, which will be used to author commits:
 
-    script/install --link --git-name "Your Name" --git-email "your@email.com"
+    bin/manage install --git-name "Your Name" --git-email "your@email.com" --dry-run
+
+This will tell you what would have been installed, but not actually do anything.
+If everything looks good and makes sense here, then run:
+
+    bin/manage install --git-name "Your Name" --git-email "your@email.com"
 
 After you've done this, open tmux. You may receive a warning at the top of the
 screen, but ignore that and press Enter. Press <kbd>Ctrl</kbd> +
@@ -146,8 +151,8 @@ Then restart tmux, and you should no longer receive the warning.
 
 ### Optional tasks
 
-Besides running the install script, there may be some little things you'll have
-to do to make life easier. These are completely optional:
+Besides installing symlinks, there may be some little things you'll have to do
+to make life easier. These are completely optional:
 
 * If you want to be able to use VS Code, this will enable key repeating there:
   ```
@@ -172,3 +177,14 @@ serve a purpose. If you don't need it, don't be afraid to toss it out.
 
 Finally, update this README to match any changes you end up making. Who knows —
 you might inspire someone else to create their own dotfiles repo!
+
+## Uninstalling everything
+
+To remove the symlinks created during the installation step, run:
+
+    script/manage uninstall --dry-run
+
+As with the installation step, that will merely tell you what uninstallation
+would have done, but not do anything. If everything looks good here, then run:
+
+    script/manage uninstall
