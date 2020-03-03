@@ -1,0 +1,791 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+#== UTILITIES ==================================================================
+
+absolute-path-of() {
+  echo $(cd "$(dirname "$1")" &>/dev/null && pwd)/$(basename "$1")
+}
+
+colorize() {
+  local code=
+
+  case "$1" in
+    bold)
+      code=1
+      ;;
+    red)
+      code=31
+      ;;
+    green)
+      code=32
+      ;;
+    yellow)
+      code=33
+      ;;
+    blue)
+      code=34
+      ;;
+    *)
+      echo "WARNING: $1 is an invalid color"
+      code=0
+      ;;
+  esac
+
+  echo -ne "\033[${code}m"
+  echo -n "${@:2}"
+  echo -ne "\033[0m"
+}
+
+print-with-color() {
+  echo $(colorize "$@")
+}
+
+success() {
+  print-with-color green "$@"
+}
+
+warning() {
+  print-with-color yellow "$@"
+}
+
+info() {
+  print-with-color bold "$@"
+}
+
+error() {
+  print-with-color red "$@"
+}
+
+digest-file() {
+  if type md5 &>/dev/null; then
+    echo $(md5 -q "$1")
+  elif type md5sum &>/dev/null; then
+    echo $(md5sum "$1")
+  else
+    error "Could not find md5 or md5sum, aborting."
+    exit 1
+  fi
+}
+
+files-equal() {
+  [[ $(digest-file "$1") == $(digest-file "$2") ]]
+}
+
+#== COMMON =====================================================================
+
+PROJECT_DIR=$(dirname $(dirname $(absolute-path-of $0)))
+COMMAND=
+
+inspect-command() {
+  echo "                 >" "$@"
+}
+
+build-destination-path() {
+  echo "$HOME/.$1"
+}
+
+format-source-path() {
+  local source_path="${1/$PROJECT_DIR/\$DOTFILES}"
+
+  if [[ -d $source_path ]]; then
+    source_path="${source_path}/"
+  fi
+
+  echo "$source_path"
+}
+
+format-destination-path() {
+  local destination_path="${1/$HOME/~}"
+
+  if [[ -d $destination_path ]]; then
+    destination_path="${destination_path}/"
+  fi
+
+  echo "$destination_path"
+}
+
+format-announcement-prefix() {
+  local color="$1"
+  local action="$2"
+  local action_width="$3"
+  local subaction="$4"
+  local subaction_width="$5"
+
+  local colorized_action=$(colorize $color "$(printf "%${action_width}s" "$action")")
+  local colorized_subaction=$(colorize yellow "$(printf "%${subaction_width}s" "$subaction")")
+  echo "${colorized_action} ${colorized_subaction}"
+}
+
+announce() {
+  local subaction="$1"
+  local action="$2"
+  shift 2
+
+  local source_path=
+  local destination_path=
+  local formatted_source_path=
+  local formatted_destination_path=
+
+  while [[ ${1:-} ]]; do
+    case "$1" in
+      -s)
+        source_path="$2"
+        shift 2
+        ;;
+      -d)
+        destination_path="$2"
+        shift 2
+        ;;
+      *)
+        error "Invalid argument '$1', must be -s SOURCE or -d DESTINATION."
+        exit 1
+        ;;
+    esac
+  done
+
+  if [[ $source_path ]]; then
+    local formatted_source_path=$(format-source-path "$source_path")
+  fi
+
+  if [[ $destination_path ]]; then
+    local formatted_destination_path=$(format-destination-path "$destination_path")
+  fi
+
+  set +e
+  local color=
+  color="$(${COMMAND}__determine-action-color "$action")"
+  if [[ $? -eq 1 ]]; then
+    error "Invalid color '$action'!"
+    echo "Please check the definition of ${COMMAND}__determine-action-color()."
+    exit 1
+  fi
+  set -e
+
+  local prefix="$(
+    format-announcement-prefix \
+      "$color" \
+      "$action" \
+      $(${COMMAND}__action-width) \
+      "$subaction" \
+      $(${COMMAND}__subaction-width)
+  )"
+  eval '${COMMAND}__announce' \
+    '"$subaction"' \
+    '"$prefix"' \
+    ${formatted_source_path:+'-s "$formatted_source_path"'} \
+    ${formatted_destination_path:+'-d "$formatted_destination_path"'}
+}
+
+#== INSTALL ====================================================================
+
+install__print-help() {
+  cat <<TEXT
+$(colorize blue "## DESCRIPTION")
+
+The 'install' command will create symlinks in your home folder based on the
+contents of the src/ directory. It will iterate over the files there and do one
+of a few things depending on what it encounters:
+
+* If it encounters a file, it will create a symlink in your home folder that
+  points to this file (with the file renamed so as to begin with a dot).
+  EXAMPLE: src/tmux.conf creates a symlink at ~/.tmux.conf.
+* If it encounters a directory, it will recurse the directory and create
+  symlinks inside of your home directory according to the previous rule (with
+  the directory renamed so as to begin with a dot).
+  EXAMPLE: src/rbenv is iterated over to find src/rbenv/default-gems.
+  src/rbenv/default-gems then creates a symlink at ~/.rbenv/default-gems.
+
+There are some exceptions to this:
+
+* If it encounters a file anywhere called _install.sh, it will treat that file
+  as an executable and run it. (It assumes you have chmod'd this file correctly
+  and that this script has a shebang.)
+* If it encounters a file anywhere that ends in ._no-link, it will copy this
+  file to your home directory instead of creating a symlink.
+  EXAMPLE: src/gitconfig._no-link creates a file (not a symlink) at
+  ~/.gitconfig.
+* If it encounters a directory anywhere that has a .no-recurse file, it will
+  NOT recurse the directory; instead, it will create a symlink for the
+  directory.
+  EXAMPLE: src/zsh, because it contains a .no-recurse file, creates a symlink at
+  ~/.zsh.
+
+No files will be overwritten unless you specify --force.
+
+Finally, if you want to know what this command will do before running it for
+real, and especially if this is the first time you're running it, use the
+--dry-run option. For further output, use the --verbose option.
+
+$(colorize blue "## USAGE")
+
+$(colorize bold "$0 $COMMAND [FIRST_TIME_OPTIONS] [OTHER_OPTIONS]")
+
+where FIRST_TIME_OPTIONS are one or more of:
+
+--git-name NAME
+  The name that you'll use to author Git commits.
+--git-email EMAIL
+  The email that you'll use to author Git commits.
+
+and OTHER_OPTIONS are one or more of:
+
+--dry-run, --noop, -n
+  Don't actually change the filesystem.
+--force, -f
+  Usually dotfiles that already exist are not overwritten. This bypasses that.
+--verbose, -V
+  Show every command that is run when it is run.
+--help, -h
+  You're looking at it ;)
+TEXT
+}
+
+install__parse-args() {
+  DRY_RUN=0
+  FORCE=0
+  VERBOSE=0
+
+  local arg=
+
+  while [[ ${1:-} ]]; do
+    arg="${1:-}"
+    case "$arg" in
+      --git-email)
+        GIT_EMAIL="$2"
+        shift 2
+        ;;
+      --git-name)
+        GIT_NAME="$2"
+        shift 2
+        ;;
+      --dry-run | --noop | -n)
+        DRY_RUN=1
+        shift
+        ;;
+      --force | -f)
+        FORCE=1
+        shift
+        ;;
+      --verbose | -V)
+        VERBOSE=1
+        shift
+        ;;
+      --help | -h | -?)
+        ${COMMAND}__print-help | more -R
+        exit
+        ;;
+      *)
+        error "Unknown argument '$arg' given."
+        echo "Please run $0 $COMMAND --help for usage."
+        exit 1
+    esac
+  done
+}
+
+install__determine-action-color() {
+  local action="$1"
+
+  case $action in
+    create | run)
+      echo "green"
+      ;;
+    overwrite)
+      echo "red"
+      ;;
+    exists | same | unknown)
+      echo "blue"
+      ;;
+    *)
+      exit 1
+      ;;
+  esac
+}
+
+install__action-width() {
+  echo 8
+}
+
+install__subaction-width() {
+  echo 8
+}
+
+install__announce() {
+  local subaction="$1"
+  local prefix="$2"
+  shift 2
+
+  local source_path=
+  local destination_path=
+
+  while [[ ${1:-} ]]; do
+    case "$1" in
+      -s)
+        source_path="$2"
+        shift 2
+        ;;
+      -d)
+        destination_path="$2"
+        shift 2
+        ;;
+      *)
+        error "Invalid argument '$1', must be -s SOURCE or -d DESTINATION."
+        exit 1
+        ;;
+    esac
+  done
+
+  if [[ $source_path ]]; then
+    if [[ $destination_path ]]; then
+      echo "${prefix} ${source_path} --> ${destination_path}"
+    else
+      echo "${prefix} ${source_path}"
+    fi
+  else
+    echo "${prefix} ${destination_path}"
+  fi
+}
+
+install__run-install-script() {
+  local full_source_path="$1"
+
+  if [[ $VERBOSE -eq 1 ]]; then
+    eval inspect-command env ${GIT_NAME:+'GIT_NAME="$GIT_NAME"'} ${GIT_EMAIL:+'GIT_EMAIL="$GIT_EMAIL"'} '"$full_source_path"'
+  fi
+
+  if [[ $DRY_RUN -eq 0 ]]; then
+    set +e
+
+    eval env ${GIT_NAME:+'GIT_NAME="$GIT_NAME"'} ${GIT_EMAIL:+'GIT_EMAIL="$GIT_EMAIL"'} '"$full_source_path"'
+    exit_code=$?
+
+    if [[ $exit_code -ne 0 ]]; then
+      echo
+      error "$(format-source-path "$full_source_path") failed with exit code $exit_code."
+      echo "Take a closer look at this file. Perhaps you're using set -e and some command is failing?"
+      exit 1
+    fi
+
+    set -e
+  fi
+}
+
+install__copy-file() {
+  local full_source_path="$1"
+  local full_destination_path="$2"
+
+  if [[ $VERBOSE -eq 1 ]]; then
+    inspect-command mkdir -p $(dirname "$full_destination_path")
+
+    if [[ $FORCE -eq 1 ]]; then
+      inspect-command rm -f "$full_destination_path"
+    fi
+
+    inspect-command cp "$full_source_path" "$full_destination_path"
+  fi
+
+  if [[ $DRY_RUN -eq 0 ]]; then
+    mkdir -p $(dirname "$full_destination_path")
+
+    if [[ $FORCE -eq 1 ]]; then
+      rm -f "$full_destination_path"
+    fi
+
+    cp "$full_source_path" "$full_destination_path"
+  fi
+}
+
+install__process-non-link() {
+  local full_source_path="$1"
+  local non_template_full_source_path="${full_source_path%._no-link}"
+  local destination_path="${non_template_full_source_path#$PROJECT_DIR/src/}"
+  local full_destination_path=$(build-destination-path "$destination_path")
+
+  if [[ -e $full_destination_path ]]; then
+    if [[ $FORCE -eq 1 ]]; then
+      announce non-link overwrite -s "$full_source_path" -d "$full_destination_path"
+      install__copy-file "$full_source_path" "$full_destination_path"
+    else
+      announce entry exists -s "$full_source_path" -d "$full_destination_path"
+    fi
+  else
+    announce non-link create -s "$full_source_path" -d "$full_destination_path"
+    install__copy-file "$full_source_path" "$full_destination_path"
+  fi
+}
+
+install__link-file() {
+  local full_source_path="$1"
+  local full_destination_path="$2"
+
+
+  if [[ $VERBOSE -eq 1 ]]; then
+    inspect-command mkdir -p $(dirname "$full_destination_path")
+
+    if [[ $FORCE -eq 1 ]]; then
+      inspect-command rm -f "$full_destination_path"
+    fi
+
+    inspect-command ln -s "$full_source_path" "$full_destination_path"
+  fi
+
+  if [[ $DRY_RUN -eq 0 ]]; then
+    mkdir -p $(dirname "$full_destination_path")
+
+    if [[ $FORCE -eq 1 ]]; then
+      rm -f "$full_destination_path"
+    fi
+
+    ln -s "$full_source_path" "$full_destination_path"
+  fi
+}
+
+install__process-entry() {
+  local full_source_path="$1"
+  local destination_path="${full_source_path#$PROJECT_DIR/src/}"
+  local full_destination_path=$(build-destination-path "$destination_path")
+
+  if [[ $(basename "$full_source_path") == "_install.sh" ]]; then
+    announce command run -s "$full_source_path"
+    install__run-install-script "$full_source_path"
+  elif [[ -e $full_destination_path ]]; then
+    if [[ $FORCE -eq 1 ]]; then
+      announce link overwrite -s "$full_source_path" -d "$full_destination_path"
+      install__link-file "$full_source_path" "$full_destination_path"
+    else
+      announce link exists -s "$full_source_path" -d "$full_destination_path"
+    fi
+  else
+    announce link create -s "$full_source_path" -d "$full_destination_path"
+    install__link-file "$full_source_path" "$full_destination_path"
+  fi
+}
+
+install__print-result() {
+  if [[ $DRY_RUN -eq 1 ]]; then
+    echo
+    info "Don't worry — no files were created!"
+  else
+    echo
+    success "All files are installed, you're good!"
+    echo "(Not the output you expect? Run --force to force-update skipped files.)"
+  fi
+}
+
+#== UNINSTALL ==================================================================
+
+uninstall__print-help() {
+  cat <<TEXT
+$(colorize blue "## DESCRIPTION")
+
+The 'uninstall' command will remove symlinks in your home folder based on the
+contents of the src/ directory. It will iterate over the files there and do one
+of a few things depending on what it encounters:
+
+* If it encounters a file, it will remove the corresponding symlink from your
+  home directory if it points to this file.
+  EXAMPLE: src/tmux.conf removes a symlink at ~/.tmux.conf if the symlink points
+  to this file.
+* If it encounters a directory, it will recurse the directory and remove
+  symlinks inside of your home directory according to the previous rule (with
+  the directory renamed so as to begin with a dot).
+  EXAMPLE: src/rbenv is iterated over to find src/rbenv/default-gems.
+  src/rbenv/default-gems removes a symlink at ~/.rbenv/default-gems if the
+  symlink points to this file.
+
+There are some exceptions to this:
+
+* If it encounters a file anywhere that ends in ._no-link, it will remove the
+  corresponding file from your home directory if it has the same content.
+  EXAMPLE: src/gitconfig._no-link removes a file at ~/.gitconfig if both files
+  are the same.
+* If it encounters a directory anywhere that has a .no-recurse file, it will
+  NOT recurse the directory; it will remove the symlink for the directory if it
+  points to the source directory.
+  EXAMPLE: src/zsh, because it contains a .no-recurse file, removes a symlink at
+  ~/.zsh.
+
+No files that do not point to or match a corresponding file in src/ will be
+removed unless you specify --force.
+
+Finally, if you want to know what this command will do before running it for
+real, and especially if this is the first time you're running it, use the
+--dry-run option. For further output, use the --verbose option.
+
+$(colorize blue "## USAGE")
+
+$(colorize bold "$0 $COMMAND [OPTIONS]")
+
+where OPTIONS are:
+
+--dry-run, --noop, -n
+  Don't actually change the filesystem.
+--force, -f
+  Usually symlinks that do not point to files in src/ and files that end in
+  ._no-link that do not match the file they were copied from are not removed.
+  This bypasses that.
+--verbose, -V
+  Show every command that is run when it is run.
+--help, -h
+  You're looking at it ;)
+TEXT
+}
+
+uninstall__parse-args() {
+  DRY_RUN=0
+  FORCE=0
+  VERBOSE=0
+
+  local arg=
+
+  if [[ $# -eq 0 ]]; then
+    error "No arguments given."
+    echo "Please run $0 $COMMAND --help for usage."
+    exit 1
+  fi
+
+  while [[ ${1:-} ]]; do
+    arg="${1:-}"
+    case "$arg" in
+      --dry-run | --noop | -n)
+        DRY_RUN=1
+        shift
+        ;;
+      --force | -f)
+        FORCE=1
+        shift
+        ;;
+      --verbose | -V)
+        VERBOSE=1
+        shift
+        ;;
+      --help | -h | -?)
+        ${COMMAND}__print-help | more -R
+        exit
+        ;;
+      *)
+        error "Unknown argument '$arg' given."
+        echo "Please run $0 $COMMAND --help for usage."
+        exit 1
+    esac
+  done
+}
+
+uninstall__determine-action-color() {
+  local action="$1"
+
+  case $action in
+    delete | purge | overwrite)
+      echo "red"
+      ;;
+    absent | different | unlinked | unrecognized | unknown)
+      echo "blue"
+      ;;
+    *)
+      exit 1
+      ;;
+  esac
+}
+
+uninstall__action-width() {
+  echo 12
+}
+
+uninstall__subaction-width() {
+  echo 8
+}
+
+uninstall__announce() {
+  local subaction="$1"
+  local prefix="$2"
+  shift 2
+
+  local source_path=
+  local destination_path=
+
+  while [[ ${1:-} ]]; do
+    case "$1" in
+      -s)
+        source_path="$2"
+        shift 2
+        ;;
+      -d)
+        destination_path="$2"
+        shift 2
+        ;;
+      *)
+        error "Invalid argument '$1', must be -s SOURCE or -d DESTINATION."
+        exit 1
+        ;;
+    esac
+  done
+
+  if [[ $source_path ]]; then
+    echo "${prefix} ${destination_path} <-- ${source_path}"
+  else
+    echo "${prefix} ${destination_path}"
+  fi
+}
+
+uninstall__remove-file() {
+  local full_destination_path="$1"
+
+  if [[ $VERBOSE -eq 1 ]]; then
+    inspect-command rm "$full_destination_path"
+  fi
+
+  if [[ $DRY_RUN -eq 0 ]]; then
+    rm "$full_destination_path"
+  fi
+}
+
+uninstall__process-non-link() {
+  local full_source_path="$1"
+  local non_template_full_source_path="${full_source_path%._no-link}"
+  local destination_path="${non_template_full_source_path#$PROJECT_DIR/src/}"
+  local full_destination_path=$(build-destination-path "$destination_path")
+
+  if [[ -f $full_destination_path ]]; then
+    if files-equal "$full_source_path" "$full_destination_path" || [[ $FORCE -eq 1 ]]; then
+      announce non-link delete -s "$full_source_path" -d "$full_destination_path"
+      uninstall__remove-file "$full_destination_path"
+    else
+      announce non-link different -s "$full_source_path" -d "$full_destination_path"
+    fi
+  else
+    announce non-link absent -s "$full_source_path" -d "$full_destination_path"
+  fi
+}
+
+uninstall__process-entry() {
+  local full_source_path="$1"
+  local destination_path="${full_source_path#$PROJECT_DIR/src/}"
+  local full_destination_path=$(build-destination-path "$destination_path")
+
+  if [[ -h $full_destination_path ]]; then
+    announce link delete -s "$full_source_path" -d "$full_destination_path"
+    uninstall__remove-file "$full_destination_path"
+  elif [[ -e $full_destination_path ]]; then
+    if [[ $FORCE -eq 1 ]]; then
+      announce entry purge -s "$full_source_path"
+      uninstall__remove-file "$full_destination_path"
+    else
+      announce entry unlinked -d "$full_destination_path"
+    fi
+  fi
+}
+
+uninstall__print-result() {
+  if [[ $DRY_RUN -eq 1 ]]; then
+    echo
+    info "Don't worry — no files were removed!"
+  else
+    echo
+    success "All files have been removed, you're good!"
+    echo "(Not the output you expect? Run --force to force-remove skipped files.)"
+  fi
+}
+
+#== MAIN ======================================================================
+
+print-help() {
+  cat <<TEXT
+$(colorize bold "## DESCRIPTION")
+
+This script will either create symlinks in your home directory based on the
+contents of src/ or delete previously installed symlinks.
+
+$(colorize bold "## USAGE")
+
+The main way to call this script is by saying one of:
+
+    $0 install
+    $0 uninstall
+
+If you want to know what either of these commands do, say:
+
+    $0 install --help
+    $0 uninstall --help
+TEXT
+}
+
+parse-args() {
+  if [[ $# -eq 0 ]]; then
+    error "Missing command."
+    echo "Please run $0 --help for usage."
+    exit 1
+  fi
+
+  case "$1" in
+    --help)
+      print-help
+      exit
+      ;;
+    install | uninstall)
+      COMMAND="$1"
+      ${COMMAND}__parse-args "${@:2}"
+      ;;
+    *)
+      error "Unknown command '$arg'."
+      echo "Please run $0 --help for usage."
+      exit 1
+      ;;
+  esac
+}
+
+process-entry() {
+  local source_path="$1"
+  local dir="$2"
+  local full_source_path=$(absolute-path-of "$dir/$source_path")
+
+  if [[ -d $full_source_path && ! -e "$full_source_path/.no-recurse" ]]; then
+    recurse-dir "$full_source_path"
+  elif [[ $full_source_path =~ \._no-link$ ]]; then
+    ${COMMAND}__process-non-link "$full_source_path"
+  else
+    ${COMMAND}__process-entry "$full_source_path"
+  fi
+}
+
+recurse-dir() {
+  local dir="$1"
+  local source_path=
+
+  find "$dir"/* -maxdepth 0 -type f -not \( -name _install.sh \) -exec basename {} \; | {
+    while IFS= read -r source_path; do
+      process-entry "$source_path" "$dir"
+    done
+  }
+
+  if [[ -f "$dir/_install.sh" && -x "$dir/_install.sh" ]]; then
+    process-entry "_install.sh" "$dir"
+  fi
+
+  find "$dir"/* -maxdepth 0 -type d -exec basename {} \; | {
+    while IFS= read -r source_path; do
+      process-entry "$source_path" "$dir"
+    done
+  }
+}
+
+main() {
+  parse-args "$@"
+
+  case $COMMAND in
+    install | uninstall)
+      if [[ $DRY_RUN -eq 1 ]]; then
+        info "Running in dry-run mode."
+        echo
+      fi
+      recurse-dir "$PROJECT_DIR/src"
+      ${COMMAND}__print-result
+      ;;
+    *)
+      error "Unknown command $COMMAND."
+      exit 1
+      ;;
+  esac
+}
+
+main "$@"
