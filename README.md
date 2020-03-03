@@ -200,11 +200,16 @@ minimum, you'll want to run:
     mv ~/.vim ~/.vim.old
     mv ~/.vimrc ~/.vimrc.old
 
-Next, run the install script that comes bundled with this repo. Since you forked
-the repo, it's best that you install all of the files here as symlinks. This
-will allow you to edit them through your forked repo location.
+Next, you will want to run the script that comes bundled with this repo. Since
+you forked the repo, it's best that you install all of the files here as
+symlinks. This will allow you to edit them through your forked repo location:
 
-    script/install --link
+    bin/manage install --dry-run
+
+This will tell you what would have been installed, but not actually do anything.
+If everything looks good and makes sense here, then run:
+
+    bin/manage install
 
 ### Post-installation
 
@@ -247,3 +252,14 @@ focus on:
   it out in `plugins.vim`, and if it has a corresponding loader line in
   `plugin-config.vim`, comment that out, too. Then exit Vim, run `:PlugClean`,
   and reload Vim again.
+
+## Uninstalling everything
+
+To remove the symlinks created during the installation step, run:
+
+    script/manage uninstall --dry-run
+
+As with the installation step, that will merely tell you what uninstallation
+would have done, but not do anything. If everything looks good here, then run:
+
+    script/manage uninstall
