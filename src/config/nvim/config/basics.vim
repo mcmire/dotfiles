@@ -83,6 +83,10 @@ set exrc secure
 
 set backspace=indent,eol,start
 
+" What's in a word? By default it is a underscore, but dashes are valid
+" characters too:
+set iskeyword+=-
+
 " Finally, one of the more irritating things in Vim is the fact that as you type
 " complex commands (e.g. `ciw`, `vp`, etc.) there's no way to know what you've
 " typed -- and therefore no way to know whether you've typed the right thing --
