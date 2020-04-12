@@ -32,5 +32,5 @@ augroup local
   autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
         \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
   autocmd FileChangedShellPost *
-        \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+        \ silent !echo "File changed on disk. Buffer reloaded."
 augroup END
