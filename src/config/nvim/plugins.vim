@@ -30,12 +30,12 @@ Plug 'w0rp/ale'
 " Language-specific plugins
 
 Plug 'ElmCast/elm-vim'
+Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'avakhov/vim-yaml'
 Plug 'cespare/vim-toml'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jtratner/vim-flavored-markdown'
 Plug 'mitsuhiko/vim-json'
-Plug 'mxw/vim-jsx'
 Plug 'pangloss/vim-javascript'
 Plug 'tbastos/vim-lua'
 " Make sure this is listed BEFORE vim-rails!
