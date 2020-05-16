@@ -46,7 +46,7 @@ Plug 'vim-ruby/vim-ruby'
 
 " Sometimes-used plugins
 
-Plug 'SirVer/ultisnips'
+"Plug 'SirVer/ultisnips'
 Plug 'jeetsukumaran/vim-markology'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rails'
