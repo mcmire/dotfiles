@@ -14,4 +14,6 @@ fi
 
 CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl --without-tcl --without-tk"
 
+export RUBYFMT_USE_RELEASE=1
+
 # vi: ft=sh
