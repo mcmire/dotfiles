@@ -90,7 +90,4 @@ alias dsr="ds rspec"
 # Jest
 alias nj="npx jest"
 
-# rubyfmt
-alias rubyfmt="~/.rbenv/versions/2.7.1/bin/ruby --disable=all ~/code/vendor/rubyfmt/rubyfmt.rb"
-
 # vi: ft=sh

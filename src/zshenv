@@ -3,3 +3,4 @@ source ~/.zsh/_path
 source ~/.zsh/_ruby
 source ~/.zsh/_python
 source ~/.zsh/_node
+source ~/.zsh/_rubyfmt
