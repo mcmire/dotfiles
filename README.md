@@ -1,6 +1,7 @@
 # dotfiles
 
-This repo holds a fully-fledged environment for working well as a developer.
+This repo holds a fully-fledged environment for working well as a web developer
+on a Mac.
 
 ## What's inside
 
@@ -29,16 +30,28 @@ But it also makes use of some handy tools:
 
 ### Prequisites
 
-Want this configuration for yourself? There are a few things you'll need first.
+#### macOS
+
+As stated above, this whole environment assumes that you are using macOS. If you
+do not have this, then you will need to adapt the instructions below to your
+setup.
+
+#### Command Line Tools
+
+First, you will need to install the Command Line Tools if you have not already
+done so. You can do this by saying:
+
+    xcode-select --install
 
 #### zsh
 
-First, this configuration assumes use of zsh as the shell, so you'll need that
-to begin with. Install it via Homebrew...
+This configuration assumes use of zsh as the shell, so you'll need that as well.
+Fortunately, newer versions of macOS starting with Catalina use this by default.
+If you have an older Mac, then you can install zsh via Homebrew:
 
     brew install zsh
 
-...then set it as your default shell:
+Then set it as your default shell:
 
     sudo dscl . -create /Users/$USER UserShell /usr/local/bin/zsh
 
@@ -47,49 +60,53 @@ You can do that by saying:
 
     sudo mv /etc/zprofile /etc/zprofile.old
 
-#### Ruby
+#### asdf
 
-Although OS X ships with Ruby, it's better to use a version manager, as you will
-likely need to install multiple versions of Ruby in the future. This
-configuration uses `rbenv` to do this. You can install that with:
+`asdf` makes it super simple to manage and install different versions for
+languages using one common tool. You will want to install it with:
 
-    brew install rbenv
+    brew install asdf
 
-To install the latest version of Ruby, say:
+Run this command to load asdf:
 
-    ruby_version=$(rbenv install --list | grep -v 'preview\|dev' | egrep '^\s+\d' | tail -n 1 | sed -Ee 's/^[ ]+//g')
-    rbenv install $ruby_version
-    rbenv global $ruby_version
+    . $(brew --prefix asdf)/asdf.sh
 
-#### Python
+then say:
 
-OS X also ships with Python, but again, it's better to use a version manager,
-for similar reasons. This configuration uses `pyenv`, which you can install
-with:
+    asdf plugin add ruby
+    asdf plugin add python
+    asdf plugin add nodejs
 
-    brew install pyenv
+Note that in order to install Node packages you'll need to install some basic
+packages:
 
-To install the latest version of Python, say:
+    brew install coreutils gpg
 
-    python_version=$(pyenv install --list | grep -v '\db\d\|dev' | egrep '^\s+\d' | tail -n 1 | sed -Ee 's/^[ ]+//g')
-    pyenv install $python_version
-    pyenv global $python_version
+Then you'll need to import GPG keys:
 
-Any Pythons installed via `pyenv` will automatically include Pip. If you need to
+    ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+
+Now you can install the latest version of each language:
+
+    asdf install ruby latest
+    asdf install python latest
+    asdf install nodejs latest
+
+And make them the default versions:
+
+    latest-version-of() { echo $(asdf list $1 | grep -v 'preview\|dev' | egrep '^\s+\d' | tail -n 1 | sed -Ee 's/^[ ]+//g') }
+    asdf global ruby $(latest-version-of ruby)
+    asdf global python $(latest-version-of python)
+    asdf global nodejs $(latest-version-of nodejs)
+
+And run this command to double-check:
+
+    asdf current
+
+Note that any Pythons installed will automatically include Pip. If you need to
 upgrade it, you can run:
 
     pip install --upgrade pip
-
-#### Node
-
-This configuration also uses `nodenv` to manage Node versions. You can install
-it with:
-
-    brew install node nodenv
-
-To install the latest version of Node, say:
-
-    node-build --definitions | grep -E '^\d+\.\d+\.\d+$' | tail -n 1
 
 #### tmux
 
@@ -106,7 +123,7 @@ To help with copying and pasting within tmux, you'll also want
 
 #### Extra packages
 
-Finally, you'll want to install the tools mentioned above:
+Finally, you'll want to install the remainder of the tools mentioned above:
 
     brew install autojump fzf hub
 

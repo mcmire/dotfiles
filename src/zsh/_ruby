@@ -1,19 +1,3 @@
-# Increase memory allocated to Ruby so it screams
-# https://gist.github.com/1688857
-#export RUBY_GC_HEAP_INIT_SLOTS=1000000
-#export RUBY_HEAP_SLOTS_INCREMENT=1000000
-#export RUBY_HEAP_SLOTS_GROWTH_FACTOR=1
-#export RUBY_GC_MALLOC_LIMIT=1000000000
-#export RUBY_HEAP_FREE_MIN=500000
-
-if [[ -o login ]]; then
-  export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
-else
-  export PATH="$HOME/.rbenv/versions/2.2.3/bin:$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
-fi
-
 CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl --without-tcl --without-tk"
-
-export RUBYFMT_USE_RELEASE=1
 
 # vi: ft=sh

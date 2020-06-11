@@ -1,3 +1,4 @@
+source ~/.zsh/asdf
 source ~/.zsh/autojump
 source ~/.zsh/bindings
 source ~/.zsh/cassandra

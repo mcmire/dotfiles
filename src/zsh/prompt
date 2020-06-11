@@ -83,36 +83,15 @@ function Prompt__Fragment__git_branch {
 }
 
 function Prompt__Fragment__ruby_version {
-  if [[ -e .ruby-version || -e Gemfile ]]; then
-    local out="$(rbenv version | sed -Ee 's/ \(.+\)$//')"
-
-    local gemsets="$(rbenv gemset active 2>/dev/null | perl -ne 'print join(", ", split(" ")) . "\n"')"
-    if [[ -n $gemsets ]]; then
-      out+=" (gemsets: $gemsets)"
-    fi
-
-    echo -n "$out"
-  fi
+  echo $(asdf current ruby | sed -Ee 's/[ ]+.+$//')
 }
 
 function Prompt__Fragment__python_version {
-  if [[ -e .python-version || -e Pipfile ]]; then
-    local out="$(pyenv version | sed -e 's/ (set.*$//')"
-
-    echo -n "$out"
-  fi
+  echo $(asdf current python | sed -Ee 's/[ ]+.+$//')
 }
 
 function Prompt__Fragment__node_version {
-  if [[ -e .node-version || -e node_modules ]]; then
-    local out="$(nodenv version | sed -Ee 's/ \(.+\)$//')"
-
-    echo -n "$out"
-  fi
-}
-
-function Prompt__rbenv_path {
-  echo -n "$(which rbenv &>/dev/null)"
+  echo $(asdf current nodejs | sed -Ee 's/[ ]+.+$//')
 }
 
 function Prompt__time {
