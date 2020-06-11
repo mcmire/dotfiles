@@ -19,12 +19,9 @@ But it also makes use of some handy tools:
 * [autojump] — No more setting up aliases to jump directly to projects!
 * [fzf] — No more searching through command history! Like `Ctrl-R`, but on
   steroids.
-* [hub] — Like `git` but with some extra features, such as being able to check
-  out pull requests by using the URL instead of hunting for the branch name.
 
 [autojump]: https://github.com/wting/autojump
 [fzf]: https://github.com/junegunn/fzf
-[hub]: https://github.com/github/hub
 
 ## Making this your own
 
@@ -46,12 +43,12 @@ done so. You can do this by saying:
 #### zsh
 
 This configuration assumes use of zsh as the shell, so you'll need that as well.
-Fortunately, newer versions of macOS starting with Catalina use this by default.
-If you have an older Mac, then you can install zsh via Homebrew:
+Fortunately, newer versions of macOS starting with Catalina use zsh by default.
+If you have an older Mac, though, you can install zsh via Homebrew:
 
     brew install zsh
 
-Then set it as your default shell:
+Then you'll want to set it as your default shell:
 
     sudo dscl . -create /Users/$USER UserShell /usr/local/bin/zsh
 
@@ -63,13 +60,13 @@ You can do that by saying:
 #### asdf
 
 `asdf` makes it super simple to manage and install different versions for
-languages using one common tool. You will want to install it with:
+languages using one common tool. You'll want to install it with:
 
     brew install asdf
 
 Run this command to load asdf:
 
-    . $(brew --prefix asdf)/asdf.sh
+    source $(brew --prefix asdf)/asdf.sh
 
 then say:
 
@@ -92,14 +89,14 @@ Now you can install the latest version of each language:
     asdf install python latest
     asdf install nodejs latest
 
-And make them the default versions:
+And make the latest versions the default versions:
 
     latest-version-of() { echo $(asdf list $1 | grep -v 'preview\|dev' | egrep '^\s+\d' | tail -n 1 | sed -Ee 's/^[ ]+//g') }
     asdf global ruby $(latest-version-of ruby)
     asdf global python $(latest-version-of python)
     asdf global nodejs $(latest-version-of nodejs)
 
-And run this command to double-check:
+You can run this command to double-check the versions that asdf set:
 
     asdf current
 
@@ -116,7 +113,7 @@ time). You'll want to install tmux by saying:
 
     brew install tmux
 
-To help with copying and pasting within tmux, you'll also want
+To help with copying and pasting within tmux, you'll also want to install
 `reattach-to-user-namespace`:
 
     brew install reattach-to-user-namespace
@@ -125,7 +122,7 @@ To help with copying and pasting within tmux, you'll also want
 
 Finally, you'll want to install the remainder of the tools mentioned above:
 
-    brew install autojump fzf hub
+    brew install autojump fzf
 
 ### Installing symlinks
 
@@ -145,7 +142,7 @@ place you'll remember, such as the same place you store code:
 Now, chances are you already have some amount of dotfiles in your home
 directory. In that case, you will probably want to move them out of the way
 before you go any further (you can remove them later, at your leisure, of
-course).
+course – or you can integrate them to this config).
 
 Next, you will want to run the script that comes bundled with this repo. Since
 you forked the repo, it's best that you install all of the files here as
@@ -190,7 +187,7 @@ Once you've installed this configuration onto your own machine, it's up to you
 to figure out how you want to customize it! Spend some time going through the
 files, particularly the zsh configuration located in `zshrc`, `zshenv`, and
 `zsh/`, as well as the tmux config located at `tmux.conf`. Everything should
-serve a purpose. If you don't need it, don't be afraid to toss it out.
+serve a purpose. If you don't need it, don't be afraid to toss it out!
 
 Finally, update this README to match any changes you end up making. Who knows —
 you might inspire someone else to create their own dotfiles repo!
