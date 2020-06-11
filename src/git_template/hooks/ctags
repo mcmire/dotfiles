@@ -9,5 +9,5 @@ fi
 PATH="/usr/local/bin:$PATH"
 dir="`git rev-parse --git-dir`"
 echo $$ > $dir/ctags.pid
-git ls-files | ctags --tag-relative -L - -f "$dir/tags" --languages=Ruby,JavaScript
+git ls-files | ctags --tag-relative -L - -f tags --languages=Ruby,JavaScript
 rm $dir/ctags.pid
