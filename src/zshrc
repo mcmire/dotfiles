@@ -28,3 +28,7 @@ source ~/.zsh/zmv
 source ~/.zsh/zzz_aliases
 source ~/.zsh/zzz_functions
 source ~/.zsh/prompt
+
+if [[ -f ~/.zshrc.local ]]; then
+  source ~/.zshrc.local
+fi
