@@ -19,9 +19,12 @@ But it also makes use of some handy tools:
 * [autojump] — No more setting up aliases to jump directly to projects!
 * [fzf] — No more searching through command history! Like `Ctrl-R`, but on
   steroids.
+* [direnv] — Useful for web development for automatically loading `.env` files
+  in projects.
 
 [autojump]: https://github.com/wting/autojump
 [fzf]: https://github.com/junegunn/fzf
+[direnv]: https://direnv.net/
 
 ## Making this your own
 
@@ -122,7 +125,7 @@ To help with copying and pasting within tmux, you'll also want to install
 
 Finally, you'll want to install the remainder of the tools mentioned above:
 
-    brew install autojump fzf
+    brew install autojump fzf direnv
 
 ### Installing symlinks
 
