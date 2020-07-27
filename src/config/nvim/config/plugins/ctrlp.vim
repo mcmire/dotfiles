@@ -21,8 +21,7 @@ let g:ctrlp_max_height = 20
 
 let g:ctrlp_working_path_mode = 'w'
 
-" We use Ag to generate search results (note: this is the same list as in
-" completion.vim):
+" We use Ag to generate search results:
 
 if executable('ag')
   let g:ctrlp_user_command = 'ag %s
