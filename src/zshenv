@@ -1,6 +1,6 @@
-source ~/.zsh/_base
-source ~/.zsh/_path
-source ~/.zsh/_asdf
-source ~/.zsh/_ruby
-source ~/.zsh/_node
-source ~/.zsh/_rubyfmt
+source ~/.zsh/_base.zsh
+source ~/.zsh/_path.zsh
+source ~/.zsh/_asdf.zsh
+source ~/.zsh/_ruby.zsh
+source ~/.zsh/_node.zsh
+source ~/.zsh/_rubyfmt.zsh
