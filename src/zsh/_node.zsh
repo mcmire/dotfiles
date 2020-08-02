@@ -5,5 +5,3 @@ export PATH="./node_modules/.bin:$PATH"
 if [[ -o login ]]; then
   export NODE_PATH="$(npm root -g):$NODE_PATH"
 fi
-
-# vi: ft=sh

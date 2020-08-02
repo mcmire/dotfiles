@@ -84,5 +84,3 @@ zle-keymap-select () {
   #zle -R
 }
 zle -N zle-keymap-select
-
-# vi: ft=sh

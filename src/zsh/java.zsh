@@ -6,5 +6,3 @@ alias jsd="java -cp lib/js.jar:lib/jline.jar jline.ConsoleRunner org.mozilla.jav
 #export JAVACMD=`which drip`
 #export DRIP_INIT_CLASS=org.jruby.main.DripMain
 export JRUBY_OPTS="-J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-noverify"
-
-# vi: ft=sh

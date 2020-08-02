@@ -10,5 +10,3 @@ alias unhitch='hitch -u'
 # Load the Bash Git completion script manually
 # (The zsh version is in src/zsh/autoload/_git, and this line comes from there)
 zstyle ':completion:*:*:git:*' script ~/.git-completion.sh
-
-# vi: ft=sh

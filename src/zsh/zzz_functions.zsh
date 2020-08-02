@@ -54,5 +54,3 @@ bau() {
 compare() {
   colordiff -u "$@" | less -R
 }
-
-# vi: ft=sh

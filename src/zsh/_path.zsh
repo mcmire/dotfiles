@@ -23,5 +23,3 @@ export MANPATH=/usr/local/share/man:/opt/man:/opt/share/man:/usr/share/man
 # * https://raw.githubusercontent.com/git/git/fe8321ec057f9231c26c29b364721568e58040f7/contrib/completion/git-completion.zsh
 #
 fpath=(~/.zsh/autoload $fpath)
-
-# vi: ft=sh

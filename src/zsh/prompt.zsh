@@ -158,5 +158,3 @@ function Prompt__set {
 autoload -Uz colors && colors
 
 Prompt__set
-
-# vi: ft=sh

@@ -90,5 +90,3 @@ alias dsr="ds rspec"
 
 # Jest
 alias nj="npx jest"
-
-# vi: ft=sh

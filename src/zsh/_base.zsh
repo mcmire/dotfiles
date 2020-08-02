@@ -11,5 +11,3 @@ unsetopt correct_all
 unsetopt share_history
 unsetopt append_history
 unsetopt inc_append_history
-
-# vi: ft=sh
