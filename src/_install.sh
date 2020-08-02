@@ -1,6 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -euo pipefail
+
+ASDF_DIRECTORY="$HOME/.asdf"
 
 something_already_printed=0
 
@@ -50,12 +52,18 @@ if [[ $SHELL != $(which zsh) ]]; then
   chsh -s "$(which zsh)"
 fi
 
+if ! [[ -d "$HOME/.zsh-async" ]]; then
+  banner "Installing zsh-async"
+  rm -rf "$HOME/.zsh-async"
+  mkdir "$HOME/.zsh-async"
+  curl -L https://api.github.com/repos/mafredri/zsh-async/tarball | \
+    tar -x -z -f - -C "$HOME/.zsh-async" --strip-components 1
+fi
+
 if [[ -f /etc/zprofile ]]; then
   banner "Moving macOS's default zprofile out of the way"
   sudo mv /etc/zprofile /etc/zprofile.old
 fi
-
-ASDF_DIRECTORY="$HOME/.asdf"
 
 if ! type asdf &>/dev/null; then
   source $ASDF_DIRECTORY/asdf.sh
@@ -98,6 +106,7 @@ if [[ ${GIT_EMAIL:-} ]]; then
 fi
 
 banner "Disabling press-and-hold"
+echo "defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false"
 defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 
 success "Done!"

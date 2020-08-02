@@ -18,6 +18,7 @@ source ~/.zsh/travis.zsh
 source ~/.zsh/unicode.zsh
 source ~/.zsh/vim.zsh
 source ~/.zsh/zmv.zsh
+source ~/.zsh/zsh-async.zsh
 source ~/.zsh/zzz_aliases.zsh
 source ~/.zsh/zzz_functions.zsh
 
