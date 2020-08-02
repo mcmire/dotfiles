@@ -21,6 +21,7 @@ alias ll="ls -l"
 alias b="bundle"
 alias be="b exec"
 alias r="be rspec"
+alias ba="b && be appraisal install"
 
 # Git
 alias gA="g add -A ."

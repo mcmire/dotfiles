@@ -47,6 +47,10 @@ _git_undo() {
   __gitcomp_nl "$(__git_heads)"
 }
 
+bau() {
+  bundle update "$1" && be appraisal update "$1"
+}
+
 timestamp() {
   date +"%Y%m%d%H%M%S"
 }
