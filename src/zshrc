@@ -1,25 +1,17 @@
 source ~/.zsh/asdf
 source ~/.zsh/autojump
 source ~/.zsh/bindings
-source ~/.zsh/cassandra
-source ~/.zsh/colors
 source ~/.zsh/clojure
+source ~/.zsh/colors
 source ~/.zsh/cucumber
 source ~/.zsh/direnv
-source ~/.zsh/echonest
 source ~/.zsh/fzf
 source ~/.zsh/git
 source ~/.zsh/google-cloud-sdk
 source ~/.zsh/haskell
-source ~/.zsh/heroku
 source ~/.zsh/history
 source ~/.zsh/java
-source ~/.zsh/nodenv
 source ~/.zsh/perl6
-source ~/.zsh/python
-source ~/.zsh/pyenv
-source ~/.zsh/rails
-source ~/.zsh/rbenv
 source ~/.zsh/rust
 source ~/.zsh/tmux
 source ~/.zsh/travis
@@ -28,6 +20,7 @@ source ~/.zsh/vim
 source ~/.zsh/zmv
 source ~/.zsh/zzz_aliases
 source ~/.zsh/zzz_functions
+
 source ~/.zsh/prompt
 
 if [[ -f ~/.zshrc.local ]]; then

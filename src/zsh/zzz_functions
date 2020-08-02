@@ -51,10 +51,6 @@ bau() {
   bundle update "$1" && be appraisal update "$1"
 }
 
-timestamp() {
-  date +"%Y%m%d%H%M%S"
-}
-
 compare() {
   colordiff -u "$@" | less -R
 }
