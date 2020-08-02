@@ -1,6 +1,7 @@
 .DS_Store
 *.tmproj
 *.vim*
+Brewfile.lock.json
 tags
 src/tmux/plugins/*
 !src/tmux/plugins/powerline
