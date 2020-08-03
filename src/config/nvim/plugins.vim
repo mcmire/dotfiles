@@ -13,7 +13,6 @@ Plug 'ervandew/supertab'
 Plug 'gabebw/vim-spec-runner'
 Plug 'godlygeek/tabular'
 Plug 'jszakmeister/vim-togglecursor'
-Plug 'kchmck/vim-coffee-script'
 Plug 'kien/ctrlp.vim'
 Plug 'mileszs/ack.vim'
 Plug 'nelstrom/vim-textobj-rubyblock', { 'for': 'ruby' } | Plug 'kana/vim-textobj-user'
@@ -27,14 +26,24 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'w0rp/ale'
 
+" Sometimes-used plugins
+
+"Plug 'SirVer/ultisnips'
+Plug 'jeetsukumaran/vim-markology'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rails'
+
 " Language-specific plugins
 
 Plug 'ElmCast/elm-vim'
 Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'aliou/bats.vim'
 Plug 'avakhov/vim-yaml'
 Plug 'cespare/vim-toml'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jtratner/vim-flavored-markdown'
+Plug 'jxnblk/vim-mdx-js'
+Plug 'kchmck/vim-coffee-script'
 Plug 'mitsuhiko/vim-json'
 Plug 'pangloss/vim-javascript'
 Plug 'tbastos/vim-lua'
@@ -43,13 +52,6 @@ Plug 'tbastos/vim-lua'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
-
-" Sometimes-used plugins
-
-"Plug 'SirVer/ultisnips'
-Plug 'jeetsukumaran/vim-markology'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rails'
 
 "Plug 'ap/vim-css-color'
 "Plug 'briancollins/vim-jst'
