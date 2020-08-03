@@ -2,11 +2,152 @@
 
 set -euo pipefail
 
-#== UTILITIES ==================================================================
+#== GLOBALS ====================================================================
 
 absolute-path-of() {
-  echo $(cd "$(dirname "$1")" &>/dev/null && pwd)/$(basename "$1")
+  local dir=
+
+  if [[ $1 =~ ^/ ]]; then
+    echo "$1"
+  else
+    if [[ -n "${2:-}" ]]; then
+      dir="$2/$(dirname "$1")"
+    else
+      dir="$(dirname "$1")"
+    fi
+
+    if [[ -d $dir ]]; then
+      echo $(cd "$dir" &>/dev/null && pwd)/$(basename "$1")
+    else
+      echo "Not a directory: $dir"
+      exit 1
+    fi
+  fi
 }
+
+PROJECT_DIR=$(dirname $(dirname $(absolute-path-of $0)))
+SOURCE_DIR="$PROJECT_DIR/src"
+COMMAND=
+DOTFILES_HOME=${DOTFILES_HOME:-$HOME}
+CONFIG_FILE_PATH="$DOTFILES_HOME/.dotfilesrc"
+declare -A COMMON_CONFIG
+COMMON_CONFIG=([dry_run]=0 [force]=0 [verbose]=0)
+declare -A INSTALL_CONFIG
+
+#== CONFIG =====================================================================
+
+config::read() {
+  # Inspiration: <https://forums.bunsenlabs.org/viewtopic.php?id=5570>
+
+  local file="$1"
+  shift
+
+  local arg
+  local -A config_variable_map
+
+  while [[ ${1:-} ]]; do
+    arg="${1:-}"
+    case "$arg" in
+      --*)
+        config_variable_map[${arg#--}]="$2"
+        shift 2
+        ;;
+      *)
+        error "Unknown argument '$arg' given."
+        exit 1
+    esac
+  done
+
+  local -n current_config_array
+  local section_regex="^\[([[:alpha:]_][[:alnum:]_]*)\]$"
+  local entry_regex="^([^=]+)=(.+)$"
+  local lines line key value
+
+  while read -r line; do
+    if [[ -n $line ]]; then
+      if [[ $line =~ $section_regex ]]; then
+        if [[ -n ${BASH_REMATCH[1]} ]]; then
+          local -n current_config_array=${config_variable_map[${BASH_REMATCH[1]}]}
+        else
+          echo "section_regex match failed"
+          exit 1
+        fi
+      elif [[ $line =~ $entry_regex ]]; then
+        if [[ -n ${BASH_REMATCH[1]} && -n ${BASH_REMATCH[2]} ]]; then
+          key="$(config::parse-key "${BASH_REMATCH[1]}")"
+          value="$(config::parse-value "${BASH_REMATCH[2]}")"
+          current_config_array["${key}"]="${value}"
+        else
+          echo "entry_regex match failed"
+          exit 1
+        fi
+      else
+        echo "Could not parse line: $line"
+        exit 1
+      fi
+    fi
+  done < "$file"
+}
+
+config::write() {
+  local file="$1"
+  shift
+
+  local arg
+  local -A config_variable_map=()
+
+  while [[ ${1:-} ]]; do
+    arg="${1:-}"
+    case "$arg" in
+      --*)
+        config_variable_map[${arg#--}]="$2"
+        shift 2
+        ;;
+      *)
+        error "Unknown argument '$arg' given."
+        exit 1
+    esac
+  done
+
+  rm -f $file
+
+  local index=0
+  for section_name in "${!config_variable_map[@]}"; do
+    local -n config_array=${config_variable_map[$section_name]}
+    if [[ $index -gt 0 ]]; then
+      echo >> $file
+    fi
+    echo "[$section_name]" >> $file
+
+    for key in "${!config_array[@]}"; do
+      if [[ "${config_array[$key]}" =~ ^[[:digit:]]+$ ]]; then
+        echo "$key = ${config_array[$key]}" >> $file
+      else
+        echo "$key = \"${config_array[$key]}\"" >> $file
+      fi
+    done
+
+    index=$index+1
+  done
+}
+
+config::parse-key() {
+  echo "$1" | \
+    sed -Ee 's/^[[:blank:]]+//' | \
+    sed -Ee 's/[[:blank:]]+$//'
+}
+
+config::parse-value() {
+  echo "$1" | \
+    sed -Ee 's/^[[:blank:]]+//' | \
+    sed -Ee 's/[[:blank:]]+$//' | \
+    sed -Ee "s/\"(.+)\"/\\1/" | \
+    sed -Ee "s/'(.+)'/\\1/" | \
+    sed -Ee "s!~/!$HOME/!" | \
+    sed -Ee "s!/~!/$HOME!"
+}
+
+#== UTILITIES ==================================================================
 
 colorize() {
   local code=
@@ -38,24 +179,24 @@ colorize() {
   echo -ne "\033[0m"
 }
 
-print-with-color() {
+echo-in() {
   echo $(colorize "$@")
 }
 
 success() {
-  print-with-color green "$@"
+  echo-in green "$@"
 }
 
 warning() {
-  print-with-color yellow "$@"
+  echo-in yellow "$@"
 }
 
 info() {
-  print-with-color bold "$@"
+  echo-in bold "$@"
 }
 
 error() {
-  print-with-color red "$@"
+  echo-in red "$@"
 }
 
 digest-file() {
@@ -74,10 +215,6 @@ files-equal() {
 }
 
 #== COMMON =====================================================================
-
-PROJECT_DIR=$(dirname $(dirname $(absolute-path-of $0)))
-COMMAND=
-DOTFILES_HOME=${DOTFILES_HOME:-$HOME}
 
 inspect-command() {
   echo "                 >" "$@"
@@ -158,7 +295,7 @@ announce() {
   local color=
   color="$(${COMMAND}__determine-action-color "$action")"
   if [[ $? -eq 1 ]]; then
-    error "Invalid color '$action'!"
+    error "Couldn't find color for action '$action'!"
     echo "Please check the definition of ${COMMAND}__determine-action-color()."
     exit 1
   fi
@@ -180,6 +317,24 @@ announce() {
 }
 
 #== INSTALL ====================================================================
+
+install__parse-args() {
+  local arg
+
+  while [[ ${1:-} ]]; do
+    arg="${1:-}"
+    case "$arg" in
+      --*)
+        INSTALL_CONFIG["${arg#--}"]="$2"
+        shift 2
+        ;;
+      *)
+        error "Unknown argument '$arg' given."
+        echo "Please run $0 install --help for usage."
+        exit 1
+    esac
+  done
+}
 
 install__print-help() {
   cat <<TEXT
@@ -203,9 +358,9 @@ There are some exceptions to this:
 * If it encounters a file anywhere called _install.sh, it will treat that file
   as an executable and run it. (It assumes you have chmod'd this file correctly
   and that this script has a shebang.)
-* If it encounters a file anywhere that ends in ._no-link, it will copy this
+* If it encounters a file anywhere that ends in .__no-link__, it will copy this
   file to your home directory instead of creating a symlink.
-  EXAMPLE: src/gitconfig._no-link creates a file (not a symlink) at
+  EXAMPLE: src/gitconfig.__no-link__ creates a file (not a symlink) at
   ~/.gitconfig.
 * If it encounters a directory anywhere that has a .no-recurse file, it will
   NOT recurse the directory; instead, it will create a symlink for the
@@ -243,53 +398,11 @@ and OTHER_OPTIONS are one or more of:
 TEXT
 }
 
-install__parse-args() {
-  DRY_RUN=0
-  FORCE=0
-  VERBOSE=0
-
-  local arg=
-
-  while [[ ${1:-} ]]; do
-    arg="${1:-}"
-    case "$arg" in
-      --git-email)
-        GIT_EMAIL="$2"
-        shift 2
-        ;;
-      --git-name)
-        GIT_NAME="$2"
-        shift 2
-        ;;
-      --dry-run | --noop | -n)
-        DRY_RUN=1
-        shift
-        ;;
-      --force | -f)
-        FORCE=1
-        shift
-        ;;
-      --verbose | -V)
-        VERBOSE=1
-        shift
-        ;;
-      --help | -h | -?)
-        ${COMMAND}__print-help | more -R
-        exit
-        ;;
-      *)
-        error "Unknown argument '$arg' given."
-        echo "Please run $0 $COMMAND --help for usage."
-        exit 1
-    esac
-  done
-}
-
 install__determine-action-color() {
   local action="$1"
 
   case $action in
-    create | run)
+    create | run | read)
       echo "green"
       ;;
     overwrite)
@@ -348,22 +461,33 @@ install__announce() {
   fi
 }
 
-install__run-install-script() {
-  local full_source_path="$1"
+install__read-config-file() {
+  local -A symlinks
+  config::read "$1" --symlinks symlinks
 
-  if [[ $VERBOSE -eq 1 ]]; then
-    eval inspect-command env ${GIT_NAME:+'GIT_NAME="$GIT_NAME"'} ${GIT_EMAIL:+'GIT_EMAIL="$GIT_EMAIL"'} '"$full_source_path"'
+  for source_path in "${!symlinks[@]}"; do
+    install__link-file-with-announcement \
+      "$(absolute-path-of "$source_path" $SOURCE_DIR)" \
+      "${symlinks[$source_path]}"
+  done
+}
+
+install__run-install-script() {
+  local full_path="$1"
+
+  if [[ ${COMMON_CONFIG[verbose]} -eq 1 ]]; then
+    eval inspect-command env ${GIT_NAME:+'GIT_NAME="$GIT_NAME"'} ${GIT_EMAIL:+'GIT_EMAIL="$GIT_EMAIL"'} '"$full_path"'
   fi
 
-  if [[ $DRY_RUN -eq 0 ]]; then
+  if [[ ${COMMON_CONFIG[dry_run]} -eq 0 ]]; then
     set +e
 
-    eval env ${GIT_NAME:+'GIT_NAME="$GIT_NAME"'} ${GIT_EMAIL:+'GIT_EMAIL="$GIT_EMAIL"'} '"$full_source_path"'
+    eval env ${GIT_NAME:+'GIT_NAME="$GIT_NAME"'} ${GIT_EMAIL:+'GIT_EMAIL="$GIT_EMAIL"'} '"$full_path"'
     exit_code=$?
 
     if [[ $exit_code -ne 0 ]]; then
       echo
-      error "$(format-source-path "$full_source_path") failed with exit code $exit_code."
+      error "$(format-source-path "$full_path") failed with exit code $exit_code."
       echo "Take a closer look at this file. Perhaps you're using set -e and some command is failing?"
       exit 1
     fi
@@ -376,20 +500,20 @@ install__copy-file() {
   local full_source_path="$1"
   local full_destination_path="$2"
 
-  if [[ $VERBOSE -eq 1 ]]; then
+  if [[ ${COMMON_CONFIG[verbose]} -eq 1 ]]; then
     inspect-command mkdir -p $(dirname "$full_destination_path")
 
-    if [[ $FORCE -eq 1 ]]; then
+    if [[ ${COMMON_CONFIG[force]} -eq 1 ]]; then
       inspect-command rm -f "$full_destination_path"
     fi
 
     inspect-command cp "$full_source_path" "$full_destination_path"
   fi
 
-  if [[ $DRY_RUN -eq 0 ]]; then
+  if [[ ${COMMON_CONFIG[dry_run]} -eq 0 ]]; then
     mkdir -p $(dirname "$full_destination_path")
 
-    if [[ $FORCE -eq 1 ]]; then
+    if [[ ${COMMON_CONFIG[force]} -eq 1 ]]; then
       rm -f "$full_destination_path"
     fi
 
@@ -399,12 +523,12 @@ install__copy-file() {
 
 install__process-non-link() {
   local full_source_path="$1"
-  local non_template_full_source_path="${full_source_path%._no-link}"
-  local destination_path="${non_template_full_source_path#$PROJECT_DIR/src/}"
+  local non_template_full_source_path="${full_source_path%.__no-link__}"
+  local destination_path="${non_template_full_source_path#$SOURCE_DIR/}"
   local full_destination_path=$(build-destination-path "$destination_path")
 
   if [[ -e $full_destination_path ]]; then
-    if [[ $FORCE -eq 1 ]]; then
+    if [[ ${COMMON_CONFIG[force]} -eq 1 ]]; then
       announce non-link overwrite -s "$full_source_path" -d "$full_destination_path"
       install__copy-file "$full_source_path" "$full_destination_path"
     else
@@ -420,21 +544,20 @@ install__link-file() {
   local full_source_path="$1"
   local full_destination_path="$2"
 
-
-  if [[ $VERBOSE -eq 1 ]]; then
+  if [[ ${COMMON_CONFIG[verbose]} -eq 1 ]]; then
     inspect-command mkdir -p $(dirname "$full_destination_path")
 
-    if [[ $FORCE -eq 1 ]]; then
+    if [[ ${COMMON_CONFIG[force]} -eq 1 ]]; then
       inspect-command rm -rf "$full_destination_path"
     fi
 
     inspect-command ln -s "$full_source_path" "$full_destination_path"
   fi
 
-  if [[ $DRY_RUN -eq 0 ]]; then
+  if [[ ${COMMON_CONFIG[dry_run]} -eq 0 ]]; then
     mkdir -p $(dirname "$full_destination_path")
 
-    if [[ $FORCE -eq 1 ]]; then
+    if [[ ${COMMON_CONFIG[force]} -eq 1 ]]; then
       rm -rf "$full_destination_path"
     fi
 
@@ -444,14 +567,27 @@ install__link-file() {
 
 install__process-entry() {
   local full_source_path="$1"
-  local destination_path="${full_source_path#$PROJECT_DIR/src/}"
+  local destination_path="${full_source_path#$SOURCE_DIR/}"
   local full_destination_path=$(build-destination-path "$destination_path")
+  local basename=$(basename "$full_source_path")
 
-  if [[ $(basename "$full_source_path") == "_install.sh" ]]; then
+  if [[ $basename == "__overrides__.cfg" ]]; then
+    announce config read -s "$full_source_path"
+    install__read-config-file "$full_source_path"
+  elif [[ $basename == "__install__.sh" ]]; then
     announce command run -s "$full_source_path"
     install__run-install-script "$full_source_path"
-  elif [[ -e $full_destination_path ]]; then
-    if [[ $FORCE -eq 1 ]]; then
+  else
+    install__link-file-with-announcement "$full_source_path" "$full_destination_path"
+  fi
+}
+
+install__link-file-with-announcement() {
+  local full_source_path="$1"
+  local full_destination_path="$2"
+
+  if [[ -e $full_destination_path ]]; then
+    if [[ ${COMMON_CONFIG[force]} -eq 1 ]]; then
       announce link overwrite -s "$full_source_path" -d "$full_destination_path"
       install__link-file "$full_source_path" "$full_destination_path"
     else
@@ -464,7 +600,7 @@ install__process-entry() {
 }
 
 install__print-result() {
-  if [[ $DRY_RUN -eq 1 ]]; then
+  if [[ ${COMMON_CONFIG[dry_run]} -eq 1 ]]; then
     echo
     info "Don't worry — no files were created!"
   else
@@ -475,6 +611,20 @@ install__print-result() {
 }
 
 #== UNINSTALL ==================================================================
+
+uninstall__parse-args() {
+  local arg=
+
+  while [[ ${1:-} ]]; do
+    arg="${1:-}"
+    case "$arg" in
+      *)
+        error "Unknown argument '$arg' given."
+        echo "Please run $0 $COMMAND --help for usage."
+        exit 1
+    esac
+  done
+}
 
 uninstall__print-help() {
   cat <<TEXT
@@ -497,9 +647,9 @@ of a few things depending on what it encounters:
 
 There are some exceptions to this:
 
-* If it encounters a file anywhere that ends in ._no-link, it will remove the
+* If it encounters a file anywhere that ends in .__no-link__, it will remove the
   corresponding file from your home directory if it has the same content.
-  EXAMPLE: src/gitconfig._no-link removes a file at ~/.gitconfig if both files
+  EXAMPLE: src/gitconfig.__no-link__ removes a file at ~/.gitconfig if both files
   are the same.
 * If it encounters a directory anywhere that has a .no-recurse file, it will
   NOT recurse the directory; it will remove the symlink for the directory if it
@@ -524,53 +674,13 @@ where OPTIONS are:
   Don't actually change the filesystem.
 --force, -f
   Usually symlinks that do not point to files in src/ and files that end in
-  ._no-link that do not match the file they were copied from are not removed.
+  .__no-link__ that do not match the file they were copied from are not removed.
   This bypasses that.
 --verbose, -V
   Show every command that is run when it is run.
 --help, -h
   You're looking at it ;)
 TEXT
-}
-
-uninstall__parse-args() {
-  DRY_RUN=0
-  FORCE=0
-  VERBOSE=0
-
-  local arg=
-
-  if [[ $# -eq 0 ]]; then
-    error "No arguments given."
-    echo "Please run $0 $COMMAND --help for usage."
-    exit 1
-  fi
-
-  while [[ ${1:-} ]]; do
-    arg="${1:-}"
-    case "$arg" in
-      --dry-run | --noop | -n)
-        DRY_RUN=1
-        shift
-        ;;
-      --force | -f)
-        FORCE=1
-        shift
-        ;;
-      --verbose | -V)
-        VERBOSE=1
-        shift
-        ;;
-      --help | -h | -?)
-        ${COMMAND}__print-help | more -R
-        exit
-        ;;
-      *)
-        error "Unknown argument '$arg' given."
-        echo "Please run $0 $COMMAND --help for usage."
-        exit 1
-    esac
-  done
 }
 
 uninstall__determine-action-color() {
@@ -632,23 +742,23 @@ uninstall__announce() {
 uninstall__remove-file() {
   local full_destination_path="$1"
 
-  if [[ $VERBOSE -eq 1 ]]; then
+  if [[ ${COMMON_CONFIG[verbose]} -eq 1 ]]; then
     inspect-command rm "$full_destination_path"
   fi
 
-  if [[ $DRY_RUN -eq 0 ]]; then
+  if [[ ${COMMON_CONFIG[dry_run]} -eq 0 ]]; then
     rm "$full_destination_path"
   fi
 }
 
 uninstall__process-non-link() {
   local full_source_path="$1"
-  local non_template_full_source_path="${full_source_path%._no-link}"
-  local destination_path="${non_template_full_source_path#$PROJECT_DIR/src/}"
+  local non_template_full_source_path="${full_source_path%.__no-link__}"
+  local destination_path="${non_template_full_source_path#$SOURCE_DIR/}"
   local full_destination_path=$(build-destination-path "$destination_path")
 
   if [[ -f $full_destination_path ]]; then
-    if files-equal "$full_source_path" "$full_destination_path" || [[ $FORCE -eq 1 ]]; then
+    if files-equal "$full_source_path" "$full_destination_path" || [[ ${COMMON_CONFIG[force]} -eq 1 ]]; then
       announce non-link delete -s "$full_source_path" -d "$full_destination_path"
       uninstall__remove-file "$full_destination_path"
     else
@@ -661,14 +771,14 @@ uninstall__process-non-link() {
 
 uninstall__process-entry() {
   local full_source_path="$1"
-  local destination_path="${full_source_path#$PROJECT_DIR/src/}"
+  local destination_path="${full_source_path#$SOURCE_DIR/}"
   local full_destination_path=$(build-destination-path "$destination_path")
 
   if [[ -h $full_destination_path ]]; then
     announce link delete -s "$full_source_path" -d "$full_destination_path"
     uninstall__remove-file "$full_destination_path"
   elif [[ -e $full_destination_path ]]; then
-    if [[ $FORCE -eq 1 ]]; then
+    if [[ ${COMMON_CONFIG[force]} -eq 1 ]]; then
       announce entry purge -s "$full_source_path"
       uninstall__remove-file "$full_destination_path"
     else
@@ -678,7 +788,7 @@ uninstall__process-entry() {
 }
 
 uninstall__print-result() {
-  if [[ $DRY_RUN -eq 1 ]]; then
+  if [[ ${COMMON_CONFIG[dry_run]} -eq 1 ]]; then
     echo
     info "Don't worry — no files were removed!"
   else
@@ -689,6 +799,16 @@ uninstall__print-result() {
 }
 
 #== MAIN ======================================================================
+
+read-config-file() {
+  if [[ -f $CONFIG_FILE_PATH ]]; then
+    config::read $CONFIG_FILE_PATH --install INSTALL_CONFIG
+  fi
+}
+
+write-config-file() {
+  config::write $CONFIG_FILE_PATH --install INSTALL_CONFIG
+}
 
 print-help() {
   cat <<TEXT
@@ -712,6 +832,8 @@ TEXT
 }
 
 parse-args() {
+  local rest
+
   if [[ $# -eq 0 ]]; then
     error "Missing command."
     echo "Please run $0 --help for usage."
@@ -725,7 +847,7 @@ parse-args() {
       ;;
     install | uninstall)
       COMMAND="$1"
-      ${COMMAND}__parse-args "${@:2}"
+      shift
       ;;
     *)
       error "Unknown command '$arg'."
@@ -733,6 +855,35 @@ parse-args() {
       exit 1
       ;;
   esac
+
+  rest=()
+  while [[ ${1:-} ]]; do
+    arg="${1:-}"
+    case "$arg" in
+      --dry-run | --noop | -n)
+        COMMON_CONFIG[dry_run]=1
+        shift
+        ;;
+      --force | -f)
+        COMMON_CONFIG[force]=1
+        shift
+        ;;
+      --verbose | -V)
+        COMMON_CONFIG[verbose]=1
+        shift
+        ;;
+      --help | -h | -?)
+        ${COMMAND}__print-help | more -R
+        exit
+        ;;
+      *)
+        rest+=("$arg")
+        shift
+        ;;
+    esac
+  done
+
+  ${COMMAND}__parse-args "${rest[@]}"
 }
 
 process-entry() {
@@ -742,7 +893,7 @@ process-entry() {
 
   if [[ -d $full_source_path && ! -e "$full_source_path/.no-recurse" ]]; then
     recurse-dir "$full_source_path"
-  elif [[ $full_source_path =~ \._no-link$ ]]; then
+  elif [[ $full_source_path =~ \.__no-link__$ ]]; then
     ${COMMAND}__process-non-link "$full_source_path"
   else
     ${COMMAND}__process-entry "$full_source_path"
@@ -753,16 +904,24 @@ recurse-dir() {
   local dir="$1"
   local source_path=
 
-  find "$dir"/* -maxdepth 0 -type f -not \( -name _install.sh \) -exec basename {} \; | {
+  # Process /__overrides__.cfg
+  if [[ $dir == "$SOURCE_DIR" && -f "$dir/__overrides__.cfg" ]]; then
+    process-entry "__overrides__.cfg" "$dir"
+  fi
+
+  # Process files
+  find "$dir"/* -maxdepth 0 -type f -not \( -name __install__.sh -or -name __overrides__.cfg \) -exec basename {} \; | {
     while IFS= read -r source_path; do
       process-entry "$source_path" "$dir"
     done
   }
 
-  if [[ -f "$dir/_install.sh" && -x "$dir/_install.sh" ]]; then
-    process-entry "_install.sh" "$dir"
+  # Process __install__.sh
+  if [[ -f "$dir/__install__.sh" && -x "$dir/__install__.sh" ]]; then
+    process-entry "__install__.sh" "$dir"
   fi
 
+  # Process subdirectories
   find "$dir"/* -maxdepth 0 -type d -exec basename {} \; | {
     while IFS= read -r source_path; do
       process-entry "$source_path" "$dir"
@@ -771,15 +930,20 @@ recurse-dir() {
 }
 
 main() {
+  read-config-file
   parse-args "$@"
+
+  if [[ ${COMMON_CONFIG[dry_run]} -eq 0 ]]; then
+    write-config-file
+  fi
 
   case $COMMAND in
     install | uninstall)
-      if [[ $DRY_RUN -eq 1 ]]; then
+      if [[ ${COMMON_CONFIG[dry_run]} -eq 1 ]]; then
         info "Running in dry-run mode."
         echo
       fi
-      recurse-dir "$PROJECT_DIR/src"
+      recurse-dir "$SOURCE_DIR"
       ${COMMAND}__print-result
       ;;
     *)

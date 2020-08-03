@@ -1,8 +1,9 @@
 .DS_Store
-*.tmproj
-*.vim*
 Brewfile.lock.json
-tags
+src/config/nvim/bundle
 src/tmux/plugins/*
 !src/tmux/plugins/powerline
 !src/tmux/plugins/tpm
+src/vim/.netrwhist
+src/vim/sessions/*
+tags

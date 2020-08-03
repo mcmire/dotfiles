@@ -36,14 +36,6 @@ latest-version-of() {
     sed -Ee 's/^[ ]+//g'
 }
 
-if ! xcode-select -p &>/dev/null; then
-  banner "Installing Command Line Tools"
-  xcode-select --install
-
-  echo "Please re-run this command when installation is complete!"
-  exit
-fi
-
 banner "Installing missing Homebrew packages"
 brew bundle check || brew bundle
 
@@ -69,6 +61,12 @@ if ! type asdf &>/dev/null; then
   source $ASDF_DIRECTORY/asdf.sh
 fi
 
+if ! [[ -d "$HOME/.tmux/plugins/tpm" ]]; then
+  banner "Installing tpm"
+  git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm"
+  $HOME/.tmux/plugins/tpm/bin/install_plugins
+fi
+
 for language in ruby python nodejs; do
   if ! [[ -d $ASDF_DIRECTORY/plugins/$language ]]; then
     banner "Installing $language plugin for asdf"
@@ -89,6 +87,16 @@ for language in ruby python nodejs; do
     asdf global $language $(latest-version-of $language)
   fi
 done
+
+if gem which neovim &>/dev/null; then
+  banner "Installing Ruby plugin for Neovim"
+  gem install neovim
+fi
+
+if pip show neovim &>/dev/null; then
+  banner "Installing Python plugin for Neovim"
+  pip install neovim
+fi
 
 banner "Upgrading pip"
 pip install --upgrade pip

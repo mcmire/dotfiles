@@ -1,19 +1,19 @@
 # dotfiles
 
-This repo provisions and maintains an environment
-optimized for web development on a Mac.
+This repo sets up a command-line environment for development on a Mac.
 It is updated very frequently!
 
-## What's inside
+## [What's in the box?][se7en]
 
-This environment installs the following pieces of software:
+[se7en]: https://youtu.be/1giVzxyoclE?t=122
 
-### Tools
+### Programs
 
 * **zsh** — the new standard in shells
+* **[iTerm]** — a more capable terminal emulator
 * **[tmux]** — corral projects and their many sessions
-* **[iTerm]** — a more capable terminal than Terminal.app
 * **[Neovim]** — a slimmer and more modern fork of Vim
+  ([More details →](#neovim-configuration))
 * **[Git]** — the king of version control software
 * **[tig]** — a semi-graphical UI for git
 * **[asdf]** — the one language version manager to rule them all
@@ -35,79 +35,108 @@ This environment installs the following pieces of software:
 [ngrok]: https://ngrok.com/
 [heroku]: https://github.com/heroku/cli
 
-### Applications
+### Neovim configuration
 
-* **Google Chrome** — the new Internet Explorer
-* **Firefox** — for when Chrome doesn't work
-* **Slack** — everyone's favorite chat app
-* **[1Password]** — a slick password manager
-* **[Simplenote]** — a small but mighty cross-platform notes app
-* **[Spectacle]** — a way to place your windows with hotkeys
-* **[Stay]** — saves and restores locations of windows after switching monitors
-* **[Amphetamine]** — keeps your computer from going to sleep
-* **[Numi]** — a more capable and pleasant calculator app
-* **[Dropbox]** — everyone's favorite cloud storage service
-* **Visual Studio Code** — when you don't feel like using Vim
-* **Microsoft To Do** — everyone's favorite replacement for Wunderlist
+Neovim is preconfigured with the following features:
 
-[1Password]: https://1password.com/
-[Spectacle]: https://www.spectacleapp.com/
-[Stay]: https://cordlessdog.com/stay/
-[Numi]: https://numi.app/
-[Dropbox]: https://www.dropbox.com/
-[Amphetamine]: https://apps.apple.com/us/app/amphetamine/id937984704
-[Simplenote]: https://simplenote.com/
+#### Handy plugins
 
-### Databases
+* **[VimPlug][vim-plug]** — a fast plugin manager
+* **[NERDTree][vim-nerdtree]** — a simple file tree
+* **[Ctrl-P][vim-ctrl-p]** — a fuzzy file finder for quickly jumping to files
+* **[Ack][vim-ack] + [Ag][ag]** — a way to search across a project lightning quick
+* **[NERDCommenter][vim-nerdcommenter]** — an easy way to comment and uncomment lines
+* **[SuperTab][vim-supertab]** — an autocompleter that stays out of your way
+* **[Ale][ale]** —
+  an asychronous code linter that works with a bunch of languages
+  (and can also autoformat files in languages that support it)
+* **[AutoPairs][auto-pairs]** —
+  adds matching parentheses, braces, brackets, and quotes as you type them
+  (but can be toggled on/off as needed)
+* **[endwise][vim-endwise]** — like AutoPairs but for Ruby blocks
+* **[indentLine][indentLine]** —
+  adds vertical lines at regular indentation levels
+  so that you can quickly tell if a line is misindented
+* **[surround][vim-surround]** —
+  a way to quickly surround text with quotes,
+  parentheses, braces, etc.
+* **[togglecursor][vim-togglecursor]** —
+  makes insert and command modes more obvious
+  by switching the cursor when switching modes
+* **[FastFold][fast-fold]** —
+  makes it actually possible to use `foldmethod=syntax` in Ruby files
+  without slowing Vim down to a halt
+* ...and more!
 
-* **PostgreSQL** — the fully capable opensource database
-* **Redis** — the fully capable ultra-light cache store
-* **SQLite** — the pocket, ultra embeddable database
+[vim-plug]: https://github.com/junegunn/vim-plug
+[vim-nerdtree]: http://github.com/scrooloose/nerdtree
+[vim-ctrl-p]: http://github.com/kien/ctrlp.vim
+[vim-ack]: https://github.com/mileszs/ack.vim
+[ag]: https://github.com/ggreer/the_silver_searcher
+[vim-supertab]: http://github.com/ervandew/supertab
+[vim-togglecursor]: https://github.com/jszakmeister/vim-togglecursor
+[vim-nerdcommenter]: http://github.com/scrooloose/nerdcommenter
+[vim-endwise]: https://github.com/tpope/vim-endwise
+[vim-surround]: http://github.com/tpope/vim-surround
+[vim-textobj-rubyblock]: http://github.com/nelstrom/vim-textobj-rubyblock
+[ale]: https://github.com/w0rp/ale
+[indentLine]: https://github.com/Yggdroot/indentLine
+[auto-pairs]: https://github.com/eapache/auto-pairs
+[fast-fold]: https://github.com/Konfekt/FastFold
 
-### Languages
+#### Sensible defaults
 
-* Ruby
-* Node
-* Python
+* Lines in files of most filetypes are hard-wrapped to 80 characters
+* The system clipboard is used for copying/pasting
+* Incremental search provides more feedback than the default search behavior
+* `Rakefile`, `Gemfile`, and `*.gemspec` files are highlighted as Ruby files
+* `.jshintrc` and `.eslintrc` are highlighted as JSON files
 
-## Installation
+#### Sensible mappings
 
-So you want to use these dotfiles? Read on!
+* `,` is the leader key (so no finger gymnastics)
+* `Ctrl-{H,J,K,L}` lets you navigate to windows in Vim *and to panes in tmux*
+* `j` and `k` always place the cursor one line below or above, regardless of
+  whether lines are being wrapped
+* `%` bounces between the start and end of blocks (in languages that make it
+  possible to do so)
+* `<` and `>` no longer lose drop the selection when indenting a selected block
+  of text
+* `Q` lets you reformat paragraphs
 
-> NOTE: As indicated above,
-> this whole environment assumes that you are using macOS.
-> If you're using Linux, then none of this will really work.
-> Sorry :(
+## How do I use these dotfiles?
 
 ### Step 1: Fork this repo
 
-First, you need to get these files onto your computer somehow.
-You might be tempted to clone this repo and then modify the files inside.
-You're perfectly free to do this, of course,
-but in the long run,
-**you are better off creating your own dotfiles**.
+You might be tempted to clone this repo,
+but the author feels that the best development environment is the one _you_ control.
 Therefore, it is recommended to fork this repo
-so that you can push your own changes up to it later.
-So click that button in the top-right corner!
+so that you can make changes to this configuration at will
+and push them up to your own account.
+Scroll up to the top
+and click that **Fork** button in the top-right corner now!
 
-Back? Good.
+### Step 2: Clone your fork
 
-At this point, you should be reading this from your own fork.
+At this point, you should be reading this README from your own fork.
 Now clone your fork in a convenient place you'll remember,
 such as the same place you store code:
 
     cd ~/your-code-directory
     git clone git@github.com:yourusername/dotfiles.git
 
-### Step 2: Clear the way
+### Step 3: Clear the way
 
 If you already have some amount of dotfiles in your home directory,
 you will want to back them up
-and move them out of the way before you go any further
-(you can remove them later, at your leisure, of course –
-or you can integrate them into this config).
+and move them out of the way before you go any further.
+For instance:
 
-### Step 3: Run the install script
+    mv ~/.vimrc ~/.vimrc.old
+    mv ~/.zshrc ~/.zshrc.old
+    mv ~/.zshenv ~/.zshenv.old
+
+### Step 4: Run the install script
 
 Next, you'll want to run the script that comes bundled with this repo.
 This script will actually install all of the files as symlinks into your home directory,
@@ -119,19 +148,21 @@ Run the script like so, supplying your Git name and email:
 Note the use of `--dry-run` on the end.
 This will tell you what would have been installed,
 but nothing has happened yet!
-Take a moment to look over the output and verify that everything makes sense.
-If you're good, then run it again without `--dry-run`:
+Take a moment to look over the output and verify that it makes sense.
+If you're good with everything, then run it again without `--dry-run`:
 
     bin/manage install --git-name "Your Name" --git-email "your@email.com"
 
-If you are informed that macOS Command Line Tools is not installed,
-make sure to install it and then re-run the script.
+### Step 5: Verify the installation
 
-### Step 4: Install tmux plugins
+Open iTerm and make sure that everything is good.
+It should look like this:
 
-After installing symlinks,
-there's one final step you'll need to perform.
-Launch tmux by saying:
+![Example of iTerm](./docs/iterm.png)
+
+### Step 6: Install tmux plugins
+
+Launch tmux by running this from the terminal:
 
     tmux
 
@@ -150,13 +181,50 @@ and finally:
 
 and you should no longer receive the warning.
 
-## What next?
+### Prologue: Making your own changes
 
-Once you've installed this configuration onto your own machine,
-it's up to you to figure out how you want to customize it!
-Spend some time going through the files,
-particularly the zsh configuration located in `zshrc`, `zshenv`, and `zsh/`,
-as well as the tmux config located at `tmux.conf`.
+So you've installed this configuration onto your own machine. Now what?
+Now you get to customize it!
+For instance, maybe you want to customize how the prompt looks,
+or maybe you want to customize how tmux looks,
+or maybe you want to switch from zsh back to bash.
+
+To do this, it's helpful to know where things are.
+Here are some key areas and what files control what things:
+
+* **Shell configuration.**
+  Start in `src/zshrc`; this loads files in `src/zsh/`.
+* **tmux configuration.**
+  This is located in `src/tmux.conf`.
+* **Vim configuration.**
+  A lot of the Vim configuration is broken out into separate files within `src/config/nvim/config`.
+  Here you can learn where the leader key is set to `,`,
+  why `Ctrl-{H,J,K,L}` lets you bounce between panes,
+  how text width gets wrapped at 80 characters except in git commit message windows,
+  and much more.
+  Feel free to modify these files as you see fit.
+  (You can learn more about a particular setting through `:help`.
+  For instance, try `:help textwidth` or `:help colorcolumn`.)
+  You can add any files you want to this folder,
+  as long as you load them in `src/config/nvim/init.vim`.
+* **Vim plugins.**
+  The list is kept in `src/config/nvim/plugins.vim`,
+  and settings for these plugins are located at
+  `src/config/nvim/config/plugins`,
+  which are loaded in `src/config/nvim/config/plugin-config.vim`.
+  There is a lot here, but don't panic!
+  First, it's probably a good idea to read up on the most frequently used plugins mentioned at the beginning of this README.
+  Learn what they do and how you can make use of them.
+  If you don't feel like you need a plugin, feel free to disable it!
+  You can do this by commenting it out in `plugins.vim`,
+  and if it has a corresponding loader line in `plugin-config.vim`, comment that out, too.
+  Then exit Vim, run `:PlugClean`,
+  and reload Vim again.
+
+If you end up adding a new file to `src/`,
+make sure to run `bin/manage install` again
+so that a symlink gets put in the right place.
+
 **Everything should serve a purpose.
 If you don't need it, don't be afraid to toss it out!**
 
@@ -165,7 +233,8 @@ Who knows — you might inspire someone else to create their own dotfiles repo!
 
 ## Uninstalling everything
 
-If you've given these dotfiles a try and they're not for you, no worries!
+Given these dotfiles a try and decided they're not for you?
+No worries!
 Simply run the following to remove all of the symlinks:
 
     script/manage uninstall --dry-run
