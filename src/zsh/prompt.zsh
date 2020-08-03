@@ -127,7 +127,9 @@ prompt::preexec() {
 }
 
 prompt::precmd() {
-  if [[ -z $lastwd || $lastwd != $PWD ]]; then
+  local last_cmd=$(fc -ln -1)
+
+  if [[ -z $lastwd || $lastwd != $PWD || $last_cmd =~ '^git checkout' || $last_cmd =~ '^gco' ]]; then
     psvar[1]=''
     psvar[2]=''
     psvar[3]=''
