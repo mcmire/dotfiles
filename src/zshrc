@@ -1,29 +1,68 @@
-source ~/.zsh/asdf.zsh
-source ~/.zsh/autojump.zsh
-source ~/.zsh/bindings.zsh
-source ~/.zsh/clojure.zsh
-source ~/.zsh/colors.zsh
-source ~/.zsh/cucumber.zsh
-source ~/.zsh/direnv.zsh
-source ~/.zsh/fzf.zsh
-source ~/.zsh/git.zsh
-source ~/.zsh/google-cloud-sdk.zsh
-source ~/.zsh/haskell.zsh
-source ~/.zsh/history.zsh
-source ~/.zsh/java.zsh
-source ~/.zsh/perl6.zsh
-source ~/.zsh/rust.zsh
-source ~/.zsh/tmux.zsh
-source ~/.zsh/travis.zsh
-source ~/.zsh/unicode.zsh
-source ~/.zsh/vim.zsh
-source ~/.zsh/zmv.zsh
-source ~/.zsh/zsh-async.zsh
-source ~/.zsh/zzz_aliases.zsh
-source ~/.zsh/zzz_functions.zsh
+BENCHMARK_SHELL_INIT=0
+BENCHMARK_LOG=/tmp/zsh-benchmark.log
 
-source ~/.zsh/prompt.zsh
+format-elapsed-time() {
+  local start_time="$1"
+  local end_time="$2"
+  local time_in_milliseconds=$(bc -l <<< "($end_time - $start_time) * 1000")
+
+  LC_NUMERIC=C printf "%.3f ms\n" $time_in_milliseconds
+}
+
+# Source: <https://stackoverflow.com/questions/5179559/how-get-the-time-in-milliseconds-in-freebsd>
+get-hires-time() {
+  perl \
+    -MTime::HiRes=gettimeofday \
+    -MPOSIX=strftime \
+    -e '($s,$us) = gettimeofday(); printf "%d.%06d\n", $s, $us'
+}
+
+benchmarked-source() {
+  local args=("$@")
+  local start_time end_time
+
+  if [[ $BENCHMARK_SHELL_INIT -eq 1 ]]; then
+    start_time=$(get-hires-time)
+    source "${args[@]}"
+    end_time=$(get-hires-time)
+
+    echo "Time to source \`${args[@]}\`: $(format-elapsed-time $start_time $end_time)" >> $BENCHMARK_LOG
+  else
+    source "${args[@]}"
+  fi
+}
+
+if [[ $BENCHMARK_SHELL_INIT ]]; then
+  rm -f $BENCHMARK_LOG
+  touch $BENCHMARK_LOG
+fi
+
+benchmarked-source ~/.zsh/asdf.zsh
+benchmarked-source ~/.zsh/autojump.zsh
+benchmarked-source ~/.zsh/bindings.zsh
+benchmarked-source ~/.zsh/clojure.zsh
+benchmarked-source ~/.zsh/colors.zsh
+benchmarked-source ~/.zsh/cucumber.zsh
+benchmarked-source ~/.zsh/direnv.zsh
+benchmarked-source ~/.zsh/fzf.zsh
+benchmarked-source ~/.zsh/git.zsh
+benchmarked-source ~/.zsh/google-cloud-sdk.zsh
+benchmarked-source ~/.zsh/haskell.zsh
+benchmarked-source ~/.zsh/history.zsh
+benchmarked-source ~/.zsh/java.zsh
+benchmarked-source ~/.zsh/perl6.zsh
+benchmarked-source ~/.zsh/rust.zsh
+benchmarked-source ~/.zsh/tmux.zsh
+benchmarked-source ~/.zsh/travis.zsh
+benchmarked-source ~/.zsh/unicode.zsh
+benchmarked-source ~/.zsh/vim.zsh
+benchmarked-source ~/.zsh/zmv.zsh
+benchmarked-source ~/.zsh/zsh-async.zsh
+benchmarked-source ~/.zsh/zzz_aliases.zsh
+benchmarked-source ~/.zsh/zzz_functions.zsh
+
+benchmarked-source ~/.zsh/prompt.zsh
 
 if [[ -f ~/.zshrc.local ]]; then
-  source ~/.zshrc.local
+  benchmarked-source ~/.zshrc.local
 fi
