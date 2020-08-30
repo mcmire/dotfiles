@@ -41,10 +41,11 @@ Plug 'aliou/bats.vim'
 Plug 'avakhov/vim-yaml'
 Plug 'cespare/vim-toml'
 Plug 'editorconfig/editorconfig-vim'
+" JSON plugin which fixes autoindentation within arrays
+Plug 'jakar/vim-json'
 Plug 'jtratner/vim-flavored-markdown'
 Plug 'jxnblk/vim-mdx-js'
 Plug 'kchmck/vim-coffee-script'
-Plug 'mitsuhiko/vim-json'
 Plug 'pangloss/vim-javascript'
 Plug 'tbastos/vim-lua'
 " Make sure this is listed BEFORE vim-rails!
