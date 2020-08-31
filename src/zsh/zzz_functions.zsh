@@ -54,3 +54,15 @@ bau() {
 compare() {
   colordiff -u "$@" | less -R
 }
+
+new-rails-app() {
+  rails new "$1" \
+    --skip-action-cable \
+    --skip-test \
+    --skip-turbolinks \
+    --skip-action-mailbox \
+    --skip-sprockets \
+    --skip-active-storage \
+    --webpacker react \
+    "${2:@}"
+}
