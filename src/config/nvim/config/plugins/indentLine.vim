@@ -10,3 +10,5 @@
 
 let g:indentLine_char = '⡇'
 let g:indentLine_color_term = 10
+" Don't show indentation guides in the NERDTree
+let g:indentLine_bufNameExclude = ['NERD_tree']
