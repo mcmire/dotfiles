@@ -11,4 +11,5 @@
 let g:indentLine_char = '⡇'
 let g:indentLine_color_term = 10
 " Don't show indentation guides in the NERDTree
-let g:indentLine_bufNameExclude = ['NERD_tree']
+" Source: <https://github.com/Yggdroot/indentLine/issues/196#issuecomment-297393376>
+let g:indentLine_fileTypeExclude = ['nerdtree']
