@@ -6,5 +6,5 @@
 "
 " [1]: https://github.com/neovim/neovim/issues/1822#issuecomment-233152833
 
-map p <Plug>(miniyank-startput)
-map P <Plug>(miniyank-startPut)
+map <Leader>pb <Plug>(miniyank-startput)
+map <Leader>Pb <Plug>(miniyank-startPut)
