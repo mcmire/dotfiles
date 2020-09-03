@@ -11,7 +11,6 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'eapache/auto-pairs'
 Plug 'ervandew/supertab'
-Plug 'gabebw/vim-spec-runner'
 Plug 'godlygeek/tabular'
 Plug 'itchyny/lightline.vim'
 Plug 'jszakmeister/vim-togglecursor'
@@ -27,6 +26,7 @@ Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'w0rp/ale'
+Plug 'vim-test/vim-test'
 
 " Sometimes-used plugins
 
