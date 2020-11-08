@@ -111,8 +111,8 @@ function! s:DiscoverJavaScriptLinters() abort
 endfunction
 
 augroup local
-  autocmd BufEnter *.js call s:DiscoverJavaScriptLinters()
-  autocmd BufEnter *.rb call s:DiscoverRubyLinters()
+  autocmd FileType javascript call s:DiscoverJavaScriptLinters()
+  autocmd FileType ruby call s:DiscoverRubyLinters()
 augroup END
 
 " === Mappings ===
