@@ -27,7 +27,7 @@ TRAPWINCH() {
 
 read-version() {
   local current_version exitstatus
-  current_version=$(asdf current "$1")
+  current_version=$(asdf current "$1" | awk '{ print $2 }')
   exitstatus=$?
 
   if [[ $exitstatus -eq 1 ]]; then
@@ -40,10 +40,10 @@ read-version() {
 update-version() {
   local language="$1"
   local index="$2"
-  local current_ruby_version="$3"
+  local current_version="$3"
 
-  if [[ -n $current_ruby_version ]]; then
-    psvar[$index]="$language $current_ruby_version"
+  if [[ -n $current_version ]]; then
+    psvar[$index]="$language $current_version"
   else
     psvar[$index]=''
   fi
