@@ -11,6 +11,10 @@ let test#strategy = "vtr"
 
 let test#ruby#use_spring_binstub = 1
 
+" And to look for Jest files that end in '.mjs':
+
+let g:test#javascript#jest#file_pattern = '\v(__tests__/.*|(spec|test))\.(js|jsx|coffee|ts|tsx|mjs)$'
+
 " And we create some mappings:
 "
 " * `,tA` to run [A]ll of the tests in the current file
