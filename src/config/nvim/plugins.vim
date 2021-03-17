@@ -31,6 +31,7 @@ Plug 'vim-test/vim-test'
 " Sometimes-used plugins
 
 "Plug 'SirVer/ultisnips'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'jeetsukumaran/vim-markology'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rails'
