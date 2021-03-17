@@ -96,7 +96,7 @@ function! s:DiscoverRubyLinters() abort
 
   call add(l:linters, 'ruby')
 
-  let g:ale_linters = { 'ruby': l:linters }
+  let g:ale_linters['ruby'] = l:linters
 endfunction
 
 function! s:DiscoverJavaScriptLinters() abort
@@ -107,12 +107,17 @@ function! s:DiscoverJavaScriptLinters() abort
     call add(l:linters, 'eslint')
   endif
 
-  let g:ale_linters = { 'javascript': l:linters }
+  let g:ale_linters['javascript'] = l:linters
+endfunction
+
+function! s:DiscoverTypeScriptLinters() abort
+  let g:ale_linters['typescript'] = []
 endfunction
 
 augroup local
   autocmd FileType javascript call s:DiscoverJavaScriptLinters()
   autocmd FileType ruby call s:DiscoverRubyLinters()
+  autocmd FileType typescript call s:DiscoverTypeScriptLinters()
 augroup END
 
 " === Mappings ===
