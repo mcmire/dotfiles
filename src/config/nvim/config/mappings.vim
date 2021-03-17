@@ -140,3 +140,5 @@ map <Leader>si :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> 
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 nmap <Leader>w :wa<CR>
+
+nmap gm g*/\v<def <C-r>/>/;?\v<def <C-r>/><CR>
