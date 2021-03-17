@@ -1,13 +1,8 @@
 #!/bin/sh
 
 set -e
-
-if [[ -f $dir/ctags.pid ]]; then
-  exit 1
-fi
-
 PATH="/usr/local/bin:$PATH"
 dir="`git rev-parse --git-dir`"
-echo $$ > $dir/ctags.pid
-git ls-files | ctags --tag-relative -L - -f tags --languages=Ruby,JavaScript
-rm $dir/ctags.pid
+trap 'rm -f "$dir/tags.$$"' EXIT INT TERM
+git ls-files | ctags --tag-relative -L - -f $dir/tags.$$ --languages=Ruby,JavaScript
+mv $dir/tags.$$ $dir/tags
