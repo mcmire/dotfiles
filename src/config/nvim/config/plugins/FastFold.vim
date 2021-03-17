@@ -19,6 +19,8 @@ nmap <Leader>ffu <Plug>(FastFoldUpdate)
 let g:ruby_fold = 1
 " ...JavaScript
 let g:javaScript_fold = 1
+" ...XML
+let g:xml_syntax_folding = 1
 
 " ...and disabled for Elm, where it really doesn't work right:
 
