@@ -42,6 +42,7 @@ Plug 'ElmCast/elm-vim'
 Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'aliou/bats.vim'
 Plug 'avakhov/vim-yaml'
+Plug 'dart-lang/dart-vim-plugin'
 Plug 'cespare/vim-toml'
 Plug 'editorconfig/editorconfig-vim'
 " JSON plugin which fixes autoindentation within arrays
