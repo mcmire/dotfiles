@@ -26,8 +26,6 @@
 " [elm-make]: https://github.com/elm-lang/elm-make
 
 let g:ale_linters = {
-      \  'javascript': ['eslint'],
-      \  'typescript': ['tsserver'],
       \  'scss': ['sasslint'],
       \  'sass': ['sasslint'],
       \  'css': ['stylelint'],
@@ -45,8 +43,11 @@ let g:ale_linters = {
 " [elm-format]: https://github.com/avh4/elm-format
 
 let g:ale_fixers = {
-      \  'ruby': ['standardrb'],
+      \  'ruby': ['prettier'],
       \  'javascript': ['prettier'],
+      \  'javascriptreact': ['prettier'],
+      \  'typescript': ['prettier'],
+      \  'typescriptreact': ['prettier'],
       \  'scss': ['prettier'],
       \  'sass': ['prettier'],
       \  'css': ['prettier'],
@@ -108,16 +109,21 @@ function! s:DiscoverJavaScriptLinters() abort
   endif
 
   let g:ale_linters['javascript'] = l:linters
+  let g:ale_linters['javascriptreact'] = l:linters
 endfunction
 
 function! s:DiscoverTypeScriptLinters() abort
-  let g:ale_linters['typescript'] = []
+  let g:ale_linters['typescript'] = ['tsserver']
+  let g:ale_linters['typescriptreact'] = ['tsserver']
 endfunction
 
 augroup local
   autocmd FileType javascript call s:DiscoverJavaScriptLinters()
+  autocmd FileType jsx call s:DiscoverJavaScriptLinters()
   autocmd FileType ruby call s:DiscoverRubyLinters()
   autocmd FileType typescript call s:DiscoverTypeScriptLinters()
+  autocmd FileType tsx call s:DiscoverTypeScriptLinters()
+  autocmd FileType typescriptreact call s:DiscoverTypeScriptLinters()
 augroup END
 
 " === Mappings ===

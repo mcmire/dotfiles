@@ -41,7 +41,7 @@ Plug 'tpope/vim-rails'
 " Language-specific plugins
 
 Plug 'ElmCast/elm-vim'
-Plug 'HerringtonDarkholme/yats.vim'
+Plug 'HerringtonDarkholme/yats'
 Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'aliou/bats.vim'
 Plug 'avakhov/vim-yaml'
