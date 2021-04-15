@@ -11,7 +11,6 @@ function! s:load_file(path) abort
 endfunction
 
 call s:load_file("FastFold")
-call s:load_file("ShowMarks")
 call s:load_file("UltiSnips")
 call s:load_file("ack")
 call s:load_file("ale")
@@ -19,6 +18,7 @@ call s:load_file("auto-pairs")
 call s:load_file("colorizer")
 call s:load_file("ctrlp")
 call s:load_file("elm-vim")
+call s:load_file("goyo")
 call s:load_file("indentLine")
 call s:load_file("lightline")
 call s:load_file("limelight")

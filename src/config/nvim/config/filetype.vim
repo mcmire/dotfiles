@@ -25,7 +25,7 @@ augroup END
 
 augroup local
   autocmd BufNewFile,BufRead *.{js,jsx} set ft=javascript.jsx
-  autocmd BufNewFile,BufRead *.{ts,tsx} set ft=typescript.jsx
+  autocmd BufNewFile,BufRead *.{ts,tsx} set ft=typescript.tsx
 augroup END
 
 " For some reason, auto-indentation isn't enabled in Markdown files, so we

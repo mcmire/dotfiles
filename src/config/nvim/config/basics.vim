@@ -85,6 +85,7 @@ set backspace=indent,eol,start
 
 " What's in a word? By default it is a underscore, but dashes are valid
 " characters too:
+
 set iskeyword+=-
 
 " Finally, one of the more irritating things in Vim is the fact that as you type

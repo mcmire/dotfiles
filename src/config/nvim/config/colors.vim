@@ -85,6 +85,10 @@ function! s:SetHighlights()
   exec 'highlight IncSearch cterm=NONE gui=NONE guifg=' . s:base03 . ' guibg=' . s:yellow
   exec 'highlight Search cterm=NONE gui=NONE guifg=' . s:base03 . ' guibg=' . s:orange
   exec 'highlight MatchParen guifg=' . s:base03 . ' guibg=' . s:base01
+  exec 'highlight default MarkologyHLl guifg=' . s:base01 . ' guibg=' . s:base03
+  exec 'highlight default MarkologyHLu guifg=' . s:base01 . ' guibg=' . s:base03
+  exec 'highlight default MarkologyHLo guifg=' . s:base01 . ' guibg=' . s:base03
+  exec 'highlight default MarkologyHLm guifg=' . s:base01 . ' guibg=' . s:base03
 endfunction
 
 function! s:ToggleColorScheme()
@@ -95,6 +99,14 @@ function! s:ToggleColorScheme()
   endif
 endfunction
 
+function! g:RefreshColorScheme()
+  if s:color_scheme_type == "dark"
+    call s:UseDarkColorScheme()
+  else
+    call s:UseLightColorScheme()
+  endif
+endfunction
+
 " We set up a mapping so you can use `,th` to flip between the two modes:
 
 command! -nargs=0 ToggleColorScheme call s:ToggleColorScheme()
@@ -102,4 +114,5 @@ nnoremap <Leader>th :ToggleColorScheme<CR>
 
 " Finally, we set dark mode as the default:
 
-call s:UseDarkColorScheme()
+let s:color_scheme_type="dark"
+call g:RefreshColorScheme()
