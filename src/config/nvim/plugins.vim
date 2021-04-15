@@ -1,4 +1,5 @@
-" Essential plugins
+" Plugins I use all the time
+" ==========================
 
 Plug '~/.config/nvim/plugged/vim-colors-solarized'
 
@@ -17,6 +18,7 @@ Plug 'jszakmeister/vim-togglecursor'
 Plug 'kien/ctrlp.vim'
 Plug 'mileszs/ack.vim'
 Plug 'nelstrom/vim-textobj-rubyblock', { 'for': 'ruby' } | Plug 'kana/vim-textobj-user'
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'tmux-plugins/vim-tmux-focus-events'
@@ -25,20 +27,11 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'w0rp/ale'
+"Plug 'w0rp/ale'
 Plug 'vim-test/vim-test'
 
-" Sometimes-used plugins
-
-"Plug 'SirVer/ultisnips'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
-Plug 'jeetsukumaran/vim-markology'
-Plug 'junegunn/goyo.vim'
-Plug 'reedes/vim-pencil'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rails'
-
 " Language-specific plugins
+" -------------------------
 
 Plug 'ElmCast/elm-vim'
 Plug 'HerringtonDarkholme/yats'
@@ -53,16 +46,28 @@ Plug 'jakar/vim-json'
 Plug 'jtratner/vim-flavored-markdown'
 Plug 'jxnblk/vim-mdx-js'
 Plug 'kchmck/vim-coffee-script'
-"Plug 'leafgarland/typescript-vim'
 Plug 'pangloss/vim-javascript'
 Plug 'tbastos/vim-lua'
 Plug 'tpope/vim-haml'
-" Make sure this is listed BEFORE vim-rails!
+" Make sure vim-projectionist is listed BEFORE vim-rails!
 " See: <https://github.com/tpope/vim-rails/issues/330>
-Plug 'tpope/vim-projectionist'
-Plug 'tpope/vim-rails'
+Plug 'tpope/vim-projectionist' | Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
 Plug 'yuezk/vim-js'
+
+" Plugins I sometimes use (and may disable later)
+" ===============================================
+
+"Plug 'SirVer/ultisnips'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+Plug 'jeetsukumaran/vim-markology'
+Plug 'junegunn/goyo.vim'
+Plug 'reedes/vim-pencil'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rails'
+
+" Plugins I enabled at one point but realized I might not need
+" ============================================================
 
 "Plug 'ap/vim-css-color'
 "Plug 'briancollins/vim-jst'

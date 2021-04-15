@@ -28,6 +28,13 @@ augroup local
   "autocmd BufNewFile,BufRead *.{ts,tsx} set ft=typescript.tsx
 augroup END
 
+" Also increase syntax highlighting perf for JavaScript/Typescript files
+" Source: <https://thoughtbot.com/blog/modern-typescript-and-react-development-in-vim>
+augroup local
+  autocmd BufEnter *.{js,jsx,ts,tsx} syntax sync fromstart
+  autocmd BufLeave *.{js,jsx,ts,tsx} syntax sync clear
+augroup END
+
 " For some reason, auto-indentation isn't enabled in Markdown files, so we
 " explicitly enable that too:
 
