@@ -36,6 +36,11 @@ latest-version-of() {
     sed -Ee 's/^[ ]+//g'
 }
 
+if ! type brew &>/dev/null; then
+  banner "Installing Homebrew"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
 banner "Installing missing Homebrew packages"
 brew bundle check || brew bundle
 
