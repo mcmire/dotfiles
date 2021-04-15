@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>build</key>
-	<real>987</real>
+	<string>1157</string>
 	<key>license</key>
 	<dict>
 		<key>email</key>
@@ -13,6 +13,8 @@
 	</dict>
 	<key>preferences</key>
 	<dict>
+		<key>Battery_MenubarCustomizeStates</key>
+		<integer>0</integer>
 		<key>Battery_MenubarMode</key>
 		<array>
 			<dict>
@@ -35,11 +37,64 @@
 				<true/>
 				<key>key</key>
 				<string>26337B10-D48D-3F09-ABAA-E5BC1B26C5A9</string>
-				<key>name</key>
-				<string>Macintosh HD</string>
 			</dict>
 		</array>
+		<key>FanControl_Sets</key>
+		<array>
+			<dict>
+				<key>model</key>
+				<string>MacBookPro14,1</string>
+				<key>name</key>
+				<string>Medium</string>
+				<key>speeds</key>
+				<array>
+					<dict>
+						<key>fan</key>
+						<string>F0Ac</string>
+						<key>high</key>
+						<integer>7200</integer>
+						<key>low</key>
+						<integer>1200</integer>
+						<key>percentage</key>
+						<integer>50</integer>
+						<key>speed</key>
+						<integer>4200</integer>
+					</dict>
+				</array>
+				<key>uuid</key>
+				<string>C3376F6F-B91E-4B98-9D70-2E45F32743F4</string>
+			</dict>
+			<dict>
+				<key>model</key>
+				<string>MacBookPro14,1</string>
+				<key>name</key>
+				<string>High</string>
+				<key>speeds</key>
+				<array>
+					<dict>
+						<key>fan</key>
+						<string>F0Ac</string>
+						<key>high</key>
+						<integer>7200</integer>
+						<key>low</key>
+						<integer>1200</integer>
+						<key>percentage</key>
+						<integer>100</integer>
+						<key>speed</key>
+						<integer>7200</integer>
+					</dict>
+				</array>
+				<key>uuid</key>
+				<string>5945E312-8FB2-46EC-AD11-A328FB455160</string>
+			</dict>
+		</array>
+		<key>Menubar-DetectedColor</key>
+		<string>1.00 1.00 1.00 0.90</string>
 		<key>Migrated_6.0</key>
+		<true/>
+		<key>Migrated_6.22</key>
+		<true/>
+		<key>Migrated_6.5</key>
 		<true/>
 		<key>Network_MenubarMode</key>
 		<array>
@@ -115,25 +170,104 @@
 				<string>10.00</string>
 			</dict>
 		</array>
+		<key>Sensors-Limits-Updated</key>
+		<true/>
 		<key>Sensors_TemperatureMode</key>
 		<integer>0</integer>
 		<key>StatusItems-Order</key>
 		<array>
-			<integer>7</integer>
-			<integer>9</integer>
 			<integer>1</integer>
+			<integer>6</integer>
 			<integer>2</integer>
-			<integer>3</integer>
 			<integer>4</integer>
 			<integer>5</integer>
-			<integer>6</integer>
 		</array>
 		<key>Time_CalendarsDisabled</key>
 		<array>
-			<string>33EE8049-5EBA-4D8A-B03A-19644FE2874B</string>
-			<string>689AB44A-605B-4553-A558-33846A68F4D8</string>
-			<string>1516471A-6372-48DC-B87F-7180123504BB</string>
-			<string>D6934740-292A-4019-A31B-912DAC48D54A</string>
+			<string>02E472B3-C779-4123-B152-7A152F74288D</string>
+			<string>E77E9EBD-42AF-4E56-BCF1-70AADB2BF364</string>
+			<string>617D1538-71DB-4F8A-B7AC-5A77A3792B34</string>
+			<string>79246EAC-95D1-491E-A244-FC041840A866</string>
+			<string>D61A04AE-9482-49D1-80BF-932FFC59E18C</string>
+		</array>
+		<key>Time_Cities</key>
+		<array>
+			<dict>
+				<key>city</key>
+				<string>Moon</string>
+				<key>identifier</key>
+				<string>-6</string>
+			</dict>
+			<dict>
+				<key>city</key>
+				<string>Current Location</string>
+				<key>identifier</key>
+				<string>-7</string>
+			</dict>
+			<dict>
+				<key>city</key>
+				<string>Denver</string>
+				<key>country</key>
+				<string>United States</string>
+				<key>identifier</key>
+				<integer>5419384</integer>
+				<key>latitude</key>
+				<real>39.739150000000002</real>
+				<key>longitude</key>
+				<real>-104.9847</real>
+				<key>state</key>
+				<string>Colorado</string>
+				<key>timezone</key>
+				<string>America/Denver</string>
+			</dict>
+			<dict>
+				<key>city</key>
+				<string>Austin</string>
+				<key>country</key>
+				<string>United States</string>
+				<key>identifier</key>
+				<real>4671654</real>
+				<key>latitude</key>
+				<real>30.267150000000001</real>
+				<key>longitude</key>
+				<real>-97.74306</real>
+				<key>state</key>
+				<string>Texas</string>
+				<key>timezone</key>
+				<string>America/Chicago</string>
+			</dict>
+			<dict>
+				<key>city</key>
+				<string>Los Angeles</string>
+				<key>country</key>
+				<string>United States</string>
+				<key>identifier</key>
+				<integer>5368361</integer>
+				<key>latitude</key>
+				<real>34.052230000000002</real>
+				<key>longitude</key>
+				<real>-118.24368</real>
+				<key>state</key>
+				<string>California</string>
+				<key>timezone</key>
+				<string>America/Los_Angeles</string>
+			</dict>
+			<dict>
+				<key>city</key>
+				<string>Heidelberg</string>
+				<key>country</key>
+				<string>Germany</string>
+				<key>identifier</key>
+				<integer>2907911</integer>
+				<key>latitude</key>
+				<real>49.407679999999999</real>
+				<key>longitude</key>
+				<real>8.6907899999999998</real>
+				<key>state</key>
+				<string>Baden-Württemberg</string>
+				<key>timezone</key>
+				<string>Europe/Berlin</string>
+			</dict>
 		</array>
 		<key>Time_MenubarFormat</key>
 		<array>
@@ -142,12 +276,12 @@
 				<array>
 					<array>
 						<string>EE</string>
-						<string>', '</string>
+						<string>' '</string>
+						<string>M</string>
+						<string>'/'</string>
 						<string>d</string>
-						<string>' '</string>
-						<string>MMM</string>
-						<string>' '</string>
-						<string>yyyy</string>
+						<string>'/'</string>
+						<string>yy</string>
 						<string>', '</string>
 						<string>h</string>
 						<string>':'</string>
@@ -161,6 +295,17 @@
 				</array>
 			</dict>
 		</array>
+		<key>Updater_Attempts</key>
+		<dict>
+			<key>1086</key>
+			<string>1</string>
+			<key>1113</key>
+			<string>1</string>
+			<key>1150</key>
+			<string>1</string>
+			<key>1157</key>
+			<string>1</string>
+		</dict>
 		<key>Weather_Locations</key>
 		<array>
 			<dict>
@@ -180,8 +325,17 @@
 				<string>America/Denver</string>
 			</dict>
 		</array>
+		<key>Zarya-TLE</key>
+		<dict>
+			<key>time</key>
+			<real>1614227863.3749099</real>
+			<key>tle</key>
+			<string>ISS (ZARYA)             
+1 25544U 98067A   21055.84521000  .00002351  00000-0  50815-4 0  9997
+2 25544  51.6435 178.3778 0002992  49.7362  58.9857 15.49004814271187</string>
+		</dict>
 	</dict>
 	<key>version</key>
-	<real>6.1100001335144043</real>
+	<string>6.51</string>
 </dict>
 </plist>
