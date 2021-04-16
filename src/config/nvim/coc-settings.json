@@ -1,0 +1,23 @@
+{
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "ruby"
+  ],
+  "coc.preferences.formatOnType": true,
+  "prettier.disableSuccessMessage": true,
+  "suggest.autoTrigger": "trigger",
+  "suggest.minTriggerInputLength": 3,
+  "typescript.suggest.completeFunctionCalls": false,
+  "tsserver.formatOnType": true,
+  "tsserver.enableJavascript": false,
+  "solargraph.formatting": true,
+  "solargraph.autoformat": true,
+  "solargraph.diagnostics": true,
+  "solargraph.useBundler": true,
+  "solargraph.commandPath": "/Users/elliot/.asdf/shims/solargraph",
+  "solargraph.bundlerPath": "/Users/elliot/.asdf/shims/bundle"
+}
