@@ -52,6 +52,6 @@ nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
 nnoremap <silent> <Leader>cd :<C-u>CocList diagnostics<CR>
 " TODO: This currently conflicts with NERDCommenter
 "nnoremap <silent> <Leader>cs :<C-u>CocList -I symbols<cr>
-nnoremap <Leader>ca <Plug>(coc-codeaction)
+"nnoremap <Leader>ca <Plug>(coc-codeaction)
 nnoremap <leader>cr <Plug>(coc-rename)
 nnoremap <leader>cf <Plug>(coc-fix-current)
