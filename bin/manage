@@ -1,344 +1,332 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
 
-set -euo pipefail
+require "pathname"
+require "json"
+require "forwardable"
+require "shellwords"
 
-#== GLOBALS ====================================================================
+module DotfilesManager
+  class << self
+    attr_accessor :dotfiles_home
+  end
 
-absolute-path-of() {
-  local dir=
-
-  if [[ $1 =~ ^/ ]]; then
-    echo "$1"
-  else
-    if [[ -n "${2:-}" ]]; then
-      dir="$2/$(dirname "$1")"
-    else
-      dir="$(dirname "$1")"
-    fi
-
-    if [[ -d $dir ]]; then
-      echo $(cd "$dir" &>/dev/null && pwd)/$(basename "$1")
-    else
-      echo "Not a directory: $dir"
-      exit 1
-    fi
-  fi
-}
-
-PROJECT_DIR=$(dirname $(dirname $(absolute-path-of $0)))
-SOURCE_DIR="$PROJECT_DIR/src"
-COMMAND=
-DOTFILES_HOME=${DOTFILES_HOME:-$HOME}
-CONFIG_FILE_PATH="$DOTFILES_HOME/.dotfilesrc"
-declare -A COMMON_CONFIG
-COMMON_CONFIG=([dry_run]=0 [force]=0 [verbose]=0)
-declare -A INSTALL_CONFIG
-
-#== CONFIG =====================================================================
-
-config::read() {
-  # Inspiration: <https://forums.bunsenlabs.org/viewtopic.php?id=5570>
-
-  local file="$1"
-  shift
-
-  local arg
-  local -A config_variable_map
-
-  while [[ ${1:-} ]]; do
-    arg="${1:-}"
-    case "$arg" in
-      --*)
-        config_variable_map[${arg#--}]="$2"
-        shift 2
-        ;;
-      *)
-        error "Unknown argument '$arg' given."
-        exit 1
-    esac
-  done
-
-  local -n current_config_array
-  local section_regex="^\[([[:alpha:]_][[:alnum:]_]*)\]$"
-  local entry_regex="^([^=]+)=(.+)$"
-  local lines line key value
-
-  while read -r line; do
-    if [[ -n $line ]]; then
-      if [[ $line =~ $section_regex ]]; then
-        if [[ -n ${BASH_REMATCH[1]} ]]; then
-          local -n current_config_array=${config_variable_map[${BASH_REMATCH[1]}]}
+  def self.project_dir
+    @project_dir ||=
+      begin
+        path = Pathname.new(__dir__)
+        if %w[bin exe].include?(path.basename.to_s)
+          path.parent
         else
-          echo "section_regex match failed"
-          exit 1
-        fi
-      elif [[ $line =~ $entry_regex ]]; then
-        if [[ -n ${BASH_REMATCH[1]} && -n ${BASH_REMATCH[2]} ]]; then
-          key="$(config::parse-key "${BASH_REMATCH[1]}")"
-          value="$(config::parse-value "${BASH_REMATCH[2]}")"
-          current_config_array["${key}"]="${value}"
+          path.parent.parent
+        end
+      end
+  end
+
+  def self.source_dir
+    project_dir.join("src")
+  end
+
+  def self.config_file_path
+    dotfiles_home.join(".dotfilesrc")
+  end
+
+  self.dotfiles_home =
+    Pathname.new(ENV["DOTFILES_HOME"] || ENV["HOME"]).expand_path(Dir.pwd)
+
+  module MessageHelpers
+    COLOR_CODES = { bold: 1, red: 31, green: 32, yellow: 33, blue: 34 }
+
+    def success(text)
+      puts_in(:green, text)
+    end
+
+    def warning(text)
+      puts_in(:yellow, text)
+    end
+
+    def info(text)
+      puts_in(:bold, text)
+    end
+
+    def error(text)
+      puts_in(:red, text)
+    end
+
+    private
+
+    def puts_in(color, text)
+      puts colorize(color, text)
+    end
+
+    def colorize(color, text)
+      code =
+        COLOR_CODES.fetch(color) do
+          raise KeyError.new("Unrecognized color #{color.inspect}")
+        end
+
+      "\033[#{code}m#{text}\033[0m"
+    end
+  end
+
+  class Config
+    def initialize(data)
+      @data = data.transform_keys(&:to_sym)
+    end
+
+    def main
+      @main ||= MainLevel.new(data.fetch(:main, {}))
+    end
+
+    def install
+      @install ||= CommandLevel.new(main, data.fetch(:install, {}))
+    end
+
+    def uninstall
+      @uninstall ||= CommandLevel.new(main, data.fetch(:uninstall, {}))
+    end
+
+    def to_h
+      { main: main.to_h, install: install.to_h, uninstall: uninstall.to_h }
+    end
+
+    private
+
+    class MainLevel
+      def initialize(data)
+        @data = default_data.merge(data.transform_keys(&:to_sym))
+      end
+
+      def dry_run?
+        data.fetch(:dry_run)
+      end
+
+      def dry_run=(value)
+        data[:dry_run] = value
+      end
+
+      def force?
+        data.fetch(:force)
+      end
+
+      def force=(value)
+        data[:force] = value
+      end
+
+      def verbose?
+        data.fetch(:verbose)
+      end
+
+      def verbose=(value)
+        data[:verbose] = value
+      end
+
+      def to_h
+        data
+      end
+
+      private
+
+      attr_reader :data
+
+      def default_data
+        { dry_run: false, force: false, verbose: false }
+      end
+    end
+
+    class CommandLevel
+      extend Forwardable
+
+      def_delegators :main, :dry_run?, :force?, :verbose?
+
+      def initialize(main, data)
+        @main = main
+        @data = data.transform_keys(&:to_sym)
+      end
+
+      def method_missing(name, *args, &block)
+        if name.end_with?("=")
+          data[name.to_s.sub(/=$/, "").to_sym] = args.first
         else
-          echo "entry_regex match failed"
-          exit 1
-        fi
-      else
-        echo "Could not parse line: $line"
-        exit 1
-      fi
-    fi
-  done < "$file"
-}
+          data.fetch(name.to_sym) { super }
+        end
+      end
 
-config::write() {
-  local file="$1"
-  shift
+      def to_h
+        data
+      end
 
-  local arg
-  local -A config_variable_map=()
+      private
 
-  while [[ ${1:-} ]]; do
-    arg="${1:-}"
-    case "$arg" in
-      --*)
-        config_variable_map[${arg#--}]="$2"
-        shift 2
-        ;;
-      *)
-        error "Unknown argument '$arg' given."
-        exit 1
-    esac
-  done
+      attr_reader :main, :data
+    end
 
-  rm -f $file
+    private
 
-  local index=0
-  for section_name in "${!config_variable_map[@]}"; do
-    local -n config_array=${config_variable_map[$section_name]}
-    if [[ $index -gt 0 ]]; then
-      echo >> $file
-    fi
-    echo "[$section_name]" >> $file
+    attr_reader :data
+  end
 
-    for key in "${!config_array[@]}"; do
-      if [[ "${config_array[$key]}" =~ ^[[:digit:]]+$ ]]; then
-        echo "$key = ${config_array[$key]}" >> $file
-      else
-        echo "$key = \"${config_array[$key]}\"" >> $file
-      fi
-    done
+  class ConfigFile
+    def initialize(path)
+      @path = path
+    end
 
-    index=$index+1
-  done
-}
+    def read
+      path.exist? ? Config.new(JSON.parse(path.read)) : Config.new({})
+    end
 
-config::parse-key() {
-  echo "$1" | \
-    sed -Ee 's/^[[:blank:]]+//' | \
-    sed -Ee 's/[[:blank:]]+$//'
-}
+    def write(config)
+      hash = config.to_h
+      path.write(JSON.pretty_generate(hash.slice(*(hash.keys - [:main]))))
+    end
 
-config::parse-value() {
-  echo "$1" | \
-    sed -Ee 's/^[[:blank:]]+//' | \
-    sed -Ee 's/[[:blank:]]+$//' | \
-    sed -Ee "s/\"(.+)\"/\\1/" | \
-    sed -Ee "s/'(.+)'/\\1/" | \
-    sed -Ee "s!~/!$HOME/!" | \
-    sed -Ee "s!/~!/$HOME!"
-}
+    private
 
-#== UTILITIES ==================================================================
+    attr_reader :path
+  end
 
-colorize() {
-  local code=
+  class Error < ArgumentError
+    attr_reader :details
 
-  case "$1" in
-    bold)
-      code=1
-      ;;
-    red)
-      code=31
-      ;;
-    green)
-      code=32
-      ;;
-    yellow)
-      code=33
-      ;;
-    blue)
-      code=34
-      ;;
-    *)
-      echo "WARNING: $1 is an invalid color"
-      code=0
-      ;;
-  esac
+    def initialize(message, details: nil)
+      super(message)
+      @details = details
+    end
+  end
 
-  echo -ne "\033[${code}m"
-  echo -n "${@:2}"
-  echo -ne "\033[0m"
-}
+  class Command
+    include MessageHelpers
 
-echo-in() {
-  echo $(colorize "$@")
-}
+    def initialize(config)
+      @config = config
+    end
 
-success() {
-  echo-in green "$@"
-}
+    def parse_args(args)
+      i = 0
+      while i < args.length
+        case args[i]
+        when /^--(.+)$/
+          config.public_send("#{$1.gsub("-", "_")}=", args[i + 1])
+          i += 2
+        else
+          raise Error.new(
+                  "Unknown argument #{args[i].inspect} given.",
+                  details: "Please run #{$0} #{command_name} --help for usage."
+                )
+        end
+      end
+    end
 
-warning() {
-  echo-in yellow "$@"
-}
+    def print_help
+      raise NotImplementedError
+    end
 
-info() {
-  echo-in bold "$@"
-}
+    def process_entry(entry)
+      raise NotImplementedError
+    end
 
-error() {
-  echo-in red "$@"
-}
+    def process_non_link(entry)
+      raise NotImplementedError
+    end
 
-digest-file() {
-  if type md5 &>/dev/null; then
-    echo $(md5 -q "$1")
-  elif type md5sum &>/dev/null; then
-    echo $(md5sum "$1")
-  else
-    error "Could not find md5 or md5sum, aborting."
-    exit 1
-  fi
-}
+    def print_result
+      raise NotImplementedError
+    end
 
-files-equal() {
-  [[ $(digest-file "$1") == $(digest-file "$2") ]]
-}
+    protected
 
-#== COMMON =====================================================================
+    def command_name
+      raise NotImplementedError
+    end
 
-inspect-command() {
-  echo "                 >" "$@"
-}
+    def build_destination_for(source)
+      path = source.relative_path_from(DotfilesManager.source_dir)
+      DotfilesManager.dotfiles_home.join(".#{path}")
+    end
 
-build-destination-path() {
-  echo "$DOTFILES_HOME/.$1"
-}
+    def announce(subaction, action, source: nil, destination: nil)
+      if source
+        formatted_source_path = format_source_path(source)
+      end
 
-format-source-path() {
-  local source_path="${1/$PROJECT_DIR/\$DOTFILES}"
+      if destination
+        formatted_destination_path =
+          format_destination_path(destination, directory: source&.directory?)
+      end
 
-  if [[ -d $source_path ]]; then
-    source_path="${source_path}/"
-  fi
+      color = determine_action_color!(action)
 
-  echo "$source_path"
-}
+      prefix =
+        format_announcement_prefix(
+          color: color,
+          action: action,
+          action_width: action_width,
+          subaction: subaction,
+          subaction_width: subaction_width
+        )
 
-format-destination-path() {
-  local destination_path="${1/$DOTFILES_HOME/~}"
+      _announce(
+        subaction: subaction,
+        prefix: prefix,
+        source: formatted_source_path,
+        destination: formatted_destination_path
+      )
+    end
 
-  if [[ -d $destination_path ]]; then
-    destination_path="${destination_path}/"
-  fi
+    def determine_action_color!(action)
+      raise NotImplementedError
+    end
 
-  echo "$destination_path"
-}
+    def action_width
+      raise NotImplementedError
+    end
 
-format-announcement-prefix() {
-  local color="$1"
-  local action="$2"
-  local action_width="$3"
-  local subaction="$4"
-  local subaction_width="$5"
+    def subaction_width
+      raise NotImplementedError
+    end
 
-  local colorized_action=$(colorize $color "$(printf "%${action_width}s" "$action")")
-  local colorized_subaction=$(colorize yellow "$(printf "%${subaction_width}s" "$subaction")")
-  echo "${colorized_action} ${colorized_subaction}"
-}
+    def _announce(subaction:, prefix:, **rest)
+      raise NotImplementedError
+    end
 
-announce() {
-  local subaction="$1"
-  local action="$2"
-  shift 2
+    private
 
-  local source_path=
-  local destination_path=
-  local formatted_source_path=
-  local formatted_destination_path=
+    def format_source_path(source)
+      path =
+        "$DOTFILES/" +
+          source.relative_path_from(DotfilesManager.project_dir).to_s
 
-  while [[ ${1:-} ]]; do
-    case "$1" in
-      -s)
-        source_path="$2"
-        shift 2
-        ;;
-      -d)
-        destination_path="$2"
-        shift 2
-        ;;
-      *)
-        error "Invalid argument '$1', must be -s SOURCE or -d DESTINATION."
-        exit 1
-        ;;
-    esac
-  done
+      source.directory? ? "#{path}/" : path
+    end
 
-  if [[ $source_path ]]; then
-    local formatted_source_path=$(format-source-path "$source_path")
-  fi
+    def format_destination_path(destination, directory:)
+      path =
+        "~/" +
+          destination.relative_path_from(DotfilesManager.dotfiles_home).to_s
+      directory ? "#{path}/" : path
+    end
 
-  if [[ $destination_path ]]; then
-    local formatted_destination_path=$(format-destination-path "$destination_path")
-  fi
+    def format_announcement_prefix(
+      color:,
+      action:,
+      action_width:,
+      subaction:,
+      subaction_width:
+    )
+      colorized_action = colorize(color, "%#{action_width}s" % action)
+      colorized_subaction =
+        colorize(:yellow, "%#{subaction_width}s" % subaction)
+      "#{colorized_action} #{colorized_subaction}"
+    end
 
-  set +e
-  local color=
-  color="$(${COMMAND}__determine-action-color "$action")"
-  if [[ $? -eq 1 ]]; then
-    error "Couldn't find color for action '$action'!"
-    echo "Please check the definition of ${COMMAND}__determine-action-color()."
-    exit 1
-  fi
-  set -e
+    def files_have_same_content?(file1, file2)
+      file1.read == file2.read
+    end
+  end
 
-  local prefix="$(
-    format-announcement-prefix \
-      "$color" \
-      "$action" \
-      $(${COMMAND}__action-width) \
-      "$subaction" \
-      $(${COMMAND}__subaction-width)
-  )"
-  eval '${COMMAND}__announce' \
-    '"$subaction"' \
-    '"$prefix"' \
-    ${formatted_source_path:+'-s "$formatted_source_path"'} \
-    ${formatted_destination_path:+'-d "$formatted_destination_path"'}
-}
-
-#== INSTALL ====================================================================
-
-install__parse-args() {
-  local arg
-
-  while [[ ${1:-} ]]; do
-    arg="${1:-}"
-    case "$arg" in
-      --*)
-        INSTALL_CONFIG["${arg#--}"]="$2"
-        shift 2
-        ;;
-      *)
-        error "Unknown argument '$arg' given."
-        echo "Please run $0 install --help for usage."
-        exit 1
-    esac
-  done
-}
-
-install__print-help() {
-  cat <<TEXT
-$(colorize blue "## DESCRIPTION")
+  class InstallCommand < Command
+    def print_help
+      puts <<-TEXT
+#{colorize :blue, "## DESCRIPTION"}
 
 The 'install' command will create symlinks in your home folder based on the
 contents of the src/ directory. It will iterate over the files there and do one
@@ -355,9 +343,9 @@ of a few things depending on what it encounters:
 
 There are some exceptions to this:
 
-* If it encounters a file anywhere called _install.sh, it will treat that file
-  as an executable and run it. (It assumes you have chmod'd this file correctly
-  and that this script has a shebang.)
+* If it encounters a file anywhere called __install__.sh, it will treat that
+  file as an executable and run it. (It assumes you have chmod'd this file
+  correctly and that this script has a shebang.)
 * If it encounters a file anywhere that ends in .__no-link__, it will copy this
   file to your home directory instead of creating a symlink.
   EXAMPLE: src/gitconfig.__no-link__ creates a file (not a symlink) at
@@ -374,9 +362,9 @@ Finally, if you want to know what this command will do before running it for
 real, and especially if this is the first time you're running it, use the
 --dry-run option. For further output, use the --verbose option.
 
-$(colorize blue "## USAGE")
+#{colorize :blue, "## USAGE"}
 
-$(colorize bold "$0 $COMMAND [FIRST_TIME_OPTIONS] [OTHER_OPTIONS]")
+#{colorize :bold, "$0 $COMMAND [FIRST_TIME_OPTIONS] [OTHER_OPTIONS]"}
 
 where FIRST_TIME_OPTIONS are one or more of:
 
@@ -395,245 +383,205 @@ and OTHER_OPTIONS are one or more of:
   Show every command that is run when it is run.
 --help, -h
   You're looking at it ;)
-TEXT
-}
+      TEXT
+    end
 
-install__determine-action-color() {
-  local action="$1"
+    def process_entry(source)
+      destination = build_destination_for(source)
 
-  case $action in
-    create | run | read)
-      echo "green"
-      ;;
-    overwrite)
-      echo "red"
-      ;;
-    exists | same | unknown)
-      echo "blue"
-      ;;
-    *)
-      exit 1
-      ;;
-  esac
-}
+      # TODO: Have this be JSON or TOML
+      if source.basename.to_s == "__overrides__.cfg"
+        announce(:config, :read, source: source)
+        read_config_file(source)
+        # TODO: Have this be whatever
+      elsif source.basename.to_s == "__install__.sh"
+        # TODO: Should this be 'script' or something?
+        announce(:command, :run, source: source)
+        run_install_script(source)
+      else
+        # TODO: This is actually switched
+        link_file_with_announcement(source, destination)
+      end
+    end
 
-install__action-width() {
-  echo 8
-}
+    def process_non_link(source)
+      destination = build_destination_for(source.sub(/\.__no-link__$/, ""))
 
-install__subaction-width() {
-  echo 8
-}
+      if destination.exist? || destination.symlink?
+        if config.force?
+          announce(
+            :non_link,
+            :overwrite,
+            source: source,
+            destination: destination
+          )
+          copy_file(source, destination)
+        else
+          # Is 'entry' correct here? My guess is that we don't know what kind of
+          # file it is
+          announce(:entry, :exists, source: source, destination: destination)
+        end
+      else
+        # TODO: Change this to 'copy' 'file'
+        announce(:non_link, :create, source: source, destination: destination)
+        copy_file(source, destination)
+      end
+    end
 
-install__announce() {
-  local subaction="$1"
-  local prefix="$2"
-  shift 2
+    def print_result
+      if config.dry_run?
+        puts
+        info "Don't worry — no files were created!"
+      else
+        puts
 
-  local source_path=
-  local destination_path=
+        # TODO: Update this message to only appear if no changes were made?
+        success "All files are installed, you're good!"
+        puts "(Not the output you expect? Run --force to force-update skipped files.)"
+      end
+    end
 
-  while [[ ${1:-} ]]; do
-    case "$1" in
-      -s)
-        source_path="$2"
-        shift 2
-        ;;
-      -d)
-        destination_path="$2"
-        shift 2
-        ;;
-      *)
-        error "Invalid argument '$1', must be -s SOURCE or -d DESTINATION."
-        exit 1
-        ;;
-    esac
-  done
+    protected
 
-  if [[ $source_path ]]; then
-    if [[ $destination_path ]]; then
-      echo "${prefix} ${source_path} --> ${destination_path}"
-    else
-      echo "${prefix} ${source_path}"
-    fi
-  else
-    echo "${prefix} ${destination_path}"
-  fi
-}
+    def command_name
+      :install
+    end
 
-install__read-config-file() {
-  local -A symlinks
-  config::read "$1" --symlinks symlinks
+    def determine_action_color!(action)
+      case action
+      when :create, :run, :read
+        :green
+      when :overwrite
+        :red
+      when :exists, :same, :unknown
+        :blue
+      else
+        raise Error.new(
+                "Could not determine color for action #{action.inspect}."
+              )
+      end
+    end
 
-  for source_path in "${!symlinks[@]}"; do
-    install__link-file-with-announcement \
-      "$(absolute-path-of "$source_path" $SOURCE_DIR)" \
-      "${symlinks[$source_path]}"
-  done
-}
+    def action_width
+      8
+    end
 
-install__run-install-script() {
-  local full_path="$1"
-  local command=(env)
-  local variable_name
+    def subaction_width
+      8
+    end
 
-  for key in "${!INSTALL_CONFIG[@]}"; do
-    variable_name="$(echo "$key" | tr '[a-z]' '[A-Z]' | tr '-' '_')"
-    command+=("$variable_name=${INSTALL_CONFIG[$key]}")
-  done
+    def _announce(subaction:, prefix:, source: nil, destination: nil)
+      if source
+        if destination
+          # TODO: This is backwards
+          puts "#{prefix} #{source} --> #{destination}"
+        else
+          puts "#{prefix} #{source}"
+        end
+      else
+        puts "#{prefix} #{destination}"
+      end
+    end
 
-  command+=("$full_path")
+    private
 
-  if [[ ${COMMON_CONFIG[verbose]} -eq 1 ]]; then
-    inspect-command "${command[@]}"
-  fi
+    attr_reader :config
 
-  if [[ ${COMMON_CONFIG[dry_run]} -eq 0 ]]; then
-    "${command[@]}"
-    exit_code=$?
+    # TODO: If any of the designated source files here are inside of the
+    # source dir, then symlinks will also be created for them elsewhere
+    def read_config_file(file)
+      JSON
+        .parse(file.read)
+        .fetch("symlinks")
+        .each do |symlink_path, target_path|
+          symlink = DotfilesManager.source_dir.join(symlink_path)
+          target = Pathname.new(target_path.gsub("~/", ENV["HOME"] + "/"))
+          link_file_with_announcement(symlink, target)
+        end
+    end
 
-    if [[ $exit_code -ne 0 ]]; then
-      echo
-      error "$(format-source-path "$full_path") failed with exit code $exit_code."
-      echo "Take a closer look at this file. Perhaps you're using set -e and some command is failing?"
-      exit 1
-    fi
-  fi
-}
+    def run_install_script(file)
+      env = config.to_h.transform_keys { |k| k.to_s.upcase }
 
-install__copy-file() {
-  local full_source_path="$1"
-  local full_destination_path="$2"
+      if config.verbose?
+        inspect_command(env, file.to_s)
+      end
 
-  if [[ ${COMMON_CONFIG[verbose]} -eq 1 ]]; then
-    inspect-command mkdir -p $(dirname "$full_destination_path")
+      if !config.dry_run?
+        if !system(env, file.to_s, out: "/dev/null", err: "/dev/null")
+          raise Error.new(
+                  "#{format_source_path(file)} failed with exit code #{$?}.",
+                  details:
+                    "Take a closer look at this file. Perhaps you're using set -e " +
+                      "and some command is failing?"
+                )
+        end
+      end
+    end
 
-    if [[ ${COMMON_CONFIG[force]} -eq 1 ]]; then
-      inspect-command rm -f "$full_destination_path"
-    fi
+    def link_file_with_announcement(symlink, target)
+      if target.exist? || target.symlink?
+        if config.force?
+          announce(:link, :overwrite, source: symlink, destination: target)
+          link_file(symlink, target)
+        else
+          announce(:link, :exists, source: symlink, destination: target)
+        end
+      else
+        announce(:link, :create, source: symlink, destination: target)
+        link_file(symlink, target)
+      end
+    end
 
-    inspect-command cp "$full_source_path" "$full_destination_path"
-  fi
+    def link_file(symlink, target)
+      if config.verbose?
+        puts "Making directory #{target.dirname}..."
 
-  if [[ ${COMMON_CONFIG[dry_run]} -eq 0 ]]; then
-    mkdir -p $(dirname "$full_destination_path")
+        if config.force?
+          puts "Removing #{target}..."
+        end
 
-    if [[ ${COMMON_CONFIG[force]} -eq 1 ]]; then
-      rm -f "$full_destination_path"
-    fi
+        puts "Symlinking #{symlink} to #{target}..."
+      end
 
-    cp "$full_source_path" "$full_destination_path"
-  fi
-}
+      if !config.dry_run?
+        target.parent.mkpath
 
-install__process-non-link() {
-  local full_source_path="$1"
-  local non_template_full_source_path="${full_source_path%.__no-link__}"
-  local destination_path="${non_template_full_source_path#$SOURCE_DIR/}"
-  local full_destination_path=$(build-destination-path "$destination_path")
+        if config.force?
+          FileUtils.rm_rf(target)
+        end
 
-  if [[ -e $full_destination_path ]]; then
-    if [[ ${COMMON_CONFIG[force]} -eq 1 ]]; then
-      announce non-link overwrite -s "$full_source_path" -d "$full_destination_path"
-      install__copy-file "$full_source_path" "$full_destination_path"
-    else
-      announce entry exists -s "$full_source_path" -d "$full_destination_path"
-    fi
-  else
-    announce non-link create -s "$full_source_path" -d "$full_destination_path"
-    install__copy-file "$full_source_path" "$full_destination_path"
-  fi
-}
+        target.make_symlink(symlink)
+      end
+    end
 
-install__link-file() {
-  local full_source_path="$1"
-  local full_destination_path="$2"
+    def copy_file(source, destination)
+      if config.verbose?
+        puts "Making directory #{destination.dirname}..."
 
-  if [[ ${COMMON_CONFIG[verbose]} -eq 1 ]]; then
-    inspect-command mkdir -p $(dirname "$full_destination_path")
+        if config.force?
+          puts "Removing #{destination}..."
+        end
 
-    if [[ ${COMMON_CONFIG[force]} -eq 1 ]]; then
-      inspect-command rm -rf "$full_destination_path"
-    fi
+        puts "Copying #{source} to #{target}..."
+      end
 
-    inspect-command ln -s "$full_source_path" "$full_destination_path"
-  fi
+      if !config.dry_run?
+        destination.parent.mkpath
 
-  if [[ ${COMMON_CONFIG[dry_run]} -eq 0 ]]; then
-    mkdir -p $(dirname "$full_destination_path")
+        if config.force?
+          FileUtils.rm_rf(destination)
+        end
 
-    if [[ ${COMMON_CONFIG[force]} -eq 1 ]]; then
-      rm -rf "$full_destination_path"
-    fi
+        FileUtils.cp(source, destination)
+      end
+    end
+  end
 
-    ln -s "$full_source_path" "$full_destination_path"
-  fi
-}
-
-install__process-entry() {
-  local full_source_path="$1"
-  local destination_path="${full_source_path#$SOURCE_DIR/}"
-  local full_destination_path=$(build-destination-path "$destination_path")
-  local basename=$(basename "$full_source_path")
-
-  if [[ $basename == "__overrides__.cfg" ]]; then
-    announce config read -s "$full_source_path"
-    install__read-config-file "$full_source_path"
-  elif [[ $basename == "__install__.sh" ]]; then
-    announce command run -s "$full_source_path"
-    install__run-install-script "$full_source_path"
-  else
-    install__link-file-with-announcement "$full_source_path" "$full_destination_path"
-  fi
-}
-
-install__link-file-with-announcement() {
-  local full_source_path="$1"
-  local full_destination_path="$2"
-
-  if [[ -e $full_destination_path || -L $full_destination_path ]]; then
-    if [[ ${COMMON_CONFIG[force]} -eq 1 ]]; then
-      announce link overwrite -s "$full_source_path" -d "$full_destination_path"
-      install__link-file "$full_source_path" "$full_destination_path"
-    else
-      announce link exists -s "$full_source_path" -d "$full_destination_path"
-    fi
-  else
-    announce link create -s "$full_source_path" -d "$full_destination_path"
-    install__link-file "$full_source_path" "$full_destination_path"
-  fi
-}
-
-install__print-result() {
-  if [[ ${COMMON_CONFIG[dry_run]} -eq 1 ]]; then
-    echo
-    info "Don't worry — no files were created!"
-  else
-    echo
-    success "All files are installed, you're good!"
-    echo "(Not the output you expect? Run --force to force-update skipped files.)"
-  fi
-}
-
-#== UNINSTALL ==================================================================
-
-uninstall__parse-args() {
-  local arg=
-
-  while [[ ${1:-} ]]; do
-    arg="${1:-}"
-    case "$arg" in
-      *)
-        error "Unknown argument '$arg' given."
-        echo "Please run $0 $COMMAND --help for usage."
-        exit 1
-    esac
-  done
-}
-
-uninstall__print-help() {
-  cat <<TEXT
-$(colorize blue "## DESCRIPTION")
+  class UninstallCommand < Command
+    def print_help
+      puts <<-TEXT
+#{colorize :blue, "## DESCRIPTION"}
 
 The 'uninstall' command will remove symlinks in your home folder based on the
 contents of the src/ directory. It will iterate over the files there and do one
@@ -654,8 +602,8 @@ There are some exceptions to this:
 
 * If it encounters a file anywhere that ends in .__no-link__, it will remove the
   corresponding file from your home directory if it has the same content.
-  EXAMPLE: src/gitconfig.__no-link__ removes a file at ~/.gitconfig if both files
-  are the same.
+  EXAMPLE: src/gitconfig.__no-link__ removes a file at ~/.gitconfig if both
+  files are the same.
 * If it encounters a directory anywhere that has a .no-recurse file, it will
   NOT recurse the directory; it will remove the symlink for the directory if it
   points to the source directory.
@@ -669,9 +617,9 @@ Finally, if you want to know what this command will do before running it for
 real, and especially if this is the first time you're running it, use the
 --dry-run option. For further output, use the --verbose option.
 
-$(colorize blue "## USAGE")
+#{colorize :blue, "## USAGE"}
 
-$(colorize bold "$0 $COMMAND [OPTIONS]")
+#{colorize :bold, "$0 $COMMAND [OPTIONS]"}
 
 where OPTIONS are:
 
@@ -685,277 +633,264 @@ where OPTIONS are:
   Show every command that is run when it is run.
 --help, -h
   You're looking at it ;)
-TEXT
-}
+      TEXT
+    end
 
-uninstall__determine-action-color() {
-  local action="$1"
+    def process_entry(source)
+      destination = build_destination_for(source)
 
-  case $action in
-    delete | purge | overwrite)
-      echo "red"
-      ;;
-    absent | different | unlinked | unrecognized | unknown)
-      echo "blue"
-      ;;
-    *)
+      if destination.symlink?
+        announce(:link, :delete, source: source, destination: destination)
+        remove_file(destination)
+      elsif destination.exists?
+        if config.force?
+          announce(:entry, :purge, source: source)
+          remove_file(destination)
+        else
+          announce(:entry, :unlinked, destination: destination)
+        end
+      end
+    end
+
+    def process_non_link(file)
+      source = file.sub(/\.__no-link__$/, "")
+      destination = build_destination_for(source)
+
+      if destination.exist?
+        if files_have_same_content?(source, destination) || config.force?
+          announce(:non_link, :delete, source: source, destination: destination)
+          remove_file(destination)
+        else
+          announce(
+            :non_link,
+            :different,
+            source: source,
+            destination: destination
+          )
+        end
+      else
+        announce(:non_link, :absent, source: source, destination: destination)
+      end
+    end
+
+    def print_result
+      if config.dry_run?
+        puts
+        info "Don't worry — no files were created!"
+      else
+        puts
+        success "All files have been removed, you're good!"
+        puts "(Not the output you expect? Run --force to force-remove skipped files.)"
+      end
+    end
+
+    protected
+
+    def command_name
+      :uninstall
+    end
+
+    def determine_action_color!(action)
+      case action
+      when :delete, :purge, :overwrite
+        :red
+      when :absent, :different, :unlinked, :unrecognized, :unknown
+        :blue
+      else
+        raise Error.new(
+                "Could not determine color for action #{action.inspect}."
+              )
+      end
+    end
+
+    def action_width
+      12
+    end
+
+    def subaction_width
+      8
+    end
+
+    def _announce(subaction:, prefix:, source: nil, destination:)
+      if source
+        # TODO: This is backwards
+        puts "#{prefix} #{destination} <-- #{source}"
+      else
+        puts "#{prefix} #{destination}"
+      end
+    end
+
+    private
+
+    def remove_file(file)
+      if config.verbose?
+        puts "Removing #{file}..."
+      end
+
+      if !config.dry_run?
+        file.delete
+      end
+    end
+  end
+
+  class Main
+    def self.call(args)
+      new(args).call
+    end
+
+    include MessageHelpers
+
+    private_class_method :new
+
+    def initialize(args)
+      @args = args
+      @config_file = ConfigFile.new(DotfilesManager.config_file_path)
+      @command = nil
+    end
+
+    def call
+      if !DotfilesManager.dotfiles_home.exist?
+        raise Error.new(
+                "Dotfiles home does not seem to exist: #{DotfilesManager.dotfiles_home}"
+              )
+      end
+
+      read_config_file
+      parse_args
+      if !config.main.dry_run?
+        write_config_file
+      end
+      if config.main.dry_run?
+        info "Running in dry-run mode."
+        puts
+      end
+      recurse(DotfilesManager.source_dir)
+      command.print_result
+    rescue Error => error
+      error error.message
+      puts error.details
       exit 1
-      ;;
-  esac
-}
+    end
 
-uninstall__action-width() {
-  echo 12
-}
+    private
 
-uninstall__subaction-width() {
-  echo 8
-}
+    attr_reader :args, :config_file, :config, :command
 
-uninstall__announce() {
-  local subaction="$1"
-  local prefix="$2"
-  shift 2
+    def read_config_file
+      @config = config_file.read
+    end
 
-  local source_path=
-  local destination_path=
+    def write_config_file
+      config_file.write(config)
+    end
 
-  while [[ ${1:-} ]]; do
-    case "$1" in
-      -s)
-        source_path="$2"
-        shift 2
-        ;;
-      -d)
-        destination_path="$2"
-        shift 2
-        ;;
-      *)
-        error "Invalid argument '$1', must be -s SOURCE or -d DESTINATION."
-        exit 1
-        ;;
-    esac
-  done
+    def parse_args
+      if args.empty?
+        raise Error.new(
+                "Missing command.",
+                details: "Please run #{$0} --help for usage."
+              )
+      end
 
-  if [[ $source_path ]]; then
-    echo "${prefix} ${destination_path} <-- ${source_path}"
-  else
-    echo "${prefix} ${destination_path}"
-  fi
-}
+      args.each do |arg|
+        case arg
+        when "--help"
+          print_help
+          exit
+        when "install"
+          @command = InstallCommand.new(config.install)
+          break
+        when "uninstall"
+          @command = UninstallCommand.new(config.uninstall)
+          break
+        else
+          raise Error.new(
+                  "Unknown command #{arg.inspect}",
+                  details: "Please run #{$0} --help for usage."
+                )
+        end
+      end
 
-uninstall__remove-file() {
-  local full_destination_path="$1"
+      rest = []
+      args[1..-1].each do |arg|
+        case arg
+        when "--dry-run", "--noop", "-n"
+          config.main.dry_run = true
+        when "--force", "-f"
+          config.main.force = true
+        when "--verbose", "-V"
+          config.main.verbose = true
+        when "--help", "-h", "-?"
+          command.print_help
+          exit
+        else
+          rest << arg
+        end
+      end
 
-  if [[ ${COMMON_CONFIG[verbose]} -eq 1 ]]; then
-    inspect-command rm "$full_destination_path"
-  fi
+      command.parse_args(rest)
+    end
 
-  if [[ ${COMMON_CONFIG[dry_run]} -eq 0 ]]; then
-    rm "$full_destination_path"
-  fi
-}
-
-uninstall__process-non-link() {
-  local full_source_path="$1"
-  local non_template_full_source_path="${full_source_path%.__no-link__}"
-  local destination_path="${non_template_full_source_path#$SOURCE_DIR/}"
-  local full_destination_path=$(build-destination-path "$destination_path")
-
-  if [[ -f $full_destination_path ]]; then
-    if files-equal "$full_source_path" "$full_destination_path" || [[ ${COMMON_CONFIG[force]} -eq 1 ]]; then
-      announce non-link delete -s "$full_source_path" -d "$full_destination_path"
-      uninstall__remove-file "$full_destination_path"
-    else
-      announce non-link different -s "$full_source_path" -d "$full_destination_path"
-    fi
-  else
-    announce non-link absent -s "$full_source_path" -d "$full_destination_path"
-  fi
-}
-
-uninstall__process-entry() {
-  local full_source_path="$1"
-  local destination_path="${full_source_path#$SOURCE_DIR/}"
-  local full_destination_path=$(build-destination-path "$destination_path")
-
-  if [[ -h $full_destination_path ]]; then
-    announce link delete -s "$full_source_path" -d "$full_destination_path"
-    uninstall__remove-file "$full_destination_path"
-  elif [[ -e $full_destination_path ]]; then
-    if [[ ${COMMON_CONFIG[force]} -eq 1 ]]; then
-      announce entry purge -s "$full_source_path"
-      uninstall__remove-file "$full_destination_path"
-    else
-      announce entry unlinked -d "$full_destination_path"
-    fi
-  fi
-}
-
-uninstall__print-result() {
-  if [[ ${COMMON_CONFIG[dry_run]} -eq 1 ]]; then
-    echo
-    info "Don't worry — no files were removed!"
-  else
-    echo
-    success "All files have been removed, you're good!"
-    echo "(Not the output you expect? Run --force to force-remove skipped files.)"
-  fi
-}
-
-#== MAIN ======================================================================
-
-read-config-file() {
-  if [[ -f $CONFIG_FILE_PATH ]]; then
-    config::read $CONFIG_FILE_PATH --install INSTALL_CONFIG
-  fi
-}
-
-write-config-file() {
-  config::write $CONFIG_FILE_PATH --install INSTALL_CONFIG
-}
-
-print-help() {
-  cat <<TEXT
-$(colorize bold "## DESCRIPTION")
+    def print_help
+      puts <<-TEXT
+#{colorize :bold, "## DESCRIPTION"}
 
 This script will either create symlinks in your home directory based on the
 contents of src/ or delete previously installed symlinks.
 
-$(colorize bold "## USAGE")
+#{colorize :bold, "## USAGE"}
 
 The main way to call this script is by saying one of:
 
-    $0 install
-    $0 uninstall
+    #{$0} install
+    #{$0} uninstall
 
 If you want to know what either of these commands do, say:
 
-    $0 install --help
-    $0 uninstall --help
-TEXT
-}
+    #{$0} install --help
+    #{$0} uninstall --help
+      TEXT
+    end
 
-parse-args() {
-  local rest
+    def recurse(directory)
+      # Process overrides
+      if directory == DotfilesManager.source_dir &&
+           directory.join("__overrides__.cfg").exist?
+        process_entry(directory.join("__overrides__.cfg"))
+      end
 
-  if [[ $# -eq 0 ]]; then
-    error "Missing command."
-    echo "Please run $0 --help for usage."
-    exit 1
-  fi
+      # Process files
+      directory.children.each do |child|
+        if child.file? &&
+             !%w[__install__.sh __overrides__.cfg].include?(child.basename.to_s)
+          process_entry(directory.join(child))
+        end
+      end
 
-  case "$1" in
-    --help)
-      print-help
-      exit
-      ;;
-    install | uninstall)
-      COMMAND="$1"
-      shift
-      ;;
-    *)
-      error "Unknown command '$arg'."
-      echo "Please run $0 --help for usage."
-      exit 1
-      ;;
-  esac
+      # Process __install__.sh
+      if directory.join("__install__.sh").exist? &&
+           directory.join("__install__.sh").executable?
+        process_entry(directory.join("__install__.sh"))
+      end
 
-  rest=()
-  while [[ ${1:-} ]]; do
-    arg="${1:-}"
-    case "$arg" in
-      --dry-run | --noop | -n)
-        COMMON_CONFIG[dry_run]=1
-        shift
-        ;;
-      --force | -f)
-        COMMON_CONFIG[force]=1
-        shift
-        ;;
-      --verbose | -V)
-        COMMON_CONFIG[verbose]=1
-        shift
-        ;;
-      --help | -h | -?)
-        ${COMMAND}__print-help | more -R
-        exit
-        ;;
-      *)
-        rest+=("$arg")
-        shift
-        ;;
-    esac
-  done
+      # Process subdirectories
+      directory.children.each do |child|
+        if child.directory?
+          process_entry(child)
+        end
+      end
+    end
 
-  ${COMMAND}__parse-args "${rest[@]}"
-}
+    def process_entry(entry)
+      if entry.directory? && !entry.join(".no-recurse").exist?
+        recurse(entry)
+      elsif entry.basename.to_s.end_with?(".__no-link__")
+        command.process_non_link(entry)
+      else
+        command.process_entry(entry)
+      end
+    end
+  end
+end
 
-process-entry() {
-  local source_path="$1"
-  local dir="$2"
-  local full_source_path=$(absolute-path-of "$dir/$source_path")
-
-  if [[ -d $full_source_path && ! -e "$full_source_path/.no-recurse" ]]; then
-    recurse-dir "$full_source_path"
-  elif [[ $full_source_path =~ \.__no-link__$ ]]; then
-    ${COMMAND}__process-non-link "$full_source_path"
-  else
-    ${COMMAND}__process-entry "$full_source_path"
-  fi
-}
-
-recurse-dir() {
-  local dir="$1"
-  local source_path=
-
-  # Process /__overrides__.cfg
-  if [[ $dir == "$SOURCE_DIR" && -f "$dir/__overrides__.cfg" ]]; then
-    process-entry "__overrides__.cfg" "$dir"
-  fi
-
-  # Process files
-  find "$dir"/* -maxdepth 0 -type f -not \( -name __install__.sh -or -name __overrides__.cfg \) -exec basename {} \; | {
-    while IFS= read -r source_path; do
-      process-entry "$source_path" "$dir"
-    done
-  }
-
-  # Process __install__.sh
-  if [[ -f "$dir/__install__.sh" && -x "$dir/__install__.sh" ]]; then
-    process-entry "__install__.sh" "$dir"
-  fi
-
-  # Process subdirectories
-  find "$dir"/* -maxdepth 0 -type d -exec basename {} \; | {
-    while IFS= read -r source_path; do
-      process-entry "$source_path" "$dir"
-    done
-  }
-}
-
-main() {
-  read-config-file
-  parse-args "$@"
-
-  if [[ ${COMMON_CONFIG[dry_run]} -eq 0 ]]; then
-    write-config-file
-  fi
-
-  case $COMMAND in
-    install | uninstall)
-      if [[ ${COMMON_CONFIG[dry_run]} -eq 1 ]]; then
-        info "Running in dry-run mode."
-        echo
-      fi
-      recurse-dir "$SOURCE_DIR"
-      ${COMMAND}__print-result
-      ;;
-    *)
-      error "Unknown command $COMMAND."
-      exit 1
-      ;;
-  esac
-}
-
-main "$@"
+DotfilesManager::Main.call(ARGV)
