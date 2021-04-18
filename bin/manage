@@ -508,7 +508,7 @@ and OTHER_OPTIONS are one or more of:
       end
 
       if !config.dry_run?
-        if !system(env, file.to_s, out: "/dev/null", err: "/dev/null")
+        if !system(env, file.to_s)
           raise Error.new(
                   "#{format_source_path(file)} failed with exit code #{$?}.",
                   details:

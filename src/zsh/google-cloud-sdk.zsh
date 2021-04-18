@@ -1,3 +1,5 @@
+# TODO: Probably need to update these paths to work with /usr/local and /opt/homebrew
+
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/usr/local/opt/google-cloud-sdk/path.zsh.inc' ]; then source '/usr/local/opt/google-cloud-sdk/path.zsh.inc'; fi
 

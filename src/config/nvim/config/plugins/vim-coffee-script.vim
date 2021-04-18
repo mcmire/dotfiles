@@ -19,4 +19,5 @@ hi clear SpecialOp
 " Since CoffeeScript is installed via npm globally, we tell the plugin where to
 " find it:
 
+" TODO: Probably need to update this path to work with /usr/local and /opt/homebrew
 let coffee_compiler = "/usr/local/bin/coffee"

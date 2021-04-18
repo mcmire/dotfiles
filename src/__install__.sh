@@ -37,8 +37,42 @@ latest-version-of() {
 }
 
 if ! type brew &>/dev/null; then
-  banner "Installing Homebrew"
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  if [[ -e /usr/local/Cellar || -e /opt/homebrew ]]; then
+    error "It looks like Homebrew is already installed."
+    echo "Try starting a new terminal session and then restarting this script."
+    exit 1
+  else
+    banner "Installing Homebrew"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    echo
+    success "Homebrew is now installed."
+    echo "Please make a new tab and re-run this script."
+    exit
+  fi
+fi
+
+if ! [[ -e "/Applications/1Password 7.app" ]]; then
+  banner "Installing 1Password..."
+  brew install 1password
+
+  echo
+  echo "At this point you need to sign into 1Password, then sign into the App Store."
+  echo "Once you've done that, re-run this script."
+  exit 1
+fi
+
+if ! type mas &>/dev/null; then
+  banner "Installing mas-cli..."
+  brew install mas-cli/tap/mas
+  mas_was_just_installed=1
+
+  banner "Making sure that you are signed into the App Store"
+  if ! mas account &>/dev/null; then
+    error "It doesn't look like you are signed into the App Store."
+    echo "Please do that and then rerun this script."
+    exit 1
+  fi
 fi
 
 banner "Installing missing Homebrew packages"
@@ -46,8 +80,12 @@ brew bundle check || brew bundle
 
 if [[ $SHELL != $(which zsh) ]]; then
   banner "Updating shell to zsh"
+  sudo echo /opt/homebrew/bin/zsh >> /etc/shells
   chsh -s "$(which zsh)"
 fi
+
+banner "Fixing permissions on zsh share directory"
+chmod -R 755 /opt/homebrew/share/zsh
 
 if ! [[ -d "$HOME/.zsh-async" ]]; then
   banner "Installing zsh-async"
@@ -63,6 +101,7 @@ if [[ -f /etc/zprofile ]]; then
 fi
 
 if ! type asdf &>/dev/null; then
+  banner "Loading asdf"
   source $ASDF_DIRECTORY/asdf.sh
 fi
 
@@ -78,13 +117,27 @@ for language in ruby python nodejs; do
     asdf plugin add $language
 
     if [[ $language == "nodejs" ]]; then
+      # Fix permissions on ~/.gnupg, which will be off on a fresh installation
+      # Source: <https://gist.github.com/oseme-techguy/bae2e309c084d93b75a9b25f49718f85>
+      chown -R $(whoami) ~/.gnupg/
+      chmod 600 ~/.gnupg/*
+      chmod 700 ~/.gnupg
+
       ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
     fi
   fi
 
   if [[ $(ls "$ASDF_DIRECTORY/installs/$language" | wc -l | sed -e 's/^ *//') -eq 0 ]]; then
     banner "Installing latest version of $language"
-    asdf install ruby latest
+
+    if [[ $language == "nodejs" ]]; then
+      # Use Rosetta for now as there are no Apple Silicon builds for Node yet
+      # (although it's coming in Node 16).
+      # See: <https://github.com/asdf-vm/asdf-nodejs/issues/189>
+      arch -x86_64 asdf install $language latest
+    else
+      asdf install $language latest
+    fi
   fi
 
   if [[ $(latest-version-of $language) != $(cat ~/.tool-versions | grep "^$language" | sed -e "s/^$language //") ]]; then
@@ -118,8 +171,7 @@ if [[ ${GIT_EMAIL:-} ]]; then
   git config --global --add user.email "$GIT_EMAIL"
 fi
 
-banner "Disabling press-and-hold"
-echo "defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false"
-defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+banner "Making a bunch of configuration changes to MacOS..."
+extras/macos.sh
 
 success "Done!"

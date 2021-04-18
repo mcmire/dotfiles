@@ -137,25 +137,27 @@ prompt::precmd() {
 
     prompt::set
 
-    # Update git status
-    async_start_worker worker::update-git-status -n
-    async_register_callback worker::update-git-status prompt::update-git-status
-    async_job worker::update-git-status job::read-git-status
+    if type async_init &>/dev/null; then
+      # Update git status
+      async_start_worker worker::update-git-status -n
+      async_register_callback worker::update-git-status prompt::update-git-status
+      async_job worker::update-git-status job::read-git-status
 
-    # Update Ruby version
-    async_start_worker worker::update-ruby-version -n
-    async_register_callback worker::update-ruby-version prompt::update-ruby-version
-    async_job worker::update-ruby-version job::read-ruby-version
+      # Update Ruby version
+      async_start_worker worker::update-ruby-version -n
+      async_register_callback worker::update-ruby-version prompt::update-ruby-version
+      async_job worker::update-ruby-version job::read-ruby-version
 
-    # Update Node version
-    async_start_worker worker::update-nodejs-version -n
-    async_register_callback worker::update-nodejs-version prompt::update-nodejs-version
-    async_job worker::update-nodejs-version job::read-nodejs-version
+      # Update Node version
+      async_start_worker worker::update-nodejs-version -n
+      async_register_callback worker::update-nodejs-version prompt::update-nodejs-version
+      async_job worker::update-nodejs-version job::read-nodejs-version
 
-    # Update Python version
-    async_start_worker worker::update-python-version -n
-    async_register_callback worker::update-python-version prompt::update-python-version
-    async_job worker::update-python-version job::read-python-version
+      # Update Python version
+      async_start_worker worker::update-python-version -n
+      async_register_callback worker::update-python-version prompt::update-python-version
+      async_job worker::update-python-version job::read-python-version
+    fi
   else
     prompt::set
   fi

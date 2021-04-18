@@ -29,6 +29,7 @@ module ReportGemDownloads
   end
 
   class SendNotification
+    # TODO: Update this to support both /usr/local and /opt/homebrew
     CACHE_DIRECTORY = Pathname.new('/usr/local/var/report-gem-downloads')
     CACHED_DOWNLOAD_COUNT_FILE = CACHE_DIRECTORY.join('downloads.json')
 

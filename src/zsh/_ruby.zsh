@@ -1,1 +1,1 @@
-CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl --without-tcl --without-tk"
+CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl) --without-tcl --without-tk"

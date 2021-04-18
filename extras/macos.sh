@@ -1,13 +1,22 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
-# Shamelessly stolen from mathiasbynens' dotfiles:
+# Large parts of this were shamelessly stolen from mathiasbynens' dotfiles:
 # <https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.macos>
+
+# Kill all applications we are configuring first, to ensure that the preferences
+# we are about to set will get applied.
+#
+# This is recommended by Apple here:
+# <https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPRuntimeConfig/Articles/UserPreferences.html>
+#
+killall Finder
+killall Dock
 
 # Save to disk (not to iCloud) by default
 defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
 # Disable the “Are you sure you want to open this application?” dialog
-defaults write com.apple.LaunchServices LSQuarantine -bool false
+#defaults write com.apple.LaunchServices LSQuarantine -bool false
 
 # Disable automatic capitalization as it’s annoying when typing code
 defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false

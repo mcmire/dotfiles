@@ -1,15 +1,17 @@
 # Set a sensible default PATH:
 #
-# * /usr/local/bin is where Homebrew puts executables
-# * ~/.bin is where we will keep custom executables
+# * /usr/local/bin is where Homebrew used to keep executables (before Apple
+#   Silicon) — eventually this will be removed but keeping it here for compat
+# * ~/.bin is where we can keep our own custom executables
 #
 # Why do we totally reset the PATH here instead of prepending to it? Because of
 # tmux. tmux inherits from the parent shell's PATH. The parent shell has already
 # loaded this file, but tmux will load it all over again. Therefore if we simply
 # prepend, then PATH will explode and have a bunch of duplicates it. This causes
-# issues with NVM such as this one
-# (<https://github.com/creationix/nvm/issues/1652>)
-# and nodenv as well.
+# issues with NVM such as this one[1] and nodenv as well.
+#
+# [1]: https://github.com/creationix/nvm/issues/1652>
+#
 export PATH=$HOME/.bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
 
 # Set a sensible default MANPATH as well
