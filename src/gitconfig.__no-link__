@@ -25,6 +25,7 @@
   template = ~/.gitmessage
 [init]
   templatedir = ~/.git_template
+  defaultBranch = main
 [rebase]
   autosquash = true
 [push]
