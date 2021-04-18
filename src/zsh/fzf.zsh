@@ -3,7 +3,7 @@ fzf_path=$(brew --prefix fzf)
 # Setup fzf
 # ---------
 if [[ ! "$PATH" == *$fzf_path/bin* ]]; then
-  export PATH="$PATH:$fzf_path/bin"
+  export PATH="$fzf_path/bin:$PATH"
 fi
 
 # Auto-completion
