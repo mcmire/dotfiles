@@ -77,9 +77,9 @@ osascript -e 'tell application "System Preferences" to quit'
 
 # Also kill all applications we are configuring, to ensure that the preferences
 # we are about to set will get applied.
-killall Finder &>/dev/null
-killall Dock &>/dev/null
-killall Moom &>/dev/null
+killall Finder &>/dev/null || true
+killall Dock &>/dev/null || true
+killall Moom &>/dev/null || true
 
 # Ask for the administrator password up front
 sudo -v
@@ -446,6 +446,6 @@ defaults write com.cordlessdog.Stay SuppressStoreAllSuccess -bool true
 ###############################################################################
 
 # Restart applications again, so you can use the new settings right away.
-killall Finder &>/dev/null
-killall Dock &>/dev/null
-killall Moom &>/dev/null
+killall Finder &>/dev/null || true
+killall Dock &>/dev/null || true
+killall Moom &>/dev/null || true
