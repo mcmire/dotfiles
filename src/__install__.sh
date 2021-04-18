@@ -80,12 +80,22 @@ brew bundle check || brew bundle
 
 if [[ $SHELL != $(which zsh) ]]; then
   banner "Updating shell to zsh"
-  sudo echo /opt/homebrew/bin/zsh >> /etc/shells
+
+  if [[ -d /opt/homebrew ]]; then
+    sudo echo /opt/homebrew/bin/zsh >> /etc/shells
+  else
+    sudo echo /usr/local/bin/zsh >> /etc/shells
+  fi
+
   chsh -s "$(which zsh)"
 fi
 
 banner "Fixing permissions on zsh share directory"
-chmod -R 755 /opt/homebrew/share/zsh
+if [[ -d /opt/homebrew ]]; then
+  chmod -R 755 /opt/homebrew/share/zsh
+else
+  chmod -R 755 /usr/local/share/zsh
+fi
 
 if ! [[ -d "$HOME/.zsh-async" ]]; then
   banner "Installing zsh-async"
