@@ -29,6 +29,7 @@ brew "tree"
 brew "zsh"
 
 cask "1password"
+cask "dash"
 cask "dropbox"
 cask "font-fira-code"
 cask "google-chrome"
