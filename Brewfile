@@ -34,6 +34,7 @@ cask "font-fira-code"
 cask "google-chrome"
 cask "iterm2"
 cask "ngrok"
+cask "notion"
 cask "spotify"
 cask "visual-studio-code"
 
