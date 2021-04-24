@@ -17,6 +17,11 @@ let g:lightline = {
       \       ['percent'],
       \       ['fileformat', 'fileencoding', 'filetype']
       \     ]
+      \   },
+      \   'inactive': {
+      \     'left': [
+      \       ['relativepath', 'modified']
+      \     ]
       \   }
       \ }
 
