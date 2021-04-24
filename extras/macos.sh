@@ -132,6 +132,9 @@ defaults write NSGlobalDomain InitialKeyRepeat -int 15
 # * <https://apple.stackexchange.com/questions/280855/changing-right-hand-command-alt-key-order-to-be-like-a-windows-keyboard>
 defaults -currentHost write NSGlobalDomain com.apple.keyboard.modifiermapping.1452-641-0 -array '<dict><key>HIDKeyboardModifierMappingSrc</key><integer>30064771129</integer><key>HIDKeyboardModifierMappingDst</key><integer>30064771113</integer></dict>'
 
+# Require use of the Function key to use function keys
+defaults write NSGlobalDomain com.apple.keyboard.fnState -bool true
+
 ###############################################################################
 # Trackpad
 ###############################################################################
