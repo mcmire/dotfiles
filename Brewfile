@@ -37,6 +37,7 @@ cask "google-chrome"
 cask "iterm2"
 cask "ngrok"
 cask "notion"
+cask "numi"
 cask "spotify"
 cask "visual-studio-code"
 
