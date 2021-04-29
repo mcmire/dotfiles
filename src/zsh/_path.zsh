@@ -12,10 +12,10 @@
 #
 # [1]: https://github.com/creationix/nvm/issues/1652>
 #
-export PATH=$HOME/.bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH=$HOME/.bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 # Set a sensible default MANPATH as well
-export MANPATH=/usr/local/share/man:/opt/man:/opt/share/man:/usr/share/man
+export MANPATH=/usr/share/man
 
 # Update the path that zsh uses to autoload function definitions
 #
