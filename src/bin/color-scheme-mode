@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+file=~/.color-scheme-mode
+
+current-mode() {
+  if [[ -f $file ]]; then
+    cat $file
+  else
+    echo dark
+  fi
+}
+
+toggle-mode() {
+  local mode=$(current-mode)
+
+  if [[ $mode == "dark" ]]; then
+    local new_mode="light"
+  else
+    local new_mode="dark"
+  fi
+
+  update-mode $new_mode
+}
+
+update-mode() {
+  local mode=$1
+
+  if [[ $mode == "light" || $mode == "dark" ]]; then
+    echo $1 > $file
+  else
+    echo "ERROR: $mode is not a valid mode (must be 'light' or 'dark')"
+    exit 1
+  fi
+}
+
+for arg in "$@"; do
+  if [[ $arg == "--toggle" ]]; then
+    toggle-mode
+    shift $#
+    break
+  fi
+done
+
+if [[ -n $1 ]]; then
+  update-mode $1
+fi
+
+current-mode

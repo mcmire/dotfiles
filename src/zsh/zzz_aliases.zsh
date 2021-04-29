@@ -10,9 +10,6 @@ alias reload-env="source $ALIASES_FILE && source $FUNCTIONS_FILE"
 
 # Misc
 alias is-running="ps aux | grep -v grep | grep"
-# Explicitly tell tmux that Unicode characters are supported
-# Source: <https://askubuntu.com/questions/410048/utf-8-character-not-showing-properly-in-tmux>
-alias tmux="tmux -u"
 alias olhc="open-latest-html-capture"
 alias olic="open-latest-image-capture"
 alias ll="ls -l"

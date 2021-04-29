@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# NOTE: This is best run inside of Vim, as it does not take care of setting
+# Vim's color scheme
+#
+# Roughly inspired by: <https://grrr.tech/posts/2020/switch-dark-mode-os/>
+
+~/.iterm/auto-set-color-scheme.py
+~/.tmux/auto-set-color-scheme.sh

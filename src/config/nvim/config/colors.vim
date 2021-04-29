@@ -8,7 +8,48 @@
 " palette.
 "
 " [Solarized]: http://ethanschoonover.com/solarized
+
+" The very first thing we want to do is to enable RGB or "truecolor" support.
+" This looks like a simple setting, but Neovim is only one part of the equation
+" here. First we assume that you are using a terminal that already supports
+" truecolor and have set it up appropriately already if necessary (iTerm2 is
+" recommended as it already does just fine without having to do anything
+" special). Second, we want to make this work inside of a tmux session, so we
+" assume that tmux has been set up correctly as well.
 "
+" With that in mind, the following setting turns on truecolor mode in Neovim.
+" This means that we can use hex codes for colors instead of numbers. It also
+" means that any time we use `colorscheme` below and are setting foreground and
+" background colors for things, we will want to make sure to use `guifg` and
+" `guibg` instead of `ctermfg` and `ctermbg`.
+"
+" (For more on truecolor support in Neovim, say `:h true-color`. `:h terminfo`
+" is also useful as well.)
+"
+" TODO: Use <https://github.com/lifepillar/vim-solarized8> which does all of
+" this crap for us
+
+set termguicolors
+
+" We can use this function to verify truecolor support:
+
+function! VimColorTest(outfile, fgend, bgend)
+  let result = []
+  for fg in range(a:fgend)
+    for bg in range(a:bgend)
+      let kw = printf('%-7s', printf('c_%d_%d', fg, bg))
+      let h = printf('hi %s ctermfg=%d ctermbg=%d', kw, fg, bg)
+      let s = printf('syn keyword %s %s', kw, kw)
+      call add(result, printf('%-32s | %s', h, s))
+    endfor
+  endfor
+  call writefile(result, a:outfile)
+  execute 'edit '.a:outfile
+  source %
+endfunction
+
+command! VimColorTest call VimColorTest('/tmp/vim-color-test.tmp', 255, 255)
+
 " Solarized has two modes: dark and light. The colors between them are are
 " mostly the same except for two sets of four colors which swap places. The
 " common set of colors are:
@@ -31,13 +72,12 @@ let s:green="#859900"
 " want to use dark mode most of the time. But you may find yourself outdoors and
 " in this case light mode may be more handy. So we provide a way to switch
 " between the two easily.
+"
+" We'll define a few functions:
 
-" First, we enable RGB color support. This lets us use hex codes for colors
-" instead of numbers:
-
-set termguicolors
-
-" Then we define a few functions:
+function! s:Chomp(string)
+  return substitute(a:string, '\n\+$', '', '')
+endfunction
 
 function! s:UseDarkColorScheme()
   let s:base03="#002b36"
@@ -92,18 +132,23 @@ function! s:SetHighlights()
 endfunction
 
 function! s:ToggleColorScheme()
-  if s:color_scheme_type == "dark"
-    call s:UseLightColorScheme()
-  else
-    call s:UseDarkColorScheme()
-  endif
+  " Switch the global color scheme mode, tell iTerm and tmux to switch,
+  " then switch Vim.
+  "
+  " Roughly inspired by: <https://grrr.tech/posts/2020/switch-dark-mode-os/>
+
+  let new_color_scheme_mode = s:Chomp(system('color-scheme-mode --toggle'))
+  call system('propagate-color-scheme-mode')
+  call RefreshColorScheme(new_color_scheme_mode)
 endfunction
 
-function! g:RefreshColorScheme()
-  if s:color_scheme_type == "dark"
+function! g:RefreshColorScheme(color_scheme_mode)
+  if a:color_scheme_mode == "dark"
     call s:UseDarkColorScheme()
-  else
+  elseif a:color_scheme_mode == "light"
     call s:UseLightColorScheme()
+  else
+    throw "Unknown color scheme mode " . a:color_scheme_mode
   endif
 endfunction
 
@@ -112,7 +157,7 @@ endfunction
 command! -nargs=0 ToggleColorScheme call s:ToggleColorScheme()
 nnoremap <Leader>th :ToggleColorScheme<CR>
 
-" Finally, we set dark mode as the default:
+" Finally, we determine what the current global color scheme type is ("dark" or
+" "light"), and switch to that.
 
-let s:color_scheme_type="dark"
-call g:RefreshColorScheme()
+call g:RefreshColorScheme(s:Chomp(system('color-scheme-mode')))

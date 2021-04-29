@@ -37,7 +37,7 @@
     "Green Component" : 0.59999999999999998
   },
   "Right Option Key Sends" : 0,
-  "Rows" : 44,
+  "Rows" : 60,
   "Default Bookmark" : "No",
   "Cursor Guide Color" : {
     "Red Component" : 0.70213186740875244,
@@ -424,7 +424,7 @@
     "Green Component" : 0.29411764705882354
   },
   "Guid" : "F3B514CA-BE50-4C6B-AC64-244847B5110F",
-  "Rows" : 44,
+  "Rows" : 60,
   "Default Bookmark" : "No",
   "Ansi 4 Color" : {
     "Red Component" : 0.14901960784313725,

@@ -264,6 +264,9 @@ defaults write com.googlecode.iterm2 AllowClipboardAccess -bool true
 # Always show the tab bar even with only one tab open
 defaults write com.googlecode.iterm2 HideTab -bool false
 
+# Enable the Python API
+defaults write com.googlecode.iterm2 EnableAPIServer -bool true
+
 ###############################################################################
 # Moom
 ###############################################################################
