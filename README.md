@@ -1,13 +1,13 @@
 # dotfiles
 
-This repo sets up a command-line environment for development on a Mac.
+This repo is designed to set up a Mac for development.
 It is updated very frequently!
 
 ## [What's in the box?][se7en]
 
 [se7en]: https://youtu.be/1giVzxyoclE?t=122
 
-### Programs
+### Terminal-based tools
 
 * **zsh** — the new standard in shells
 * **[iTerm]** — a more capable terminal emulator
@@ -20,7 +20,6 @@ It is updated very frequently!
 * **[autojump]** — no more setting up aliases to jump directly to projects
 * **[fzf]** — a faster and more pleasant version of `Ctrl-R`
 * **[direnv]** — automatically load `.env` files in projects
-* **[ngrok]** — expose a local server for remote access
 * **[heroku]** — interact with Heroku-deployed apps
 
 [tmux]: https://github.com/tmux/tmux/wiki
@@ -35,6 +34,44 @@ It is updated very frequently!
 [ngrok]: https://ngrok.com/
 [heroku]: https://github.com/heroku/cli
 
+### Applications
+
+* **[Chrome]** — still has the best devtools
+* **[1Password]** — the easiest password manager
+* **[Simplenote]** — highly performant, write-anywhere, dead simple note-taking tool
+* **[Notion]** — sophisticated create-your-own human knowledge vault
+* **[Dash]** — search documentation for all kinds of programming languages
+* **[Moom]** — control placement of your windows using keybindings
+* **[Stay]** — remembers window placement when connecting and discnnnecting monitors
+* **[Numi]** — a fancy calculator app without any fancy buttons
+
+[Chrome]: https://www.google.com/chrome/
+[1Password]: https://1password.com/
+[Simplenote]: https://simplenote.com/
+[Notion]: https://notion.so
+[Dash]: https://kapeli.com/dash
+[Moom]: https://manytricks.com/moom/
+[Stay]: https://cordlessdog.com/stay/
+[Numi]: https://numi.app/
+
+### MacOS customization
+
+* Use `~/Screenshots` to save screenshots instead of the desktop
+* Disable auto-capitalization,
+  smart characters,
+  auto-correct,
+  spell check,
+  and grammar check
+* Disable press-and-hold for keys
+* Speed up keyboard repeat rate
+* Use Caps Lock for Escape for Vim
+* Make the Function key functional
+* Disable most trackpad gestures
+* Enable filename extensions by default in Finder
+* Use plain text mode for TextEdit
+* Allow tmux to access the clipboard by default
+* Configure Moom so you can fully maximize any window with Cmd-F
+
 ### Neovim configuration
 
 Neovim is preconfigured with the following features:
@@ -47,9 +84,9 @@ Neovim is preconfigured with the following features:
 * **[Ack][vim-ack] + [Ag][ag]** — a way to search across a project lightning quick
 * **[NERDCommenter][vim-nerdcommenter]** — an easy way to comment and uncomment lines
 * **[SuperTab][vim-supertab]** — an autocompleter that stays out of your way
-* **[Ale][ale]** —
-  an asychronous code linter that works with a bunch of languages
-  (and can also autoformat files in languages that support it)
+* **[CoC][coc]** — brings Vim closer to an IDE-like experience
+  with autocompletion, documentation, linting, and formatting
+  (works best with language servers like TypeScript)
 * **[AutoPairs][auto-pairs]** —
   adds matching parentheses, braces, brackets, and quotes as you type them
   (but can be toggled on/off as needed)
@@ -79,7 +116,7 @@ Neovim is preconfigured with the following features:
 [vim-endwise]: https://github.com/tpope/vim-endwise
 [vim-surround]: http://github.com/tpope/vim-surround
 [vim-textobj-rubyblock]: http://github.com/nelstrom/vim-textobj-rubyblock
-[ale]: https://github.com/w0rp/ale
+[coc]: https://github.com/neoclide/coc.nvim
 [indentLine]: https://github.com/Yggdroot/indentLine
 [auto-pairs]: https://github.com/eapache/auto-pairs
 [fast-fold]: https://github.com/Konfekt/FastFold
