@@ -65,6 +65,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'reedes/vim-pencil'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rails'
+Plug 'tpope/vim-unimpaired'
 
 " Plugins I enabled at one point but realized I might not need
 " ============================================================
