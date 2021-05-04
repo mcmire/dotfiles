@@ -48,6 +48,7 @@ Plug 'jxnblk/vim-mdx-js'
 Plug 'kchmck/vim-coffee-script'
 Plug 'pangloss/vim-javascript'
 Plug 'tbastos/vim-lua'
+Plug 'tpope/vim-cucumber'
 Plug 'tpope/vim-haml'
 " Make sure vim-projectionist is listed BEFORE vim-rails!
 " See: <https://github.com/tpope/vim-rails/issues/330>
