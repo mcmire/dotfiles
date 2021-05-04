@@ -1,6 +1,7 @@
 tap "aws/tap"
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
+tap "universal-ctags/universal-ctags"
 
 brew "ag"
 brew "asdf"
@@ -8,7 +9,6 @@ brew "autojump"
 brew "awscli"
 brew "colordiff"
 brew "coreutils"
-brew "ctags"
 brew "direnv"
 brew "fzf"
 brew "git"
@@ -27,6 +27,7 @@ brew "sqlite"
 brew "tig"
 brew "tmux"
 brew "tree"
+brew "universal-ctags", args: ['HEAD']
 brew "zsh"
 
 cask "1password"
