@@ -52,5 +52,6 @@ mas "Simplenote", id: 692867256
 mas "Slack", id: 803453959
 mas "Stay", id: 435410196
 mas "WiFi Explorer Lite", id: 1408727408
+mas "Todoist", id: 585829637
 
 # vi: ft=ruby
