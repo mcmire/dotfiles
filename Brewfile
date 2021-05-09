@@ -41,6 +41,7 @@ cask "iterm2"
 cask "ngrok"
 cask "notion"
 cask "numi"
+cast "postman"
 cask "spotify"
 cask "visual-studio-code"
 
