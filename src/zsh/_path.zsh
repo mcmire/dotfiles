@@ -12,7 +12,7 @@
 #
 # [1]: https://github.com/creationix/nvm/issues/1652>
 #
-export PATH=$HOME/.bin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH=$HOME/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 # Set a sensible default MANPATH as well
 export MANPATH=/usr/share/man
