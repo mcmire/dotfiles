@@ -19,6 +19,8 @@ brew "hub"
 brew "jq"
 brew "overmind"
 brew "postgresql@10", restart_service: :changed
+brew "libxml2"
+brew "libxslt"
 brew "mas"
 brew "neovim"
 brew "reattach-to-user-namespace"
