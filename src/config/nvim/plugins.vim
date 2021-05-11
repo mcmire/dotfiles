@@ -27,7 +27,7 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-"Plug 'w0rp/ale'
+Plug 'w0rp/ale'
 Plug 'vim-test/vim-test'
 
 " Language-specific plugins
