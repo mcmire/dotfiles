@@ -3,6 +3,7 @@
 require "pathname"
 require "json"
 require "forwardable"
+require "open3"
 require "shellwords"
 
 module DotfilesManager
@@ -201,17 +202,45 @@ module DotfilesManager
     end
 
     def parse_args(args)
-      i = 0
-      while i < args.length
-        case args[i]
+      future_name = nil
+      future_value = nil
+
+      args.each do |arg|
+        case arg
         when /^--(.+)$/
-          config.public_send("#{$1.gsub("-", "_")}=", args[i + 1])
-          i += 2
+          if future_name
+            if future_value == nil
+              config.public_send("#{future_name}=", true)
+            else
+              config.public_send("#{future_name}=", future_value)
+            end
+            future_name = nil
+            future_value = nil
+          end
+          future_name = $1.gsub("-", "_")
         else
-          raise Error.new(
-                  "Unknown argument #{args[i].inspect} given.",
-                  details: "Please run #{$0} #{command_name} --help for usage."
-                )
+          if future_name
+            if future_value == nil
+              future_value = arg
+            elsif future_value.is_a?(Array)
+              future_value << arg
+            else
+              future_value = [future_value, arg]
+            end
+          else
+            raise Error.new(
+                    "Unknown argument #{args[i].inspect} given.",
+                    details: "Please run #{$0} #{command_name} --help for usage."
+                  )
+          end
+        end
+      end
+
+      if future_name
+        if future_value == nil
+          config.public_send("#{future_name}=", true)
+        else
+          config.public_send("#{future_name}=", future_value)
         end
       end
     end
@@ -501,20 +530,25 @@ and OTHER_OPTIONS are one or more of:
     end
 
     def run_install_script(file)
-      env = config.to_h.transform_keys { |k| k.to_s.upcase }
+      env = config.to_h.inject({}) do |hash, (key, value)|
+        hash.merge(key.to_s.upcase => value.to_s)
+      end
 
       if config.verbose?
         inspect_command(env, file.to_s)
       end
 
       if !config.dry_run?
-        if !system(env, file.to_s)
-          raise Error.new(
-                  "#{format_source_path(file)} failed with exit code #{$?}.",
-                  details:
-                    "Take a closer look at this file. Perhaps you're using set -e " +
-                      "and some command is failing?"
-                )
+        Open3.popen2e(env, file.to_s) do |stdin, stdout_and_stderr, wait_thr|
+          exit_status = wait_thr.value
+
+          if exit_status != 0
+            exit_code = exit_status >> 8
+            puts stdout_and_stderr.read
+            raise Error.new(
+              "#{format_source_path(file)} failed with exit code #{exit_code}."
+            )
+          end
         end
       end
     end
