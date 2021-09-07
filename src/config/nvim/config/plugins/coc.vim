@@ -2,11 +2,12 @@
 " =====================
 
 let g:coc_global_extensions = [
-  \ 'coc-tsserver',
-  \ 'coc-solargraph',
-  \ 'coc-prettier',
-  \ 'coc-json'
-  \ ]
+      \ 'coc-eslint',
+      \ 'coc-json',
+      \ 'coc-prettier',
+      \ 'coc-solargraph',
+      \ 'coc-tsserver',
+      \ ]
 
 "function! s:EnableCocGlobalExtensions() abort
   "let eslint_config_files = globpath('.', '.eslintrc*', 0, 1)

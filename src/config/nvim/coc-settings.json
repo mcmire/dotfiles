@@ -9,6 +9,8 @@
     "css"
   ],
   "coc.preferences.formatOnType": true,
+  "eslint.autoFixOnSave": true,
+  "eslint.format.enable": true,
   "prettier.disableSuccessMessage": true,
   "solargraph.autoformat": false,
   "solargraph.bundlerPath": "/Users/elliot/.asdf/shims/bundle",
