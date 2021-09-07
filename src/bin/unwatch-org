@@ -1,0 +1,60 @@
+#!/usr/bin/env ruby -ws
+
+# Source: <https://gist.github.com/zenspider/1db3199dabdfc14e20083a848f98d15d>
+
+$d ||= false
+
+require "isolate"
+Isolate.now! name:"github_unwatch" do
+  gem "octokit"
+  gem "pry"
+end
+require "pry" if $d
+require "yaml"
+require "octokit"
+
+org = ARGV.shift || abort("Need an org")
+
+Octokit.middleware.handlers.reject! { |k| k == Octokit::Response::RaiseError }
+Octokit.configure do |c|
+  c.auto_paginate = true
+end
+
+config = YAML.load File.read File.expand_path "~/.config/hub"
+token  = config.dig("github.com", 0, "oauth_token")
+client = Octokit::Client.new access_token:token, per_page:100
+
+def nuke things, verb, nouns
+  max = things.size
+  puts "%s %d %s" % [verb, max, nouns]
+  things.each_with_index do |thing, cur|
+    print "%d/%d: " % [cur+1, max]
+    puts yield thing
+  end
+end
+
+repos  = client.watched.select { |w| w.full_name =~ /^#{org}/ }
+
+nuke repos, "Deleting", "subscriptions" do |repo|
+  client.delete_subscription(repo.full_name) && repo.full_name
+end
+
+notifications = client.notifications
+  .select { |n| n.repository.full_name =~ /^#{org}/ }
+  .select { |n| n.reason == "subscribed" }
+
+nuke notifications, "Deleting", "notifications" do |notification|
+  !!client.delete_thread_subscription(notification.id)
+end
+
+repos = client.org_repos(org)
+
+nuke repos, "Ignoring", "repositories" do |repo|
+  client.update_subscription(repo.full_name,
+                             subscribed: false,
+                             ignored:true) && repo.full_name
+end
+
+binding.pry if $d
+
+puts "done"
