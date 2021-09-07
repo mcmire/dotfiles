@@ -2,7 +2,7 @@
 setopt prompt_subst
 
 # Enable completion
-autoload -U compinit && compinit
+autoload -Uz compinit && compinit
 
 # Disable autocorrection
 unsetopt correct_all
