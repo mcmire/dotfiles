@@ -1,7 +1,0 @@
-source ~/.zsh/_base.zsh
-source ~/.zsh/_path.zsh
-source ~/.zsh/_homebrew.zsh
-source ~/.zsh/_asdf.zsh
-source ~/.zsh/_ruby.zsh
-source ~/.zsh/_node.zsh
-source ~/.zsh/_rubyfmt.zsh
