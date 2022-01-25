@@ -129,6 +129,11 @@ function! s:SetHighlights()
   exec 'highlight default MarkologyHLu guifg=' . s:base01 . ' guibg=' . s:base03
   exec 'highlight default MarkologyHLo guifg=' . s:base01 . ' guibg=' . s:base03
   exec 'highlight default MarkologyHLm guifg=' . s:base01 . ' guibg=' . s:base03
+  " Default highlight for floating windows, such as those used by CoC
+  exec 'highlight PMenu gui=NONE guifg=' . s:base3 . ' guibg=' . s:base02
+  exec 'highlight CocErrorSign guifg=' . s:red . ' guibg=NONE'
+  exec 'highlight CocInfoSign guifg=' . s:blue . ' guibg=NONE'
+  exec 'highlight CocWarningSign guifg=' . s:yellow . ' guibg=NONE'
 endfunction
 
 function! s:ToggleColorScheme()
@@ -139,6 +144,7 @@ function! s:ToggleColorScheme()
 
   let new_color_scheme_mode = s:Chomp(system('color-scheme-mode --toggle'))
   call system('propagate-color-scheme-mode')
+  " TODO: Propagate this across all instances of Vim
   call RefreshColorScheme(new_color_scheme_mode)
 endfunction
 
