@@ -1,10 +1,10 @@
 " Configuration for Coc
 " =====================
 
+"\ 'coc-prettier',
 let g:coc_global_extensions = [
       \ 'coc-eslint',
       \ 'coc-json',
-      \ 'coc-prettier',
       \ 'coc-solargraph',
       \ 'coc-tsserver',
       \ ]
@@ -23,10 +23,16 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nmap <silent> <Leader>d <Plug>(coc-diagnostic-info)
 nmap <silent> <Leader>cd :<C-u>CocList diagnostics<CR>
 " TODO: This currently conflicts with NERDCommenter
 "nnoremap <silent> <Leader>cs :<C-u>CocList -I symbols<cr>
 "nnoremap <Leader>ca <Plug>(coc-codeaction)
-nmap <leader>cr <Plug>(coc-rename)
-nmap <leader>cf <Plug>(coc-fix-current)
+nmap <Leader>cr <Plug>(coc-rename)
+nmap <Leader>cf <Plug>(coc-fix-current)
 nmap <silent> K :call <SID>ShowDocumentation()<CR>
+
+" Enable scrolling in floating windows (e.g. TypeScript errors)
+
+nnoremap <expr><down> coc#float#has_scroll() ? coc#float#scroll(1) : "\<down>"
+nnoremap <expr><up> coc#float#has_scroll() ? coc#float#scroll(0) : "\<up>"
