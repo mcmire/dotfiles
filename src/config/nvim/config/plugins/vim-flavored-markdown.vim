@@ -11,5 +11,5 @@ augroup local
   " Fix lists so that when adding a new item to a list, we do not end up in the
   " next indentation level:
   " (source: <https://github.com/plasticboy/vim-markdown/issues/126#issuecomment-640890790>)
-  autocmd FileType markdown,ghmarkdown set comments=b:*,b:-,b:+,b:1.,n:>
+  autocmd FileType markdown,ghmarkdown setlocal comments=b:*,b:-,b:+,b:1.,n:>
 augroup END
