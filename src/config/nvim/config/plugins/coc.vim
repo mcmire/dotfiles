@@ -5,7 +5,6 @@
 let g:coc_global_extensions = [
       \ 'coc-eslint',
       \ 'coc-json',
-      \ 'coc-solargraph',
       \ 'coc-tsserver',
       \ 'coc-stylelintplus',
       \ 'coc-css',
