@@ -11,6 +11,7 @@
   ],
   "css.validate": false,
   "coc.preferences.formatOnType": true,
+  "coc.preferences.jumpCommand": "tabe",
   "diagnostic.checkCurrentLine": true,
   "diagnostic.enableMessage": "jump",
   "diagnostic.floatConfig.maxWidth": 200,
