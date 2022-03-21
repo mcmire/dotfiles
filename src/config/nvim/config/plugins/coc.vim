@@ -7,6 +7,8 @@ let g:coc_global_extensions = [
       \ 'coc-json',
       \ 'coc-solargraph',
       \ 'coc-tsserver',
+      \ 'coc-stylelintplus',
+      \ 'coc-css',
       \ ]
 
 function! s:ShowDocumentation() abort
