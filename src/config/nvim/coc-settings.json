@@ -24,8 +24,9 @@
   "hover.floatConfig.maxHeight": 1500,
   "javascript.suggest.enabled": false,
   "javascript.suggest.completeFunctionCalls": false,
-  "javascript.validate.enable": false,
-  "json.format.enable": false,
+  "javascript.suggestionActions.enabled": false,
+  "javascript.validate.enable": true,
+  "json.format.enable": true,
   "less.validate": false,
   "prettier.disableSuccessMessage": true,
   "scss.validate": false,
@@ -42,8 +43,11 @@
   "suggest.autoTrigger": "none",
   "suggest.floatEnable": false,
   "tsserver.enableJavascript": true,
-  "tsserver.formatOnType": true,
+  "tsserver.formatOnType": false,
+  "tsserver.log": "verbose",
   "tsserver.trace.server": "verbose",
   "typescript.suggest.enabled": false,
-  "typescript.suggest.completeFunctionCalls": false
+  "typescript.suggest.completeFunctionCalls": false,
+  "typescript.suggestionActions.enabled": false,
+  "wxss.validate": false
 }
