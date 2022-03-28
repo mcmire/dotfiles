@@ -26,11 +26,10 @@ nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 nmap <silent> <Leader>d <Plug>(coc-diagnostic-info)
 nmap <silent> <Leader>cd :<C-u>CocList diagnostics<CR>
-" TODO: This currently conflicts with NERDCommenter
 "nnoremap <silent> <Leader>cs :<C-u>CocList -I symbols<cr>
-"nnoremap <Leader>ca <Plug>(coc-codeaction)
+nnoremap <Leader>ca <Plug>(coc-codeaction)
 nmap <Leader>cr <Plug>(coc-rename)
-nmap <Leader>cf <Plug>(coc-fix-current)
+"nmap <Leader>cf <Plug>(coc-fix-current)
 nmap <silent> K :call <SID>ShowDocumentation()<CR>
 
 " Enable scrolling in floating windows (e.g. TypeScript errors)
