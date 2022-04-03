@@ -33,7 +33,6 @@ Plug 'vim-test/vim-test'
 " -------------------------
 
 Plug 'ElmCast/elm-vim'
-"Plug 'HerringtonDarkholme/yats'
 Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'aliou/bats.vim'
 Plug 'avakhov/vim-yaml'
@@ -61,7 +60,7 @@ Plug 'yuezk/vim-js'
 " Plugins I sometimes use (and may disable later)
 " ===============================================
 
-"Plug 'SirVer/ultisnips'
+"Plug 'github/copilot.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'jeetsukumaran/vim-markology'
 Plug 'junegunn/goyo.vim'
