@@ -1,3 +1,5 @@
+#echo ".zshrc loaded"
+
 BENCHMARK_SHELL_INIT=0
 BENCHMARK_LOG=/tmp/zsh-benchmark.log
 
@@ -37,24 +39,27 @@ if [[ $BENCHMARK_SHELL_INIT ]]; then
   touch $BENCHMARK_LOG
 fi
 
+if [[ -n $HOMEBREW_PREFIX ]]; then
+  export DOTFILES_INSIDE_SUBSHELL=1
+fi
+
+#echo $PATH
+#echo "DOTFILES_INSIDE_SUBSHELL=$DOTFILES_INSIDE_SUBSHELL"
+
 benchmarked-source ~/.zsh/_base.zsh
 
-# Make sure we aren't in a subshell (tmux or inside of vim)?
-if [[ -z $HOMEBREW_PREFIX ]]; then
-  benchmarked-source ~/.zsh/_path.zsh
-  benchmarked-source ~/.zsh/_homebrew.zsh
-  benchmarked-source ~/.zsh/_asdf.zsh
-  benchmarked-source ~/.zsh/_ruby.zsh
-  benchmarked-source ~/.zsh/_node.zsh
-  benchmarked-source ~/.zsh/_rubyfmt.zsh
-fi
+benchmarked-source ~/.zsh/_path.zsh
+benchmarked-source ~/.zsh/_homebrew.zsh
+benchmarked-source ~/.zsh/_asdf.zsh
+benchmarked-source ~/.zsh/_ruby.zsh
+benchmarked-source ~/.zsh/_node.zsh
+benchmarked-source ~/.zsh/_rubyfmt.zsh
 
 benchmarked-source ~/.zsh/android-studio.zsh
 benchmarked-source ~/.zsh/asdf.zsh
 benchmarked-source ~/.zsh/autojump.zsh
 benchmarked-source ~/.zsh/bindings.zsh
 benchmarked-source ~/.zsh/clojure.zsh
-benchmarked-source ~/.zsh/colors.zsh
 benchmarked-source ~/.zsh/cucumber.zsh
 benchmarked-source ~/.zsh/direnv.zsh
 benchmarked-source ~/.zsh/fzf.zsh
