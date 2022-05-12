@@ -19,6 +19,7 @@
   "diagnostic.messageDelay": 1000,
   "diagnostic.refreshOnInsertMode": true,
   "eslint.autoFixOnSave": true,
+  "eslint.fixOnSaveTimeout": 10000,
   "eslint.format.enable": true,
   "hover.floatConfig.maxWidth": 200,
   "hover.floatConfig.maxHeight": 1500,
