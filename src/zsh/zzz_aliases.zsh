@@ -1,5 +1,5 @@
-ALIASES_FILE="~/.zsh/zzz_aliases"
-FUNCTIONS_FILE="~/.zsh/zzz_functions"
+ALIASES_FILE="~/.zsh/zzz_aliases.zsh"
+FUNCTIONS_FILE="~/.zsh/zzz_functions.zsh"
 
 # Managing aliases/functions
 alias edit-aliases="v $ALIASES_FILE"
@@ -62,30 +62,9 @@ alias zRm="sR db:migrate db:test:prepare"
 alias zRmr="sR db:migrate:redo db:test:prepare"
 
 # Rails
-alias R="s rails"
+alias R="rails"
 alias Rc="R console"
 alias Rm="R db:migrate db:test:prepare"
 alias Rmr="R db:migrate:redo db:test:prepare"
 alias Rr="R db:rollback"
 alias Rrbm="R db:rollback_branch_migrations"
-
-# Spring
-alias s="be spring"
-alias sc="s cucumber"
-alias sr="s rspec"
-
-# Docker
-alias dcl="bin/docker dev console app"
-alias dex="bin/docker dev exec app"
-alias dR="drn bin/rails"
-alias dr="drn rspec"
-alias dRc="dR console"
-alias dRm="dR db:migrate db:test:prepare"
-alias dRmr="dR db:migrate:redo db:test:prepare"
-alias drn="bin/docker dev run app"
-alias dRr="dR db:rollback"
-alias ds="drn bin/spring"
-alias dsr="ds rspec"
-
-# Jest
-alias nj="npx jest"
