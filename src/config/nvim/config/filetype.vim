@@ -5,51 +5,46 @@
 " extension are incorrectly assigned the wrong file type. This file attempts to
 " address both of these issues.
 
-" To start with, a lot of files that we use in the Ruby world don't end in
-" `.rb`. This is unfortunate, but it means they aren't highlighted like Ruby
-" files, so we make them highlighted appropriately:
+" A lot of files that we use in the Ruby world don't end in `.rb`. This is
+" unfortunate, but it means they aren't highlighted like Ruby files, so
+" highlight them appropriately:
 
 augroup local
   autocmd BufRead,BufNewFile {config.ru,Gemfile,Guardfile,Rakefile,Thorfile,Vagrantfile,Appraisals,Bowerfile,*.gemspec} set ft=ruby
 augroup END
 
-" Similiarly, some configuration files are JSON files, even if they aren't named
-" that way:
+" Some configuration files are JSON files, even if they aren't named that way:
 
 augroup local
   autocmd BufNewFile,BufRead {.jshintrc,.eslintrc,.babelrc,.prettierrc} set ft=json
 augroup END
 
-" Here we make sure that JSX is highlighted in JavaScript and TypeScript files
-" regardless of extension:
-
-augroup local
-  "autocmd BufNewFile,BufRead *.{js,jsx} set ft=javascript.jsx
-  "autocmd BufNewFile,BufRead *.{ts,tsx} set ft=typescript.tsx
-augroup END
-
-" Also increase syntax highlighting perf for JavaScript/Typescript files
+" Increase syntax highlighting perf for JavaScript/Typescript files.
 " Source: <https://thoughtbot.com/blog/modern-typescript-and-react-development-in-vim>
 augroup local
   autocmd BufEnter *.{js,jsx,ts,tsx} syntax sync fromstart
   autocmd BufLeave *.{js,jsx,ts,tsx} syntax sync clear
 augroup END
 
-" For some reason, auto-indentation isn't enabled in Markdown files, so we
-" explicitly enable that too:
+" For some reason, auto-indentation isn't enabled in Markdown files:
 
 augroup local
   autocmd BufRead,BufNewFile *.{md,mkd,mkdn,mark*} setl ft=markdown autoindent
 augroup END
 
-" Python encourages you to use [PEP8](http://www.python.org/dev/peps/pep-0008/)
-" and so we enforce that here:
+" Yarn uses Prolog for its constraints configuration file:
+
+augroup local
+  autocmd BufRead,BufNewFile *.pro set ft=prolog
+augroup END
+
+" Python encourages you to use [PEP8](http://www.python.org/dev/peps/pep-0008/):
 
 augroup local
   autocmd FileType python setl softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79
 augroup END
 
-" Elm people use 4 spaces instead of 2 as well:
+" Elm uses 4 spaces instead of 2 as well:
 
 augroup local
   autocmd FileType elm setl softtabstop=4 tabstop=4 shiftwidth=4 textwidth=80
@@ -70,14 +65,13 @@ augroup local
 augroup END
 
 " Haml Coffee is a version of Haml that uses CoffeeScript instead of ERB, and
-" its files end in `.hamlc`. Since they are mostly Haml files, we highlight them
-" as such:
+" its files end in `.hamlc`. They are mostly Haml files though:
 
 augroup local
   autocmd BufRead,BufNewFile *.hamlc set ft=haml
 augroup END
 
-" Note that .js.coffee files are CoffeeScript files too:
+" `.js.coffee` files are CoffeeScript files too:
 
 augroup local
   autocmd BufNewFile,BufRead {.js.coffee} set ft=coffee
@@ -97,8 +91,8 @@ augroup local
   autocmd FileType make setl noexpandtab
 augroup END
 
-" Lastly, in the event that we edit our crontabs, we ask Vim to make a backup
-" copy of those files in a way that is compatible with `crontab -e`:
+" In the event that we edit our crontabs, we ask Vim to make a backup copy of
+" those files in a way that is compatible with `crontab -e`:
 
 augroup local
   autocmd BufEnter /private/tmp/crontab.* setl backupcopy=yes

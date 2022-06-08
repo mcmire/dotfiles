@@ -37,6 +37,7 @@ Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'aliou/bats.vim'
 Plug 'avakhov/vim-yaml'
 Plug 'dart-lang/dart-vim-plugin'
+Plug 'datwaft/prolog-syntax-vim', { 'branch': 'main' }
 Plug 'djbender/vim-slim'
 Plug 'cespare/vim-toml'
 Plug 'editorconfig/editorconfig-vim'
