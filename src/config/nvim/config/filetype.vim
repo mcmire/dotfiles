@@ -36,6 +36,8 @@ augroup END
 
 augroup local
   autocmd BufRead,BufNewFile *.pro set ft=prolog
+" Fix Prolog syntax file to account for backslashed single quotes in atoms
+  autocmd FileType prolog syntax region prologAtom start="'" skip="\\'" end="'" oneline extend
 augroup END
 
 " Python encourages you to use [PEP8](http://www.python.org/dev/peps/pep-0008/):
