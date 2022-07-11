@@ -226,3 +226,5 @@ pip install --upgrade pip
 
 banner "Making a bunch of configuration changes to MacOS..."
 extras/macos.sh
+
+success "Done! At this point you probably want to log out and log back in again."
