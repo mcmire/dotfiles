@@ -202,14 +202,7 @@ for language in ruby python nodejs; do
   if [[ $(ls "$ASDF_DIRECTORY/installs/$language" | wc -l | sed -e 's/^ *//') -eq 0 ]]; then
     banner "Installing latest version of $language"
 
-    if [[ $language == "nodejs" ]]; then
-      # Use Rosetta for now as there are no Apple Silicon builds for Node yet
-      # (although it's coming in Node 16).
-      # See: <https://github.com/asdf-vm/asdf-nodejs/issues/189>
-      arch -x86_64 asdf install $language latest
-    else
-      asdf install $language latest
-    fi
+    asdf install $language latest
   fi
 
   if [[ $(latest-version-of $language) != $(cat ~/.tool-versions | grep "^$language" | sed -e "s/^$language //") ]]; then
