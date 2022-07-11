@@ -42,4 +42,9 @@ This will also configure some defaults in System Preferences.
 
 At this point you can proceed with the installation instructions.
 
+After `bin/bootstrap` has completed succesfully,
+open iTerm, go to Preferences, and remove the Default profile.
+This will make Solarized Dark the default,
+which is what you want.
+
 [github-ssh]: https://docs.github.com/en/authentication/connecting-to-github-with-ssh

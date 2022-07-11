@@ -209,20 +209,31 @@ Launch tmux by running this from the terminal:
 
     tmux
 
-You may receive a warning at the top of the screen,
-but ignore that and press <kbd>Enter</kbd>.
 Press <kbd>Ctrl</kbd> + <kbd>Space</kbd> followed by <kbd>Shift</kbd> + <kbd>I</kbd>.
 After a brief delay,
 plugins will be installed that are necessary for tmux for fully work.
-Then say:
 
-    exit
+### Step 7: Install Vim plugins
 
-and finally:
+Launch Vim by running this from the terminal:
 
-    tmux
+    vi
 
-and you should no longer receive the warning.
+You may get a warning. If that happens, then type:
+
+    :PlugInstall
+
+Then press Enter.
+
+If any part of this fails,
+then navigate into the left-most pane with `Ctrl-H`
+and press `R` to retry.
+
+Now type `:wq` to close Vim, then reopen by saying:
+
+    vi
+
+You should no longer get a warning.
 
 ### Prologue: Making your own changes
 
