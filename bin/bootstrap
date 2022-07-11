@@ -119,7 +119,7 @@ for app in \
   1password \
   dash \
   dropbox \
-  font-fira-code \   # This didn't work
+  homebrew/cask-fonts/font-fira-code \
   google-chrome \
   iterm2 \
   ngrok \
