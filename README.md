@@ -156,11 +156,17 @@ and click that **Fork** button in the top-right corner now!
 ### Step 2: Clone your fork
 
 At this point, you should be reading this README from your own fork.
-Now clone your fork in a convenient place you'll remember,
+Now open a terminal
+and clone your fork in a convenient place you'll remember,
 such as the same place you store code:
 
     cd ~/your-code-directory
     git clone git@github.com:yourusername/dotfiles.git
+
+(You may need to install the macOS developer tools to run `git`.
+If that's the case,
+accept the prompt that appears
+and then re-run the second command above.)
 
 ### Step 3: Clear the way
 
@@ -176,8 +182,8 @@ For instance:
 ### Step 4: Run the install script
 
 Next, you'll want to run the script that comes bundled with this repo.
-This script will actually install all of the files as symlinks into your home directory,
-which will allow you to edit them through your forked repo location.
+This script will install all of the files in this repo as symlinks into your home directory.
+This has the advantage of allowing you to edit them through your forked repo location.
 Run the script like so, supplying your Git name and email:
 
     bin/manage install --git-name "Your Name" --git-email "your@email.com" --dry-run
@@ -186,7 +192,7 @@ Note the use of `--dry-run` on the end.
 This will tell you what would have been installed,
 but nothing has happened yet!
 Take a moment to look over the output and verify that it makes sense.
-If you're good with everything, then run it again without `--dry-run`:
+If it makes sense, then run it again without `--dry-run`:
 
     bin/manage install --git-name "Your Name" --git-email "your@email.com"
 
