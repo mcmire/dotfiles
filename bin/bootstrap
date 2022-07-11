@@ -116,7 +116,6 @@ banner "Installing universal-ctags"
 brew install --HEAD universal-ctags/universal-ctags/universal-ctags || error "Package universal-ctags failed to install, continuing..."
 
 for app in \
-  1password \
   dash \
   dropbox \
   homebrew/cask-fonts/font-fira-code \
@@ -197,8 +196,6 @@ for language in ruby python nodejs; do
       chown -R $(whoami) ~/.gnupg/
       chmod 600 ~/.gnupg/*
       chmod 700 ~/.gnupg
-
-      ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
     fi
   fi
 
