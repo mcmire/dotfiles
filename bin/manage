@@ -145,7 +145,7 @@ module DotfilesManager
       end
 
       def method_missing(name, *args, &block)
-        if name.end_with?("=")
+        if name.to_s.end_with?("=")
           data[name.to_s.sub(/=$/, "").to_sym] = args.first
         else
           data.fetch(name.to_sym) { super }
