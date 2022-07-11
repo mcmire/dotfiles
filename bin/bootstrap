@@ -29,6 +29,10 @@ success() {
   print-with-color 32 "$@"
 }
 
+error() {
+  print-with-color 31 "$@"
+}
+
 latest-version-of() {
   asdf list $1 | \
     grep -v 'preview\|dev' | \
