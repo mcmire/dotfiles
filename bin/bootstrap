@@ -53,7 +53,7 @@ if ! type brew &>/dev/null; then
   fi
 fi
 
-if ! [[ -e "/Applications/1Password 7.app" ]]; then
+if ! [[ -e "/Applications/1Password.app" ]]; then
   banner "Installing 1Password..."
   brew install 1password
 
