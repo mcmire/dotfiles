@@ -77,8 +77,7 @@ if ! type mas &>/dev/null; then
 fi
 
 banner "Installing missing Homebrew packages"
-#brew bundle check || brew bundle
-brew install \
+for pkg in \
   ag \
   asdf \
   autojump \
@@ -105,11 +104,15 @@ brew install \
   awscli \
   heroku/brew/heroku \
   mas-cli/tap/mas
+do
+  brew install $pkg || echo "Package $pkg failed to install, continuing..."
+done
 
 brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 
-brew install --cask \
+for app in \
   1password \
+  dash \
   dropbox \
   font-fira-code \
   google-chrome \
@@ -117,27 +120,35 @@ brew install --cask \
   ngrok \
   notion \
   numi \
+  postman \
   spotify \
   visual-studio-code
-brew install --cask --force dash
-brew install --cask --force postman
+do
+  brew install --cask $app || echo "App $app failed to install, continuing..."
+done
 
-# Amphetamine
-mas install 937984704
-# Microsoft To Do
-mas install 1274495053
-# Moom
-mas install 419330170
-# Simplenote
-mas install 692867256
-# Slack
-mas install 803453959
-# Stay
-mas install 435410196
-# WiFi Explorer Lite
-mas install 1408727408
-# Todoist
-mas install 585829637
+mas_apps=(
+  # Amphetamine
+  937984704
+  # Microsoft To Do
+  1274495053
+  # Moom
+  419330170
+  # Simplenote
+  692867256
+  # Slack
+  803453959
+  # Stay
+  435410196
+  # WiFi Explorer Lite
+  1408727408
+  # Todoist
+  585829637
+)
+
+for app in "${mas_apps[@]}"; do
+  mas install $app || echo "App $app failed to install, continuing..."
+done
 
 brew services restart postgresql@10
 brew services restart redis
