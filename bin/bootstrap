@@ -104,21 +104,22 @@ for pkg in \
   tig \
   tmux \
   tree \
-  zsh \
   awscli \
   heroku/brew/heroku \
   mas-cli/tap/mas
 do
-  brew install $pkg || echo "Package $pkg failed to install, continuing..."
+  banner "Installing $pkg"
+  brew install $pkg || error "Package $pkg failed to install, continuing..."
 done
 
-brew install --HEAD universal-ctags/universal-ctags/universal-ctags
+banner "Installing universal-ctags"
+brew install --HEAD universal-ctags/universal-ctags/universal-ctags || error "Package universal-ctags failed to install, continuing..."
 
 for app in \
   1password \
   dash \
   dropbox \
-  font-fira-code \
+  font-fira-code \   # This didn't work
   google-chrome \
   iterm2 \
   ngrok \
@@ -128,7 +129,8 @@ for app in \
   spotify \
   visual-studio-code
 do
-  brew install --cask $app || echo "App $app failed to install, continuing..."
+  banner "Installing $app"
+  brew install --cask $app || error "App $app failed to install, continuing..."
 done
 
 mas_apps=(
@@ -151,30 +153,14 @@ mas_apps=(
 )
 
 for app in "${mas_apps[@]}"; do
+  banner "Installing $app"
   mas install $app || echo "App $app failed to install, continuing..."
 done
 
+banner "Restarting postgresql@10"
 brew services restart postgresql@10
+banner "Restarting redis"
 brew services restart redis
-
-if [[ $SHELL != $(which zsh) ]]; then
-  banner "Updating shell to zsh"
-
-  if [[ -d /opt/homebrew ]]; then
-    sudo echo /opt/homebrew/bin/zsh >> /etc/shells
-  else
-    sudo echo /usr/local/bin/zsh >> /etc/shells
-  fi
-
-  chsh -s "$(which zsh)"
-fi
-
-banner "Fixing permissions on zsh share directory"
-if [[ -d /opt/homebrew ]]; then
-  chmod -R 755 /opt/homebrew/share/zsh
-else
-  chmod -R 755 /usr/local/share/zsh
-fi
 
 if ! [[ -d "$HOME/.zsh-async" ]]; then
   banner "Installing zsh-async"
