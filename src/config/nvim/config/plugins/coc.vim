@@ -3,9 +3,9 @@
 
 "\ 'coc-prettier',
 let g:coc_global_extensions = [
-      \ 'coc-eslint',
+      \ 'coc-eslint@1.5.8',
       \ 'coc-json',
-      \ 'coc-tsserver',
+      \ 'coc-tsserver@1.10.1',
       \ 'coc-stylelintplus',
       \ 'coc-css',
       \ ]
