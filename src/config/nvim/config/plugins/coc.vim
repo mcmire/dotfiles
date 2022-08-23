@@ -27,7 +27,7 @@ nmap <silent> ]g <Plug>(coc-diagnostic-next)
 nmap <silent> <Leader>d <Plug>(coc-diagnostic-info)
 nmap <silent> <Leader>cd :<C-u>CocList diagnostics<CR>
 "nnoremap <silent> <Leader>cs :<C-u>CocList -I symbols<cr>
-nnoremap <Leader>ca <Plug>(coc-codeaction)
+nmap <Leader>ca <Plug>(coc-codeaction-cursor)
 nmap <Leader>cr <Plug>(coc-rename)
 "nmap <Leader>cf <Plug>(coc-fix-current)
 nmap <silent> K :call <SID>ShowDocumentation()<CR>
