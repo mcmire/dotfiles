@@ -34,14 +34,3 @@ fi
 if [[ $DOTFILES_INSIDE_SUBSHELL -ne 1 ]]; then
   export MANPATH=/usr/share/man
 fi
-
-# Update the path that zsh uses to autoload function definitions
-#
-# Sources:
-#
-# * http://zsh.sourceforge.net/Doc/Release/Functions.html
-# * https://raw.githubusercontent.com/git/git/fe8321ec057f9231c26c29b364721568e58040f7/contrib/completion/git-completion.zsh
-#
-if [[ $DOTFILES_INSIDE_SUBSHELL -ne 1 ]]; then
-  fpath=(~/.zsh/autoload $fpath)
-fi

@@ -1,9 +1,6 @@
 # Recognize use of variables in the PROMPT environment variable and replace them
 setopt prompt_subst
 
-# Enable completion
-autoload -Uz compinit && compinit
-
 # Disable autocorrection
 unsetopt correct_all
 

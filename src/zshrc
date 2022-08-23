@@ -79,6 +79,7 @@ benchmarked-source ~/.zsh/zsh-async.zsh
 benchmarked-source ~/.zsh/zzz_aliases.zsh
 benchmarked-source ~/.zsh/zzz_functions.zsh
 
+benchmarked-source ~/.zsh/completion.zsh
 benchmarked-source ~/.zsh/prompt.zsh
 
 if [[ -f ~/.zshrc.local ]]; then
