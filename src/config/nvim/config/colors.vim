@@ -145,10 +145,10 @@ function! s:ToggleColorScheme()
   let new_color_scheme_mode = s:Chomp(system('color-scheme-mode --toggle'))
   call system('propagate-color-scheme-mode')
   " TODO: Propagate this across all instances of Vim
-  call RefreshColorScheme(new_color_scheme_mode)
+  call s:RefreshColorScheme(new_color_scheme_mode)
 endfunction
 
-function! g:RefreshColorScheme(color_scheme_mode)
+function! s:RefreshColorScheme(color_scheme_mode = s:Chomp(system('color-scheme-mode')))
   if a:color_scheme_mode == "dark"
     call s:UseDarkColorScheme()
   elseif a:color_scheme_mode == "light"
@@ -162,8 +162,9 @@ endfunction
 
 command! -nargs=0 ToggleColorScheme call s:ToggleColorScheme()
 nnoremap <Leader>th :ToggleColorScheme<CR>
+command! -nargs=0 RefreshColorScheme call s:RefreshColorScheme()
 
 " Finally, we determine what the current global color scheme type is ("dark" or
 " "light"), and switch to that.
 
-call g:RefreshColorScheme(s:Chomp(system('color-scheme-mode')))
+call s:RefreshColorScheme()
