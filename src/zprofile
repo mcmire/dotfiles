@@ -1,1 +1,16 @@
 #echo ".zprofile loaded"
+
+# /etc/zprofile (which macOS provides by default) will run a script call
+# path_helper, which will set the PATH. Unfortunately this gets re-run when we
+# go into tmux and the PATH will get flipped around (so that all of the stuff
+# that path_helper appears first and our additions appear last). By resetting
+# the PATH and then reloading /etc/zprofile the PATH will appear in the right
+# order.
+# Source: <https://superuser.com/questions/544989/does-tmux-sort-the-path-variable>
+if [[ -n $TMUX && -f /etc/zprofile ]]; then
+  #echo "tmux detected, resetting PATH"
+  PATH=""
+  source /etc/zprofile
+fi
+
+#echo "PATH: $PATH"

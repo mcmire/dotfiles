@@ -1,4 +1,5 @@
 #echo ".zshrc loaded"
+#echo "PATH: $PATH"
 
 BENCHMARK_SHELL_INIT=0
 BENCHMARK_LOG=/tmp/zsh-benchmark.log
@@ -43,16 +44,12 @@ if [[ -n $HOMEBREW_PREFIX ]]; then
   export DOTFILES_INSIDE_SUBSHELL=1
 fi
 
-#echo $PATH
-#echo "DOTFILES_INSIDE_SUBSHELL=$DOTFILES_INSIDE_SUBSHELL"
-
 benchmarked-source ~/.zsh/_base.zsh
 
 benchmarked-source ~/.zsh/_path.zsh
 benchmarked-source ~/.zsh/_homebrew.zsh
 benchmarked-source ~/.zsh/_asdf.zsh
 benchmarked-source ~/.zsh/_ruby.zsh
-benchmarked-source ~/.zsh/_node.zsh
 benchmarked-source ~/.zsh/_rubyfmt.zsh
 
 benchmarked-source ~/.zsh/android-studio.zsh
@@ -76,12 +73,15 @@ benchmarked-source ~/.zsh/unicode.zsh
 benchmarked-source ~/.zsh/vim.zsh
 benchmarked-source ~/.zsh/zmv.zsh
 benchmarked-source ~/.zsh/zsh-async.zsh
-benchmarked-source ~/.zsh/zzz_aliases.zsh
-benchmarked-source ~/.zsh/zzz_functions.zsh
 
 benchmarked-source ~/.zsh/completion.zsh
 benchmarked-source ~/.zsh/prompt.zsh
 
+benchmarked-source ~/.zsh/zzz_aliases.zsh
+benchmarked-source ~/.zsh/zzz_functions.zsh
+
 if [[ -f ~/.zshrc.local ]]; then
   benchmarked-source ~/.zshrc.local
 fi
+
+#echo "(end of .zshrc) PATH: $PATH"

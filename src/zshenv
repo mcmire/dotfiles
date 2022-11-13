@@ -1,1 +1,3 @@
 #echo ".zshenv loaded"
+
+#echo "PATH: $PATH"

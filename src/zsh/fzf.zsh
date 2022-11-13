@@ -2,8 +2,8 @@ fzf_path=$(brew --prefix fzf)
 
 # Setup fzf
 # ---------
-if [[ ! "$PATH" == *$fzf_path/bin* && $DOTFILES_INSIDE_SUBSHELL -ne 1 ]]; then
-  export PATH="$fzf_path/bin:$PATH"
+if [[ ! "$PATH" == *$fzf_path/bin* ]]; then
+  PATH="$fzf_path/bin:$PATH"
 fi
 
 # Auto-completion
