@@ -1,26 +1,30 @@
 ALIASES_FILE="~/.zsh/zzz_aliases.zsh"
 FUNCTIONS_FILE="~/.zsh/zzz_functions.zsh"
 
-# Managing aliases/functions
+#== Managing aliases/functions ==
+
 alias edit-aliases="v $ALIASES_FILE"
 alias view-aliases="less $ALIASES_FILE"
 alias edit-functions="v $FUNCTIONS_FILE"
 alias view-functions="less $FUNCTIONS_FILE"
 alias reload-env="source $ALIASES_FILE && source $FUNCTIONS_FILE"
 
-# Misc
+#== Misc ==
+
 alias is-running="ps aux | grep -v grep | grep"
 alias olhc="open-latest-html-capture"
 alias olic="open-latest-image-capture"
 alias ll="ls -l"
 
-# Bundle
+#== Bundle ==
+
 alias b="bundle"
 alias be="b exec"
 alias r="be rspec"
 alias ba="b && be appraisal install"
 
-# Git
+#== Git ==
+
 alias gA="g add -A ."
 alias ga="g add -A"
 alias gb="g branch"
@@ -53,17 +57,27 @@ alias gri="gr --interactive"
 alias grm="g rm"
 alias grs="gr --skip"
 
-# Zeus
+#== Zeus ==
+
 alias z="zeus"
 alias zR="zeus rails"
 alias zr="zeus rspec"
 alias zRm="sR db:migrate db:test:prepare"
 alias zRmr="sR db:migrate:redo db:test:prepare"
 
-# Rails
+#== Rails ==
+
 alias R="rails"
 alias Rc="R console"
 alias Rm="R db:migrate db:test:prepare"
 alias Rmr="R db:migrate:redo db:test:prepare"
 alias Rr="R db:rollback"
 alias Rrbm="R db:rollback_branch_migrations"
+
+#== Overriding existing executables ==
+
+# For some reason, Tig does not show colors when `tmux-256color` is used as the
+# value of `TERM`. It might be that we don't have to use this anymore, or that
+# we have to adjust `tmux-256color`.
+# See: <https://github.com/jonas/tig/issues/1210>
+alias tig="TERM=xterm-256color tig"
