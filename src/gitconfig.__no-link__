@@ -1,5 +1,3 @@
-[diff "ruby"]
-  funcname = ^ *\\(\\(class\\|module\\|def\\) .*\\)
 [alias]
   br = branches
   co = checkout
@@ -19,16 +17,26 @@
   added = green
   changed = yellow
   untracked = cyan
-[core]
-  excludesFile = ~/.gitignore
 [commit]
   template = ~/.gitmessage
+[core]
+  excludesFile = ~/.gitignore
+[diff "ruby"]
+  funcname = ^ *\\(\\(class\\|module\\|def\\) .*\\)
+[difftool "sourcetree"]
+  cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+  path = 
 [init]
   templatedir = ~/.git_template
   defaultBranch = main
+[merge]
+  renamelimit = 2000
+[mergetool "sourcetree"]
+  cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+  trustExitCode = true
 [rebase]
   autosquash = true
-[push]
-  default = current
 [pull]
   ff = only
+[push]
+  default = current
