@@ -7,6 +7,9 @@
 .svn
 features/cassettes
 node_modules
+/packages/*/coverage
+/packages/*/dist
+/packages/*/docs
 spec/cassettes
 spec/examples.txt
 tmp/cache
