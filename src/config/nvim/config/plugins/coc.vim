@@ -2,12 +2,13 @@
 " =====================
 
 "\ 'coc-prettier',
+"\ 'coc-css',
+" Use coc-tsserver 1.10.5 to match version of coc in June 2022
 let g:coc_global_extensions = [
-      \ 'coc-eslint@1.5.8',
+      \ 'coc-eslint',
       \ 'coc-json',
-      \ 'coc-tsserver@1.10.1',
+      \ 'coc-tsserver@1.10.5',
       \ 'coc-stylelintplus',
-      \ 'coc-css',
       \ ]
 
 function! s:ShowDocumentation() abort
