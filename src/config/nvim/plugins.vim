@@ -39,7 +39,7 @@ Plug 'avakhov/vim-yaml'
 Plug 'dart-lang/dart-vim-plugin'
 Plug 'datwaft/prolog-syntax-vim', { 'branch': 'main' }
 Plug 'djbender/vim-slim'
-Plug 'cespare/vim-toml'
+Plug 'cespare/vim-toml', { 'branch': 'main' }
 Plug 'editorconfig/editorconfig-vim'
 " JSON plugin which fixes autoindentation within arrays
 Plug 'jakar/vim-json'
