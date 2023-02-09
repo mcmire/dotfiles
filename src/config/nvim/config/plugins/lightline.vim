@@ -10,6 +10,7 @@ let g:lightline = {
       \   'active': {
       \     'left': [
       \       ['mode', 'paste'],
+      \       ['zoomed'],
       \       ['readonly', 'relativepath', 'modified']
       \     ],
       \     'right': [
@@ -22,6 +23,9 @@ let g:lightline = {
       \     'left': [
       \       ['relativepath', 'modified']
       \     ]
+      \   },
+      \   'component_function': {
+      \     'zoomed': 'zoom#statusline'
       \   }
       \ }
 
