@@ -1,42 +1,48 @@
 [alias]
-  br = branches
-  co = checkout
-  cp = cherry-pick
-  ctags = !.git/hooks/ctags
-  diff-base = diff --ignore-all-space -M --patience
-  diff-branch = diff origin/master..
-  oneline = log --pretty=format:'%C(bold)%h%Creset (%ci) |%Cgreen%d%Creset %s' --color --decorate=full
-  oneline-plain = log --pretty=tformat:'%h (%ci) :: %s'
-  rm-untracked-files = clean -f -d
-  st = status
-  tree = log --graph --pretty=oneline --abbrev-commit --decorate --color
-  tree-all = log --graph --pretty=format:'%h %Cred(%cD)%Creset%Cgreen%d%Creset %s' --color --all --decorate=full
-  tree-by-date = log --pretty=format:'%h | %cD | %Cgreen%d%Creset %s' --date-order --graph --all --color --decorate=full
-  unstage = reset HEAD
+	br = branches
+	co = checkout
+	cp = cherry-pick
+	ctags = !.git/hooks/ctags
+	diff-base = diff --ignore-all-space -M --patience
+	diff-branch = diff origin/master..
+	oneline = log --pretty=format:'%C(bold)%h%Creset (%ci) |%Cgreen%d%Creset %s' --color --decorate=full
+	oneline-plain = log --pretty=tformat:'%h (%ci) :: %s'
+	rm-untracked-files = clean -f -d
+	st = status
+	tree = log --graph --pretty=oneline --abbrev-commit --decorate --color
+	tree-all = log --graph --pretty=format:'%h %Cred(%cD)%Creset%Cgreen%d%Creset %s' --color --all --decorate=full
+	tree-by-date = log --pretty=format:'%h | %cD | %Cgreen%d%Creset %s' --date-order --graph --all --color --decorate=full
+	unstage = reset HEAD
+[checkout]
+	defaultRemote = origin
 [color "status"]
-  added = green
-  changed = yellow
-  untracked = cyan
+	added = green
+	changed = yellow
+	untracked = cyan
 [commit]
-  template = ~/.gitmessage
+	template = ~/.gitmessage
+	gpgsign = false
 [core]
-  excludesFile = ~/.gitignore
+	excludesFile = ~/.gitignore
 [diff "ruby"]
-  funcname = ^ *\\(\\(class\\|module\\|def\\) .*\\)
+	funcname = ^ *\\(\\(class\\|module\\|def\\) .*\\)
 [difftool "sourcetree"]
-  cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-  path = 
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[filter "lfs"]
 [init]
-  templatedir = ~/.git_template
-  defaultBranch = main
+	templatedir = ~/.git_template
+	defaultBranch = main
 [merge]
-  renamelimit = 2000
+	renamelimit = 2000
 [mergetool "sourcetree"]
-  cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-  trustExitCode = true
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
 [rebase]
-  autosquash = true
+	autosquash = true
+[remote]
+	pushDefault = origin
 [pull]
-  ff = only
+	ff = only
 [push]
-  default = current
+	default = current
