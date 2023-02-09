@@ -7,6 +7,8 @@
 let g:coc_global_extensions = [
       \ 'coc-eslint',
       \ 'coc-json',
+      \ 'coc-prettier',
+      \ 'coc-rust-analyzer',
       \ 'coc-tsserver@1.10.5',
       \ 'coc-stylelintplus',
       \ ]
