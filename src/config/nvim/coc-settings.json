@@ -22,6 +22,7 @@
   "eslint.autoFixOnSave": true,
   "eslint.fixOnSaveTimeout": 10000,
   "eslint.format.enable": true,
+  "eslint.trace.server": "verbose",
   "hover.floatConfig.maxWidth": 200,
   "hover.floatConfig.maxHeight": 1500,
   "javascript.suggest.enabled": false,
