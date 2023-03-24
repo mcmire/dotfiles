@@ -11,7 +11,7 @@
     "scss"
   ],
   "css.validate": false,
-  "coc.preferences.formatOnType": true,
+  "coc.preferences.formatOnType": false,
   "coc.preferences.jumpCommand": "tabe",
   "diagnostic.checkCurrentLine": true,
   "diagnostic.enableMessage": "jump",
@@ -19,7 +19,7 @@
   "diagnostic.floatConfig.maxHeight": 1500,
   "diagnostic.messageDelay": 1000,
   "diagnostic.refreshOnInsertMode": true,
-  "eslint.autoFixOnSave": true,
+  "eslint.autoFixOnSave": false,
   "eslint.fixOnSaveTimeout": 10000,
   "eslint.format.enable": true,
   "eslint.trace.server": "verbose",
