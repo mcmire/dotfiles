@@ -57,13 +57,15 @@ Plug 'pangloss/vim-javascript'
 Plug 'tbastos/vim-lua'
 Plug 'tpope/vim-cucumber'
 Plug 'tpope/vim-haml'
+Plug 'tpope/vim-fugitive'
 " Make sure vim-projectionist is listed BEFORE vim-rails!
 " See: <https://github.com/tpope/vim-rails/issues/330>
 Plug 'tpope/vim-projectionist' | Plug 'tpope/vim-rails'
+Plug 'tpope/vim-unimpaired'
 Plug 'vim-ruby/vim-ruby'
 Plug 'yuezk/vim-js'
 
-" Plugins I sometimes use (and may disable later)
+" Plugins I'm trying out
 " ===============================================
 
 "Plug 'github/copilot.vim'
@@ -71,6 +73,4 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'jeetsukumaran/vim-markology'
 Plug 'junegunn/goyo.vim'
 Plug 'reedes/vim-pencil'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rails'
-Plug 'tpope/vim-unimpaired'
