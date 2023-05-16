@@ -68,7 +68,7 @@ Plug 'yuezk/vim-js'
 " Plugins I'm trying out
 " ===============================================
 
-"Plug 'github/copilot.vim'
+Plug 'github/copilot.vim', { 'branch': 'release' }
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'jeetsukumaran/vim-markology'
 Plug 'junegunn/goyo.vim'
