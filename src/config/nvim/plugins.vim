@@ -64,6 +64,7 @@ Plug 'tpope/vim-projectionist' | Plug 'tpope/vim-rails'
 Plug 'tpope/vim-unimpaired'
 Plug 'vim-ruby/vim-ruby'
 Plug 'yuezk/vim-js'
+Plug 'wuelnerdotexe/vim-astro', { 'branch': 'main' }
 
 " Plugins I'm trying out
 " ===============================================
