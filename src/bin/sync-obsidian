@@ -76,12 +76,8 @@ working_branch_exists() {
   git rev-parse --verify "$working_branch_name" >/dev/null 2>&1
 }
 
-file_exists_in_repo() {
-  git ls-files --error-unmatch "$1" >/dev/null 2>&1
-}
-
 get_modified_deleted_and_untracked_files() {
-  git ls-files --modified --deleted --others
+  git ls-files --modified --deleted --others | uniq
 }
 
 remove_branch() {
@@ -235,18 +231,6 @@ must_have_no_staged_changes() {
   fi
 }
 
-build_files_to_sync() {
-  local files=()
-
-  while IFS= read -r file; do
-    if [[ -n $file ]]; then
-      files+=("$file")
-    fi
-  done < <()
-
-  printf '%s\0' "${files[@]}"
-}
-
 create_working_branch() {
   info "Creating working branch \`$working_branch_name\`..."
 
@@ -257,37 +241,18 @@ create_working_branch() {
   run_command git checkout -b "$working_branch_name"
 }
 
-commit_markdown_file() {
-  local file="$1"
-
-  local commit_message
-  if file_exists_in_repo "$file"; then
-    commit_message="Update: $file"
-  else
-    commit_message="Add: $file"
-  fi
-
-  info "Committing \`$file\`..."
-  run_command git add "$file"
-  run_command git commit -m "$commit_message"
-}
-
-commit_workspace_settings() {
-  info "Committing \`.obsidian\`..."
-  run_command git add .obsidian
-  run_command git commit -m "Update workspace settings"
-}
-
 commit_files_to_sync() {
   local files_to_sync=("$@")
 
+  info "Committing all files..."
+
   for file in "${files_to_sync[@]}"; do
-    if [[ $file == *.md ]]; then
-      commit_markdown_file "$file"
-    elif [[ $file == .obsidian/* ]]; then
-      commit_workspace_settings
+    if [[ $file == *.md || $file == .obsidian/* ]]; then
+      run_command git add "$file"
     fi
   done
+
+  run_command git commit -m "Automatic sync"
 }
 
 return_to_primary_branch() {
@@ -322,7 +287,7 @@ main() {
     if [[ -n $file ]]; then
       files_to_sync+=("$file")
     fi
-  done < <(git ls-files --modified --deleted --others)
+  done < <(get_modified_deleted_and_untracked_files)
 
   if [[ ${#files_to_sync[@]} -eq 0 ]]; then
     echo
