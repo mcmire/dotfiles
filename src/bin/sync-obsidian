@@ -231,6 +231,11 @@ must_have_no_staged_changes() {
   fi
 }
 
+pull_primary_branch() {
+  info "Fetching updates..."
+  run_command git pull
+}
+
 create_working_branch() {
   info "Creating working branch \`$working_branch_name\`..."
 
@@ -283,6 +288,8 @@ main() {
 
   trap on_exit EXIT
 
+  pull_primary_branch
+
   while IFS= read -r file; do
     if [[ -n $file ]]; then
       files_to_sync+=("$file")
@@ -290,8 +297,10 @@ main() {
   done < <(get_modified_deleted_and_untracked_files)
 
   if [[ ${#files_to_sync[@]} -eq 0 ]]; then
-    echo
-    success "No changes to sync, all good!"
+    if [[ $dry_run == "false" ]]; then
+      echo
+      success "No changes to sync, all good!"
+    fi
   else
     create_working_branch
     commit_files_to_sync "${files_to_sync[@]}"
@@ -299,8 +308,10 @@ main() {
     merge_working_branch_into_primary_branch
     push_primary_branch
     remove_working_branch
-    echo
-    success "Sync completed successfully!"
+    if [[ $dry_run == "false" ]]; then
+      echo
+      success "Sync completed successfully!"
+    fi
   fi
 }
 
