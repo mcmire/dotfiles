@@ -77,7 +77,7 @@ working_branch_exists() {
 }
 
 get_modified_deleted_and_untracked_files() {
-  git ls-files --modified --deleted --others | uniq
+  git ls-files --modified --deleted --others --deduplicate --exclude-standard
 }
 
 remove_branch() {
