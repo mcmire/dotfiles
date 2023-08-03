@@ -8,9 +8,9 @@ let g:goyo_linenr = 1
 
 function! s:goyo_enter()
   " Redraw the color scheme as the gutter changes color for some reason.
-  call g:RefreshColorScheme()
+  RefreshColorScheme
   " Don't render marks in the gutter.
-  exec 'MarkologyDisable'
+  MarkologyDisable
   " Wrap all lines.
   let s:was_wrap = &wrap
   set wrap
@@ -18,9 +18,9 @@ endfunction
 
 function! s:goyo_leave()
   " Redraw the color scheme as the gutter changes color for some reason.
-  call g:RefreshColorScheme()
+  RefreshColorScheme
   " Render marks in the gutter.
-  exec 'MarkologyEnable'
+  MarkologyEnable
   " If we were previously wrapping lines, do that, otherwise don't.
   if s:was_wrap
     set wrap

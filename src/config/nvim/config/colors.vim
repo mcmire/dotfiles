@@ -160,11 +160,11 @@ endfunction
 
 " We set up a mapping so you can use `,th` to flip between the two modes:
 
-command! -nargs=0 ToggleColorScheme call s:ToggleColorScheme()
+command! -nargs=0 ToggleColorScheme call <SID>ToggleColorScheme()
 nnoremap <Leader>th :ToggleColorScheme<CR>
-command! -nargs=0 RefreshColorScheme call s:RefreshColorScheme()
+command! -nargs=0 RefreshColorScheme call <SID>RefreshColorScheme()
 
 " Finally, we determine what the current global color scheme type is ("dark" or
 " "light"), and switch to that.
 
-call s:RefreshColorScheme()
+RefreshColorScheme
