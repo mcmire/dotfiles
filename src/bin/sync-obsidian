@@ -8,13 +8,19 @@ working_branch_name="sync-$(date +%s)"
 repo_directory=
 primary_branch_name=
 dry_run=false
+use_color=true
 
 ## Helpers
 
 color() {
   local color="$1"
   shift
-  echo -ne "\033[${color}m$@\033[0m"
+  
+  if [[ $use_color == "true" ]]; then
+    echo -ne "\033[${color}m$@\033[0m"
+  else
+    echo -ne "$@"
+  fi
 }
 
 red() {
@@ -146,12 +152,16 @@ parse_options() {
         shift 2
         ;;
       --dry-run | -n)
-        dry_run=true
+        dry_run="true"
         shift
         ;;
       --help | -h)
         print_usage
         exit 0
+        ;;
+      --no-color)
+        use_color="false"
+        shift
         ;;
       *)
         error "Unknown option or argument: $1" >&2
