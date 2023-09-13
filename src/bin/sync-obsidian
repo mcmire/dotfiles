@@ -15,7 +15,7 @@ use_color=true
 color() {
   local color="$1"
   shift
-  
+
   if [[ $use_color == "true" ]]; then
     echo -ne "\033[${color}m$@\033[0m"
   else
@@ -191,9 +191,8 @@ on_exit() {
   local exit_code=$?
 
   if [[ $exit_code -ne 0 ]]; then
-    info "\nDetecting failure, cleaning up working branch..."
-    cleanup_working_branch
-    unstage_staged_files
+    info "\nDetecting failure, cleaning up..."
+    cleanup
   fi
 }
 
@@ -202,24 +201,15 @@ remove_working_branch() {
   run_command remove_branch "$working_branch_name"
 }
 
-cleanup_working_branch() {
-  if [[ -n $primary_branch_name ]]; then
-    if [[ "$(get_current_branch)" != "$primary_branch_name" ]]; then
-      info "Switching back to primary branch \`$primary_branch_name\`..."
-      git checkout "$primary_branch_name"
-    fi
+cleanup() {
+  must_be_on_primary_branch "$(get_current_branch)"
 
-    if working_branch_exists; then
-      remove_working_branch
-    fi
-  fi
-}
-
-unstage_staged_files() {
-  if has_staged_changes; then
-    info "Unstaging staged files..."
-    run_command git restore --staged .
-  fi
+  info "Unstaging staged files..."
+  run_command git restore --staged .
+  info "Reverting changes to existing files..."
+  run_command git checkout .
+  info "Removing added files..."
+  run_command git clean -fd
 }
 
 change_directory() {
@@ -234,11 +224,11 @@ must_be_a_git_repository() {
   fi
 }
 
-must_be_on_primary_or_sync_branch() {
+must_be_on_primary_branch() {
   local current_branch="$1"
 
-  if ! [[ "$current_branch" = "$primary_branch_name" || "$current_branch" =~ ^sync-[0-9]+$ ]]; then
-    die "The current branch must either be \`$primary_branch_name\` or match \"sync-*\" to continue."
+  if ! [[ "$current_branch" = "$primary_branch_name" ]]; then
+    die "The current branch must be \`$primary_branch_name\` to continue."
     exit 1
   fi
 }
@@ -246,16 +236,6 @@ must_be_on_primary_or_sync_branch() {
 pull_primary_branch() {
   info "Fetching updates..."
   run_command git pull --rebase
-}
-
-create_and_switch_to_working_branch() {
-  info "Creating working branch \`$working_branch_name\`..."
-
-  if working_branch_exists; then
-    die "Branch \`$working_branch_name\` already exists."
-  fi
-
-  run_command git checkout -b "$working_branch_name"
 }
 
 commit_files_to_sync() {
@@ -270,16 +250,6 @@ commit_files_to_sync() {
   done
 
   run_command git commit -m "Automatic sync"
-}
-
-return_to_primary_branch() {
-  info "Switching back to primary branch \`$primary_branch_name\`..."
-  run_command git checkout "$primary_branch_name"
-}
-
-merge_working_branch_into_primary_branch() {
-  info "Merging \`$working_branch_name\` into \`$primary_branch_name\`..."
-  run_command git merge --ff-only "$working_branch_name"
 }
 
 push_primary_branch() {
@@ -297,7 +267,7 @@ main() {
 
   must_be_a_git_repository
   current_branch="$(get_current_branch)"
-  must_be_on_primary_or_sync_branch "$current_branch"
+  must_be_on_primary_branch "$current_branch"
 
   trap on_exit EXIT
 
@@ -308,10 +278,6 @@ main() {
   done < <(get_modified_deleted_and_untracked_files)
 
   if ! has_staged_changes && [[ ${#files_to_sync[@]} -eq 0 ]]; then
-    if [[ "$current_branch" != "$primary_branch_name" ]]; then
-      return_to_primary_branch
-    fi
-
     pull_primary_branch
 
     if [[ $dry_run == "true" ]]; then
@@ -322,15 +288,9 @@ main() {
       success "No changes to sync, all good!"
     fi
   else
-    if [[ "$current_branch" = "$primary_branch_name" ]]; then
-      create_and_switch_to_working_branch
-    fi
     commit_files_to_sync "${files_to_sync[@]}"
-    return_to_primary_branch
-    merge_working_branch_into_primary_branch
     pull_primary_branch
     push_primary_branch
-    remove_working_branch
     if [[ $dry_run == "false" ]]; then
       echo
       success "Sync completed successfully!"
