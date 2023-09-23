@@ -269,7 +269,7 @@ main() {
   current_branch="$(get_current_branch)"
   must_be_on_primary_branch "$current_branch"
 
-  trap on_exit EXIT
+  # trap on_exit EXIT
 
   while IFS= read -r file; do
     if [[ -n $file ]]; then
