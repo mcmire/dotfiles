@@ -235,7 +235,7 @@ must_be_on_primary_branch() {
 
 pull_primary_branch() {
   info "Fetching updates..."
-  run_command git pull --rebase
+  run_command git pull --rebase --prune
 }
 
 commit_files_to_sync() {
