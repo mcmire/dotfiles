@@ -46,6 +46,7 @@ Plug 'datwaft/prolog-syntax-vim', { 'branch': 'main' }
 Plug 'djbender/vim-slim'
 Plug 'cespare/vim-toml', { 'branch': 'main' }
 Plug 'editorconfig/editorconfig-vim'
+Plug 'isobit/vim-caddyfile'
 " JSON plugin which fixes autoindentation within arrays
 Plug 'jakar/vim-json'
 Plug 'jtratner/vim-flavored-markdown'
