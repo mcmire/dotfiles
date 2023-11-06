@@ -130,7 +130,7 @@ nmap <Leader>cp :let @* = expand("%")<CR>
 nmap <Leader>sr :syntax sync fromstart
 
 " Finally, when modifying a colorscheme, sometimes it's helpful to know which
-" syntax group the cursor sits within. `,syn` lets us do this
+" syntax group the cursor sits within. `,si` lets us do this
 " ([source][identify-syntax-group]):
 "
 " [identify-syntax-group]: http://vim.wikia.com/wiki/Identify_the_syntax_highlighting_group_used_at_the_cursor
