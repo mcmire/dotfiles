@@ -74,6 +74,9 @@ alias Rmr="R db:migrate:redo db:test:prepare"
 alias Rr="R db:rollback"
 alias Rrbm="R db:rollback_branch_migrations"
 
+#== tmux ==
+alias tk="tmux kill-session"
+
 #== Overriding existing executables ==
 
 # For some reason, Tig does not show colors when `tmux-256color` is used as the
