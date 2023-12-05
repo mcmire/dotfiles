@@ -66,3 +66,30 @@ new-rails-app() {
     --webpacker react \
     "${2:@}"
 }
+
+jf() {
+  local workspaces="$(cat package.json | jq '.workspaces')"
+  local workspace_package_name="$1"
+  local workspace_package_names
+
+  if [[ $workspaces == "null" ]]; then
+    # polyrepo
+    yarn jest "$@" --verbose=false --no-coverage
+  else
+    # monorepo
+    if [[ -z $workspace_package_name ]]; then
+      workspace_package_names="$(yarn workspaces list --json | jq --slurp --raw-output 'map(.name) | .[]')"
+      echo "ERROR: Missing workspace package name. Possible package names are:"
+      echo
+      echo "$workspace_package_names"
+      echo
+      exit 1
+    fi
+
+    yarn workspace "$workspace_package_name" run jest "${@:2}" --verbose=false --no-coverage
+  fi
+}
+
+jfw() {
+  jf "$@" --watch
+}
