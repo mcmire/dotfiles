@@ -1,70 +1,25 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
-debug=false
-working_branch_name="sync-$(date +%s)"
+source "$HOME/.config/core-helpers.sh"
+
+## Constants
+
+WORKING_BRANCH_NAME="sync-$(date +%s)"
+
+## Configuration
+
+set-debug-mode "false"
+set-color-mode "true"
+
+## Parameters
 
 repo_directory=
 primary_branch_name=
 dry_run=false
-use_color=true
 
 ## Helpers
-
-color() {
-  local color="$1"
-  shift
-
-  if [[ $use_color == "true" ]]; then
-    echo -ne "\033[${color}m$@\033[0m"
-  else
-    echo -ne "$@"
-  fi
-}
-
-red() {
-  color 31 "$@"
-}
-
-green() {
-  color 32 "$@"
-}
-
-blue() {
-  color 34 "$@"
-}
-
-magenta() {
-  color 35 "$@"
-}
-
-cyan() {
-  color 36 "$@"
-}
-
-success() {
-  green "$@" "\n"
-}
-
-error() {
-  red "ERROR:" "$@" "\n"
-}
-
-info() {
-  blue "$@" "\n"
-}
-
-die() {
-  error "$* Aborting." >&2
-  exit 1
-}
-
-debug() {
-  if [[ $debug == "true" ]]; then
-    magenta "$@" "\n" >&2
-  fi
-}
 
 is_git_repository() {
   git rev-parse --is-inside-work-tree >/dev/null 2>&1
@@ -74,7 +29,7 @@ get_current_branch() {
   git rev-parse --abbrev-ref HEAD
 }
 
-has_staged_changes() {
+has-staged-changes() {
   if git diff-index --quiet --cached HEAD >/dev/null 2>&1; then
     return 1
   else
@@ -82,25 +37,21 @@ has_staged_changes() {
   fi
 }
 
-working_branch_exists() {
-  git rev-parse --verify "$working_branch_name" >/dev/null 2>&1
-}
-
-get_modified_deleted_and_untracked_files() {
+get-modified-deleted-and-untracked-files() {
   git ls-files --modified --deleted --others --deduplicate --exclude-standard
 }
 
-remove_branch() {
+remove-branch() {
   local branch_name="$1"
   git branch -D "$branch_name" && (git push origin --delete "$branch_name" || true)
 }
 
-run_command() {
+run-command() {
   local command_executable="$1"
   local command_args=("${@:2}")
   local exit_status
-  local output
-  local tempfile=$(mktemp)
+  local tempfile
+  tempfile="$(mktemp)"
 
   local command="$command_executable"
   for command_arg in "${command_args[@]}"; do
@@ -117,7 +68,7 @@ run_command() {
     set -e
 
     if [[ $exit_status -ne 0 ]]; then
-      error "Command '${command[@]}' failed with exit status $exit_status."
+      error "Command '${command[*]}' failed with exit status $exit_status."
       echo "Command output:"
       cat "$tempfile"
       exit 1
@@ -127,7 +78,7 @@ run_command() {
 
 ## Actions
 
-print_usage() {
+print-usage() {
   echo "\
 USAGE: $0 OPTIONS
 
@@ -140,7 +91,7 @@ OPTIONS:
 "
 }
 
-parse_options() {
+parse-args() {
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --repo-directory | -d)
@@ -156,75 +107,68 @@ parse_options() {
         shift
         ;;
       --help | -h)
-        print_usage
+        print-usage
         exit 0
         ;;
       --no-color)
-        use_color="false"
+        set-color-mode "false"
         shift
         ;;
       *)
         error "Unknown option or argument: $1" >&2
         echo >&2
-        print_usage >&2
+        print-usage >&2
         exit 1
         ;;
     esac
   done
+}
 
+validate-args() {
   if [[ -z $repo_directory ]]; then
     error "Missing required option: --repo-directory" >&2
     echo >&2
-    print_usage >&2
+    print-usage >&2
     exit 1
   fi
 
   if [[ -z $primary_branch_name ]]; then
     error "Missing required option: --primary-branch-name" >&2
     echo >&2
-    print_usage >&2
+    print-usage >&2
     exit 1
   fi
 }
 
-on_exit() {
-  local exit_code=$?
-
-  if [[ $exit_code -ne 0 ]]; then
-    info "\nDetecting failure, cleaning up..."
-    cleanup
-  fi
-}
-
 remove_working_branch() {
-  info "Deleting branch \`$working_branch_name\`..."
-  run_command remove_branch "$working_branch_name"
+  info "Deleting branch \`$WORKING_BRANCH_NAME\`..."
+  run-command remove-branch "$WORKING_BRANCH_NAME"
 }
 
 cleanup() {
-  must_be_on_primary_branch "$(get_current_branch)"
+  enforce-primary-branch "$(get_current_branch)"
 
   info "Unstaging staged files..."
-  run_command git restore --staged .
+  run-command git restore --staged .
   info "Reverting changes to existing files..."
-  run_command git checkout .
+  run-command git checkout .
   info "Removing added files..."
-  run_command git clean -fd
+  run-command git clean -fd
 }
 
-change_directory() {
+change-directory() {
   info "Entering \`$repo_directory\`..."
   cd "$repo_directory"
 }
 
-must_be_a_git_repository() {
+enforce-git-repository() {
   if ! is_git_repository; then
     die "\`$repo_directory\` is not a Git repository."
     exit 1
   fi
 }
 
-must_be_on_primary_branch() {
+enforce-primary-branch() {
   local current_branch="$1"
 
   if ! [[ "$current_branch" = "$primary_branch_name" ]]; then
@@ -233,52 +177,51 @@ must_be_on_primary_branch() {
   fi
 }
 
-pull_primary_branch() {
+pull-primary-branch() {
   info "Fetching updates..."
-  run_command git pull --rebase --prune
+  run-command git pull --rebase --prune
 }
 
-commit_files_to_sync() {
+commit-files-to-sync() {
   local files_to_sync=("$@")
 
   info "Committing all files..."
 
   for file in "${files_to_sync[@]}"; do
     if [[ $file == *.md || $file == .obsidian/* ]]; then
-      run_command git add "$file"
+      run-command git add "$file"
     fi
   done
 
-  run_command git commit -m "Automatic sync"
+  run-command git commit -m "Automatic sync"
 }
 
-push_primary_branch() {
+push-primary-branch() {
   info "Pushing \`$primary_branch_name\`..."
-  run_command git push origin "$primary_branch_name"
+  run-command git push origin "$primary_branch_name"
 }
 
 main() {
   local files_to_sync=()
   local current_branch
 
-  parse_options "$@"
+  parse-args "$@"
+  validate-args
 
-  change_directory
+  change-directory
 
-  must_be_a_git_repository
+  enforce-git-repository
   current_branch="$(get_current_branch)"
-  must_be_on_primary_branch "$current_branch"
-
-  # trap on_exit EXIT
+  enforce-primary-branch "$current_branch"
 
   while IFS= read -r file; do
     if [[ -n $file ]]; then
       files_to_sync+=("$file")
     fi
-  done < <(get_modified_deleted_and_untracked_files)
+  done < <(get-modified-deleted-and-untracked-files)
 
-  if ! has_staged_changes && [[ ${#files_to_sync[@]} -eq 0 ]]; then
-    pull_primary_branch
+  if ! has-staged-changes && [[ ${#files_to_sync[@]} -eq 0 ]]; then
+    pull-primary-branch
 
     if [[ $dry_run == "true" ]]; then
       echo
@@ -288,9 +231,9 @@ main() {
       success "No changes to sync, all good!"
     fi
   else
-    commit_files_to_sync "${files_to_sync[@]}"
-    pull_primary_branch
-    push_primary_branch
+    commit-files-to-sync "${files_to_sync[@]}"
+    pull-primary-branch
+    push-primary-branch
     if [[ $dry_run == "false" ]]; then
       echo
       success "Sync completed successfully!"
