@@ -1,0 +1,3 @@
+#!/bin/sh
+# Source: <https://stackoverflow.com/questions/3915040/how-to-obtain-the-absolute-path-of-a-file-via-shell-bash-zsh-sh/3915420#3915420>
+echo "$(cd "$(dirname -- "$1")" >/dev/null; pwd -P)/$(basename -- "$1")"
