@@ -83,11 +83,18 @@ print-usage() {
 USAGE: $0 OPTIONS
 
 OPTIONS:
-  --repo-directory <path>         Path to the Git repository to sync.
-  --primary-branch <branch>       Name of the primary branch to sync with.
-  --dry-run                       Don't perform any Git operations; just print
-                                  what would have happened.
-  --help                          Print this message and exit.
+
+-d, --repo-directory PATH
+    Path to the Git repository to sync.
+
+-b, --primary-branch BRANCH
+    Name of the primary branch to sync with.
+
+-n, --dry-run
+    Don't perform any Git operations; just print what would have happened.
+
+-h, --help
+    Print this message and exit.
 "
 }
 

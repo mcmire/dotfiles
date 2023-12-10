@@ -40,11 +40,11 @@ given command will be run. This is process is called "debouncing".
 
 OPTIONS:
 
--d, --duration=SECONDS
+-d, --duration SECONDS
     The amount of time to wait, in seconds.
 
 -h, --help
-    You're looking at it!
+    Print this message and exit.
 EOT
 }
 
