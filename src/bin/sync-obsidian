@@ -8,11 +8,6 @@ source "$HOME/.config/core-helpers.sh"
 
 WORKING_BRANCH_NAME="sync-$(date +%s)"
 
-## Configuration
-
-set-debug-mode "false"
-set-color-mode "true"
-
 ## Parameters
 
 repo_directory=
@@ -93,6 +88,12 @@ OPTIONS:
 -n, --dry-run
     Don't perform any Git operations; just print what would have happened.
 
+--no-color
+  Disable color.
+
+--debug
+  Enable debugging.
+
 -h, --help
     Print this message and exit.
 "
@@ -113,13 +114,17 @@ parse-args() {
         dry_run="true"
         shift
         ;;
-      --help | -h)
-        print-usage
-        exit 0
-        ;;
       --no-color)
         set-color-mode "false"
         shift
+        ;;
+      --debug)
+        set-debug-mode "true"
+        shift
+        ;;
+      --help | -h)
+        print-usage
+        exit 0
         ;;
       *)
         error "Unknown option or argument: $1" >&2

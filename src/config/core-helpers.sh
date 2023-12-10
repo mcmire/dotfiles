@@ -7,8 +7,8 @@ color() {
 
   if [[ $USE_COLOR == "true" ]]; then
     echo -ne "\033[${color}m"
-    echo -n "$@"
-    echo -e "\033[0m"
+    echo -ne "$@"
+    echo -ne "\033[0m"
   else
     echo -ne "$@"
   fi
@@ -35,15 +35,18 @@ cyan() {
 }
 
 success() {
-  green "$@" "\n"
+  green "$@"
+  echo
 }
 
 error() {
-  red "ERROR:" "$@" "\n"
+  red "ERROR:" "$@"
+  echo
 }
 
 info() {
-  blue "$@" "\n"
+  blue "$@"
+  echo
 }
 
 die() {
