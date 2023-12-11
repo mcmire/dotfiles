@@ -176,7 +176,9 @@ main() {
     touch "$lockfile"
   fi
 
-  trap 'cleanup "$lockfile"' INT QUIT
+  if [[ -z $debounce_duration ]]; then
+    trap 'cleanup "$lockfile"' INT QUIT
+  fi
 
   set +e
   debug "Executing command..."
@@ -184,7 +186,9 @@ main() {
   set -e
   exit_status=$?
 
-  cleanup
+  if [[ -z $debounce_duration ]]; then
+    cleanup
+  fi
 
   exit $exit_status
 }
