@@ -9,6 +9,7 @@ set updatetime=300
 "\ 'coc-css',
 " Use coc-tsserver 1.10.5 to match version of coc in June 2022
 let g:coc_global_extensions = [
+      \ 'coc-deno'
       \ 'coc-eslint',
       \ 'coc-json',
       \ 'coc-rust-analyzer',
