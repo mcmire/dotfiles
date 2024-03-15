@@ -46,6 +46,10 @@ noremap Q gq
 
 nnoremap Y y$
 
+" `T` is the same thing as saying `V%`. This helps when highlighting blocks.
+
+nnoremap T V%
+
 " `K` is a useless mapping and may do something evil (although what exactly it
 " does has been lost to the sands of time):
 
