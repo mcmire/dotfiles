@@ -1,8 +1,12 @@
 # Provide shortcuts to Rhino for envjs
-alias js="java -cp lib/js.jar:lib/jline.jar jline.ConsoleRunner org.mozilla.javascript.tools.shell.Main -opt -1"
-alias jsd="java -cp lib/js.jar:lib/jline.jar jline.ConsoleRunner org.mozilla.javascript.tools.debugger.Main"
+#alias js="java -cp lib/js.jar:lib/jline.jar jline.ConsoleRunner org.mozilla.javascript.tools.shell.Main -opt -1"
+#alias jsd="java -cp lib/js.jar:lib/jline.jar jline.ConsoleRunner org.mozilla.javascript.tools.debugger.Main"
 
-# https://gist.github.com/rjackson/4582914
-#export JAVACMD=`which drip`
-#export DRIP_INIT_CLASS=org.jruby.main.DripMain
 export JRUBY_OPTS="-J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-noverify"
+
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home"
+
+if ! [[ -e "$JAVA_HOME" ]]; then
+  echo "It looks like you are missing Azul Zulu JDK. This is a JDK optimized for Apple Silicon Macs."
+  echo "You can get it by running: brew tap homebrew/cask-versions && brew install --cask zulu17"
+fi
