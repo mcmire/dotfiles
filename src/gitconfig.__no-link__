@@ -1,8 +1,5 @@
 [alias]
 	authors = log --pretty=format:'%<(80,trunc)%s %C(blue)%<(20)%an%Creset %C(yellow)%ci%Creset'
-	br = branches
-	co = checkout
-	cp = cherry-pick
 	ctags = !.git/hooks/ctags
 	tree = log --graph --pretty=oneline --abbrev-commit --decorate --color
 	tree-all = log --graph --pretty=format:'%h %Cred(%cD)%Creset%Cgreen%d%Creset %s' --color --all --decorate=full
