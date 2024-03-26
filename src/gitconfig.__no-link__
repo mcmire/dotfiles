@@ -1,14 +1,9 @@
 [alias]
+	authors = log --pretty=format:'%<(80,trunc)%s %C(blue)%<(20)%an%Creset %C(yellow)%ci%Creset'
 	br = branches
 	co = checkout
 	cp = cherry-pick
 	ctags = !.git/hooks/ctags
-	diff-base = diff --ignore-all-space -M --patience
-	diff-branch = diff origin/master..
-	oneline = log --pretty=format:'%C(bold)%h%Creset (%ci) |%Cgreen%d%Creset %s' --color --decorate=full
-	oneline-plain = log --pretty=tformat:'%h (%ci) :: %s'
-	rm-untracked-files = clean -f -d
-	st = status
 	tree = log --graph --pretty=oneline --abbrev-commit --decorate --color
 	tree-all = log --graph --pretty=format:'%h %Cred(%cD)%Creset%Cgreen%d%Creset %s' --color --all --decorate=full
 	tree-by-date = log --pretty=format:'%h | %cD | %Cgreen%d%Creset %s' --date-order --graph --all --color --decorate=full
