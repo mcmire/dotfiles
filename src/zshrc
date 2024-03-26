@@ -60,6 +60,7 @@ benchmarked-source ~/.zsh/bun.zsh
 benchmarked-source ~/.zsh/clojure.zsh
 benchmarked-source ~/.zsh/cucumber.zsh
 benchmarked-source ~/.zsh/direnv.zsh
+benchmarked-source ~/.zsh/foundry.zsh
 benchmarked-source ~/.zsh/fzf.zsh
 benchmarked-source ~/.zsh/git.zsh
 benchmarked-source ~/.zsh/google-cloud-sdk.zsh
