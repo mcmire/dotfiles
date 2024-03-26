@@ -85,6 +85,7 @@ for pkg in \
   ag \
   asdf \
   autojump \
+  awscli \
   colordiff \
   coreutils \
   direnv \
@@ -93,18 +94,18 @@ for pkg in \
   grip \
   hub \
   jq \
-  overmind \
-  postgresql@10 \
   libxml2 \
   libxslt \
   neovim \
+  overmind \
+  postgresql@10 \
   reattach-to-user-namespace \
   redis \
   sqlite \
   tig \
   tmux \
   tree \
-  awscli \
+  zoxide \
   heroku/brew/heroku \
   mas-cli/tap/mas
 do

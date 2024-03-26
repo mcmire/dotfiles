@@ -73,6 +73,7 @@ benchmarked-source ~/.zsh/travis.zsh
 benchmarked-source ~/.zsh/unicode.zsh
 benchmarked-source ~/.zsh/vim.zsh
 benchmarked-source ~/.zsh/zmv.zsh
+benchmarked-source ~/.zsh/zoxide.zsh
 benchmarked-source ~/.zsh/zsh-async.zsh
 
 benchmarked-source ~/.zsh/completion.zsh
