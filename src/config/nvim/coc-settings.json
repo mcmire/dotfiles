@@ -1,14 +1,15 @@
 {
   "coc.preferences.formatOnSaveFiletypes": [
+    "astro",
+    "css",
     "javascript",
     "javascriptreact",
-    "typescript",
-    "typescriptreact",
     "json",
     "ruby",
     "rust",
-    "css",
-    "scss"
+    "scss",
+    "typescript",
+    "typescriptreact"
   ],
   "css.validate": false,
   "coc.preferences.formatOnType": false,
@@ -22,7 +23,31 @@
   "eslint.autoFixOnSave": false,
   "eslint.fixOnSaveTimeout": 10000,
   "eslint.format.enable": true,
+  "eslint.probe": [
+    "astro",
+    "css",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "ruby",
+    "rust",
+    "scss",
+    "typescript",
+    "typescriptreact"
+  ],
   "eslint.trace.server": "verbose",
+  "eslint.validate": [
+    "astro",
+    "css",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "ruby",
+    "rust",
+    "scss",
+    "typescript",
+    "typescriptreact"
+  ],
   "hover.floatConfig.maxWidth": 200,
   "hover.floatConfig.maxHeight": 1500,
   "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
