@@ -36,7 +36,7 @@ augroup END
 
 augroup local
   autocmd BufRead,BufNewFile *.pro set ft=prolog
-" Fix Prolog syntax file to account for backslashed single quotes in atoms
+  " Fix Prolog syntax file to account for backslashed single quotes in atoms
   autocmd FileType prolog syntax region prologAtom start="'" skip="\\'" end="'" oneline extend
 augroup END
 
