@@ -21,7 +21,7 @@
   "diagnostic.messageDelay": 1000,
   "diagnostic.refreshOnInsertMode": true,
   "eslint.autoFixOnSave": false,
-  "eslint.experimental.useFlatConfig": true,
+  "eslint.experimental.useFlatConfig": false,
   "eslint.fixOnSaveTimeout": 10000,
   "eslint.format.enable": true,
   "eslint.probe": [
