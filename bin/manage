@@ -436,7 +436,7 @@ and OTHER_OPTIONS are one or more of:
     def process_non_link(source)
       destination = build_destination_for(source.sub(/\.__no-link__$/, ""))
 
-      if destination.exist? || destination.symlink?
+      if destination.symlink?
         if config.force?
           announce(
             :non_link,
@@ -446,10 +446,16 @@ and OTHER_OPTIONS are one or more of:
           )
           copy_file(source, destination)
         else
-          # Is 'entry' correct here? My guess is that we don't know what kind of
-          # file it is
           announce(:entry, :exists, source: source, destination: destination)
         end
+      elsif destination.exist?
+        announce(
+          :non_link,
+          :overwrite,
+          source: source,
+          destination: destination
+        )
+        copy_file(source, destination)
       else
         # TODO: Change this to 'copy' 'file'
         announce(:non_link, :create, source: source, destination: destination)
