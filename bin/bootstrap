@@ -91,6 +91,7 @@ for pkg in \
   direnv \
   fzf \
   git \
+  git-delta \
   grip \
   hub \
   jq \

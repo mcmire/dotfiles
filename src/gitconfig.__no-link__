@@ -1,40 +1,47 @@
 [alias]
-	authors = log --pretty=format:'%<(80,trunc)%s %C(blue)%<(20)%an%Creset %C(yellow)%ci%Creset'
-	ctags = !.git/hooks/ctags
-	tree = log --graph --pretty=oneline --abbrev-commit --decorate --color
-	tree-all = log --graph --pretty=format:'%h %Cred(%cD)%Creset%Cgreen%d%Creset %s' --color --all --decorate=full
-	tree-by-date = log --pretty=format:'%h | %cD | %Cgreen%d%Creset %s' --date-order --graph --all --color --decorate=full
-	unstage = reset HEAD
+  authors = log --pretty=format:'%<(80,trunc)%s %C(blue)%<(20)%an%Creset %C(yellow)%ci%Creset'
+  ctags = !.git/hooks/ctags
+  tree = log --graph --pretty=oneline --abbrev-commit --decorate --color
+  tree-all = log --graph --pretty=format:'%h %Cred(%cD)%Creset%Cgreen%d%Creset %s' --color --all --decorate=full
+  tree-by-date = log --pretty=format:'%h | %cD | %Cgreen%d%Creset %s' --date-order --graph --all --color --decorate=full
+  unstage = reset HEAD
 [checkout]
-	defaultRemote = origin
+  defaultRemote = origin
 [color "status"]
-	added = green
-	changed = yellow
-	untracked = cyan
+  added = green
+  changed = yellow
+  untracked = cyan
 [commit]
-	template = ~/.gitmessage
-	gpgsign = false
+  template = ~/.gitmessage
+  gpgsign = false
 [core]
-	excludesFile = ~/.gitignore
+  excludesFile = ~/.gitignore
+  pager = "delta --features solarized"
+[delta]
+  side-by-side = true
+[delta "solarized"]
+  syntax-theme = Solarized Dark
 [diff "ruby"]
-	funcname = ^ *\\(\\(class\\|module\\|def\\) .*\\)
+  funcname = ^ *\\(\\(class\\|module\\|def\\) .*\\)
 [difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
+  cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+  path = 
 [filter "lfs"]
+[interactive]
+  diffFilter = delta --color-only --features="interactive solarized"
 [init]
-	templatedir = ~/.git_template
-	defaultBranch = main
+  templatedir = ~/.git_template
+  defaultBranch = main
 [merge]
-	renamelimit = 2000
+  renamelimit = 2000
 [mergetool "sourcetree"]
-	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
+  cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+  trustExitCode = true
 [rebase]
-	autosquash = true
+  autosquash = true
 [remote]
-	pushDefault = origin
+  pushDefault = origin
 [pull]
-	ff = only
+  ff = only
 [push]
-	default = current
+  default = current
