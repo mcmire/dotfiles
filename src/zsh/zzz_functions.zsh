@@ -93,3 +93,12 @@ jf() {
 jfw() {
   jf "$@" --watch
 }
+
+yw() {
+  local command="workspace"
+  if [[ $1 == "focus" || $1 == "foreach" || $1 == "list" ]]; then
+    command="workspaces"
+  fi
+
+  yarn $command "$@"
+}
