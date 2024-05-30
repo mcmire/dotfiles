@@ -35,9 +35,8 @@ nmap <Leader>cr <Plug>(coc-rename)
 " Apply the most preferred quickfix action to fix diagnostic on the current line
 nmap <Leader>cf <Plug>(coc-fix-current)
 
-" Formatting selected code
-xmap <leader>f <Plug>(coc-format-selected)
-nmap <leader>f <Plug>(coc-format-selected)
+" Format entire file
+nmap <leader>cF <Plug>(coc-format)
 
 " Add `:Format` command to format current buffer
 command! -nargs=0 Format :call CocActionAsync('format')
