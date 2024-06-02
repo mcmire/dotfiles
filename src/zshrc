@@ -68,6 +68,7 @@ benchmarked-source ~/.zsh/google-cloud-sdk.zsh
 benchmarked-source ~/.zsh/haskell.zsh
 benchmarked-source ~/.zsh/history.zsh
 benchmarked-source ~/.zsh/java.zsh
+benchmarked-source ~/.zsh/orb-stack.zsh
 benchmarked-source ~/.zsh/perl6.zsh
 benchmarked-source ~/.zsh/rust.zsh
 benchmarked-source ~/.zsh/tmux.zsh
