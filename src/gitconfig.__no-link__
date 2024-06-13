@@ -16,7 +16,7 @@
   gpgsign = false
 [core]
   excludesFile = ~/.gitignore
-  pager = "delta --features solarized"
+  # pager = "delta --features solarized"
 [delta]
   side-by-side = true
 [delta "solarized"]
