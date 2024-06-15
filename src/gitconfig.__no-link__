@@ -30,7 +30,6 @@
 [interactive]
   diffFilter = delta --color-only --features="interactive solarized"
 [init]
-  templatedir = ~/.git_template
   defaultBranch = main
 [merge]
   renamelimit = 2000
