@@ -27,8 +27,8 @@
   cmd = opendiff \"$LOCAL\" \"$REMOTE\"
   path = 
 [filter "lfs"]
-[interactive]
-  diffFilter = delta --color-only --features="interactive solarized"
+#[interactive]
+#  diffFilter = delta --color-only --features="interactive solarized"
 [init]
   defaultBranch = main
 [merge]
