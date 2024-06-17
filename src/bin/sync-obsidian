@@ -16,11 +16,11 @@ dry_run=false
 
 ## Helpers
 
-is_git_repository() {
+is-git-repository() {
   git rev-parse --is-inside-work-tree >/dev/null 2>&1
 }
 
-get_current_branch() {
+get-current-branch() {
   git rev-parse --abbrev-ref HEAD
 }
 
@@ -158,7 +158,7 @@ remove_working_branch() {
 }
 
 cleanup() {
-  enforce-primary-branch "$(get_current_branch)"
+  enforce-primary-branch "$(get-current-branch)"
 
   info "Unstaging staged files..."
   run-command git restore --staged .
@@ -174,8 +174,8 @@ change-directory() {
 }
 
 enforce-git-repository() {
-  if ! is_git_repository; then
-    die "\`$repo_directory\` is not a Git repository."
+  if ! is-git-repository; then
+    die "\`$PWD\` is not a Git repository."
     exit 1
   fi
 }
@@ -223,7 +223,7 @@ main() {
   change-directory
 
   enforce-git-repository
-  current_branch="$(get_current_branch)"
+  current_branch="$(get-current-branch)"
   enforce-primary-branch "$current_branch"
 
   while IFS= read -r file; do
