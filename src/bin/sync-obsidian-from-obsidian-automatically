@@ -8,7 +8,7 @@ echo "---------------" >> "$logfile"
 echo "Date: $(date)" >> "$logfile"
 echo "Current directory: $PWD" >> "$logfile"
 echo >> "$logfile"
-$HOME/.bin/lock --debounce 120 -- \
+$HOME/.bin/lock --debounce 60 -- \
   $HOME/.bin/sync-obsidian \
     --repo-directory "$PWD" \
     --primary-branch main \
