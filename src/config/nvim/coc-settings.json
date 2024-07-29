@@ -9,7 +9,8 @@
     "rust",
     "scss",
     "typescript",
-    "typescriptreact"
+    "typescriptreact",
+    "vue"
   ],
   "css.validate": false,
   "coc.preferences.formatOnType": false,
@@ -34,7 +35,8 @@
     "rust",
     "scss",
     "typescript",
-    "typescriptreact"
+    "typescriptreact",
+    "vue"
   ],
   "eslint.trace.server": "verbose",
   "eslint.validate": [
@@ -47,7 +49,8 @@
     "rust",
     "scss",
     "typescript",
-    "typescriptreact"
+    "typescriptreact",
+    "vue"
   ],
   "hover.floatConfig.maxWidth": 200,
   "hover.floatConfig.maxHeight": 1500,
