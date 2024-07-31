@@ -91,7 +91,7 @@ function! s:UseDarkColorScheme()
 
   let s:color_scheme_type="dark"
   set background=dark
-  silent! colorscheme solarized
+  silent! colorscheme solarized8_flat
   let g:airline_theme="solarized"
   let g:airline_solarized_bg="dark"
 
@@ -110,7 +110,7 @@ function! s:UseLightColorScheme()
 
   let s:color_scheme_type="light"
   set background=light
-  silent! colorscheme solarized
+  silent! colorscheme solarized8_flat
   let g:airline_theme="solarized"
   let g:airline_solarized_bg="light"
 
@@ -167,4 +167,7 @@ command! -nargs=0 RefreshColorScheme call <SID>RefreshColorScheme()
 " Finally, we determine what the current global color scheme type is ("dark" or
 " "light"), and switch to that.
 
-RefreshColorScheme
+augroup local
+  " Source: <https://github.com/lifepillar/vim-solarized8/tree/neovim>
+  autocmd VimEnter * ++nested RefreshColorScheme
+augroup END

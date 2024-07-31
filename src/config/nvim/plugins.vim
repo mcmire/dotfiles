@@ -1,8 +1,6 @@
 " Plugins I use all the time
 " ==========================
 
-Plug '~/.config/nvim/plugged/vim-colors-solarized'
-
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Konfekt/FastFold'
 Plug 'Yggdroot/indentLine'
@@ -17,6 +15,7 @@ Plug 'godlygeek/tabular'
 Plug 'itchyny/lightline.vim'
 Plug 'jszakmeister/vim-togglecursor'
 Plug 'kien/ctrlp.vim'
+Plug 'lifepillar/vim-solarized8', { 'branch': 'neovim' }
 Plug 'mileszs/ack.vim'
 Plug 'nelstrom/vim-textobj-rubyblock', { 'for': 'ruby' } | Plug 'kana/vim-textobj-user'
 " Use Coc from June 2022
