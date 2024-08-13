@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+source "$HOME/.config/core-helpers.sh"
+
+## Parameters
+
+duration=
+command=()
+
+## Actions
+
+print-usage() {
+  cat <<EOT
+USAGE: $EXECUTABLE [OPTIONS] -- [COMMAND]
+
+\`$EXECUTABLE\` waits for the given number of seconds to run the given command.
+If it is sent the signal USR1, then it starts the timer over again.
+
+OPTIONS:
+
+-d, --duration SECONDS
+  The number of seconds to wait before running the command.
+
+--no-color
+  Disable color.
+
+--debug
+  Enable debugging.
+
+-h, --help
+  Print this message and exit.
+EOT
+}
+
+parse-args() {
+  local process_rest_of_args=0
+
+  while [[ $# -gt 0 ]]; do
+    if [[ $process_rest_of_args -eq 1 ]]; then
+      command+=("${1:-}")
+      shift
+    else
+      case "${1:-}" in
+        --duration | -d)
+          duration=$2
+          shift 2
+          ;;
+        --no-color)
+          set-color-mode "false"
+          shift
+          ;;
+        --debug)
+          set-debug-mode "true"
+          shift
+          ;;
+        --help | -h)
+          print-usage
+          exit 0
+          ;;
+        --)
+          if [[ ${#command[@]} -gt 0 ]]; then
+            echo "ERROR: It seems you've started to provide a command to run after providing options."
+            echo "ERROR: Please specify the command after --."
+            echo
+            print-usage
+            exit 1
+          fi
+          process_rest_of_args=1
+          shift
+          ;;
+        *)
+          command+=("${1:-}")
+          shift
+          ;;
+      esac
+    fi
+  done
+}
+
+validate-args() {
+  if [[ -z "$duration" ]]; then
+    error "No duration specified!"
+    exit 1
+  fi
+
+  if [[ ${#command[@]} -eq 0 ]]; then
+    error "No command to run!"
+    exit 1
+  fi
+}
+
+main() {
+  local current_time
+  local time_to_run
+
+  parse-args "$@"
+  validate-args
+
+  current_time=$(date +%s)
+  time_to_run="$((current_time+duration))"
+
+  while true; do
+    trap 'debug "Received SIGUSR1, advancing timer by $duration."; current_time=$(date +%s); trap : USR1; echo "Moving on."' USR1
+
+    if [[ $current_time -gt $time_to_run || $current_time -eq $time_to_run ]]; then
+      debug "Time to run the command!"
+      break
+    fi
+
+    debug "It's not time to run this command yet, waiting a second..."
+    sleep 1
+
+    current_time=$(date +%s)
+    trap : USR1
+  done
+
+  set +e
+  debug "Executing command..."
+  "${command[@]}"
+  set -e
+  exit_status=$?
+
+  exit $exit_status
+}
+
+main "$@"

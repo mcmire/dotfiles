@@ -106,6 +106,7 @@ for pkg in \
   tig \
   tmux \
   tree \
+  watchexec \
   zoxide \
   heroku/brew/heroku \
   mas-cli/tap/mas

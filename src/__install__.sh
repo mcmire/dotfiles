@@ -38,4 +38,20 @@ if [[ ${GIT_EMAIL:-} ]]; then
   git config --global --add user.email "$GIT_EMAIL"
 fi
 
+if which launchctl &>/dev/null && [[ -d $HOME/obsidian-vault ]] && [[ -n "${DOTFILES_PROJECT_DIR:-}" ]]; then
+  banner "Setting up Obsidian vault syncing"
+
+  for launch_agent in com.elliotwinkler.sync-obsidian-vault-periodically com.elliotwinkler.sync-obsidian-vault-when-changed; do
+    echo
+    echo "Enabling ${launch_agent}"
+    echo
+    launchctl unload $HOME/Library/LaunchAgents/${launch_agent}.plist || true
+    cat $DOTFILES_PROJECT_DIR/extras/LaunchAgents/${launch_agent}.plist.tpl | sed -Ee 's|{{ HOME }}|'$HOME'|' > /tmp/${launch_agent}.plist
+    cp -f /tmp/${launch_agent}.plist $HOME/Library/LaunchAgents/${launch_agent}.plist
+    rm /tmp/${launch_agent}.plist
+    chmod 644 $HOME/Library/LaunchAgents/${launch_agent}.plist
+    launchctl load $HOME/Library/LaunchAgents/${launch_agent}.plist
+  done
+fi
+
 success "Done!"

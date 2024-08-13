@@ -33,7 +33,6 @@ before running that command. If it exists, this would indicate that the command
 is already being run, so it exits immediately. Otherwise, it creates a lockfile,
 runs the command, then removes the lockfile when complete.
 
-
 OPTIONS:
 
 -d, --debounce SECONDS
@@ -54,7 +53,7 @@ OPTIONS:
   Enable debugging.
 
 -h, --help
-    Print this message and exit.
+  Print this message and exit.
 EOT
 }
 
@@ -154,30 +153,32 @@ main() {
   fi
 
   if [[ -n $debounce_duration ]]; then
+    trap cleanup INT QUIT
+
     debug "Current time: $current_time"
     echo -e "${current_time}\t${debounce_duration}" > "$lockfile"
     while true; do
       current_time=$(date +%s)
       IFS=$'\t' read -r read_time read_duration < "$lockfile"
+      trap 'debug "Received SIGUSR1, advancing timer by $read_duration."; echo -e "${current_time}\t${read_duration}" > "$lockfile"; trap : USR1' USR1
       time_to_run="$((read_time+read_duration))"
       debug "Current time: $current_time"
       debug "Read time: $read_time"
       debug "Read duration: $read_duration"
       debug "Time to run: $time_to_run"
       if [[ $current_time -lt $time_to_run ]]; then
-        debug "It's not time to run this command yet, waiting a half a second..."
-        sleep 0.5
+        debug "It's not time to run this command yet, waiting a second..."
+        sleep 1
       else
         debug "Time to run the command!"
         break
       fi
+      trap : USR1
     done
+
+    cleanup
   else
     touch "$lockfile"
-  fi
-
-  if [[ -z $debounce_duration ]]; then
-    trap 'cleanup "$lockfile"' INT QUIT
   fi
 
   set +e
@@ -185,10 +186,6 @@ main() {
   "${command[@]}"
   set -e
   exit_status=$?
-
-  if [[ -z $debounce_duration ]]; then
-    cleanup
-  fi
 
   exit $exit_status
 }

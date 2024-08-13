@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# This script is designed to be run within a launch agent and therefore
+# Homebrew-installed executables may not be on the PATH.
+/opt/homebrew/bin/watchexec \
+  --watch "$HOME/obsidian-vault" \
+  --on-busy-update=restart \
+  --debounce 5s \
+  $HOME/.bin/debounce \
+  --duration 60 \
+  -- \
+  $HOME/.bin/sync-obsidian-vault-with-logging "$@"

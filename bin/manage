@@ -540,6 +540,8 @@ and OTHER_OPTIONS are one or more of:
         hash.merge(key.to_s.upcase => value.to_s)
       end
 
+      env['DOTFILES_PROJECT_DIR'] = DotfilesManager.project_dir.to_s
+
       if config.verbose?
         inspect_command(env, file.to_s)
       end

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source "$HOME/.config/core-helpers.sh"
+
+"$HOME/.bin/lock" --debounce 60 "$@" -- "$HOME/.bin/sync-obsidian-vault-with-logging" "$@"

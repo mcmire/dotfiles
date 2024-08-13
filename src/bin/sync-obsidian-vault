@@ -7,6 +7,8 @@ source "$HOME/.config/core-helpers.sh"
 ## Constants
 
 WORKING_BRANCH_NAME="sync-$(date +%s)"
+LOCKFILE_DIRECTORY=/tmp
+LOCKED_EXIT_CODE=-700
 
 ## Parameters
 
@@ -152,7 +154,35 @@ validate-args() {
   fi
 }
 
-remove_working_branch() {
+get-lockfile-path() {
+  local command_hash=$(echo -n "$repo_directory" "$primary_branch_name" | /opt/homebrew/bin/md5sum | head -c 32)
+  echo "$LOCKFILE_DIRECTORY/sync-obsidian-vault.$command_hash.lock"
+}
+
+# This is already covered by the `lock` script in practice, but just in case
+# this is being used on its own it's good to have this here
+lock() {
+  local lockfile="$(get-lockfile-path)"
+
+  info "Checking if already running..."
+
+  if [[ -f "$lockfile" ]]; then
+    error "This Obsidian vault is already in the process of being synced." >&2
+    exit $LOCKED_EXIT_CODE
+  else
+    touch "$lockfile"
+  fi
+}
+
+unlock() {
+  local lockfile="$(get-lockfile-path)"
+
+  info "Removing lockfile..."
+
+  rm -f "$lockfile"
+}
+
+remove-working-branch() {
   info "Deleting branch \`$WORKING_BRANCH_NAME\`..."
   run-command remove-branch "$WORKING_BRANCH_NAME"
 }
@@ -166,6 +196,8 @@ cleanup() {
   run-command git checkout .
   info "Removing added files..."
   run-command git clean -fd
+
+  unlock
 }
 
 change-directory() {
@@ -220,6 +252,10 @@ main() {
   parse-args "$@"
   validate-args
 
+  lock
+
+  trap unlock INT TERM ERR
+
   change-directory
 
   enforce-git-repository
@@ -251,6 +287,8 @@ main() {
       success "Sync completed successfully!"
     fi
   fi
+
+  unlock
 }
 
 main "$@"

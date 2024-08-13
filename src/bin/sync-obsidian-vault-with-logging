@@ -1,0 +1,61 @@
+#!/bin/bash
+
+source "$HOME/.config/core-helpers.sh"
+
+logfile=$HOME/Library/Logs/sync-obsidian-vault.log
+log_tempfile="$(mktemp /tmp/$(basename $0).XXXXXX)" || exit 1
+
+parse-args() {
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --no-color)
+        set-color-mode "false"
+        shift
+        ;;
+      --debug)
+        set-debug-mode "true"
+        shift
+        ;;
+    esac
+  done
+}
+
+cleanup() {
+  rm -f "$log_tempfile"
+}
+
+main() {
+  parse-args "$@"
+
+  trap cleanup INT QUIT ERR
+
+  echo "Date: $(date)" >> "$log_tempfile"
+  echo "Current directory: $PWD" >> "$log_tempfile"
+  echo >> "$log_tempfile"
+
+  output=$("$HOME/.bin/sync-obsidian-vault" \
+    --repo-directory "$HOME/obsidian-vault" \
+    --primary-branch main \
+    --no-color 2>&1)
+  exitcode=$?
+  cleanup
+
+  if [[ "$DEBUG" == "true" ]]; then
+    echo "---[ START OF COMMAND ]-----------"
+    echo "$output"
+    echo "---[ END OF COMMAND   ]-----------"
+  fi
+  echo "$output" >> "$log_tempfile"
+  echo "---------------" >> "$log_tempfile"
+  echo >> "$log_tempfile"
+
+  cat "$log_tempfile" >> "$logfile"
+
+  if [[ $exitcode -eq 0 ]]; then
+    /opt/homebrew/bin/terminal-notifier -title "Obsidian vault" -message "Obsidian vault synced successfully."
+  else
+    /opt/homebrew/bin/terminal-notifier -title "Obsidian vault" -message "Obsidian vault failed to sync. See log file for more: $logfile"
+  fi
+}
+
+main "$@"

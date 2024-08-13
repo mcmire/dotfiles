@@ -1,5 +1,5 @@
-DEBUG="false"
-USE_COLOR="true"
+DEBUG="${DEBUG:-false}"
+USE_COLOR="${USE_COLOR:-true}"
 
 color() {
   local color="$1"
@@ -56,7 +56,7 @@ die() {
 
 debug() {
   if [[ $DEBUG == "true" ]]; then
-    magenta "$@" "\n" >&2
+    magenta '[DEBUG]' "$@" "\n" >&2
   fi
 }
 
