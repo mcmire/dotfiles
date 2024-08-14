@@ -24,27 +24,38 @@ cleanup() {
   rm -f "$log_tempfile"
 }
 
-main() {
-  parse-args "$@"
+sync() {
+  local output
+  local exitcode
+  local try=1
 
-  trap cleanup INT QUIT ERR
+  command=("$HOME/.bin/sync-obsidian-vault" --repo-directory "$HOME/obsidian-vault" --primary-branch main --no-color)
 
-  echo "Date: $(date)" >> "$log_tempfile"
-  echo "Current directory: $PWD" >> "$log_tempfile"
-  echo >> "$log_tempfile"
+  echo "Date: $(date)" | tee -a "$log_tempfile"
+  echo "Current directory: $PWD" | tee -a "$log_tempfile"
+  echo "Command: ${command[@]}" | tee -a "$log_tempfile"
+  echo | tee -a "$log_tempfile"
 
-  output=$("$HOME/.bin/sync-obsidian-vault" \
-    --repo-directory "$HOME/obsidian-vault" \
-    --primary-branch main \
-    --no-color 2>&1)
-  exitcode=$?
-  cleanup
+  # Three retries
+  while [[ $try -lt 4 ]]; do
+    output=$("${command[@]}" 2>&1)
+    exitcode=$?
 
-  if [[ "$DEBUG" == "true" ]]; then
-    echo "---[ START OF COMMAND ]-----------"
-    echo "$output"
-    echo "---[ END OF COMMAND   ]-----------"
-  fi
+    if [[ "$DEBUG" == "true" ]]; then
+      echo "---[ START OF OUTPUT ]-----------"
+      echo "$output"
+      echo "---[ END OF OUTPUT   ]-----------"
+    fi
+
+    if [[ $exitcode -eq 0 ]]; then
+      break
+    fi
+
+    echo "Got exit code $exitcode, trying again ($try/3 retries)."
+    try=$((try+1))
+    sleep 5
+  done
+
   echo "$output" >> "$log_tempfile"
   echo "---------------" >> "$log_tempfile"
   echo >> "$log_tempfile"
@@ -56,6 +67,25 @@ main() {
   else
     /opt/homebrew/bin/terminal-notifier -title "Obsidian vault" -message "Obsidian vault failed to sync. See log file for more: $logfile"
   fi
+
+  return $exitcode
+}
+
+main() {
+  local exitcode
+
+  parse-args "$@"
+
+  trap cleanup INT QUIT
+
+  set +e
+  sync
+  set -e
+  exitcode=$?
+
+  cleanup
+
+  return $exitcode
 }
 
 main "$@"

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -euo pipefail
-
 source "$HOME/.config/core-helpers.sh"
 
 ## Constants
@@ -59,17 +57,16 @@ run-command() {
   if [[ $dry_run == "true" ]]; then
     echo "Would have run: $(cyan "$command")"
   else
-    set +e
     eval "$command" >"$tempfile" 2>&1
     exit_status=$?
-    set -e
 
     if [[ $exit_status -ne 0 ]]; then
       error "Command '${command[*]}' failed with exit status $exit_status."
       echo "Command output:"
       cat "$tempfile"
-      exit 1
     fi
+
+    return $exit_status
   fi
 }
 
@@ -82,13 +79,13 @@ USAGE: $0 OPTIONS
 OPTIONS:
 
 -d, --repo-directory PATH
-    Path to the Git repository to sync.
+  Path to the Git repository to sync.
 
 -b, --primary-branch BRANCH
-    Name of the primary branch to sync with.
+  Name of the primary branch to sync with.
 
 -n, --dry-run
-    Don't perform any Git operations; just print what would have happened.
+  Don't perform any Git operations; just print what would have happened.
 
 --no-color
   Disable color.
@@ -97,7 +94,7 @@ OPTIONS:
   Enable debugging.
 
 -h, --help
-    Print this message and exit.
+  Print this message and exit.
 "
 }
 
@@ -207,8 +204,8 @@ change-directory() {
 
 enforce-git-repository() {
   if ! is-git-repository; then
-    die "\`$PWD\` is not a Git repository."
-    exit 1
+    error "\`$PWD\` is not a Git repository."
+    return 1
   fi
 }
 
@@ -216,8 +213,8 @@ enforce-primary-branch() {
   local current_branch="$1"
 
   if ! [[ "$current_branch" = "$primary_branch_name" ]]; then
-    die "The current branch must be \`$primary_branch_name\` to continue."
-    exit 1
+    error "The current branch must be \`$primary_branch_name\` to continue."
+    return 1
   fi
 }
 
@@ -245,22 +242,15 @@ push-primary-branch() {
   run-command git push origin "$primary_branch_name"
 }
 
-main() {
+sync() {
   local files_to_sync=()
   local current_branch
 
-  parse-args "$@"
-  validate-args
+  change-directory || return $?
 
-  lock
-
-  trap unlock INT TERM ERR
-
-  change-directory
-
-  enforce-git-repository
+  enforce-git-repository || return $?
   current_branch="$(get-current-branch)"
-  enforce-primary-branch "$current_branch"
+  enforce-primary-branch "$current_branch" || return $?
 
   while IFS= read -r file; do
     if [[ -n $file ]]; then
@@ -268,8 +258,16 @@ main() {
     fi
   done < <(get-modified-deleted-and-untracked-files)
 
-  if ! has-staged-changes && [[ ${#files_to_sync[@]} -eq 0 ]]; then
-    pull-primary-branch
+  if [[ ${#files_to_sync[@]} -gt 0 ]]; then
+    commit-files-to-sync "${files_to_sync[@]}" || return $?
+    pull-primary-branch || return $?
+    push-primary-branch || return $?
+    if [[ $dry_run == "false" ]]; then
+      echo
+      success "Sync completed successfully!"
+    fi
+  else
+    pull-primary-branch || return $?
 
     if [[ $dry_run == "true" ]]; then
       echo
@@ -278,17 +276,23 @@ main() {
       echo
       success "No changes to sync, all good!"
     fi
-  else
-    commit-files-to-sync "${files_to_sync[@]}"
-    pull-primary-branch
-    push-primary-branch
-    if [[ $dry_run == "false" ]]; then
-      echo
-      success "Sync completed successfully!"
-    fi
   fi
+}
 
+main() {
+  local exitcode
+
+  parse-args "$@"
+  validate-args
+
+  lock
+  trap unlock INT TERM
+
+  sync
+  exitcode=$?
   unlock
+
+  return $exitcode
 }
 
 main "$@"
