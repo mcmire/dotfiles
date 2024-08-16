@@ -3,27 +3,26 @@
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>com.elliotwinkler.sync-obsidian-vault-periodically</string>
+    <string>com.elliotwinkler.create-backup-periodically</string>
 
     <key>ProgramArguments</key>
     <array>
-      <string>{{ HOME }}/.bin/sync-obsidian-vault-with-logging</string>
-      <string>--no-color</string>
+      <string>{{ HOME }}/.bin/create-backup-from-launchd</string>
     </array>
 
     <key>StartCalendarInterval</key>
     <dict>
       <key>Hour</key>
-      <integer>0</integer>
+      <integer>1</integer>
 
       <key>Minute</key>
       <integer>0</integer>
     </dict>
 
     <key>StandardOutPath</key>
-    <string>{{ HOME }}/Library/Logs/com.elliotwinkler.sync-obsidian-vault-periodically.plist.stdout.log</string>
+    <string>{{ HOME }}/Library/Logs/com.elliotwinkler.create-backup-periodically.plist.stdout.log</string>
 
     <key>StandardErrorPath</key>
-    <string>{{ HOME }}/Library/Logs/com.elliotwinkler.sync-obsidian-vault-periodically.plist.stderr.log</string>
+    <string>{{ HOME }}/Library/Logs/com.elliotwinkler.create-backup-periodically.plist.stderr.log</string>
   </dict>
 </plist>

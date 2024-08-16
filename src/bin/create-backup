@@ -1,0 +1,106 @@
+#!/bin/bash
+
+source "$HOME/.config/core-helpers.sh"
+
+## Constants
+
+PID_FILE_DIRECTORY=/tmp
+LOCKED_EXIT_CODE=-700
+PID_FILE_PATH="$PID_FILE_DIRECTORY/create-backup.pid"
+
+## Parameters
+
+borgmatic_args=()
+
+## Actions
+
+print-usage() {
+  echo "\
+USAGE: $0 OPTIONS -- [BORGMATIC_OPTIONS]
+
+Create a new backup using Borgmatic.
+
+OPTIONS:
+-h, --help
+  Print this message and exit.
+"
+}
+
+parse-args() {
+  local process_rest_of_args=0
+
+  while [[ $# -gt 0 ]]; do
+    if [[ $process_rest_of_args -eq 1 ]]; then
+      borgmatic_args+=("${1:-}")
+      shift
+    else
+      case "${1:-}" in
+        --help | -h)
+          print-usage
+          exit 0
+          ;;
+        --)
+          if [[ ${#borgmatic_args[@]} -gt 0 ]]; then
+            echo "ERROR: It seems you've started to provide Borgmatic options after providing options."
+            echo "ERROR: Please specify the Borgmatic options after --."
+            echo
+            print-usage
+            exit 1
+          fi
+          process_rest_of_args=1
+          shift
+          ;;
+        *)
+          borgmatic_args+=("${1:-}")
+          shift
+          ;;
+      esac
+    fi
+  done
+}
+
+lock() {
+  if [[ -f "$PID_FILE_PATH" ]]; then
+    if ps -p "$(cat "$PID_FILE_PATH")" >/dev/null; then
+      error "A backup is already in the process of being created." >&2
+      exit $LOCKED_EXIT_CODE
+    else
+      rm "$PID_FILE_PATH"
+    fi
+  else
+    echo $$ > "$PID_FILE_PATH"
+  fi
+}
+
+unlock() {
+  if [[ -f "$PID_FILE_PATH" ]]; then
+    rm "$PID_FILE_PATH"
+  fi
+}
+
+backup() {
+  /opt/homebrew/bin/borgmatic create \
+    --config ~/.config/borgmatic/config.yaml \
+    --verbosity 1 \
+    --log-file-verbosity -2 \
+    --list \
+    --stats \
+    "${borgmatic_args[@]}"
+}
+
+main() {
+  local exitcode
+
+  parse-args "$@"
+
+  lock
+  trap unlock INT TERM
+
+  backup
+  exitcode=$?
+  unlock
+
+  return $exitcode
+}
+
+main "$@"

@@ -1,0 +1,78 @@
+#!/bin/bash
+
+source "$HOME/.config/core-helpers.sh"
+
+LOG_FILE_PATH=$HOME/Library/Logs/create-backup.log
+TEMP_LOG_FILE_PATH="$(mktemp "/tmp/$(basename "$0").XXXXXX")" || exit 1
+COMMAND=("$HOME/.bin/create-backup" --no-color)
+
+log-start() {
+  {
+    echo "***********************************************"
+    echo "User: $USER"
+    echo "Date: $(date)"
+    echo "Current directory: $PWD"
+    echo "Command:" "${COMMAND[@]}"
+    echo
+    echo "---[ START OF OUTPUT ]-----------"
+  } | "$HOME/.bin/log" --level INFO --log-file "$TEMP_LOG_FILE_PATH" -
+}
+
+log-end() {
+  {
+    echo "---[ END OF OUTPUT   ]-----------"
+    echo "***********************************************"
+    echo
+  } | "$HOME/.bin/log" --level INFO --log-file "$TEMP_LOG_FILE_PATH" -
+
+  cat "$TEMP_LOG_FILE_PATH" >> "$LOG_FILE_PATH"
+}
+
+notify-start() {
+  /opt/homebrew/bin/terminal-notifier -title "Backup" -message "New backup starting..."
+}
+
+notify-end() {
+  local exitcode="$1"
+
+  if [[ $exitcode -eq 0 ]]; then
+    /opt/homebrew/bin/terminal-notifier -title "Backup" -message "Backup created successfully."
+  else
+    /opt/homebrew/bin/terminal-notifier -title "Backup" -message "Backup failed to be created. See log file for more: $LOG_FILE_PATH"
+  fi
+}
+
+cleanup() {
+  rm -f "$TEMP_LOG_FILE_PATH"
+}
+
+create-backup() {
+  local output
+  local exitcode
+
+  log-start
+  notify-start
+
+  "${COMMAND[@]}" 2>&1 | "$HOME/.bin/log" --level INFO --log-file "$TEMP_LOG_FILE_PATH" -
+  exitcode=${PIPESTATUS[0]}
+
+  log-end
+  notify-end "$exitcode"
+
+  return $exitcode
+}
+
+main() {
+  local exitcode
+
+  trap cleanup INT QUIT
+
+  create-backup
+  exitcode=$?
+
+  cleanup
+
+  return $exitcode
+}
+
+main "$@"

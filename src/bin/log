@@ -1,0 +1,141 @@
+#!/usr/bin/env bash
+
+LOG_LEVEL=INFO
+LOG_FILE_PATH=
+
+get-level() {
+  local level_name="$1"
+
+  case "$level_name" in
+    INFO)
+      level=1
+      ;;
+    DEBUG)
+      level=2
+      ;;
+    *)
+      echo "ERROR: Unknown level '$level'." >&2
+      return 1
+      ;;
+  esac
+}
+
+print-usage() {
+  cat <<EOT
+USAGE: $0 --level LEVEL [--log-file PATH] <messages...> [-]
+
+Logs one or more timestamped messages to standard out, and, optionally, to a log
+file.
+
+Log entries are created two ways:
+
+1. Via arguments to this command. All arguments will be joined by a space into a
+single log entry.
+
+2. Via standard out. You must inform this command of this choice by passing "-".
+Each line you send will turn into a separate log entry.
+
+Finally, log messages may be silenced via the use of the LOG_LEVEL variable.
+This variable, and the --log-level option to this command, must be one of:
+
+- INFO
+- DEBUG
+
+If the specified level is DEBUG but LOG_LEVEL is set to INFO, then nothing will
+be logged.
+
+Options:
+
+-l, --level LEVEL
+  The level at which to log the given messages (required). Must be one of
+  INFO or DEBUG.
+
+-f, --log-file PATH
+  The file in which to store the messages.
+
+-h, --help
+  Print this message and exit.
+EOT
+}
+
+main() {
+  local level_name=INFO
+  local read_from_stdin=0
+  local log_file="$LOG_FILE_PATH"
+  local args=()
+  local level
+  local date
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --level | -l)
+        level_name="$2"
+        shift 2
+        ;;
+      --log-file | -f)
+        log_file="$2"
+        shift 2
+        ;;
+      --help | -h)
+        print-usage
+        exit 0
+        ;;
+      -)
+        read_from_stdin=1
+        shift
+        ;;
+      *)
+        if [[ $read_from_stdin -eq 1 ]]; then
+          echo "ERROR: Cannot specify messages after -. If specifying -, it must be last." >&2
+          print-usage
+          return 1
+        fi
+        args+=("$1")
+        shift
+        ;;
+    esac
+  done
+
+  if [[ "$level_name" != "INFO" && "$level_name" != "DEBUG" ]]; then
+    echo "ERROR: Invalid log level '$level_name'." >&2
+    return 1
+  fi
+
+  level=$(get-level "$level_name")
+
+  if [[ -z "$log_file" ]]; then
+    echo "ERROR: Must set LOG_FILE_PATH or pass --log-file." >&2
+    return 1
+  fi
+
+  if [[ $level -gt $LOG_LEVEL ]]; then
+    return 0
+  fi
+
+  if [[ $read_from_stdin -eq 0 && ${#args[*]} -eq 0 ]]; then
+    echo "ERROR: Nothing to log!" >&2
+    return 1
+  fi
+
+  date="$(date -Iseconds)"
+
+  if [[ "${#args[*]}" -gt 0 ]]; then
+    if [[ -n "$log_file" ]]; then
+      echo "[$date] [${level_name}]" "${args[*]}" | tee -a "$log_file"
+    else
+      echo "[$date] [${level_name}]" "${args[*]}"
+    fi
+  fi
+
+  if [[ $read_from_stdin -eq 1 ]]; then
+    while read -r line; do
+      if [[ -n "$log_file" ]]; then
+        echo "[$date] [${level_name}]" "$line" | tee -a "$log_file"
+      else
+        echo "[$date] [${level_name}]" "$line"
+      fi
+    done
+  fi
+}
+
+main "$@"

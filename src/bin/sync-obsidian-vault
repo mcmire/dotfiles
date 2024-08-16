@@ -5,7 +5,7 @@ source "$HOME/.config/core-helpers.sh"
 ## Constants
 
 WORKING_BRANCH_NAME="sync-$(date +%s)"
-LOCKFILE_DIRECTORY=/tmp
+PID_FILE_DIRECTORY=/tmp
 LOCKED_EXIT_CODE=-700
 
 ## Parameters
@@ -151,32 +151,32 @@ validate-args() {
   fi
 }
 
-get-lockfile-path() {
+get-pid-file-path() {
   local command_hash=$(echo -n "$repo_directory" "$primary_branch_name" | /opt/homebrew/bin/md5sum | head -c 32)
-  echo "$LOCKFILE_DIRECTORY/sync-obsidian-vault.$command_hash.lock"
+  echo "$PID_FILE_DIRECTORY/sync-obsidian-vault.$command_hash.pid"
 }
 
-# This is already covered by the `lock` script in practice, but just in case
-# this is being used on its own it's good to have this here
 lock() {
-  local lockfile="$(get-lockfile-path)"
+  local pid_file_path="$(get-pid-file-path)"
 
-  info "Checking if already running..."
-
-  if [[ -f "$lockfile" ]]; then
-    error "This Obsidian vault is already in the process of being synced." >&2
-    exit $LOCKED_EXIT_CODE
+  if [[ -f "$pid_file_path" ]]; then
+    if ps -p "$(cat "$pid_file_path")" >/dev/null; then
+      error "This Obsidian vault is already in the process of being synced." >&2
+      exit $LOCKED_EXIT_CODE
+    else
+      rm "$pid_file_path"
+    fi
   else
-    touch "$lockfile"
+    echo $$ > "$pid_file_path"
   fi
 }
 
 unlock() {
-  local lockfile="$(get-lockfile-path)"
+  local pid_file_path="$(get-pid-file-path)"
 
-  info "Removing lockfile..."
-
-  rm -f "$lockfile"
+  if [[ -f "$pid_file_path" ]]; then
+    rm "$pid_file_path"
+  fi
 }
 
 remove-working-branch() {

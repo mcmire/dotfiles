@@ -67,3 +67,5 @@ set-debug-mode() {
 set-color-mode() {
   USE_COLOR="$1"
 }
+
+# vi: ft=bash
