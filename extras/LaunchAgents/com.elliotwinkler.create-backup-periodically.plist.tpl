@@ -10,14 +10,8 @@
       <string>{{ HOME }}/.bin/create-backup-from-launchd</string>
     </array>
 
-    <key>StartCalendarInterval</key>
-    <dict>
-      <key>Hour</key>
-      <integer>1</integer>
-
-      <key>Minute</key>
-      <integer>0</integer>
-    </dict>
+    <key>StartInterval</key>
+    <integer>360</integer>
 
     <key>StandardOutPath</key>
     <string>{{ HOME }}/Library/Logs/com.elliotwinkler.create-backup-periodically.plist.stdout.log</string>

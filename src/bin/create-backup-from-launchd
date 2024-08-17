@@ -3,24 +3,57 @@
 source "$HOME/.config/core-helpers.sh"
 
 LOG_FILE_PATH=$HOME/Library/Logs/create-backup.log
+NEXT_SCHEDULED_TIME_FILE_PATH=$HOME/Library/Caches/create-backup.next.time
 TEMP_LOG_FILE_PATH="$(mktemp "/tmp/$(basename "$0").XXXXXX")" || exit 1
 COMMAND=("$HOME/.bin/create-backup" --no-color)
 
+get-next-scheduled-time() {
+  local now="$1"
+
+  if [[ -f "$NEXT_SCHEDULED_TIME_FILE_PATH" ]]; then
+    cat "$NEXT_SCHEDULED_TIME_FILE_PATH"
+  else
+    echo "$now"
+  fi
+}
+
+time-to-run() {
+  local now="$1"
+  local next_scheduled_time
+
+  next_scheduled_time=$(get-next-scheduled-time "$now")
+
+  [[ $now -gt $next_scheduled_time || $now -eq $next_scheduled_time ]]
+}
+
 log-start() {
+  local now="$1"
+
   {
     echo "***********************************************"
     echo "User: $USER"
-    echo "Date: $(date)"
+    echo "Date: $(date -j -f "%s" "$now" +"%+")"
+    echo "Next scheduled time: $(get-next-scheduled-time "$now")"
     echo "Current directory: $PWD"
     echo "Command:" "${COMMAND[@]}"
     echo
-    echo "---[ START OF OUTPUT ]-----------"
   } | "$HOME/.bin/log" --level INFO --log-file "$TEMP_LOG_FILE_PATH" -
+}
+
+log-start-of-output() {
+  echo "---[ START OF OUTPUT ]-----------" | "$HOME/.bin/log" --level INFO --log-file "$TEMP_LOG_FILE_PATH" -
+}
+
+log-end-of-output() {
+  echo "---[ END OF OUTPUT   ]-----------" | "$HOME/.bin/log" --level INFO --log-file "$TEMP_LOG_FILE_PATH" -
+}
+
+log-not-time-to-run() {
+  echo "Not time to run yet. Aborting." | "$HOME/.bin/log" --level INFO --log-file "$TEMP_LOG_FILE_PATH" -
 }
 
 log-end() {
   {
-    echo "---[ END OF OUTPUT   ]-----------"
     echo "***********************************************"
     echo
   } | "$HOME/.bin/log" --level INFO --log-file "$TEMP_LOG_FILE_PATH" -
@@ -42,33 +75,51 @@ notify-end() {
   fi
 }
 
+update-next-scheduled-time() {
+  local now="$1"
+  date -j -v "+1d" -f "%s" "$now" +"%s" > "$NEXT_SCHEDULED_TIME_FILE_PATH"
+}
+
 cleanup() {
   rm -f "$TEMP_LOG_FILE_PATH"
 }
 
 create-backup() {
-  local output
+  local now="$1"
   local exitcode
 
-  log-start
-  notify-start
+  log-start "$now"
 
-  "${COMMAND[@]}" 2>&1 | "$HOME/.bin/log" --level INFO --log-file "$TEMP_LOG_FILE_PATH" -
-  exitcode=${PIPESTATUS[0]}
+  if time-to-run "$now"; then
+    notify-start
+
+    log-start-of-output
+    "${COMMAND[@]}" 2>&1 | "$HOME/.bin/log" --level INFO --log-file "$TEMP_LOG_FILE_PATH" -
+    exitcode=${PIPESTATUS[0]}
+    log-end-of-output
+
+    notify-end "$exitcode"
+  else
+    log-not-time-to-run
+  fi
 
   log-end
-  notify-end "$exitcode"
 
   return $exitcode
 }
 
 main() {
+  local now
   local exitcode
+
+  now=$(date +"%s")
 
   trap cleanup INT QUIT
 
-  create-backup
+  create-backup "$now"
   exitcode=$?
+
+  update-next-scheduled-time "$now"
 
   cleanup
 
