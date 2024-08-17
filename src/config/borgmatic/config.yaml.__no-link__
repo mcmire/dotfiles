@@ -11,7 +11,7 @@
 # List of source directories and files to back up. Globs and tildes
 # are expanded. Do not backslash spaces in path names.
 source_directories:
-    - ~
+    - "~"
 
 # A required list of local or remote repositories with paths and
 # optional labels (which can be used with the --repository flag to
