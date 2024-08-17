@@ -26,6 +26,10 @@ time-to-run() {
   [[ $now -gt $next_scheduled_time || $now -eq $next_scheduled_time ]]
 }
 
+connected-to-power() {
+  [[ "$(pmset -g ps | head -1)" =~ "AC Power" ]]
+}
+
 log-start() {
   local now="$1"
 
@@ -50,6 +54,10 @@ log-end-of-output() {
 
 log-not-time-to-run() {
   echo "Not time to run yet. Aborting." | "$HOME/.bin/log" --level INFO --log-file "$TEMP_LOG_FILE_PATH" -
+}
+
+log-not-connected-to-power() {
+  echo "Not connected to power. Aborting." | "$HOME/.bin/log" --level INFO --log-file "$TEMP_LOG_FILE_PATH" -
 }
 
 log-end() {
@@ -91,14 +99,20 @@ create-backup() {
   log-start "$now"
 
   if time-to-run "$now"; then
-    notify-start
+    if connected-to-power; then
+      notify-start
 
-    log-start-of-output
-    "${COMMAND[@]}" 2>&1 | "$HOME/.bin/log" --level INFO --log-file "$TEMP_LOG_FILE_PATH" -
-    exitcode=${PIPESTATUS[0]}
-    log-end-of-output
+      log-start-of-output
+      "${COMMAND[@]}" 2>&1 | "$HOME/.bin/log" --level INFO --log-file "$TEMP_LOG_FILE_PATH" -
+      exitcode=${PIPESTATUS[0]}
+      log-end-of-output
 
-    notify-end "$exitcode"
+      notify-end "$exitcode"
+
+      update-next-scheduled-time "$now"
+    else
+      log-not-connected-to-power
+    fi
   else
     log-not-time-to-run
   fi
@@ -118,8 +132,6 @@ main() {
 
   create-backup "$now"
   exitcode=$?
-
-  update-next-scheduled-time "$now"
 
   cleanup
 
