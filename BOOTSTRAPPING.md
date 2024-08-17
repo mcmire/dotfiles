@@ -14,6 +14,8 @@ You will have to make some substitutions until you have everything installed:
 
 First, if you are using a password manager like 1Password,
 then you will want to manually install that first.
+Make sure to open Settings, go to Developer,
+and check "Integrate with 1Password CLI."
 
 Second, in order to use Git,
 which is required to clone this repo,

@@ -82,6 +82,7 @@ fi
 
 banner "Installing missing Homebrew packages"
 for pkg in \
+  1password-cli \
   ag \
   asdf \
   autojump \
@@ -107,6 +108,7 @@ for pkg in \
   tmux \
   tree \
   watchexec \
+  yq \
   zoxide \
   heroku/brew/heroku \
   mas-cli/tap/mas

@@ -909,17 +909,17 @@ If you want to know what either of these commands do, say:
         end
       end
 
-      # Process __install__.sh
-      if directory.join("__install__.sh").exist? &&
-           directory.join("__install__.sh").executable?
-        process_entry(directory.join("__install__.sh"))
-      end
-
       # Process subdirectories
       directory.children.each do |child|
         if child.directory?
           process_entry(child)
         end
+      end
+
+      # Process __install__.sh
+      if directory.join("__install__.sh").exist? &&
+           directory.join("__install__.sh").executable?
+        process_entry(directory.join("__install__.sh"))
       end
     end
 
