@@ -9,68 +9,42 @@ It is updated very frequently!
 
 ### Terminal-based tools
 
-* **zsh** — the new standard in shells
+* **[zsh]** — the new standard in shells
 * **[iTerm]** — a more capable terminal emulator
 * **[tmux]** — corral projects and their many sessions
 * **[Neovim]** — a slimmer and more modern fork of Vim
   ([More details →](#neovim-configuration))
 * **[Git]** — the king of version control software
-* **[tig]** — a semi-graphical UI for git
 * **[asdf]** — the one language version manager to rule them all
 * **[autojump]** — no more setting up aliases to jump directly to projects
 * **[fzf]** — a faster and more pleasant version of `Ctrl-R`
-* **[direnv]** — automatically load `.env` files in projects
-* **[heroku]** — interact with Heroku-deployed apps
 
+[zsh]: https://www.zsh.org/
 [tmux]: https://github.com/tmux/tmux/wiki
 [iTerm]: https://www.iterm2.com/
 [Neovim]: https://neovim.io/
 [Git]: https://git-scm.com/
-[tig]: https://jonas.github.io/tig/
 [asdf]: https://asdf-vm.com/
 [autojump]: https://github.com/wting/autojump
 [fzf]: https://github.com/junegunn/fzf
-[direnv]: https://direnv.net/
-[ngrok]: https://ngrok.com/
-[heroku]: https://github.com/heroku/cli
 
 ### Applications
 
 * **[Chrome]** — still has the best devtools
 * **[1Password]** — the easiest password manager
-* **[Simplenote]** — highly performant, write-anywhere, dead simple note-taking tool
-* **[Notion]** — sophisticated create-your-own human knowledge vault
+* **[Obsidian]** — create your own personal knowledge base
 * **[Dash]** — search documentation for all kinds of programming languages
 * **[Moom]** — control placement of your windows using keybindings
 * **[Stay]** — remembers window placement when connecting and discnnnecting monitors
 * **[Numi]** — a fancy calculator app without any fancy buttons
 
 [Chrome]: https://www.google.com/chrome/
-[1Password]: https://1password.com/
-[Simplenote]: https://simplenote.com/
-[Notion]: https://notion.so
+[1Password]: https://1password.com
+[Obsidian]: https://obsidian.md
 [Dash]: https://kapeli.com/dash
-[Moom]: https://manytricks.com/moom/
-[Stay]: https://cordlessdog.com/stay/
-[Numi]: https://numi.app/
-
-### MacOS customization
-
-* Use `~/Screenshots` to save screenshots instead of the desktop
-* Disable auto-capitalization,
-  smart characters,
-  auto-correct,
-  spell check,
-  and grammar check
-* Disable press-and-hold for keys
-* Speed up keyboard repeat rate
-* Use Caps Lock for Escape for Vim
-* Make the Function key functional
-* Disable most trackpad gestures
-* Enable filename extensions by default in Finder
-* Use plain text mode for TextEdit
-* Allow tmux to access the clipboard by default
-* Configure Moom so you can fully maximize any window with Cmd-F
+[Moom]: https://manytricks.com/moom
+[Stay]: https://cordlessdog.com/stay
+[Numi]: https://numi.app
 
 ### Neovim configuration
 
@@ -140,6 +114,32 @@ Neovim is preconfigured with the following features:
 * `<` and `>` no longer lose drop the selection when indenting a selected block
   of text
 * `Q` lets you reformat paragraphs
+
+### macOS customizations
+
+* Use `~/Screenshots` to save screenshots instead of the desktop
+* Disable auto-capitalization,
+  smart characters,
+  auto-correct,
+  spell check,
+  and grammar check
+* Disable press-and-hold for keys
+* Speed up keyboard repeat rate
+* Use Caps Lock for Escape (for Vim)
+* Make the Function key functional
+* Disable most trackpad gestures
+* Enable filename extensions by default in Finder
+* Use plain text mode for TextEdit
+
+### App customizations
+
+* Allow tmux to access the clipboard by default
+* Configure Moom so you can fully maximize any window with Cmd-F
+
+### Automations
+
+* Back up Obsidian to GitHub automatically
+* Back up files to `rsync.net` automatically
 
 ## How do I use these dotfiles?
 

@@ -1,10 +1,10 @@
 # Bootstrapping a new computer
 
-**Please read this
-before following the "How do I use these dotfiles?" section in the README.**
-
 This document outlines tasks you will most likely have to perform
 if you are setting up a *brand new* computer.
+
+You should follow this guide
+_instead_ of the installation instructions in the README.
 
 You will have to make some substitutions until you have everything installed:
 
@@ -12,41 +12,53 @@ You will have to make some substitutions until you have everything installed:
 * You will need to use Terminal instead of iTerm.
 * You will need to use `vi` instead of Neovim.
 
-First, if you are using a password manager like 1Password,
-then you will want to manually install that first.
-Make sure to open Settings, go to Developer,
-and check "Integrate with 1Password CLI."
+Then:
 
-Second, in order to use Git,
-which is required to clone this repo,
-you will need to download the macOS developer command-line tools.
-Fortunately, a prompt should appear the first time you run `git`
-if you have not already done this.
-Accept this prompt when you see it.
+1. In order to use Git,
+   which is required to clone this repo,
+   you will need to download the macOS developer command-line tools.
+   You can do this by running `xcode-select --install`.
 
-Third, in order to clone this repo,
-you will need to authenticate with GitHub.
-You can do this by generating an RSA key,
-opening Safari,
-logging in to GitHub,
-and uploading your key.
-Follow [this guide][github-ssh] for more on how to do this.
-(You can use `vi` to edit `~/.ssh/config`.)
+2. In order to clone this repo,
+   you will need to authenticate with GitHub.
+   You can do this by generating an RSA key,
+   opening Safari,
+   logging in to GitHub,
+   and uploading your key.
+   Follow [this guide][github-ssh] for more on how to do this.
+   (You can use `vi` to edit `~/.ssh/config`.)
 
-Fourth, to install apps,
-you'll want to make sure you're signed into the right Apple ID
-(this should be your personal one, not any work one).
+3. To install apps,
+   you'll want to make sure you're signed into the right Apple ID.
+   It's best if you use the same Apple ID across all devices you own
+   (even work machines).
 
-Finally, iTerm won't be available even after you run `bin/manage`,
-so to get that installed,
-you'll want to run `bin/bootstrap` from `dotfiles`.
-This will also configure some defaults in System Preferences.
+4. Clone this repo to somewhere on your computer
+   (preferably your home directory).
 
-At this point you can proceed with the installation instructions.
+5. Open Terminal, navigate to the repo you just cloned,
+   and run `bin/bootstrap`.
+   This will install Homebrew and a bunch of apps (Chrome, iTerm, etc.).
+   It will also configure some defaults in System Preferences.
 
-After `bin/bootstrap` has completed succesfully,
-open iTerm, go to Preferences, and remove the Default profile.
-This will make Solarized Dark the default,
-which is what you want.
+6. Open iTerm, go to Preferences, and remove the Default profile.
+   This will make Solarized Dark the default,
+   which is what you want.
+
+7. You'll need to configure the 1Password CLI to interface with the app,
+   as the install script relies on this.
+   To do this, open 1Password, navigate to Settings, go to Developer,
+   and check "Integrate with 1Password CLI."
+
+8. You'll need to add a Borg encryption key for backups for your device to 1Password.
+   Look up the "borg" entry,
+   add a section named after the hostname of your device,
+   and within that section,
+   add a password field called `encryption-passphrase` present
+   (generating a password for the field).
+
+9. Now you can proceed with the [installation instructions][installation] in
+   the README (starting with step 4).
 
 [github-ssh]: https://docs.github.com/en/authentication/connecting-to-github-with-ssh
+[installation]: ./README.md#run-the-install-script

@@ -3,7 +3,7 @@
 set -euo pipefail
 
 ASDF_DIRECTORY="$HOME/.asdf"
-BOOTSTRAP="${BOOTSTRAP:-}"
+HOSTNAME="$(hostname -s)"
 
 something_already_printed=0
 
@@ -41,6 +41,21 @@ latest-version-of() {
     sed -Ee 's/^[ ]+//g'
 }
 
+set-hostname() {
+  local specified_hostname
+  local new_hostname
+
+  banner "Setting hostname"
+
+  echo -n "Enter a hostname (or press Enter to skip): "
+  read -r specified_hostname
+  if [[ "$specified_hostname" != "" ]]; then
+    new_hostname="${specified_hostname%.local}.local"
+    echo "Setting hostname to $new_hostname"
+    hostname "$new_hostname"
+  fi
+}
+
 if ! type brew &>/dev/null; then
   if [[ -e /usr/local/Cellar || -e /opt/homebrew ]]; then
     error "It looks like Homebrew is already installed."
@@ -59,17 +74,17 @@ fi
 
 if ! [[ -e "/Applications/1Password.app" ]]; then
   banner "Installing 1Password..."
-  brew install 1password
+  HOMEBREW_NO_INSTALL_UPGRADE=true brew install 1password
 
   echo
-  echo "At this point you need to sign into 1Password, then sign into the App Store."
+  echo "At this point you need to sign into 1Password."
   echo "Once you've done that, re-run this script."
   exit 1
 fi
 
 if ! type mas &>/dev/null; then
   banner "Installing mas-cli..."
-  brew install mas-cli/tap/mas
+  HOMEBREW_NO_INSTALL_UPGRADE=true brew install mas-cli/tap/mas
   mas_was_just_installed=1
 
   banner "Making sure that you are signed into the App Store"
@@ -100,13 +115,13 @@ for pkg in \
   libxslt \
   neovim \
   overmind \
-  postgresql@10 \
   reattach-to-user-namespace \
   redis \
   sqlite \
   tig \
   tmux \
   tree \
+  universal-ctags \
   watchexec \
   yq \
   zoxide \
@@ -114,11 +129,8 @@ for pkg in \
   mas-cli/tap/mas
 do
   banner "Installing $pkg"
-  brew install $pkg || error "Package $pkg failed to install, continuing..."
+  HOMEBREW_NO_INSTALL_UPGRADE=true brew install $pkg || error "Package $pkg failed to install, continuing..."
 done
-
-banner "Installing universal-ctags"
-brew install --HEAD universal-ctags/universal-ctags/universal-ctags || error "Package universal-ctags failed to install, continuing..."
 
 for app in \
   dash \
@@ -129,40 +141,35 @@ for app in \
   ngrok \
   notion \
   numi \
+  obsidian \
   postman \
   spotify \
   visual-studio-code
 do
   banner "Installing $app"
-  brew install --cask $app || error "App $app failed to install, continuing..."
+  HOMEBREW_NO_INSTALL_UPGRADE=true brew install --cask $app || error "App $app failed to install, continuing..."
 done
 
 mas_apps=(
   # Amphetamine
   937984704
-  # Microsoft To Do
-  1274495053
   # Moom
   419330170
-  # Simplenote
-  692867256
   # Slack
   803453959
   # Stay
   435410196
-  # WiFi Explorer Lite
-  1408727408
   # Todoist
   585829637
+  # WiFi Explorer Lite
+  1408727408
 )
 
 for app in "${mas_apps[@]}"; do
   banner "Installing $app"
-  mas install $app || echo "App $app failed to install, continuing..."
+  mas install $app || error "App $app failed to install, continuing..."
 done
 
-banner "Restarting postgresql@10"
-brew services restart postgresql@10
 banner "Restarting redis"
 brew services restart redis
 
@@ -228,6 +235,12 @@ fi
 
 banner "Upgrading pip"
 pip install --upgrade pip
+
+set-hostname
+
+banner "Initializing Borg repository"
+borgmatic init --encryption repokey-blake2 --make-parent-dirs
+echo "Borg repository initialized. Make sure to run \`borgmatic key export\` and save the key in 1Password (borg -> $HOSTNAME -> encryption-key)."
 
 banner "Making a bunch of configuration changes to MacOS..."
 extras/macos.sh
