@@ -37,7 +37,7 @@ log-start() {
     echo "***********************************************"
     echo "User: $USER"
     echo "Date: $(date -j -f "%s" "$now" +"%+")"
-    echo "Next scheduled time: $(get-next-scheduled-time "$now")"
+    echo "Next scheduled time: $(date -j -f "%s" "$(get-next-scheduled-time "$now")" +"%+")"
     echo "Current directory: $PWD"
     echo "Command:" "${COMMAND[@]}"
     echo
