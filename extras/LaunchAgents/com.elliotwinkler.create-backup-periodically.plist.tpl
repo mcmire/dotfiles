@@ -8,6 +8,7 @@
     <key>ProgramArguments</key>
     <array>
       <string>{{ HOME }}/.bin/create-backup</string>
+      <string>--automated</string>
     </array>
 
     <key>StartInterval</key>

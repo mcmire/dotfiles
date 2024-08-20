@@ -119,6 +119,10 @@ main() {
 
   date="$(date -Iseconds)"
 
+  if [[ -n "$log_file" ]]; then
+    mkdir -p "$(dirname "$log_file")"
+  fi
+
   if [[ "${#args[*]}" -gt 0 ]]; then
     if [[ -n "$log_file" ]]; then
       echo "[$date] [${level_name}]" "${args[*]}" | tee -a "$log_file"

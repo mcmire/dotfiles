@@ -2,25 +2,28 @@
 
 source "$HOME/.config/core-helpers.sh"
 
-## Constants
+## Internal variables
 
 USE_COLOR=false
+NOW="$(date +"%s")"
 PID_FILE_DIRECTORY=/tmp
 PID_FILE_PATH="$PID_FILE_DIRECTORY/create-backup.pid"
 LOCKED_EXIT_CODE=-700
-LOG_FILE_PATH="$HOME/Library/Logs/create-backup.log"
 NEXT_SCHEDULED_TIME_FILE_PATH="$HOME/Library/Caches/create-backup.next.time"
+LOG_FILE_PATH="$HOME/Library/Logs/create-backup/$(date -j -f "%s" "$NOW" +"%Y%m%d_%H%M%S").log"
+
+log_started=1
 
 ## Parameters
 
 borgmatic_args=()
-force=0
-dry_run=0
+is_automated_run=0
+is_dry_run=0
 
 ### Actions
 
 print-usage() {
-  echo "\
+  cat <<EOT
 USAGE: $0 [<options> [-- <borgmatic-options>]]
 
 Create a new backup using Borgmatic.
@@ -29,17 +32,17 @@ ARGUMENTS:
 
 <options> are:
 
--f, --force
-  Usually, this script will refuse to create a new backup if the computer is not
-  plugged in, if it is connected to a public WiFi network, or if a backup was
-  already created less than a day ago, but if you need to create a new backup
-  manually you can pass this option.
+--automated
+Enables additional logic which will refuse to create a new backup if the
+computer is not plugged in, if it is connected to a public WiFi network, or if
+a backup was already created less than a day ago. This option is passed by the
+launch agent that runs this command periodically.
 
 -h, --help
-  Print this message and exit.
+Print this message and exit.
 
 <borgmatic-options> are the same options that \`borgmatic\` takes.
-"
+EOT
 }
 
 parse-args() {
@@ -48,18 +51,18 @@ parse-args() {
   while [[ $# -gt 0 ]]; do
     if [[ $processing_borgmatic_args -eq 1 ]]; then
       if [[ "$1" == "--dry-run" ]]; then
-        dry_run=1
+        is_dry_run=1
       fi
       borgmatic_args+=("$1")
       shift
     else
       case "$1" in
-        --force | -f)
-          force=1
+        --automated)
+          is_automated_run=1
           shift
           ;;
         --dry-run | -n)
-          dry_run=1
+          is_dry_run=1
           shift
           ;;
         --help | -h)
@@ -81,12 +84,13 @@ parse-args() {
     fi
   done
 
-  if [[ $dry_run -eq 1 ]]; then
+  if [[ $is_dry_run -eq 1 ]]; then
     borgmatic_args+=("--dry-run")
   fi
 }
 
 cleanup() {
+  log-end || true
   unlock
 }
 
@@ -108,32 +112,27 @@ unlock() {
 }
 
 get-next-scheduled-time() {
-  local now="$1"
-
   if [[ -f "$NEXT_SCHEDULED_TIME_FILE_PATH" ]]; then
     cat "$NEXT_SCHEDULED_TIME_FILE_PATH"
   else
-    echo "$now"
+    echo "$NOW"
   fi
 }
 
 has-scheduled-time-been-reached() {
-  local now="$1"
   local next_scheduled_time
 
-  next_scheduled_time=$(get-next-scheduled-time "$now")
+  next_scheduled_time=$(get-next-scheduled-time)
 
-  [[ $force -eq 1 || $now -gt $next_scheduled_time || $now -eq $next_scheduled_time ]]
+  [[ $is_automated_run -eq 0 || $NOW -gt $next_scheduled_time || $NOW -eq $next_scheduled_time ]]
 }
 
 update-next-scheduled-time() {
-  local now="$1"
-
-  date -j -v "+1d" -f "%s" "$now" +"%s" > "$NEXT_SCHEDULED_TIME_FILE_PATH"
+  date -j -v "+1d" -f "%s" "$NOW" +"%s" > "$NEXT_SCHEDULED_TIME_FILE_PATH"
 }
 
 is-connected-to-power() {
-  [[ $force -eq 1 || "$(pmset -g ps | head -1)" =~ "AC Power" ]]
+  [[ $is_automated_run -eq 0 || "$(pmset -g ps | head -1)" =~ "AC Power" ]]
 }
 
 log() {
@@ -141,17 +140,24 @@ log() {
 }
 
 log-start() {
-  local now="$1"
-
   {
     echo "***********************************************"
     echo "User: $USER"
-    echo "Date: $(date -j -f "%s" "$now" +"%+")"
-    echo "Next scheduled time: $(date -j -f "%s" "$(get-next-scheduled-time "$now")" +"%+")"
+    echo "Date: $(date -j -f "%s" "$NOW" +"%+")"
+    echo "Next scheduled time: $(date -j -f "%s" "$(get-next-scheduled-time)" +"%+")"
     echo "Current directory: $PWD"
     echo "Command:" "${COMMAND[@]}"
+
+    if [[ $is_automated_run -eq 1 ]]; then
+      echo "Type of run: Automated"
+    else
+      echo "Type of run: Manual"
+    fi
+
     echo
   } | log
+
+  log_started=1
 }
 
 log-start-of-output() {
@@ -171,10 +177,12 @@ log-not-connected-to-power() {
 }
 
 log-end() {
-  {
-    echo "***********************************************"
-    echo
-  } | log
+  if [[ $log_started -eq 1 ]]; then
+    {
+      echo "***********************************************"
+      echo
+    } | log
+  fi
 }
 
 notify() {
@@ -207,23 +215,20 @@ run-backup-command() {
 }
 
 main() {
-  local now
   local exitcode
-
-  now=$(date +"%s")
 
   parse-args "$@"
 
-  if [[ $dry_run -eq 1 ]]; then
+  if [[ $is_dry_run -eq 1 ]]; then
     run-backup-command
     return $?
   fi
 
   lock
-  log-start "$now" || true
+  log-start || true
   trap cleanup INT TERM QUIT
 
-  if ! has-scheduled-time-been-reached "$now"; then
+  if ! has-scheduled-time-been-reached; then
     log-scheduled-time-not-reached || true
     return 2
   fi
@@ -242,10 +247,9 @@ main() {
 
   notify-end "$exitcode" || true
 
-  update-next-scheduled-time "$now"
+  update-next-scheduled-time
   exitcode=$?
 
-  log-end || true
   cleanup
 
   return $exitcode
