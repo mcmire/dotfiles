@@ -7,7 +7,7 @@
 
     <key>ProgramArguments</key>
     <array>
-      <string>{{ HOME }}/.bin/create-backup-from-launchd</string>
+      <string>{{ HOME }}/.bin/create-backup</string>
     </array>
 
     <key>StartInterval</key>

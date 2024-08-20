@@ -4,65 +4,96 @@ source "$HOME/.config/core-helpers.sh"
 
 ## Constants
 
+USE_COLOR=false
 PID_FILE_DIRECTORY=/tmp
-LOCKED_EXIT_CODE=-700
 PID_FILE_PATH="$PID_FILE_DIRECTORY/create-backup.pid"
+LOCKED_EXIT_CODE=-700
+LOG_FILE_PATH="$HOME/Library/Logs/create-backup.log"
+NEXT_SCHEDULED_TIME_FILE_PATH="$HOME/Library/Caches/create-backup.next.time"
 
 ## Parameters
 
 borgmatic_args=()
+force=0
+dry_run=0
 
-## Actions
+### Actions
 
 print-usage() {
   echo "\
-USAGE: $0 OPTIONS -- [BORGMATIC_OPTIONS]
+USAGE: $0 [<options> [-- <borgmatic-options>]]
 
 Create a new backup using Borgmatic.
 
-OPTIONS:
+ARGUMENTS:
+
+<options> are:
+
+-f, --force
+  Usually, this script will refuse to create a new backup if the computer is not
+  plugged in, if it is connected to a public WiFi network, or if a backup was
+  already created less than a day ago, but if you need to create a new backup
+  manually you can pass this option.
+
 -h, --help
   Print this message and exit.
+
+<borgmatic-options> are the same options that \`borgmatic\` takes.
 "
 }
 
 parse-args() {
-  local process_rest_of_args=0
+  local processing_borgmatic_args=0
 
   while [[ $# -gt 0 ]]; do
-    if [[ $process_rest_of_args -eq 1 ]]; then
-      borgmatic_args+=("${1:-}")
+    if [[ $processing_borgmatic_args -eq 1 ]]; then
+      if [[ "$1" == "--dry-run" ]]; then
+        dry_run=1
+      fi
+      borgmatic_args+=("$1")
       shift
     else
-      case "${1:-}" in
+      case "$1" in
+        --force | -f)
+          force=1
+          shift
+          ;;
+        --dry-run | -n)
+          dry_run=1
+          shift
+          ;;
         --help | -h)
           print-usage
           exit 0
           ;;
         --)
-          if [[ ${#borgmatic_args[@]} -gt 0 ]]; then
-            echo "ERROR: It seems you've started to provide Borgmatic options after providing options."
-            echo "ERROR: Please specify the Borgmatic options after --."
-            echo
-            print-usage
-            exit 1
-          fi
-          process_rest_of_args=1
+          processing_borgmatic_args=1
           shift
           ;;
         *)
-          borgmatic_args+=("${1:-}")
-          shift
+          error "Unknown argument '$1'."
+          error "If you intended to pass options to Borgmatic, specify them after --."
+          echo
+          print-usage
+          exit 1
           ;;
       esac
     fi
   done
+
+  if [[ $dry_run -eq 1 ]]; then
+    borgmatic_args+=("--dry-run")
+  fi
+}
+
+cleanup() {
+  unlock
 }
 
 lock() {
   if [[ -f "$PID_FILE_PATH" ]]; then
     if ps -p "$(cat "$PID_FILE_PATH")" >/dev/null; then
-      error "A backup is already in the process of being created." >&2
+      error "A backup is already in the process of being created."
       exit $LOCKED_EXIT_CODE
     else
       rm "$PID_FILE_PATH"
@@ -73,14 +104,101 @@ lock() {
 }
 
 unlock() {
-  if [[ -f "$PID_FILE_PATH" ]]; then
-    rm "$PID_FILE_PATH"
+  rm -f "$PID_FILE_PATH"
+}
+
+get-next-scheduled-time() {
+  local now="$1"
+
+  if [[ -f "$NEXT_SCHEDULED_TIME_FILE_PATH" ]]; then
+    cat "$NEXT_SCHEDULED_TIME_FILE_PATH"
+  else
+    echo "$now"
   fi
 }
 
-backup() {
+has-scheduled-time-been-reached() {
+  local now="$1"
+  local next_scheduled_time
+
+  next_scheduled_time=$(get-next-scheduled-time "$now")
+
+  [[ $force -eq 1 || $now -gt $next_scheduled_time || $now -eq $next_scheduled_time ]]
+}
+
+update-next-scheduled-time() {
+  local now="$1"
+
+  date -j -v "+1d" -f "%s" "$now" +"%s" > "$NEXT_SCHEDULED_TIME_FILE_PATH"
+}
+
+is-connected-to-power() {
+  [[ $force -eq 1 || "$(pmset -g ps | head -1)" =~ "AC Power" ]]
+}
+
+log() {
+  "$HOME/.bin/log" --level INFO --log-file "$LOG_FILE_PATH" -
+}
+
+log-start() {
+  local now="$1"
+
+  {
+    echo "***********************************************"
+    echo "User: $USER"
+    echo "Date: $(date -j -f "%s" "$now" +"%+")"
+    echo "Next scheduled time: $(date -j -f "%s" "$(get-next-scheduled-time "$now")" +"%+")"
+    echo "Current directory: $PWD"
+    echo "Command:" "${COMMAND[@]}"
+    echo
+  } | log
+}
+
+log-start-of-output() {
+  echo "---[ START OF OUTPUT ]-----------" | log
+}
+
+log-end-of-output() {
+  echo "---[ END OF OUTPUT   ]-----------" | log
+}
+
+log-scheduled-time-not-reached() {
+  echo "Not time to run yet. Aborting." | log
+}
+
+log-not-connected-to-power() {
+  echo "Not connected to power. Aborting." | log
+}
+
+log-end() {
+  {
+    echo "***********************************************"
+    echo
+  } | log
+}
+
+notify() {
+  /opt/homebrew/bin/terminal-notifier "$@"
+}
+
+notify-start() {
+  notify -title "Backup" -message "New backup starting..."
+}
+
+notify-end() {
+  local exitcode="$1"
+
+  if [[ $exitcode -eq 0 ]]; then
+    notify -title "Backup" -message "Backup created successfully."
+  else
+    notify -title "Backup" -message "Backup failed to be created. See log file for more: $LOG_FILE_PATH"
+  fi
+}
+
+run-backup-command() {
   /opt/homebrew/bin/borgmatic create \
-    --config ~/.config/borgmatic/config.yaml \
+    --config "$HOME/.config/borgmatic/config.yaml" \
+    --no-color \
     --verbosity 1 \
     --log-file-verbosity -2 \
     --list \
@@ -89,16 +207,46 @@ backup() {
 }
 
 main() {
+  local now
   local exitcode
+
+  now=$(date +"%s")
 
   parse-args "$@"
 
-  lock
-  trap unlock INT TERM
+  if [[ $dry_run -eq 1 ]]; then
+    run-backup-command
+    return $?
+  fi
 
-  backup
+  lock
+  log-start "$now" || true
+  trap cleanup INT TERM QUIT
+
+  if ! has-scheduled-time-been-reached "$now"; then
+    log-scheduled-time-not-reached || true
+    return 2
+  fi
+
+  if ! is-connected-to-power; then
+    log-not-connected-to-power || true
+    return 2
+  fi
+
+  notify-start || true
+
+  log-start-of-output || true
+  run-backup-command 2>&1 | log
+  exitcode=${PIPESTATUS[0]}
+  log-end-of-output || true
+
+  notify-end "$exitcode" || true
+
+  update-next-scheduled-time "$now"
   exitcode=$?
-  unlock
+
+  log-end || true
+  cleanup
 
   return $exitcode
 }

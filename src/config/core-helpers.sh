@@ -22,6 +22,10 @@ green() {
   color 32 "$@"
 }
 
+yellow() {
+  color 33 "$@"
+}
+
 blue() {
   color 34 "$@"
 }
@@ -35,22 +39,23 @@ cyan() {
 }
 
 success() {
-  green "$@"
-  echo
+  green "$@" $'\n'
+}
+
+warn() {
+  yellow "$@" $'\n' >&2
 }
 
 error() {
-  red "ERROR:" "$@"
-  echo
+  red "ERROR:" "$@" $'\n' >&2
 }
 
 info() {
-  blue "$@"
-  echo
+  blue "$@" $'\n'
 }
 
 die() {
-  error "$* Aborting." >&2
+  error "$@" "Aborting."
   exit 1
 }
 
