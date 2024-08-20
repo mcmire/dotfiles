@@ -102,6 +102,7 @@ remote_path: /usr/local/bin/borg1/borg1
     # - /home/user/path with spaces
 exclude_patterns:
     - ~/Library
+    - ~/.orbstack
 
 # Read exclude patterns from one or more separate named files, one
 # pattern per line. See the output of "borg help patterns" for more
