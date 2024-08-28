@@ -101,7 +101,7 @@ fill-in-borgmatic-config-placeholders() {
 main() {
   set-git-name-and-email
   create-launch-agents-and-daemons
-  fill-in-borgmatic-config-placeholders
+  # fill-in-borgmatic-config-placeholders
 
   success "Done!"
 }

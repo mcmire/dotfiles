@@ -16,7 +16,8 @@ log_started=1
 
 ## Parameters
 
-borgmatic_args=()
+repository_name=
+restic_args=()
 is_automated_run=0
 is_dry_run=0
 
@@ -24,36 +25,41 @@ is_dry_run=0
 
 print-usage() {
   cat <<EOT
-USAGE: $0 [<options> [-- <borgmatic-options>]]
+Create a new backup using Restic.
 
-Create a new backup using Borgmatic.
+$0 <repository-name> [<options> [-- <restic-options>]]
 
-ARGUMENTS:
+ARGUMENTS
+---------
 
-<options> are:
+<repository-name>
+  The name of a repository in ~/.restic.yml. Specifies the location to back up
+  to as well as any backup options specific for that repository.
 
---automated
-Enables additional logic which will refuse to create a new backup if the
-computer is not plugged in, if it is connected to a public WiFi network, or if
-a backup was already created less than a day ago. This option is passed by the
-launch agent that runs this command periodically.
+<options>
+  --automated
+    Enables additional logic which will refuse to create a new backup if the
+    computer is not plugged in, if it is connected to a public WiFi network, or
+    if a backup was already created less than a day ago. This option is passed
+    by the launch agent that runs this command periodically.
 
--h, --help
-Print this message and exit.
+  -h, --help
+    Print this message and exit.
 
-<borgmatic-options> are the same options that \`borgmatic\` takes.
+<restic-options>
+  The same options that \`restic\` takes.
 EOT
 }
 
 parse-args() {
-  local processing_borgmatic_args=0
+  local processing_restic_args=0
 
   while [[ $# -gt 0 ]]; do
-    if [[ $processing_borgmatic_args -eq 1 ]]; then
+    if [[ $processing_restic_args -eq 1 ]]; then
       if [[ "$1" == "--dry-run" ]]; then
         is_dry_run=1
       fi
-      borgmatic_args+=("$1")
+      restic_args+=("$1")
       shift
     else
       case "$1" in
@@ -70,22 +76,36 @@ parse-args() {
           exit 0
           ;;
         --)
-          processing_borgmatic_args=1
+          processing_restic_args=1
           shift
           ;;
         *)
-          error "Unknown argument '$1'."
-          error "If you intended to pass options to Borgmatic, specify them after --."
-          echo
-          print-usage
-          exit 1
+          if [[ -z "$repository_name" ]]; them
+            repository_name="$1"
+            shift 2
+          else
+            error "Unknown argument '$1'."
+            error "If you intended to pass options to Borgmatic, specify them after --."
+            echo
+            print-usage
+            exit 1
+          fi
           ;;
       esac
     fi
   done
 
   if [[ $is_dry_run -eq 1 ]]; then
-    borgmatic_args+=("--dry-run")
+    restic_args+=("--dry-run")
+  fi
+}
+
+validate-args() {
+  if [[ -z "$repository_name" ]]; then
+    error "Missing repository name."
+    echo
+    print-usage
+    exit 1
   fi
 }
 
@@ -197,27 +217,25 @@ notify-end() {
   local exitcode="$1"
 
   if [[ $exitcode -eq 0 ]]; then
-    notify -title "Backup" -message "Backup created successfully."
+    notify -title "Backup" -message "Backup ($repository_name) created successfully."
   else
-    notify -title "Backup" -message "Backup failed to be created. See log file for more: $LOG_FILE_PATH"
+    notify -title "Backup" -message "Backup ($repository_name) failed to be created. See log file for more: $LOG_FILE_PATH"
   fi
 }
 
 run-backup-command() {
-  /opt/homebrew/bin/borgmatic create \
-    --config "$HOME/.config/borgmatic/config.yaml" \
-    --no-color \
-    --verbosity 1 \
-    --log-file-verbosity -2 \
-    --list \
-    --stats \
-    "${borgmatic_args[@]}"
+  $HOME/.bin/restic \
+    --repository "$repository_name" -- \
+    backup \
+    --verbose --verbose \
+    "${restic_args[@]}"
 }
 
 main() {
   local exitcode
 
   parse-args "$@"
+  validate-args
 
   if [[ $is_dry_run -eq 1 ]]; then
     run-backup-command
