@@ -95,62 +95,62 @@ if ! type mas &>/dev/null; then
   fi
 fi
 
-banner "Installing missing Homebrew packages"
-for pkg in \
-  1password-cli \
-  ag \
-  asdf \
-  autojump \
-  awscli \
-  colordiff \
-  coreutils \
-  direnv \
-  fzf \
-  git \
-  git-delta \
-  grip \
-  hub \
-  jq \
-  libxml2 \
-  libxslt \
-  neovim \
-  overmind \
-  reattach-to-user-namespace \
-  redis \
-  restic \
-  sqlite \
-  tig \
-  tmux \
-  tree \
-  universal-ctags \
-  watchexec \
-  yq \
-  zoxide \
-  creativeprojects/tap/resticprofile \
-  heroku/brew/heroku \
-  mas-cli/tap/mas
-do
-  banner "Installing $pkg"
-  HOMEBREW_NO_INSTALL_UPGRADE=true brew install $pkg || error "Package $pkg failed to install, continuing..."
-done
+#banner "Installing missing Homebrew packages"
+#for pkg in \
+  #1password-cli \
+  #ag \
+  #asdf \
+  #autojump \
+  #awscli \
+  #colordiff \
+  #coreutils \
+  #direnv \
+  #fzf \
+  #git \
+  #git-delta \
+  #grip \
+  #hub \
+  #jq \
+  #libxml2 \
+  #libxslt \
+  #neovim \
+  #overmind \
+  #reattach-to-user-namespace \
+  #redis \
+  #restic \
+  #sqlite \
+  #tig \
+  #tmux \
+  #tree \
+  #universal-ctags \
+  #watchexec \
+  #yq \
+  #zoxide \
+  #creativeprojects/tap/resticprofile \
+  #heroku/brew/heroku \
+  #mas-cli/tap/mas
+#do
+  #banner "Installing $pkg"
+  #HOMEBREW_NO_INSTALL_UPGRADE=true brew install $pkg || error "Package $pkg failed to install, continuing..."
+#done
 
-for app in \
-  dash \
-  dropbox \
-  homebrew/cask-fonts/font-fira-code \
-  google-chrome \
-  iterm2 \
-  ngrok \
-  notion \
-  numi \
-  obsidian \
-  postman \
-  spotify \
-  visual-studio-code
-do
-  banner "Installing $app"
-  HOMEBREW_NO_INSTALL_UPGRADE=true brew install --cask $app || error "App $app failed to install, continuing..."
-done
+#for app in \
+  #dash \
+  #dropbox \
+  #homebrew/cask-fonts/font-fira-code \
+  #google-chrome \
+  #iterm2 \
+  #ngrok \
+  #notion \
+  #numi \
+  #obsidian \
+  #postman \
+  #spotify \
+  #visual-studio-code
+#do
+  #banner "Installing $app"
+  #HOMEBREW_NO_INSTALL_UPGRADE=true brew install --cask $app || error "App $app failed to install, continuing..."
+#done
 
 mas_apps=(
   # Amphetamine
@@ -171,9 +171,6 @@ for app in "${mas_apps[@]}"; do
   banner "Installing $app"
   mas install $app || error "App $app failed to install, continuing..."
 done
-
-banner "Restarting redis"
-brew services restart redis
 
 if ! [[ -d "$HOME/.zsh-async" ]]; then
   banner "Installing zsh-async"
@@ -240,11 +237,32 @@ pip install --upgrade pip
 
 set-hostname
 
-banner "Initializing Borg repository"
-borgmatic init --encryption repokey-blake2 --make-parent-dirs
-echo "Borg repository initialized. Make sure to run \`borgmatic key export\` and save the key in 1Password (borg -> $HOSTNAME -> encryption-key)."
+banner "Initializing Restic repositories"
+if ! [[ -f ~/Library/Preferences/resticprofile/profiles.json ]]; then
+  mkdir -p ~/Library/Preferences/resticprofile
+  cp -v extras/resticprofile/profiles.json ~/Library/Preferences/resticprofile/profiles.json
+fi
+if [[ -f ~/Library/Preferences/resticprofile/profiles.json ]] && grep -E '<<RSYNC_NET_USERNAME>>|<<HOSTNAME>>' ~/Library/Preferences/resticprofile/profiles.json &>/dev/null; then
+  echo "Please replace the RSYNC_NET_USERNAME and HOSTNAME placeholders in ~/Library/Preferences/resticprofile/profiles.json and re-run this script."
+  exit 1
+fi
+if ! [[ -f ~/Library/Preferences/resticprofile/rsync_net_password.txt ]]; then
+  echo "Please generate a password for the rsync.net Restic repository (ideally using 1Password) and write it to ~/Library/Preferences/resticprofile/rsync_net_password.txt."
+  exit 1
+fi
+if ! [[ -f ~/Library/Preferences/resticprofile/local_password.txt ]]; then
+  echo "Please generate a password for the local Restic repository (ideally using 1Password) and write it to ~/Library/Preferences/resticprofile/local_password.txt."
+  exit 1
+fi
+if ! resticprofile --name rsync_net snapshots &>/dev/null; then
+  resticprofile --name rsync_net init
+fi
+if ! resticprofile --name local snapshots &>/dev/null; then
+  resticprofile --name local init
+fi
+echo "Restic repositories initialized."
 
-banner "Making a bunch of configuration changes to MacOS..."
+banner "Making a bunch of configuration changes to MacOS"
 extras/macos.sh
 
 success "Done! At this point you probably want to log out and log back in again."

@@ -4,7 +4,6 @@ source "$HOME/.config/core-helpers.sh"
 
 ## Internal variables
 
-USE_COLOR=false
 NOW="$(date +"%s")"
 PID_FILE_DIRECTORY=/tmp
 PID_FILE_PATH="$PID_FILE_DIRECTORY/create-backup.pid"
@@ -16,7 +15,7 @@ log_started=1
 
 ## Parameters
 
-repository_name=
+restic_profile_name=
 restic_args=()
 is_automated_run=0
 is_dry_run=0
@@ -25,16 +24,16 @@ is_dry_run=0
 
 print-usage() {
   cat <<EOT
-Create a new backup using Restic.
+Create a new backup using Restic (via \`resticprofile\`).
 
-$0 <repository-name> [<options> [-- <restic-options>]]
+$0 --profile-name <restic-profile-name> [<resticprofile-options> [-- <restic-options>]]
 
 ARGUMENTS
 ---------
 
-<repository-name>
-  The name of a repository in ~/.restic.yml. Specifies the location to back up
-  to as well as any backup options specific for that repository.
+<restic-profile-name>
+  The name of a profile in ~/Library/Preferences/resticprofile/profiles.json.
+  This script expects this file to already exist.
 
 <options>
   --automated
@@ -46,6 +45,9 @@ ARGUMENTS
   -h, --help
     Print this message and exit.
 
+<resticprofile-options>
+  The same options that \`resticprofile\` takes.
+
 <restic-options>
   The same options that \`restic\` takes.
 EOT
@@ -55,54 +57,49 @@ parse-args() {
   local processing_restic_args=0
 
   while [[ $# -gt 0 ]]; do
-    if [[ $processing_restic_args -eq 1 ]]; then
-      if [[ "$1" == "--dry-run" ]]; then
-        is_dry_run=1
-      fi
-      restic_args+=("$1")
-      shift
-    else
-      case "$1" in
-        --automated)
-          is_automated_run=1
-          shift
-          ;;
-        --dry-run | -n)
+    case "$1" in
+      --profile-name | -p)
+        restic_profile_name="$2"
+        shift 2
+        ;;
+      --automated)
+        is_automated_run=1
+        shift
+        ;;
+      --help | -h)
+        print-usage
+        exit 0
+        ;;
+      --)
+        processing_restic_args=1
+        shift
+        ;;
+      *)
+        if [[ "$1" == "--dry-run" ]]; then
           is_dry_run=1
-          shift
-          ;;
-        --help | -h)
-          print-usage
-          exit 0
-          ;;
-        --)
-          processing_restic_args=1
-          shift
-          ;;
-        *)
-          if [[ -z "$repository_name" ]]; them
-            repository_name="$1"
-            shift 2
-          else
-            error "Unknown argument '$1'."
-            error "If you intended to pass options to Borgmatic, specify them after --."
-            echo
-            print-usage
-            exit 1
-          fi
-          ;;
-      esac
-    fi
+        fi
+        if [[ -z "$restic_profile_name" ]]; then
+          restic_profile_name="$1"
+        elif [[ $processing_restic_args -eq 1 ]]; then
+          restic_args+=("$1")
+        else
+          resticprofile_args+=("$1")
+        fi
+        shift
+        ;;
+    esac
   done
 
-  if [[ $is_dry_run -eq 1 ]]; then
-    restic_args+=("--dry-run")
+  if [[ $is_automated_run -eq 1 ]]; then
+    set-color-mode "false"
+  else
+    set-color-mode "true"
   fi
 }
 
 validate-args() {
-  if [[ -z "$repository_name" ]]; then
-    error "Missing repository name."
+  if [[ -z "$restic_profile_name" ]]; then
+    error "Missing profile name."
     echo
     print-usage
     exit 1
@@ -217,18 +214,31 @@ notify-end() {
   local exitcode="$1"
 
   if [[ $exitcode -eq 0 ]]; then
-    notify -title "Backup" -message "Backup ($repository_name) created successfully."
+    notify -title "Backup" -message "Backup ($restic_profile_name) created successfully."
   else
-    notify -title "Backup" -message "Backup ($repository_name) failed to be created. See log file for more: $LOG_FILE_PATH"
+    notify -title "Backup" -message "Backup ($restic_profile_name) failed to be created. See log file for more: $LOG_FILE_PATH"
   fi
 }
 
 run-backup-command() {
-  $HOME/.bin/restic \
-    --repository "$repository_name" -- \
-    backup \
-    --verbose --verbose \
-    "${restic_args[@]}"
+  local command_args=""
+
+  command_args+="--name\n"
+  command_args+="$restic_profile_name\n"
+
+  for arg in "${resticprofile_args[@]}"; do
+    command_args+="$arg\n"
+  done
+
+  command_args+="backup\n"
+  command_args+="--verbose\n"
+  command_args+="--verbose\n"
+
+  for arg in "${restic_args[@]}"; do
+    command_args+="$arg\n"
+  done
+
+  echo -e "$command_args" | xargs /opt/homebrew/bin/resticprofile
 }
 
 main() {
@@ -237,7 +247,7 @@ main() {
   parse-args "$@"
   validate-args
 
-  if [[ $is_dry_run -eq 1 ]]; then
+  if [[ $is_dry_run -eq 1 || $is_automated_run -eq 0 ]]; then
     run-backup-command
     return $?
   fi

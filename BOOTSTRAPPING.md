@@ -45,19 +45,7 @@ Then:
    This will make Solarized Dark the default,
    which is what you want.
 
-7. You'll need to configure the 1Password CLI to interface with the app,
-   as the install script relies on this.
-   To do this, open 1Password, navigate to Settings, go to Developer,
-   and check "Integrate with 1Password CLI."
-
-8. You'll need to add a Borg encryption key for backups for your device to 1Password.
-   Look up the "borg" entry,
-   add a section named after the hostname of your device,
-   and within that section,
-   add a password field called `encryption-passphrase` present
-   (generating a password for the field).
-
-9. Now you can proceed with the [installation instructions][installation] in
+7. Now you can proceed with the [installation instructions][installation] in
    the README (starting with step 4).
 
 [github-ssh]: https://docs.github.com/en/authentication/connecting-to-github-with-ssh

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://creativeprojects.github.io/resticprofile/jsonschema/config-1.json",
+  "version": "1",
+  "base": {
+    "backup": {
+      "exclude": [
+        "*.bin",
+        "*.img",
+        "*.qcow2",
+        "*.vbox",
+        "*.vdi",
+        "*.vhdx",
+        "~/.Trash",
+        "~/.morph",
+        "~/Library"
+      ]
+    }
+  },
+  "rsync_net": {
+    "repository": "sftp:<<RSYNC_NET_USERNAME>>@<<RSYNC_NET_USERNAME>>.rsync.net:backups/restic/<<HOSTNAME>>",
+    "password-file": "rsync_net_password.txt",
+    "backup": {
+      "source": ["~"]
+    }
+  },
+  "local": {
+    "repository": "local:/usr/local/var/backups/restic",
+    "password-file": "local_password.txt",
+    "backup": {
+      "source": ["~"]
+    }
+  }
+}
