@@ -7,6 +7,6 @@
   --on-busy-update=restart \
   --debounce 5s \
   $HOME/.bin/debounce \
-  --duration 60 \
+  --duration 120 \
   -- \
   $HOME/.bin/sync-obsidian-vault-with-logging "$@"
