@@ -117,6 +117,7 @@ for pkg in \
   overmind \
   reattach-to-user-namespace \
   redis \
+  restic \
   sqlite \
   tig \
   tmux \
@@ -125,6 +126,7 @@ for pkg in \
   watchexec \
   yq \
   zoxide \
+  creativeprojects/tap/resticprofile \
   heroku/brew/heroku \
   mas-cli/tap/mas
 do
