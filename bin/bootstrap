@@ -95,62 +95,62 @@ if ! type mas &>/dev/null; then
   fi
 fi
 
-#banner "Installing missing Homebrew packages"
-#for pkg in \
-  #1password-cli \
-  #ag \
-  #asdf \
-  #autojump \
-  #awscli \
-  #colordiff \
-  #coreutils \
-  #direnv \
-  #fzf \
-  #git \
-  #git-delta \
-  #grip \
-  #hub \
-  #jq \
-  #libxml2 \
-  #libxslt \
-  #neovim \
-  #overmind \
-  #reattach-to-user-namespace \
-  #redis \
-  #restic \
-  #sqlite \
-  #tig \
-  #tmux \
-  #tree \
-  #universal-ctags \
-  #watchexec \
-  #yq \
-  #zoxide \
-  #creativeprojects/tap/resticprofile \
-  #heroku/brew/heroku \
-  #mas-cli/tap/mas
-#do
-  #banner "Installing $pkg"
-  #HOMEBREW_NO_INSTALL_UPGRADE=true brew install $pkg || error "Package $pkg failed to install, continuing..."
-#done
+banner "Installing missing Homebrew packages"
+for pkg in \
+  1password-cli \
+  ag \
+  asdf \
+  autojump \
+  awscli \
+  colordiff \
+  coreutils \
+  direnv \
+  fzf \
+  git \
+  git-delta \
+  grip \
+  hub \
+  jq \
+  libxml2 \
+  libxslt \
+  neovim \
+  overmind \
+  reattach-to-user-namespace \
+  redis \
+  restic \
+  sqlite \
+  tig \
+  tmux \
+  tree \
+  universal-ctags \
+  watchexec \
+  yq \
+  zoxide \
+  creativeprojects/tap/resticprofile \
+  heroku/brew/heroku \
+  mas-cli/tap/mas
+do
+  banner "Installing $pkg"
+  HOMEBREW_NO_INSTALL_UPGRADE=true brew install $pkg || error "Package $pkg failed to install, continuing..."
+done
 
-#for app in \
-  #dash \
-  #dropbox \
-  #homebrew/cask-fonts/font-fira-code \
-  #google-chrome \
-  #iterm2 \
-  #ngrok \
-  #notion \
-  #numi \
-  #obsidian \
-  #postman \
-  #spotify \
-  #visual-studio-code
-#do
-  #banner "Installing $app"
-  #HOMEBREW_NO_INSTALL_UPGRADE=true brew install --cask $app || error "App $app failed to install, continuing..."
-#done
+for app in \
+  dash \
+  dropbox \
+  homebrew/cask-fonts/font-fira-code \
+  google-chrome \
+  iterm2 \
+  ngrok \
+  notion \
+  numi \
+  obsidian \
+  postman \
+  spotify \
+  visual-studio-code
+do
+  banner "Installing $app"
+  HOMEBREW_NO_INSTALL_UPGRADE=true brew install --cask $app || error "App $app failed to install, continuing..."
+done
 
 mas_apps=(
   # Amphetamine
