@@ -43,7 +43,7 @@ success() {
 }
 
 warn() {
-  yellow "$@" $'\n' >&2
+  yellow "WARNING:" "$@" $'\n' >&2
 }
 
 error() {

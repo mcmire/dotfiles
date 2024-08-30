@@ -22,7 +22,7 @@ get-level() {
 
 print-usage() {
   cat <<EOT
-USAGE: $0 --level LEVEL [--log-file PATH] <messages...> [-]
+USAGE: $0 [--level LEVEL] [--log-file PATH] <messages...> [-]
 
 Logs one or more timestamped messages to standard out, and, optionally, to a log
 file.
@@ -47,8 +47,8 @@ be logged.
 Options:
 
 -l, --level LEVEL
-  The level at which to log the given messages (required). Must be one of
-  INFO or DEBUG.
+  The level at which to log the given messages. Must be one of INFO or DEBUG.
+  (Default: INFO)
 
 -f, --log-file PATH
   The file in which to store the messages.
@@ -59,8 +59,9 @@ EOT
 }
 
 main() {
-  local level_name=INFO
+  local level_name
   local read_from_stdin=0
+  local print_level_name=1
   local log_file="$LOG_FILE_PATH"
   local args=()
   local level
@@ -96,6 +97,11 @@ main() {
     esac
   done
 
+  if [[ -z "$level_name" ]]; then
+    level_name=INFO
+    print_level_name=0
+  fi
+
   if [[ "$level_name" != "INFO" && "$level_name" != "DEBUG" ]]; then
     echo "ERROR: Invalid log level '$level_name'." >&2
     return 1
@@ -125,18 +131,34 @@ main() {
 
   if [[ "${#args[*]}" -gt 0 ]]; then
     if [[ -n "$log_file" ]]; then
-      echo "[$date] [${level_name}]" "${args[*]}" | tee -a "$log_file"
+      if [[ $print_level_name -eq 0 ]]; then
+        echo "[$date]" "${args[*]}" | tee -a "$log_file"
+      else
+        echo "[$date] [${level_name}]" "${args[*]}" | tee -a "$log_file"
+      fi
     else
-      echo "[$date] [${level_name}]" "${args[*]}"
+      if [[ $print_level_name -eq 0 ]]; then
+        echo "[$date]" "${args[*]}"
+      else
+        echo "[$date] [${level_name}]" "${args[*]}"
+      fi
     fi
   fi
 
   if [[ $read_from_stdin -eq 1 ]]; then
-    while read -r line; do
+    while IFS=$'\n' read -r line; do
       if [[ -n "$log_file" ]]; then
-        echo "[$date] [${level_name}]" "$line" | tee -a "$log_file"
+        if [[ $print_level_name -eq 0 ]]; then
+          echo "[$date]" "$line" | tee -a "$log_file"
+        else
+          echo "[$date] [${level_name}]" "$line" | tee -a "$log_file"
+        fi
       else
-        echo "[$date] [${level_name}]" "$line"
+        if [[ $print_level_name -eq 0 ]]; then
+          echo "[$date]" "$line"
+        else
+          echo "[$date] [${level_name}]" "$line"
+        fi
       fi
     done
   fi

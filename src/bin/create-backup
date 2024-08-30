@@ -12,13 +12,15 @@ NEXT_SCHEDULED_TIME_FILE_PATH="$HOME/Library/Caches/create-backup.next.time"
 LOG_FILE_PATH="$HOME/Library/Logs/create-backup/$(date -j -f "%s" "$NOW" +"%Y%m%d_%H%M%S").log"
 
 log_started=1
+already_locked=0
 
 ## Parameters
 
 restic_profile_name=
 restic_args=()
-is_automated_run=0
-is_dry_run=0
+as_launch_agent=0
+always_run=0
+dry_run=0
 
 ### Actions
 
@@ -26,7 +28,7 @@ print-usage() {
   cat <<EOT
 Create a new backup using Restic (via \`resticprofile\`).
 
-$0 --profile-name <restic-profile-name> [<resticprofile-options> [-- <restic-options>]]
+$0 --profile-name <restic-profile-name> [<options>] [<resticprofile-options>] [-- <restic-options>]
 
 ARGUMENTS
 ---------
@@ -36,11 +38,18 @@ ARGUMENTS
   This script expects this file to already exist.
 
 <options>
-  --automated
-    Enables additional logic which will refuse to create a new backup if the
-    computer is not plugged in, if it is connected to a public WiFi network, or
-    if a backup was already created less than a day ago. This option is passed
-    by the launch agent that runs this command periodically.
+  --as-launch-agent
+    Logs the results of the backup command to a log file. Also enables
+    additional logic which will refuse to create a new backup if the computer is
+    not plugged in, if it is connected to a public WiFi network, or if a backup
+    was already created less than a day ago. This option is passed by the launch
+    agent that runs this command periodically.
+
+  --always-run
+    Overrides the logic introduced by --as-launch-agent (i.e. still create a
+    backup even if on battery or on a public WiFi network), but still logs the
+    results of the backup command to a log file so it can be monitored while it
+    runs and audited after the fact.
 
   -h, --help
     Print this message and exit.
@@ -62,8 +71,12 @@ parse-args() {
         restic_profile_name="$2"
         shift 2
         ;;
-      --automated)
-        is_automated_run=1
+      --as-launch-agent)
+        as_launch_agent=1
+        shift
+        ;;
+      --always-run)
+        always_run=1
         shift
         ;;
       --help | -h)
@@ -76,7 +89,7 @@ parse-args() {
         ;;
       *)
         if [[ "$1" == "--dry-run" ]]; then
-          is_dry_run=1
+          dry_run=1
         fi
         if [[ -z "$restic_profile_name" ]]; then
           restic_profile_name="$1"
@@ -90,7 +103,7 @@ parse-args() {
     esac
   done
 
-  if [[ $is_automated_run -eq 1 ]]; then
+  if [[ $as_launch_agent -eq 1 ]]; then
     set-color-mode "false"
   else
     set-color-mode "true"
@@ -99,28 +112,36 @@ parse-args() {
 
 validate-args() {
   if [[ -z "$restic_profile_name" ]]; then
-    error "Missing profile name."
-    echo
-    print-usage
+    {
+      error "Missing profile name."
+      echo
+      print-usage
+    } 2>&1 | log
     exit 1
   fi
 }
 
 cleanup() {
   log-end || true
-  unlock
+
+  if [[ $already_locked -eq 0 ]]; then
+    unlock
+  fi
 }
 
 lock() {
-  if [[ -f "$PID_FILE_PATH" ]]; then
-    if ps -p "$(cat "$PID_FILE_PATH")" >/dev/null; then
-      error "A backup is already in the process of being created."
-      exit $LOCKED_EXIT_CODE
+  if [[ $dry_run -eq 0 ]]; then
+    if [[ -f "$PID_FILE_PATH" ]]; then
+      if ps -p "$(cat "$PID_FILE_PATH")" >/dev/null; then
+        error "A backup is already in the process of being created." | log
+        already_locked=1
+        exit $LOCKED_EXIT_CODE
+      else
+        rm "$PID_FILE_PATH"
+      fi
     else
-      rm "$PID_FILE_PATH"
+      echo $$ > "$PID_FILE_PATH"
     fi
-  else
-    echo $$ > "$PID_FILE_PATH"
   fi
 }
 
@@ -141,48 +162,54 @@ has-scheduled-time-been-reached() {
 
   next_scheduled_time=$(get-next-scheduled-time)
 
-  [[ $is_automated_run -eq 0 || $NOW -gt $next_scheduled_time || $NOW -eq $next_scheduled_time ]]
+  [[ $dry_run -eq 1 || $always_run -eq 1 || $NOW -gt $next_scheduled_time || $NOW -eq $next_scheduled_time ]]
 }
 
 update-next-scheduled-time() {
-  date -j -v "+1d" -f "%s" "$NOW" +"%s" > "$NEXT_SCHEDULED_TIME_FILE_PATH"
+  if [[ $dry_run -eq 0 ]]; then
+    date -j -v "+1d" -f "%s" "$NOW" +"%s" > "$NEXT_SCHEDULED_TIME_FILE_PATH"
+  fi
 }
 
 is-connected-to-power() {
-  [[ $is_automated_run -eq 0 || "$(pmset -g ps | head -1)" =~ "AC Power" ]]
+  [[ $dry_run -eq 1 || $always_run -eq 1 || "$(pmset -g ps | head -1)" =~ "AC Power" ]]
 }
 
 log() {
-  "$HOME/.bin/log" --level INFO --log-file "$LOG_FILE_PATH" -
+  if [[ $as_launch_agent -eq 1 ]]; then
+    "$HOME/.bin/log" --log-file "$LOG_FILE_PATH" -
+  else
+    cat
+  fi
 }
 
 log-start() {
-  {
-    echo "***********************************************"
-    echo "User: $USER"
-    echo "Date: $(date -j -f "%s" "$NOW" +"%+")"
-    echo "Next scheduled time: $(date -j -f "%s" "$(get-next-scheduled-time)" +"%+")"
-    echo "Current directory: $PWD"
-    echo "Command:" "${COMMAND[@]}"
+  if [[ $as_launch_agent -eq 1 ]]; then
+    {
+      echo "***********************************************"
+      echo "----------------------------------------"
+      echo "User: $USER"
+      echo "Date: $(date -j -f "%s" "$NOW" +"%+")"
+      echo "Next scheduled time: $(date -j -f "%s" "$(get-next-scheduled-time)" +"%+")"
+      echo "Current directory: $PWD"
+      echo "----------------------------------------"
+      echo
+    } | log
 
-    if [[ $is_automated_run -eq 1 ]]; then
-      echo "Type of run: Automated"
-    else
-      echo "Type of run: Manual"
-    fi
-
-    echo
-  } | log
-
-  log_started=1
+    log_started=1
+  fi
 }
 
 log-start-of-output() {
-  echo "---[ START OF OUTPUT ]-----------" | log
+  if [[ $as_launch_agent -eq 1 ]]; then
+    echo "---[ START OF OUTPUT ]-----------" | log
+  fi
 }
 
 log-end-of-output() {
-  echo "---[ END OF OUTPUT   ]-----------" | log
+  if [[ $as_launch_agent -eq 1 ]]; then
+    echo "---[ END OF OUTPUT   ]-----------" | log
+  fi
 }
 
 log-scheduled-time-not-reached() {
@@ -194,7 +221,7 @@ log-not-connected-to-power() {
 }
 
 log-end() {
-  if [[ $log_started -eq 1 ]]; then
+  if [[ $as_launch_agent -eq 1 && $log_started -eq 1 ]]; then
     {
       echo "***********************************************"
       echo
@@ -203,7 +230,9 @@ log-end() {
 }
 
 notify() {
-  /opt/homebrew/bin/terminal-notifier "$@"
+  if [[ $as_launch_agent -eq 1 ]]; then
+    /opt/homebrew/bin/terminal-notifier "$@"
+  fi
 }
 
 notify-start() {
@@ -220,50 +249,66 @@ notify-end() {
   fi
 }
 
-run-backup-command() {
-  local command_args=""
+build-backup-command() {
+  echo /opt/homebrew/bin/resticprofile
 
-  command_args+="--name\n"
-  command_args+="$restic_profile_name\n"
+  echo "--name"
+  echo "$restic_profile_name"
 
   for arg in "${resticprofile_args[@]}"; do
-    command_args+="$arg\n"
+    echo "$arg"
   done
 
-  command_args+="backup\n"
-  command_args+="--verbose\n"
-  command_args+="--verbose\n"
+  echo "backup"
+  echo "--verbose"
+  echo "--verbose"
 
   for arg in "${restic_args[@]}"; do
-    command_args+="$arg\n"
+    echo "$arg"
   done
+}
 
-  echo -e "$command_args" | xargs /opt/homebrew/bin/resticprofile
+run-backup-command() {
+  local command_as_lines
+  local command_name
+  local command_args_as_lines
+  local command=()
+
+  command_as_lines="$(build-backup-command)"
+  while IFS=$'\n' read -r line; do
+    command+=("$line")
+  done <<< "$command_as_lines"
+
+  command_name="$(echo "$command_as_lines" | head -n 1)"
+  command_args_as_lines="$(echo "$command_as_lines" | tail -n '+2')"
+
+  {
+    echo "Running command:" "${command[*]}"
+    echo
+  } | log
+
+  echo -e "$command_args_as_lines" | xargs "$command_name"
 }
 
 main() {
   local exitcode
 
   parse-args "$@"
-  validate-args
 
-  if [[ $is_dry_run -eq 1 || $is_automated_run -eq 0 ]]; then
-    run-backup-command
-    return $?
-  fi
+  trap cleanup INT TERM QUIT EXIT
+  log-start || true
 
   lock
-  log-start || true
-  trap cleanup INT TERM QUIT
+  validate-args
 
   if ! has-scheduled-time-been-reached; then
     log-scheduled-time-not-reached || true
-    return 2
+    exit 2
   fi
 
   if ! is-connected-to-power; then
     log-not-connected-to-power || true
-    return 2
+    exit 2
   fi
 
   notify-start || true
@@ -275,10 +320,7 @@ main() {
 
   notify-end "$exitcode" || true
 
-  update-next-scheduled-time
-  exitcode=$?
-
-  cleanup
+  update-next-scheduled-time || exit $?
 
   return $exitcode
 }

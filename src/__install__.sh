@@ -78,30 +78,9 @@ create-launch-agents-and-daemons() {
   fi
 }
 
-fill-in-borgmatic-config-placeholders() {
-  local rsync_net_username
-  local borg_encryption_passphrase
-
-  if which op &>/dev/null && [[ -n "$HOSTNAME" ]]; then
-    rsync_net_username="$(op read op://Personal/rsync.net/username 2>/dev/null)"
-    borg_encryption_passphrase="$(op read "op://Personal/borg/$HOSTNAME/encryption-passphrase" 2>/dev/null)"
-
-    if [[ -n "$rsync_net_username" && -n "$borg_encryption_passphrase" ]]; then
-      banner "Completing Borgmatic configuration"
-
-      yq -i "\
-.repositories[0].path = \"ssh://${rsync_net_username}@${rsync_net_username}.rsync.net/./backups/$HOSTNAME\" | \
-.repositories[0].label = \"rsync.net\" | \
-.encryption_passphrase = \"$borg_encryption_passphrase\"\
-" "$HOME/.config/borgmatic/config.yaml"
-    fi
-  fi
-}
-
 main() {
   set-git-name-and-email
   create-launch-agents-and-daemons
-  # fill-in-borgmatic-config-placeholders
 
   success "Done!"
 }

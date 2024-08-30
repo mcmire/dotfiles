@@ -8,7 +8,9 @@
     <key>ProgramArguments</key>
     <array>
       <string>{{ HOME }}/.bin/create-backup</string>
-      <string>--automated</string>
+      <string>--as-launch-agent</string>
+      <string>--profile-name</string>
+      <string>rsync_net</string>
     </array>
 
     <key>StartInterval</key>
