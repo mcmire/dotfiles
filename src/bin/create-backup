@@ -166,8 +166,12 @@ has-scheduled-time-been-reached() {
 }
 
 update-next-scheduled-time() {
+  local next_scheduled_time
+
   if [[ $dry_run -eq 0 ]]; then
-    date -j -v "+1d" -f "%s" "$NOW" +"%s" > "$NEXT_SCHEDULED_TIME_FILE_PATH"
+    next_scheduled_time=$(date -j -v "+1d" -f "%s" "$NOW" +"%s")
+    echo "Updating next scheduled time to: $(date -j -f "%s" "$next_scheduled_time" +"%+")"
+    echo $next_scheduled_time > "$NEXT_SCHEDULED_TIME_FILE_PATH"
   fi
 }
 
@@ -315,14 +319,15 @@ main() {
 
   notify-start || true
 
-  log-start-of-output || true
   run-backup-command 2>&1 | log
   exitcode=${PIPESTATUS[0]}
   log-end-of-output || true
 
   notify-end "$exitcode" || true
 
-  update-next-scheduled-time || exit $?
+  if [[ $exitcode -eq 0 ]]; then
+    update-next-scheduled-time || exit $?
+  fi
 
   return $exitcode
 }
