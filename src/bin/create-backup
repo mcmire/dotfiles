@@ -176,7 +176,7 @@ is-connected-to-power() {
 }
 
 log() {
-  if [[ $as_launch_agent -eq 1 ]]; then
+  if [[ $as_launch_agent -eq 1 && $dry_run -eq 0 ]]; then
     "$HOME/.bin/log" --log-file "$LOG_FILE_PATH" -
   else
     cat
@@ -230,7 +230,7 @@ log-end() {
 }
 
 notify() {
-  if [[ $as_launch_agent -eq 1 ]]; then
+  if [[ $as_launch_agent -eq 1 && $dry_run -eq 0 ]]; then
     /opt/homebrew/bin/terminal-notifier "$@"
   fi
 }
@@ -286,6 +286,8 @@ run-backup-command() {
     echo "Running command:" "${command[*]}"
     echo
   } | log
+
+  log-start-of-output || true
 
   echo -e "$command_args_as_lines" | xargs "$command_name"
 }
