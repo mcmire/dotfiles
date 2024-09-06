@@ -293,6 +293,8 @@ run-backup-command() {
 
   log-start-of-output || true
 
+  export PATH="/opt/homebrew/bin:$PATH"
+
   echo -e "$command_args_as_lines" | xargs "$command_name"
 }
 
