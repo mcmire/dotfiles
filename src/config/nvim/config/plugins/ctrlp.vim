@@ -26,6 +26,7 @@ let g:ctrlp_working_path_mode = 'w'
 if executable('ag')
   let g:ctrlp_user_command = 'ag %s
         \ --path-to-ignore ~/.ignore
+        \ --hidden
         \ --files-with-matches
         \ --nocolor
         \ --filename-pattern ""'
