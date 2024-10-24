@@ -18,11 +18,7 @@ Plug 'kien/ctrlp.vim'
 Plug 'lifepillar/vim-solarized8', { 'branch': 'neovim' }
 Plug 'mileszs/ack.vim'
 Plug 'nelstrom/vim-textobj-rubyblock', { 'for': 'ruby' } | Plug 'kana/vim-textobj-user'
-" Use Coc from June 2022
-" For some reason with the latest version we keep getting this error which seems
-" to be caused by coc-tsserver
-" <https://github.com/neoclide/coc.nvim/issues/4161>
-Plug 'neoclide/coc.nvim', { 'commit': 'cff08a674915181a2e0637e0235f7ea31dfbf437' }
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-abolish'
