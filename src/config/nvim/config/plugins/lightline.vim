@@ -16,7 +16,7 @@ let g:lightline = {
       \     'right': [
       \       ['lineinfo'],
       \       ['percent'],
-      \       ['fileformat', 'fileencoding', 'filetype']
+      \       ['fileformat', 'fileencoding', 'filetype', 'coc-status'],
       \     ]
       \   },
       \   'inactive': {
@@ -25,7 +25,8 @@ let g:lightline = {
       \     ]
       \   },
       \   'component_function': {
-      \     'zoomed': 'zoom#statusline'
+      \     'zoomed': 'zoom#statusline',
+      \     'coc-status': 'coc#status'
       \   }
       \ }
 
@@ -35,7 +36,7 @@ let g:lightline = {
 
 set laststatus=2
 
-" Since Airline already shows the mode, hide the mode that Vim displays by
+" Since Lightline already shows the mode, hide the mode that Vim displays by
 " default (e.g. `--- INSERT ---`):
 
 set noshowmode
