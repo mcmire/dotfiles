@@ -68,30 +68,68 @@ new-rails-app() {
 }
 
 jf() {
-  local workspaces="$(cat package.json | jq '.workspaces')"
-  local workspace_package_name="$1"
+  local workspaces
+  local command_args
+  local parse_rest_as_command_args=0
+  local workspace_package_name
   local workspace_package_names
 
+  workspaces="$(cat package.json | jq '.workspaces')"
+
   if [[ $workspaces == "null" ]]; then
-    # polyrepo
+    # Polyrepo
     yarn jest "$@" --verbose=false --no-coverage
   else
-    # monorepo
+    # Monorepo
+
+    command_args=()
+    while [[ $# -gt 0 ]]; do
+      case "$1" in
+        --)
+          parse_rest_as_command_args=1
+          shift
+          ;;
+        -*)
+          if [[ -n "$workspace_package_name" && $parse_rest_as_command_args -eq 0 ]]; then
+            echo "ERROR: Unrecognized argument \`$1\`."
+            echo "Use \`--\` if you meant this to be an argument to the \`yarn workspace\` command."
+            return 1
+          fi
+          command_args+=("$1")
+          shift
+          ;;
+        *)
+          if [[ $#command_args -gt 0 ]]; then
+            echo "ERROR: Unrecognized argument \`$1\`."
+            echo "Use \`--\` if you meant this to be an argument to the \`yarn workspace\` command."
+            return 1
+          fi
+
+          if [[ $parse_rest_as_command_args -eq 1 ]]; then
+            command_args+=("$1")
+          else
+            workspace_package_name="$1"
+          fi
+          shift
+          ;;
+      esac
+    done
+
     if [[ -z $workspace_package_name ]]; then
       workspace_package_names="$(yarn workspaces list --json | jq --slurp --raw-output 'map(.name) | .[]')"
       echo "ERROR: Missing workspace package name. Possible package names are:"
       echo
       echo "$workspace_package_names"
       echo
-      exit 1
+      return 1
     fi
 
-    yarn workspace "$workspace_package_name" run jest "${@:2}" --verbose=false --no-coverage
+    yarn workspace "$workspace_package_name" exec jest "${command_args[@]}" --verbose=false --no-coverage
   fi
 }
 
 jfw() {
-  jf "$@" --watch
+  jf "$@" -- --watch
 }
 
 yw() {
