@@ -5,12 +5,12 @@
 " and poor user experience
 set updatetime=300
 
-"\ 'coc-prettier',
 "\ 'coc-css',
 let g:coc_global_extensions = [
       \ 'coc-deno',
       \ 'coc-eslint',
       \ 'coc-json',
+      \ 'coc-prettier',
       \ 'coc-rust-analyzer',
       \ 'coc-tsserver',
       \ 'coc-stylelintplus',
