@@ -14,7 +14,7 @@
     </array>
 
     <key>StartInterval</key>
-    <integer>3600</integer>
+    <integer>1800</integer>
 
     <key>StandardOutPath</key>
     <string>{{ HOME }}/Library/Logs/com.elliotwinkler.create-backup-periodically.plist.stdout.log</string>
