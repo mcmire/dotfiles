@@ -16,6 +16,12 @@ let g:coc_global_extensions = [
       \ 'coc-stylelintplus',
       \ ]
 
+" Tell CoC that files with a filetype of "ghmarkdown" are Markdown files, so
+" that Prettier will run automatically for those files
+let g:coc_filetype_map = {
+      \ 'ghmarkdown': 'markdown',
+      \ }
+
 " GoTo code navigation
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gr <Plug>(coc-references)

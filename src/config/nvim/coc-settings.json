@@ -1,10 +1,13 @@
 {
+  "coc.preferences.formatOnSave": true,
   "coc.preferences.formatOnSaveFiletypes": [
     "astro",
     "css",
+    "ghmarkdown",
     "javascript",
     "javascriptreact",
     "json",
+    "markdown",
     "ruby",
     "rust",
     "scss",
@@ -31,6 +34,7 @@
     "javascript",
     "javascriptreact",
     "json",
+    "markdown",
     "ruby",
     "rust",
     "scss",
@@ -42,6 +46,7 @@
   "eslint.validate": [
     "astro",
     "css",
+    "ghmarkdown",
     "javascript",
     "javascriptreact",
     "json",
