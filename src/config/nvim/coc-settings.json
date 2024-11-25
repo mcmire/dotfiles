@@ -68,6 +68,7 @@
   "less.validate": false,
   "prettier.documentSelectors": ["**/*.astro"],
   "prettier.disableSuccessMessage": true,
+  "prettier.requireConfig": true,
   "scss.validate": false,
   "signature.enable": false,
   "stylelintplus.autoFixOnSave": false,
