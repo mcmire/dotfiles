@@ -14,7 +14,7 @@ let g:coc_global_extensions = [
       \ 'coc-prettier',
       \ 'coc-rust-analyzer',
       \ 'coc-tsserver',
-      \ 'coc-stylelintplus',
+      \ 'coc-stylelintplus'
       \ ]
 
 " Tell CoC that files with a filetype of "ghmarkdown" are Markdown files, so
