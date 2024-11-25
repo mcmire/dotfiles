@@ -7,6 +7,7 @@ set updatetime=300
 
 "\ 'coc-css',
 let g:coc_global_extensions = [
+      \ '@yaegassy/coc-astro',
       \ 'coc-deno',
       \ 'coc-eslint',
       \ 'coc-json',
