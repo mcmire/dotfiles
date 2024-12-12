@@ -4,7 +4,7 @@
 " [NERDCommenter] has trouble applying Ruby comments for some reason, so we help
 " it out:
 "
-" [NERDCommenter]: https://github.com/scrooloose/nerdcommenter
+" [NERDCommenter]: https://github.com/preservim/nerdcommenter
 
 " Turn off default mappings so we can assign our own that don't conflict with
 " other plugins (such as CoC)
@@ -18,5 +18,6 @@ xmap <leader>c<Space> :call nerdcommenter#Comment("n", "Toggle")<CR>
 
 let g:NERDCustomDelimiters = {
       \ 'ruby': { 'left': '# ' },
-      \ 'jsx': { 'left': '{/* ', 'right': ' */}' }
+      \ 'jsx': { 'left': '{/* ', 'right': ' */}' },
+      \ 'javascript': { 'left': '// ' }
       \ }
