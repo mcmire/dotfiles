@@ -140,3 +140,11 @@ yw() {
 
   yarn $command "$@"
 }
+
+ywd() {
+  yw "$1" run since-latest-release -- diff
+}
+
+ywdh() {
+  yw "$1" run since-latest-release --include-head -- diff
+}
