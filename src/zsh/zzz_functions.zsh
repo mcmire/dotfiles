@@ -124,7 +124,7 @@ jf() {
       return 1
     fi
 
-    yarn workspace "$workspace_package_name" exec jest "${command_args[@]}" --verbose=false --no-coverage
+    NODE_OPTIONS=--experimental-vm-modules yarn workspace "$workspace_package_name" exec jest "${command_args[@]}" --verbose=false --no-coverage
   fi
 }
 
