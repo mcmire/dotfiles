@@ -8,4 +8,4 @@ fi
 
 git for-each-ref \
   --sort=committerdate \
-  --format='%(color:bold)%(align:50,left)%(refname:short)%(end)%(color:reset)%(color:blue)%(align:40,left)%(authordate:format:%m/%d/%Y) (%(authordate:relative))%(end)%(color:reset)%(color:yellow)%(authorname)%(color:reset)' "$refname"
+  --format='%(color:bold)%(align:90,left)%(refname:short)%(end)%(color:reset)%(color:blue)%(align:30,left)%(authordate:format:%m/%d/%Y) (%(authordate:relative))%(end)%(color:reset)%(color:yellow)%(authorname)%(color:reset)' "$refname"
