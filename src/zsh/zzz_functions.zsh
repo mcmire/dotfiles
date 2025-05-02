@@ -68,6 +68,7 @@ new-rails-app() {
 }
 
 jf() {
+  local is_monorepo
   local workspaces
   local command_args
   local parse_rest_as_command_args=0
@@ -75,46 +76,48 @@ jf() {
   local workspace_package_names
 
   workspaces="$(cat package.json | jq '.workspaces')"
-
   if [[ $workspaces == "null" ]]; then
-    # Polyrepo
-    yarn jest "$@" --verbose=false --no-coverage
+    is_monorepo=0
   else
-    # Monorepo
+    is_monorepo=1
+  fi
 
-    command_args=()
-    while [[ $# -gt 0 ]]; do
-      case "$1" in
-        --)
-          parse_rest_as_command_args=1
-          shift
-          ;;
-        -*)
-          if [[ -n "$workspace_package_name" && $parse_rest_as_command_args -eq 0 ]]; then
-            echo "ERROR: Unrecognized argument \`$1\`."
-            echo "Use \`--\` if you meant this to be an argument to the \`yarn workspace\` command."
-            return 1
-          fi
+  command_args=()
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --)
+        parse_rest_as_command_args=1
+        shift
+        ;;
+      -*)
+        if [[ $is_monorepo -eq 1 && -n "$workspace_package_name" && $parse_rest_as_command_args -eq 0 ]]; then
+          echo "ERROR: Unrecognized argument \`$1\`."
+          echo "Use \`--\` if you meant this to be an argument to the \`yarn workspace\` command."
+          return 1
+        fi
+        command_args+=("$1")
+        shift
+        ;;
+      *)
+        if [[ $is_monorepo -eq 1 && $#command_args -gt 0 ]]; then
+          echo "ERROR: Unrecognized argument \`$1\`."
+          echo "Use \`--\` if you meant this to be an argument to the \`yarn workspace\` command."
+          return 1
+        fi
+
+        if [[ $$is_monorepo -eq 0 || parse_rest_as_command_args -eq 1 ]]; then
           command_args+=("$1")
-          shift
-          ;;
-        *)
-          if [[ $#command_args -gt 0 ]]; then
-            echo "ERROR: Unrecognized argument \`$1\`."
-            echo "Use \`--\` if you meant this to be an argument to the \`yarn workspace\` command."
-            return 1
-          fi
+        else
+          workspace_package_name="$1"
+        fi
+        shift
+        ;;
+    esac
+  done
 
-          if [[ $parse_rest_as_command_args -eq 1 ]]; then
-            command_args+=("$1")
-          else
-            workspace_package_name="$1"
-          fi
-          shift
-          ;;
-      esac
-    done
-
+  if [[ $is_monorepo -eq 0 ]]; then
+    yarn jest "${command_args[@]}" --verbose=false --no-coverage
+  else
     if [[ -z $workspace_package_name ]]; then
       workspace_package_names="$(yarn workspaces list --json | jq --slurp --raw-output 'map(.name) | .[]')"
       echo "ERROR: Missing workspace package name. Possible package names are:"
