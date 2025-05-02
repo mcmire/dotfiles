@@ -85,6 +85,7 @@ main() {
   fi
 
   local resolved_project_directory="$(search-for-project "$given_project_directory")"
+  echo "Resolved project directory: $resolved_project_directory"
 
   if [[ -z "$resolved_project_directory" ]]; then
     # User must have canceled the fzf, or there were no matches. Silently abort.
@@ -92,6 +93,7 @@ main() {
   fi
 
   local tmux_session_name="$(basename "$resolved_project_directory" | tr . _)"
+  echo "Generated tmux session name: $tmux_session_name"
 
   switch-to-guaranteed-tmux-session "$tmux_session_name" "$resolved_project_directory"
 }
