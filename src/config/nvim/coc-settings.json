@@ -1,27 +1,15 @@
 {
-  "coc.preferences.formatOnSave": true,
-  "coc.preferences.formatOnSaveFiletypes": [
-    "astro",
-    "css",
-    "ghmarkdown",
-    "javascript",
-    "javascriptreact",
-    "json",
-    "markdown",
-    "ruby",
-    "rust",
-    "scss",
-    "typescript",
-    "typescriptreact",
-    "vue"
-  ],
-  "css.validate": false,
+  "[astro][css][ghmarkdown][javascript][javascriptreact][json][markdown][ruby][rust][scss][typescript][typesscriptreact][vue]": {
+    "coc.preferences.formatOnSave": true,
+  },
   "coc.preferences.formatOnType": false,
   "coc.preferences.jumpCommand": "tabe",
   "diagnostic.checkCurrentLine": true,
   "diagnostic.enableMessage": "jump",
-  "diagnostic.floatConfig.maxWidth": 200,
-  "diagnostic.floatConfig.maxHeight": 1500,
+  "diagnostic.floatConfig": {
+    "maxWidth": 200,
+    "maxHeight": 1500
+  },
   "diagnostic.messageDelay": 1000,
   "diagnostic.refreshOnInsertMode": true,
   "eslint.autoFixOnSave": false,
@@ -57,30 +45,26 @@
     "typescriptreact",
     "vue"
   ],
-  "hover.floatConfig.maxWidth": 200,
-  "hover.floatConfig.maxHeight": 1500,
+  "hover.floatConfig": {
+    "maxWidth": 200,
+    "maxHeight": 1500
+  },
   "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
   "javascript.suggest.enabled": false,
   "javascript.suggest.completeFunctionCalls": false,
   "javascript.suggestionActions.enabled": false,
   "javascript.validate.enable": true,
   "json.format.enable": false,
-  "less.validate": false,
   "prettier.documentSelectors": ["**/*.astro"],
-  "prettier.disableSuccessMessage": true,
   "prettier.requireConfig": true,
-  "scss.validate": false,
   "signature.enable": false,
   "stylelintplus.autoFixOnSave": false,
   "suggest.autoTrigger": "none",
-  "suggest.floatEnable": false,
-  "tsserver.enableJavascript": true,
-  "tsserver.formatOnType": false,
+  "suggest.enableFloat": false,
   "tsserver.log": "verbose",
   "tsserver.trace.server": "verbose",
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
   "typescript.suggest.enabled": false,
   "typescript.suggest.completeFunctionCalls": false,
-  "typescript.suggestionActions.enabled": false,
-  "wxss.validate": false
+  "typescript.suggestionActions.enabled": false
 }
