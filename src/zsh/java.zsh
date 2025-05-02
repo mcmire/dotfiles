@@ -8,5 +8,5 @@ export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home"
 
 if ! [[ -e "$JAVA_HOME" ]]; then
   echo "It looks like you are missing Azul Zulu JDK. This is a JDK optimized for Apple Silicon Macs."
-  echo "You can get it by running: brew tap homebrew/cask-versions && brew install --cask zulu17"
+  echo "You can get it by running: brew install zulu@11"
 fi
