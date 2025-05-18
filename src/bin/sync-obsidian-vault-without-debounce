@@ -1,5 +1,0 @@
-#!/bin/bash
-
-source "$HOME/.config/core-helpers.sh"
-
-"$HOME/.bin/lock" "$@" -- "$HOME/.bin/sync-obsidian-vault-with-logging" "$@"
