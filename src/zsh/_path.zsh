@@ -1,4 +1,4 @@
-PATH=$HOME/.bin:$PATH
+PATH=$HOME/.bin:/usr/local/bin:$PATH
 
 # Update the path that zsh uses to autoload function definitions
 #
