@@ -54,8 +54,11 @@ nmap <silent> K :call <SID>ShowDocumentation()<CR>
 nmap <silent> <Leader>d <Plug>(coc-diagnostic-info)
 
 " Enable scrolling in floating windows (e.g. TypeScript errors)
-nnoremap <expr><down> coc#float#has_scroll() ? coc#float#scroll(1) : "\<down>"
-nnoremap <expr><up> coc#float#has_scroll() ? coc#float#scroll(0) : "\<up>"
+nmap <expr><down> coc#float#has_scroll() ? coc#float#scroll(1) : "\<down>"
+nmap <expr><up> coc#float#has_scroll() ? coc#float#scroll(0) : "\<up>"
+
+" Ctrl-\ triggers completion
+imap <silent><expr> <c-\> coc#pum#visible() ? coc#pum#confirm() : coc#refresh()
 
 function! s:ShowDocumentation() abort
   if (index(['vim','help'], &filetype) >= 0)
