@@ -1,3 +1,4 @@
+=begin
 class Irbrc
   def run
     add_awesome_print
@@ -44,3 +45,4 @@ EOT
 end
 
 Irbrc.new.run
+=end
