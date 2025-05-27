@@ -105,7 +105,7 @@ jf() {
           return 1
         fi
 
-        if [[ $$is_monorepo -eq 0 || parse_rest_as_command_args -eq 1 ]]; then
+        if [[ $is_monorepo -eq 0 || parse_rest_as_command_args -eq 1 ]]; then
           command_args+=("$1")
         else
           workspace_package_name="$1"
