@@ -64,6 +64,7 @@
   "tsserver.log": "verbose",
   "tsserver.trace.server": "verbose",
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+  "typescript.preferences.importModuleSpecifier": "project-relative",
   "typescript.suggest.enabled": false,
   "typescript.suggest.completeFunctionCalls": false,
   "typescript.suggestionActions.enabled": false
