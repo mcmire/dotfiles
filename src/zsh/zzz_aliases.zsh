@@ -15,6 +15,7 @@ alias is-running="ps aux | grep -v grep | grep"
 alias olhc="open-latest-html-capture"
 alias olic="open-latest-image-capture"
 alias ll="ls -l"
+alias o=open-project
 
 #== Bundle ==
 
