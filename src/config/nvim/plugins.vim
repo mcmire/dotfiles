@@ -10,7 +10,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'dhruvasagar/vim-zoom'
 Plug 'eapache/auto-pairs'
-Plug 'ervandew/supertab'
+Plug 'ervandew/supertab', { 'branch': 'main' }
 Plug 'godlygeek/tabular'
 Plug 'itchyny/lightline.vim'
 Plug 'jszakmeister/vim-togglecursor'
