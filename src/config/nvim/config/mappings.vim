@@ -13,11 +13,6 @@ nmap <Leader>ip :source ~/.config/nvim/plugins.vim<CR> :PlugInstall<CR>
 
 nmap <Leader>rv :source ~/.config/nvim/init.vim<CR>
 
-" Every once in a while it's useful to explicitly drop into paste mode. We can
-" do that with `F3`:
-
-set pastetoggle=<F3>
-
 " Moving between windows is so common that it should be easier. With these
 " mappings, we can simply use `Ctrl` and a direction key:
 
