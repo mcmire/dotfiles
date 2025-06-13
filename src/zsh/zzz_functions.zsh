@@ -99,15 +99,13 @@ jf() {
         shift
         ;;
       *)
-        if [[ $is_monorepo -eq 1 && $#command_args -gt 0 ]]; then
-          echo "ERROR: Unrecognized argument \`$1\`."
-          echo "Use \`--\` if you meant this to be an argument to the \`yarn workspace\` command."
-          return 1
-        fi
-
         if [[ $is_monorepo -eq 0 || parse_rest_as_command_args -eq 1 ]]; then
           command_args+=("$1")
         else
+          if [[ -n $workspace_package_name ]]; then
+            echo "ERROR: Workspace package name is already set. This seems like a bug."
+            return 1
+          fi
           workspace_package_name="$1"
         fi
         shift
