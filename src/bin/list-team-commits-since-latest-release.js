@@ -893,41 +893,45 @@ function parseOptions() {
 }
 
 function printUsage() {
+  const scriptName = path.basename(process.argv[1]);
+  
   console.log(`
-GitHub Commit Analyzer
+${scriptName}
 
-Analyzes commits in a repository by team members between a base reference and a new release branch.
+Get a list of commits for a particular release that belong to a specific MetaMask team. Useful when validating a release.
+
+The base release can be customized (but defaults to the latest release).
 
 Usage:
-  node script.js --repo <owner/repo> --team <team-slug> --new-release-branch <branch> [--base-release-branch <branch>] [--exclude-base-branch <branch>] [--no-cache]
+  ./${scriptName} --repo <owner/repo> --team <team-slug> --new-release-branch <branch> [--base-release-branch <branch>] [--exclude-base-branch <branch>] [--no-cache]
 
 Options:
-  -r, --repo <owner/repo>           Repository in format "owner/repo" (e.g., "MetaMask/metamask-extension")
-  -t, --team <team-slug>            GitHub team slug (e.g., "wallet-framework")
-  -n, --new-release-branch <branch> New release branch name to analyze commits for
-  -b, --base-release-branch <branch> Base branch to compare against (defaults to highest version release branch or latest release)
-  -e, --exclude-base-branch <branch> Exclude a branch from being considered as the default base (can be used multiple times)
-  --no-cache                        Disable caching and clear existing cache
-  -h, --help                        Show this help message
+  -r, --repo <owner/repo>               Repository in format "owner/repo" (e.g., "MetaMask/metamask-extension")
+  -t, --team <team-slug>                GitHub team slug, minus "MetaMask/" (e.g., "wallet-framework")
+  -n, --new-release-branch <branch>     New release branch name to fetch commits for
+  -b, --base-release-branch <branch>    Base branch to compare against (defaults to latest working release branch or latest tag)
+  -e, --exclude-base-branch <branch>    Exclude a branch from being considered as the default base (can be specified multiple times), for instance to omit skipped releases
+  --no-cache                            Disable caching / clear existing cache
+  -h, --help                            Show this help message
 
 Environment Variables:
-  GITHUB_TOKEN                     GitHub Personal Access Token (required)
+  GITHUB_TOKEN                          GitHub personal access token (required). You'll need to set this up first.
 
 Examples:
-  # Compare new release branch against latest release tag
-  node script.js --repo MetaMask/metamask-extension --team wallet-framework --new-release-branch main
+  # List commits by team members between latest release and new release branch
+  ./${scriptName} --repo MetaMask/metamask-extension --team wallet-framework --new-release-branch main
   
-  # Compare new release branch against a specific base branch
-  node script.js --repo MetaMask/metamask-extension --team wallet-framework --new-release-branch main --base-release-branch develop
+  # List commits by team members between a specific base branch and new release branch
+  ./${scriptName} --repo MetaMask/metamask-extension --team wallet-framework --new-release-branch main --base-release-branch develop
   
   # Exclude a specific branch from being considered as the default base
-  node script.js --repo MetaMask/metamask-extension --team wallet-framework --new-release-branch main --exclude-base-branch Version-v12.21.0
+  ./${scriptName} --repo MetaMask/metamask-extension --team wallet-framework --new-release-branch main --exclude-base-branch Version-v12.21.0
   
   # Exclude multiple branches from being considered as the default base
-  node script.js --repo MetaMask/metamask-extension --team wallet-framework --new-release-branch main --exclude-base-branch Version-v12.21.0 --exclude-base-branch release/v12.20.0
+  ./${scriptName} --repo MetaMask/metamask-extension --team wallet-framework --new-release-branch main --exclude-base-branch Version-v12.21.0 --exclude-base-branch release/v12.20.0
   
   # Using short options
-  node script.js -r MetaMask/metamask-extension -t wallet-framework -n main -e Version-v12.21.0 --no-cache
+  ./${scriptName} -r MetaMask/metamask-extension -t wallet-framework -n main -e Version-v12.21.0 --no-cache
 `);
 }
 
