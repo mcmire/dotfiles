@@ -5,9 +5,10 @@
 " and poor user experience
 set updatetime=300
 
+" TODO: Bring these back, we had problems with them in the past
 "\ 'coc-css',
+"\ 'yaegassy/coc-astro',
 let g:coc_global_extensions = [
-      \ '@yaegassy/coc-astro',
       \ 'coc-deno',
       \ 'coc-eslint',
       \ 'coc-json',
