@@ -165,5 +165,11 @@ prompt::precmd() {
   lastwd=$PWD
 }
 
-add-zsh-hook preexec prompt::preexec
-add-zsh-hook precmd prompt::precmd
+# Disable extra prompt features when running terminal in VSCode or VSCode
+# derivatives like Cursor
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+  prompt::set
+else
+  add-zsh-hook preexec prompt::preexec
+  add-zsh-hook precmd prompt::precmd
+fi
