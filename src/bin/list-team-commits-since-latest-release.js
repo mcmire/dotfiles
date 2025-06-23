@@ -80,7 +80,7 @@ const https = require("https");
 /**
  * Represents a version release branch with parsed version information.
  * Used to identify and compare release branches that follow version naming conventions.
- * Supports patterns like "Version-v1.2.3" and "release/v1.2.3".
+ * Supports patterns like "Version-v1.2.3" and "release/1.2.3".
  * 
  * @typedef {Object} VersionBranch
  * @property {string} name - Branch name (e.g., "Version-v1.2.3")
@@ -524,7 +524,7 @@ async function getAllBranches(token, owner, repo, cacheDir, noCache) {
 
 /**
  * Finds the highest version release branch that matches the version pattern.
- * Looks for branches matching 'Version-vX.Y.Z' or 'release/vX.Y.Z' patterns.
+ * Looks for branches matching 'Version-vX.Y.Z' or 'release/X.Y.Z' patterns.
  * @param {string} token - GitHub Personal Access Token
  * @param {string} owner - Repository owner
  * @param {string} repo - Repository name
@@ -541,7 +541,7 @@ async function findHighestVersionReleaseBranch(token, owner, repo, excludeBranch
     
     const releaseBranchPatterns = [
       /^Version-v(\d+\.\d+\.\d+)$/,  // Version-v1.2.3
-      /^release\/v(\d+\.\d+\.\d+)$/  // release/v1.2.3
+      /^release\/(\d+\.\d+\.\d+)$/  // release/1.2.3
     ];
     
     const versionBranches = [];
@@ -928,7 +928,7 @@ Examples:
   ./${scriptName} --repo MetaMask/metamask-extension --team wallet-framework --new-release-branch main --exclude-base-branch Version-v12.21.0
   
   # Exclude multiple branches from being considered as the default base
-  ./${scriptName} --repo MetaMask/metamask-extension --team wallet-framework --new-release-branch main --exclude-base-branch Version-v12.21.0 --exclude-base-branch release/v12.20.0
+  ./${scriptName} --repo MetaMask/metamask-extension --team wallet-framework --new-release-branch main --exclude-base-branch Version-v12.21.0 --exclude-base-branch release/12.20.0
   
   # Using short options
   ./${scriptName} -r MetaMask/metamask-extension -t wallet-framework -n main -e Version-v12.21.0 --no-cache
