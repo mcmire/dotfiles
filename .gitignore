@@ -1,7 +1,6 @@
 .cache
 .DS_Store
 Brewfile.lock.json
-deno.lock
 src/config/nvim/bundle
 src/tmux/plugins/*
 !src/tmux/plugins/powerline
