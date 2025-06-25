@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const { execSync } = require('child_process');
+const fs = require('fs');
 
 /**
  * Analysis results for release pull requests, organized by the number of packages
@@ -20,6 +21,33 @@ const { execSync } = require('child_process');
  * @property {string} createdAt - ISO string of when the PR was created
  * @property {string} mergedAt - ISO string of when the PR was merged
  */
+
+/**
+ * Parses command line arguments to extract the output file path.
+ * @returns {string} The output file path
+ * @throws {Error} When --output-file or -o option is missing
+ */
+function parseArguments() {
+  const args = process.argv.slice(2);
+  let outputFile = null;
+  
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === '--output-file' || args[i] === '-o') {
+      if (i + 1 < args.length) {
+        outputFile = args[i + 1];
+        break;
+      } else {
+        throw new Error('--output-file/-o requires a file path');
+      }
+    }
+  }
+  
+  if (!outputFile) {
+    throw new Error('Required option --output-file or -o is missing. Usage: node measure-core-releases.js --output-file <filename>');
+  }
+  
+  return outputFile;
+}
 
 /** @type {string} The GitHub repository owner */
 const OWNER = 'MetaMask';
@@ -64,10 +92,7 @@ async function getReleasePRs() {
   }
 
   return prs.filter(pr => 
-    (
-      /^Release \d+\.\d+\.\d+$/.test(pr.title) ||
-      /^Release\/\d+\.\d+\.\d+$/.test(pr.title)
-    ) && 
+    extractReleaseNumber(pr.title) !== null && 
     !pr.title.includes('Revert')
   );
 }
@@ -145,11 +170,63 @@ function calculateAverage(numbers) {
 }
 
 /**
+ * Extracts the release version number from a PR title.
+ * @param {string} title - The pull request title
+ * @returns {string|null} The release version number or null if not found
+ */
+function extractReleaseNumber(title) {
+  const releasePattern = /^[Rr]elease\s*[\/:]?\s*[v`]?(\d+\.\d+\.\d+)[`]?$/;
+  const match = title.match(releasePattern);
+  return match ? match[1] : null;
+}
+
+/**
+ * Writes release data to a CSV file.
+ * @param {PullRequest[]} releasePRs - Array of release pull requests
+ * @param {string} outputFile - Path to the output CSV file
+ */
+async function writeCSV(releasePRs, outputFile) {
+  const csvHeader = 'release_number,number_of_packages,time_created,time_merged,duration_in_hours,duration_per_package\n';
+  const rows = [];
+  const seenReleaseNumbers = new Set();
+  
+  for (const pr of releasePRs) {
+    const duration = calculateTimeElapsed(pr.createdAt, pr.mergedAt);
+    const packagesChanged = await getPackageChanges(pr.number);
+    
+    // Skip rows with no package changes
+    if (packagesChanged === 0) {
+      continue;
+    }
+    
+    const releaseNumber = extractReleaseNumber(pr.title);
+    
+    // Skip duplicates (keep the first occurrence)
+    if (seenReleaseNumbers.has(releaseNumber)) {
+      continue;
+    }
+    seenReleaseNumbers.add(releaseNumber);
+    
+    const durationPerPackage = duration / packagesChanged;
+    const row = `${releaseNumber},${packagesChanged},"${pr.createdAt}","${pr.mergedAt}",${duration.toFixed(2)},${durationPerPackage.toFixed(2)}`;
+    rows.push(row);
+  }
+  
+  let csvContent = csvHeader;
+  for (const row of rows.reverse()) {
+    csvContent += row + '\n';
+  }
+  
+  fs.writeFileSync(outputFile, csvContent);
+}
+
+/**
  * Analyzes all release pull requests and groups them by the number of packages changed.
- * @returns {Promise<ReleaseAnalysis>} Analysis results grouped by packages changed
+ * @param {string} outputFile - Path to the output CSV file
+ * @returns {Promise<void>}
  * @throws {Error} When GitHub CLI is not authenticated or other errors occur
  */
-async function analyzeReleases() {
+async function analyzeReleases(outputFile) {
   try {
     execSync('gh auth status');
   } catch (error) {
@@ -158,7 +235,6 @@ async function analyzeReleases() {
 
   console.log('Fetching release PRs...');
   const releasePRs = await getReleasePRs();
-  const packageGroups = {};
 
   console.log(`Found ${releasePRs.length} release PRs. Analyzing each PR...`);
   for (const [index, pr] of releasePRs.entries()) {
@@ -166,25 +242,10 @@ async function analyzeReleases() {
     
     const packagesChanged = await getPackageChanges(pr.number);
     process.stdout.write(` found ${packagesChanged} changed package${packagesChanged !== 1 ? 's' : ''}\n`);
-    
-    const timeElapsed = calculateTimeElapsed(pr.createdAt, pr.mergedAt);
-
-    if (!packageGroups[packagesChanged]) {
-      packageGroups[packagesChanged] = [];
-    }
-    packageGroups[packagesChanged].push(timeElapsed);
   }
 
-  const results = {};
-  for (const [packages, times] of Object.entries(packageGroups)) {
-    const avgTime = calculateAverage(times);
-    results[Number(packages)] = {
-      count: times.length,
-      averageTime: formatDuration(avgTime),
-    };
-  }
-
-  return results;
+  // Write CSV file
+  await writeCSV(releasePRs, outputFile);
 }
 
 /**
@@ -192,20 +253,13 @@ async function analyzeReleases() {
  */
 async function main() {
   try {
-    const results = await analyzeReleases();
+    const outputFile = parseArguments();
+    await analyzeReleases(outputFile);
     
-    console.log('\nRelease PR Analysis Results:');
-    console.log('----------------------------');
-    Object.entries(results)
-      .sort(([a], [b]) => Number(a) - Number(b))
-      .forEach(([packages, data]) => {
-        console.log(`${packages} package${Number(packages) !== 1 ? 's' : ''} changed:`);
-        console.log(`  Average time: ${data.averageTime}`);
-        console.log(`  Number of PRs: ${data.count}`);
-        console.log();
-      });
+    console.log(`Report successfully generated to ${outputFile}.`);
   } catch (error) {
     console.error('Error:', error instanceof Error ? error.message : error);
+    process.exit(1);
   }
 }
 
