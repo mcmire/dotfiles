@@ -138,6 +138,7 @@ for app in \
   dash \
   dropbox \
   homebrew/cask-fonts/font-fira-code \
+  homebrew/cask-fonts/font-lilex-nerd-font \
   google-chrome \
   iterm2 \
   ngrok \
