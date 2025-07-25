@@ -1,10 +1,10 @@
 -- Inspired by <https://github.com/nvim-lua/kickstart.nvim>
 
--- Set <space> as the leader key
+-- Set comma as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+vim.g.mapleader = ','
+vim.g.maplocalleader = ','
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
@@ -804,9 +804,8 @@ require('lazy').setup({
     config = function()
       ---@diagnostic disable-next-line: missing-fields
       require('tokyonight').setup {
-        styles = {
-          comments = { italic = false }, -- Disable italics in comments
-        },
+        -- Cache for better performance
+        cache = true,
       }
 
       -- Load the colorscheme here.
@@ -930,5 +929,40 @@ require('lazy').setup({
   },
 })
 
+-- [[ Copied from old Vim config ]]
+
+-- Don't show splash screen
+vim.opt.shortmess:append { I = true }
+-- Allow project-level setting files ('secure' is on-demand)
+vim.o.exrc = true
+-- Treat dashes as valid word characters
+vim.opt.iskeyword:append { '-' }
+
+-- Start Vim with file tree of current directory
+-- when no files passed
+vim.api.nvim_create_autocmd('VimEnter', {
+  desc = 'Start Vim with file tree of current directory when no files passed',
+  group = vim.api.nvim_create_augroup('custom-ensure-file-tree-on-start', { clear = true }),
+  callback = function()
+    if vim.fn.argc() == 0 then
+      vim.cmd 'silent! edit .'
+    end
+  end,
+})
+
+-- Restore cursor at last known position
+vim.api.nvim_create_autocmd('BufReadPost', {
+  desc = 'Restore cursor at last known position',
+  group = vim.api.nvim_create_augroup('custom-restore-cursor-position', { clear = true }),
+  callback = function()
+    if vim.o.ft ~= 'gitcommit' then
+      last_known_line = vim.fn.line '\'"'
+      final_line = vim.fn.line '$'
+      if last_known_line > 0 and last_known_line <= final_line then
+        vim.cmd 'normal g`"'
+      end
+    end
+  end,
+})
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
