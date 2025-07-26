@@ -27,7 +27,7 @@ TRAPWINCH() {
 
 read-version() {
   local current_version exitstatus
-  current_version=$(asdf current "$1" | awk '{ print $2 }')
+  current_version=$(asdf current "$1" --no-header | awk '{ print $2 }')
   exitstatus=$?
 
   if [[ $exitstatus -eq 1 ]]; then
