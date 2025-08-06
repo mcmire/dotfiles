@@ -1,5 +1,5 @@
 {
-  "[astro][css][ghmarkdown][javascript][javascriptreact][json][markdown][ruby][rust][scss][typescript][typesscriptreact][vue]": {
+  "[astro][css][ghmarkdown][javascript][javascriptreact][json][markdown][ruby][rust][scss][typescript][typescriptreact][vue]": {
     "coc.preferences.formatOnSave": true,
   },
   "coc.preferences.formatOnType": false,
