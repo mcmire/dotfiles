@@ -248,6 +248,8 @@ notify-end() {
 
   if [[ $exitcode -eq 0 ]]; then
     notify -title "Backup" -message "Backup ($restic_profile_name) created successfully."
+  elif [[ $exitcode -eq 3 ]]; then
+    notify -title "Backup" -message "Backup ($restic_profile_name) created successfully, but there were warnings. See log file for more: $LOG_FILE_PATH"
   else
     notify -title "Backup" -message "Backup ($restic_profile_name) failed to be created. See log file for more: $LOG_FILE_PATH"
   fi
@@ -327,7 +329,8 @@ main() {
 
   notify-end "$exitcode" || true
 
-  if [[ $exitcode -eq 0 ]]; then
+  # 3 means that some files were skipped, but the backup was successful
+  if [[ $exitcode -eq 3 || $exitcode -eq 0 ]]; then
     update-next-scheduled-time || exit $?
   fi
 
