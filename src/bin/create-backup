@@ -251,7 +251,7 @@ notify-end() {
   elif [[ $exitcode -eq 3 ]]; then
     notify -title "Backup" -message "Backup ($restic_profile_name) created successfully, but there were warnings. See log file for more: $LOG_FILE_PATH"
   else
-    notify -title "Backup" -message "Backup ($restic_profile_name) failed to be created. See log file for more: $LOG_FILE_PATH"
+    notify -title "Backup" -message "Backup ($restic_profile_name) failed to be created (exit code $exitcode). See log file for more: $LOG_FILE_PATH"
   fi
 }
 
@@ -279,6 +279,7 @@ run-backup-command() {
   local command_name
   local command_args_as_lines
   local command=()
+  local output
 
   command_as_lines="$(build-backup-command)"
   while IFS=$'\n' read -r line; do
@@ -297,7 +298,14 @@ run-backup-command() {
 
   export PATH="/opt/homebrew/bin:$PATH"
 
-  echo -e "$command_args_as_lines" | xargs "$command_name"
+  output=$(echo -e "$command_args_as_lines" | xargs "$command_name" 2>&1)
+  echo "$output"
+
+  if [[ "$(echo "$output" | tail -n 1)" =~ "exit status ([[:digit:]]+)" ]]; then
+    return ${BASH_REMATCH[1]}
+  else
+    return 0
+  fi
 }
 
 main() {
@@ -326,11 +334,12 @@ main() {
   run-backup-command 2>&1 | log
   exitcode=${PIPESTATUS[0]}
   log-end-of-output || true
+  echo "Command completed with exit code $exitcode." | log
 
   notify-end "$exitcode" || true
 
   # 3 means that some files were skipped, but the backup was successful
-  if [[ $exitcode -eq 3 || $exitcode -eq 0 ]]; then
+  if [[ $exitcode -eq 0 || $exitcode -eq 3 ]]; then
     update-next-scheduled-time || exit $?
   fi
 
