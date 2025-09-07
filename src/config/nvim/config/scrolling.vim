@@ -6,14 +6,17 @@
 " limit on where the cursor can appear. This setting in particular will cause
 " the cursor to stop at the third line from the top or bottom.
 
+" COPIED
 set scrolloff=3
 
 " Similarly, when scrolling horizontally -- which assumes that soft wrapping is
 " disabled -- we set a limit on where the cursor can appear. This setting causes
 " the cursor to stop at the third column from the left or right:
 
+" COPIED
 set sidescrolloff=3
 
 " And we make it so that horizontal scrolling occurs one column at a time:
 
+" ALREADY DEFAULT
 set sidescroll=1

@@ -4,7 +4,7 @@
 " This file contains a swath of fundamental settings. We'll start by enabling
 " syntax highlighting and automatic indentation:
 
-" COVERED
+" ALREADY DEFAULT
 syntax on
 filetype plugin indent on
 
@@ -13,15 +13,16 @@ filetype plugin indent on
 " those mappings with a comma. The comma is a pretty easy key to press and
 " doesn't require our fingers to do too much work.
 
-" COPIED OVER
+" COPIED
 let mapleader = ","
 let maplocalleader = ","
 
 " Next we'll turn on line numbering and show the current line and column number
 " in the status bar:
 
-" COVERED
+" COPIED
 set number
+" ALREADY DEFAULT
 set ruler
 
 " Vim, like the shell, remembers commands you've run in the past. There are five
@@ -30,7 +31,7 @@ set ruler
 " commands it remembers, and here we ensure that this number is large so we can
 " effectively go back as far as we want to:
 
-" SKIPPED
+" ALREADY DEFAULT
 set history=1000
 
 " Usually when you close a buffer, it's removed from memory, which means that
@@ -39,14 +40,14 @@ set history=1000
 " go around, but we don't have to worry about that. So it's a slightly better
 " experience if we keep buffers around all of the time:
 
-" COPIED OVER
+" ALREADY DEFAULT
 set hidden
 
 " When Vim starts, it displays a splash screen. Surely we don't need to be
 " reminded each time that we're using Vim or that Bram Moolenar created it, do
 " we?
 
-" COPIED OVER
+" COPIED
 set shortmess+=I
 
 " As you may know, when you use Vim, you're bouncing between Insert and Command
@@ -55,7 +56,7 @@ set shortmess+=I
 " however, there is a slight delay built in after you press the key. This
 " setting disables that delay so Vim feels more snappy.
 
-" COVERED
+" ALREADY DEFAULT
 set timeoutlen=1000 ttimeoutlen=0
 
 " Sometimes it's necessary to tell Vim what type of file you're editing so that
@@ -65,7 +66,7 @@ set timeoutlen=1000 ttimeoutlen=0
 " file didn't end in `*.rb`, we could add `# vi: ft=ruby` at the bottom. This
 " setting enables this feature:
 
-" COVERED
+" ALREADY DEFAULT
 set modeline modelines=10
 
 " In Ruby and other languages, `#` at the beginning of the line (disregarding
@@ -76,7 +77,7 @@ set modeline modelines=10
 "
 " [so-1]: http://stackoverflow.com/questions/2063175/vim-insert-mode-comments-go-to-start-of-line
 
-" SKIPPED
+" ALREADY DEFAULT
 set nosmartindent
 
 " Mode lines let you override Vim settings on a per-file basis. But what if you
@@ -84,20 +85,20 @@ set nosmartindent
 " settings in a `.nvimrc` file within that project directory. These settings
 " enable that ability:
 
-" COPIED OVER
+" COPIED (minus 'secure')
 set exrc secure
 
 " While we don't expect to be using Backspace a lot in Insert mode, sometimes
 " it's handy. For some reason, it's a bit limited in what you can actually
 " delete. The following setting removes that limitation:
 
-" COVERED
+" ALREADY DEFAULT
 set backspace=indent,eol,start
 
 " What's in a word? By default it is a underscore, but dashes are valid
 " characters too:
 
-" COPIED OVER
+" COPIED
 set iskeyword+=-
 
 " Finally, one of the more irritating things in Vim is the fact that as you type
@@ -106,5 +107,5 @@ set iskeyword+=-
 " until you've finished the whole command. This setting places each keystroke in
 " the status bar so you get the missing feedback:
 
-" SKIPPED
+" ALREADY DEFAULT
 set showcmd

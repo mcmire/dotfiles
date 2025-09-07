@@ -21,6 +21,7 @@
 " [wildmode]: http://vimdoc.sourceforge.net/htmldoc/options.html#'wildmode'
 " [SuperTab]: http://github.com/ervandew/supertab
 
+" COPIED
 set wildmode=list:longest,list:full
 
 " The [`wildignore`][wildignore] option controls the behavior of filename
@@ -38,4 +39,5 @@ set wildignore+=.git,.svn,*.class,*.o,*.obj,*.rbc,features/cassettes,spec/casset
 "
 " [wildmenu]: http://vimdoc.sourceforge.net/htmldoc/options.html#'wildmenu'
 
+" ALREADY DEFAULT
 set wildmenu

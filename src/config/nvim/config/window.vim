@@ -13,14 +13,17 @@
 "
 " Here we choose a comfortable setting for the the minimum height:
 
+" COPIED
 set winheight=10
 
 " Additionally, we specify that when vertical splits are created from a window
 " that has focus, they are placed below that window instead of above:
 
+" COPIED
 set splitbelow
 
 " And when horizontal splits are created from a window that has focus, they are
 " placed to the right of that window instead of to the left:
 
+" COPIED
 set splitright

@@ -6,22 +6,26 @@
 " Let's start with soft wrapping. We do not turn on soft wrapping by default as
 " it tends to be annoying:
 
+" COPIED OVER
 set nowrap
 
 " But we do provide a way to turn it on with `,wi`:
 
+" COPIED OVER
 map <Leader>wi :set invwrap<CR>
 
 " Then we specify that when it is enabled, lines will be broken by word
 " boundaries. To distinguish soft-wrapped lines from hard-wrapped ones, we
 " indent those lines and put an indicator before them:
 
+" COPIED OVER
 set linebreak breakindent showbreak="＞"
 
 " These next mappings are important: they give us a way to navigate over wrapped
 " lines by using the usual `j` and `k` (normally, we would have to use `gj` and
 " `gk`):
 
+" COPIED OVER
 nnoremap j gj
 vnoremap j gj
 nnoremap k gk
@@ -48,6 +52,7 @@ vnoremap k gk
 "   perfect -- oftentimes, you still end up having to select that line and wrap
 "   it manually with `Q` -- but it works well for most cases.
 
+" COPIED OVER (except for augroup)
 set formatoptions=tcroqvb
 augroup local
   autocmd FileType * setl formatoptions=tcroqvb
@@ -55,6 +60,7 @@ augroup END
 
 " Finally, we provide a way to toggle hard wrapping with `,ww`:
 
+" COPIED OVER
 let g:old_textwidth = 0
 function! ToggleHardWrap()
   if &textwidth
