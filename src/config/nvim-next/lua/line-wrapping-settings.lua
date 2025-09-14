@@ -6,7 +6,7 @@
 vim.o.wrap = false
 
 -- Add mapping for toggling soft-wrapping
-vim.keymap.set('n', '<leader>wi', function()
+vim.keymap.set('n', '<Leader>wi', function()
   vim.o.wrap = not vim.o.wrap
 end)
 
@@ -31,7 +31,7 @@ vim.opt.formatoptions:append { r = true, o = true, v = true, b = true }
 
 -- Toggle hard-wrapping
 old_textwidth = 0
-vim.keymap.set('n', '<leader>ww', function()
+vim.keymap.set('n', '<Leader>ww', function()
   if vim.o.textwidth > 0 then
     old_textwidth = vim.o.textwidth
     vim.o.textwidth = 0
