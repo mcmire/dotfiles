@@ -1,0 +1,7 @@
+#!/bin/bash
+
+NOW="$(date +"%s")"
+NEXT_SCHEDULED_TIME_FILE_PATH="$HOME/Library/Caches/create-backup.next.time"
+next_scheduled_time=$(date -j -v "+1d" -f "%s" "$NOW" +"%s")
+echo "Updating next scheduled time to: $(date -j -f "%s" "$next_scheduled_time" +"%+")"
+echo $next_scheduled_time > "$NEXT_SCHEDULED_TIME_FILE_PATH"
