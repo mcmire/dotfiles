@@ -71,9 +71,11 @@ jf() {
   local is_monorepo
   local workspaces
   local command_args
-  local parse_rest_as_command_args=0
   local workspace_package_name
   local workspace_package_names
+
+  local verbose=0
+  local parse_rest_as_command_args=0
 
   workspaces="$(cat package.json | jq '.workspaces')"
   if [[ $workspaces == "null" ]]; then
@@ -85,6 +87,10 @@ jf() {
   command_args=()
   while [[ $# -gt 0 ]]; do
     case "$1" in
+      --verbose)
+        verbose=1
+        shift
+        ;;
       --)
         parse_rest_as_command_args=1
         shift
@@ -125,13 +131,27 @@ jf() {
       return 1
     fi
 
-    NODE_OPTIONS=--experimental-vm-modules yarn workspace "$workspace_package_name" exec jest "${command_args[@]}" --verbose=false --no-coverage
+    if [[ $verbose -eq 1 ]]; then
+      NODE_OPTIONS=--experimental-vm-modules yarn workspace "$workspace_package_name" exec jest "${command_args[@]}" --no-coverage
+    else
+      NODE_OPTIONS=--experimental-vm-modules yarn workspace "$workspace_package_name" exec jest "${command_args[@]}" --verbose=false --no-coverage
+    fi
   fi
+}
+
+jfv() {
+  jf "$@" --verbose
 }
 
 jfw() {
   jf "$@" -- --watch
 }
+
+jfvw() {
+  jf "$@" --verbose -- --watch
+}
+# In case we fat-finger the command
+alias jfwv jfvw
 
 yw() {
   local command="workspace"
