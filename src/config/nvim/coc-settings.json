@@ -61,8 +61,6 @@
   "stylelintplus.autoFixOnSave": false,
   "suggest.autoTrigger": "none",
   "suggest.enableFloat": false,
-  "tsserver.log": "verbose",
-  "tsserver.trace.server": "verbose",
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
   "typescript.preferences.importModuleSpecifier": "project-relative",
   "typescript.suggest.enabled": false,
