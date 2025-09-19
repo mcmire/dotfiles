@@ -16,6 +16,7 @@
 " the tree pane to the file pane. The following autocommand opens an empty file
 " in this case so that we can do this.
 
+" COPIED
 augroup local
   autocmd VimEnter * if empty(argv()) | silent! edit . | endif
 augroup END

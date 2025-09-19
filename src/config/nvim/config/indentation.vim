@@ -33,6 +33,7 @@
 " special indentation rules. Specifically, Racket has some that come from
 " popular packages, and so we add to that list here:
 
+" COPIED
 augroup local
   autocmd FileType racket setl lispwords+=describe,context,it
 augroup END
@@ -46,6 +47,7 @@ augroup END
 " this section belongs in plugin-config.vim, but this and `lispwords` go
 " hand-in-hand.)
 
+" COPIED
 augroup local
   autocmd FileType racket execute 'setlocal equalprg=' . g:plugin_dir . '/scmindent/scmindent.rkt'
 augroup END

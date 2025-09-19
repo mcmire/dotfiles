@@ -12,6 +12,7 @@
 "
 " [recover]: http://vimdoc.sourceforge.net/htmldoc/recover.html
 
+" COPIED
 set noswapfile
 
 " The downside of disabling the swapfile is that if you attempt to modify a file
@@ -26,8 +27,10 @@ set noswapfile
 " * https://vi.stackexchange.com/questions/13692/prevent-focusgained-autocmd-running-in-command-line-editing-mode
 " * https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
 
+" SKIPPED (DEFAULT)
 set autoread
 
+" COPIED
 augroup local
   autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
         \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif

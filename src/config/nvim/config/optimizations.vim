@@ -9,6 +9,7 @@
 " from happening, we stop the highlighting after 1000 characters. This can make
 " lines following the offending line look funny, but it's the price we pay:
 
+" SKIPPED (already default)
 set synmaxcol=1000
 
 " Second, we specify the strategy that Vim uses to perform syntax highlighting

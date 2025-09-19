@@ -6,4 +6,5 @@
 " of course, get around this by using the `"` register when yanking and pasting,
 " but it's simply easier to use the system clipboard every time:
 
+" COPIED
 set clipboard=unnamed

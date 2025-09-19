@@ -1,5 +1,5 @@
 {
-  "[css][ghmarkdown][javascript][javascriptreact][json][markdown][ruby][rust][scss][typescript][typescriptreact][vue]": {
+  "[css][ghmarkdown][javascript][javascriptreact][json][lua][markdown][ruby][rust][scss][typescript][typescriptreact][vue]": {
     "coc.preferences.formatOnSave": true,
   },
   "coc.preferences.formatOnType": false,
@@ -53,6 +53,7 @@
   "javascript.suggestionActions.enabled": false,
   "javascript.validate.enable": true,
   "json.format.enable": false,
+  "Lua.diagnostics.globals": ["vim"],
   "prettier.requireConfig": true,
   "signature.enable": false,
   "stylelintplus.autoFixOnSave": false,
