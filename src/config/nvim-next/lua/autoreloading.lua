@@ -20,10 +20,10 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHo
   desc = 'Detect file modifications outside of Neovim',
   group = autoreload_group,
   callback = function()
-    if not vim.fn.mode().match('^(c|r.?|!|t)$') and vim.fn.getcwdwintpe() == '' then
+    if not vim.fn.mode():match('^(c|r.?|!|t)$') and vim.fn.getcmdwintype() == '' then
       -- Check to see if file was modified outside of Neovim
       -- and offer user choice if modified
-      vim.fn.checktime()
+      vim.cmd('checktime')
     end
   end,
 })

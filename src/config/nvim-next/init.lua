@@ -22,10 +22,10 @@ require 'filetype-assignments'
 require 'window-settings'
 require 'scrolling-settings'
 require 'mappings'
-require 'plugin-config'
+--require 'plugin-config'
 -- NOTE: optimizations were removed
 require 'line-width-settings'
 require 'clipboard-settings'
-require 'indentation-settings'
-require 'autoreloading-settings'
+-- NOTE: indentation settings were moved to ftplugin
+require 'autoreloading'
 -- NOTE: substitutions were removed
