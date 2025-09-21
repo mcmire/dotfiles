@@ -24,7 +24,7 @@
         "Alpha Component" : 1,
         "Green Component" : 0.27366522673593208
       },
-      "Normal Font" : "CaskaydiaCoveNFP-Regular 13.5",
+      "Normal Font" : "CaskaydiaCoveNFP-Regular 14",
       "Bold Color" : {
         "Red Component" : 0.57647058823529407,
         "Color Space" : "sRGB",
@@ -136,7 +136,7 @@
         "Blue Component" : 0.51372549019607838,
         "Green Component" : 0.4823529411764706
       },
-      "Thin Strokes" : 0,
+      "Thin Strokes" : 4,
       "Use Italic Font" : true,
       "Unlimited Scrollback" : false,
       "Keyboard Map" : {
@@ -211,7 +211,7 @@
         "Blue Component" : 0.59607843137254901,
         "Green Component" : 0.63137254901960782
       },
-      "Normal Font" : "CaskaydiaCoveNFP-Regular 13.5",
+      "Normal Font" : "CaskaydiaCoveNFP-Regular 14",
       "Ansi 3 Color" : {
         "Red Component" : 0.70980392156862748,
         "Color Space" : "sRGB",
@@ -354,7 +354,7 @@
         "Blue Component" : 0.51372549019607838,
         "Green Component" : 0.4823529411764706
       },
-      "Thin Strokes" : 0,
+      "Thin Strokes" : 4,
       "Use Italic Font" : true,
       "Unlimited Scrollback" : false,
       "Keyboard Map" : {
