@@ -17,6 +17,7 @@ I haven't been keeping a changelog for these dotfiles, mostly because I keep the
     - VimPlug has been replaced with [Lazy](https://github.com/folke/lazy.nvim)
     - Solarized has been replaced with [Selenized](https://github.com/calind/selenized.nvim)
     - NERDTree has been replaced with [nvim-tree](https://github.com/nvim-tree/nvim-tree.lua)
+      - [`neo-tree`](https://github.com/nvim-neo-tree/neo-tree.nvim) actually looks better, let's use that
     - Ctrl-P has been replaced with [mini.pick](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-pick.md)
       - Or [Picker](https://github.com/folke/snacks.nvim/blob/main/docs/picker.md) from Snacks?
       - Or [`fzf-lua`](https://github.com/ibhagwan/fzf-lua) ? (Well then I might as well use Telescope)

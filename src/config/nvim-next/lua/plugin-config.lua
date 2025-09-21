@@ -4,7 +4,7 @@
 
 require('lazy').setup({
   spec = {
-    { import = "plugins" },
+    require 'plugins.neotree'
   },
   ui = {
     icons = vim.g.have_nerd_font and {} or {
