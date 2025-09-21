@@ -1,7 +1,9 @@
 # dotfiles
 
-This repo is designed to set up a Mac for development.
-It is updated very frequently!
+These are my dotfiles.
+They hold configuration for all of the essential tools I use
+to write code and generally be productive.
+I update it all the time!
 
 ## [What's in the box?][se7en]
 
@@ -50,33 +52,60 @@ It is updated very frequently!
 
 Neovim is preconfigured with the following features:
 
+#### Sensible defaults
+
+* Lines in files of most filetypes are hard-wrapped to 80 characters
+* The system clipboard is used for copying/pasting
+* Incremental search provides more feedback than the default search behavior
+* Configuration files for various language-specific tools
+  (e.g. `Rakefile`, `Gemfile`, and `*.gemspec` for Ruby;
+  `.jshintrc` and `.eslintrc` for JavaScript)
+  are syntax highlighted correctly
+
+#### Sensible mappings
+
+* `,` is the leader key (so no finger gymnastics)
+* `Ctrl-{H,J,K,L}` lets you navigate to windows in Vim *and to panes in tmux*
+* `j` and `k` always place the cursor one line below or above, regardless of
+  whether lines are being wrapped
+* `%` bounces between the start and end of blocks (in languages that make it
+  possible to do so)
+* `<` and `>` no longer lose drop the selection when indenting a selected block
+  of text
+* `Q` lets you reformat paragraphs
+
 #### Handy plugins
 
-* **[VimPlug][vim-plug]** — a fast plugin manager
-* **[NERDTree][vim-nerdtree]** — a simple file tree
-* **[Ctrl-P][vim-ctrl-p]** — a fuzzy file finder for quickly jumping to files
-* **[Ack][vim-ack] + [Ag][ag]** — a way to search across a project lightning quick
-* **[NERDCommenter][vim-nerdcommenter]** — an easy way to comment and uncomment lines
-* **[SuperTab][vim-supertab]** — an autocompleter that stays out of your way
-* **[CoC][coc]** — brings Vim closer to an IDE-like experience
+* **[VimPlug][vim-plug]**
+  — a fast plugin manager
+* **[NERDTree][vim-nerdtree]**
+  — a simple file tree
+* **[Ctrl-P][vim-ctrl-p]**
+  — a fuzzy file finder for quickly jumping to files
+* **[Ack][vim-ack] + [Ag][ag]**
+  — a way to search across a project lightning quick
+* **[NERDCommenter][vim-nerdcommenter]**
+  — an easy way to comment and uncomment lines
+* **[SuperTab][vim-supertab]**
+  — an autocompleter that stays out of your way
+* **[AutoPairs][auto-pairs]**
+  — adds matching parentheses, braces, brackets, and quotes as you type them
+  (but can be toggled on/off as needed)
+* **[endwise][vim-endwise]**
+  — like AutoPairs but for Ruby blocks
+* **[indentLine][indentLine]**
+  — adds vertical lines at regular indentation levels
+  so that you can quickly tell if a line is misindented
+* **[surround][vim-surround]**
+  — a way to quickly surround text with quotes,
+  parentheses, braces, etc.
+* **[togglecursor][vim-togglecursor]**
+  — makes insert and command modes more obvious
+  by switching the cursor when switching modes
+* **[CoC][coc]**
+  — brings Vim closer to an IDE-like experience
   with autocompletion, documentation, linting, and formatting
   (works best with language servers like TypeScript)
-* **[AutoPairs][auto-pairs]** —
-  adds matching parentheses, braces, brackets, and quotes as you type them
-  (but can be toggled on/off as needed)
-* **[endwise][vim-endwise]** — like AutoPairs but for Ruby blocks
-* **[indentLine][indentLine]** —
-  adds vertical lines at regular indentation levels
-  so that you can quickly tell if a line is misindented
-* **[surround][vim-surround]** —
-  a way to quickly surround text with quotes,
-  parentheses, braces, etc.
-* **[togglecursor][vim-togglecursor]** —
-  makes insert and command modes more obvious
-  by switching the cursor when switching modes
-* **[FastFold][fast-fold]** —
-  makes it actually possible to use `foldmethod=syntax` in Ruby files
-  without slowing Vim down to a halt
 * ...and more!
 
 [vim-plug]: https://github.com/junegunn/vim-plug
@@ -95,34 +124,10 @@ Neovim is preconfigured with the following features:
 [auto-pairs]: https://github.com/eapache/auto-pairs
 [fast-fold]: https://github.com/Konfekt/FastFold
 
-#### Sensible defaults
-
-* Lines in files of most filetypes are hard-wrapped to 80 characters
-* The system clipboard is used for copying/pasting
-* Incremental search provides more feedback than the default search behavior
-* `Rakefile`, `Gemfile`, and `*.gemspec` files are highlighted as Ruby files
-* `.jshintrc` and `.eslintrc` are highlighted as JSON files
-
-#### Sensible mappings
-
-* `,` is the leader key (so no finger gymnastics)
-* `Ctrl-{H,J,K,L}` lets you navigate to windows in Vim *and to panes in tmux*
-* `j` and `k` always place the cursor one line below or above, regardless of
-  whether lines are being wrapped
-* `%` bounces between the start and end of blocks (in languages that make it
-  possible to do so)
-* `<` and `>` no longer lose drop the selection when indenting a selected block
-  of text
-* `Q` lets you reformat paragraphs
-
 ### macOS customizations
 
 * Use `~/Screenshots` to save screenshots instead of the desktop
-* Disable auto-capitalization,
-  smart characters,
-  auto-correct,
-  spell check,
-  and grammar check
+* Disable auto-capitalization, smart characters, auto-correct, spell check, and grammar check
 * Disable press-and-hold for keys
 * Speed up keyboard repeat rate
 * Use Caps Lock for Escape (for Vim)
@@ -205,7 +210,7 @@ It should look like this:
 
 ### Step 6: Install tmux plugins
 
-Launch tmux by running this from the terminal:
+Launch tmux by running this from iTerm:
 
     tmux
 
@@ -215,25 +220,13 @@ plugins will be installed that are necessary for tmux for fully work.
 
 ### Step 7: Install Vim plugins
 
-Launch Vim by running this from the terminal:
+Launch Vim by running this from any directory in iTerm:
 
-    vi
+    v
 
-You may get a warning. If that happens, then type:
-
-    :PlugInstall
-
-Then press Enter.
-
-If any part of this fails,
-then navigate into the left-most pane with `Ctrl-H`
-and press `R` to retry.
-
-Now type `:wq` to close Vim, then reopen by saying:
-
-    vi
-
-You should no longer get a warning.
+The first time you run this,
+Neovim (thanks to Lazy) should install all plugins.
+Just sit back and relax.
 
 ### Prologue: Making your own changes
 
@@ -241,39 +234,35 @@ So you've installed this configuration onto your own machine. Now what?
 Now you get to customize it!
 For instance, maybe you want to customize how the prompt looks,
 or maybe you want to customize how tmux looks,
-or maybe you want to switch from zsh back to bash.
+or maybe you want to switch from `zsh` back to `bash`.
 
 To do this, it's helpful to know where things are.
 Here are some key areas and what files control what things:
 
 * **Shell configuration.**
-  Start in `src/zshrc`; this loads files in `src/zsh/`.
+  Starts in `src/zshrc`, which loads files in `src/zsh/`.
 * **tmux configuration.**
-  This is located in `src/tmux.conf`.
-* **Vim configuration.**
-  A lot of the Vim configuration is broken out into separate files within `src/config/nvim/config`.
-  Here you can learn where the leader key is set to `,`,
-  why `Ctrl-{H,J,K,L}` lets you bounce between panes,
-  how text width gets wrapped at 80 characters except in git commit message windows,
-  and much more.
+  Located in `src/tmux.conf`.
+* **Neovim configuration.**
+  Located in `src/config/nvim`, but starts in `init.lua` and then branches out from there.
+  For instance, `basics.lua` sets the leader key to to `,`;
+  `mappings.lua` sets `Ctrl-{H,J,K,L}`;
+  `line-width-settings.lua` sets the text width to 80 characters.
   Feel free to modify these files as you see fit.
-  (You can learn more about a particular setting through `:help`.
+  You can read about how Neovim starts [here](https://neovim.io/doc/user/starting.html#initialization).
+  You can also learn more about a particular setting through `:help`.
   For instance, try `:help textwidth` or `:help colorcolumn`.)
   You can add any files you want to this folder,
-  as long as you load them in `src/config/nvim/init.vim`.
-* **Vim plugins.**
-  The list is kept in `src/config/nvim/plugins.vim`,
-  and settings for these plugins are located at
-  `src/config/nvim/config/plugins`,
-  which are loaded in `src/config/nvim/config/plugin-config.vim`.
+  as long as you load them in `src/config/nvim/init.lua`.
+* **Neovim plugins.**
+  Plugins are initialized in `src/config/nvim/lazy.vim`,
+  but are configured in `src/config/nvim/plugins`.
   There is a lot here, but don't panic!
   First, it's probably a good idea to read up on the most frequently used plugins mentioned at the beginning of this README.
   Learn what they do and how you can make use of them.
   If you don't feel like you need a plugin, feel free to disable it!
-  You can do this by commenting it out in `plugins.vim`,
-  and if it has a corresponding loader line in `plugin-config.vim`, comment that out, too.
-  Then exit Vim, run `:PlugClean`,
-  and reload Vim again.
+  You can do this by commenting it out in `lazy.vim`.
+  Then exit and reload Neovim.
 
 If you end up adding a new file to `src/`,
 make sure to run `bin/manage install` again
