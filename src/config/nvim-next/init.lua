@@ -11,6 +11,7 @@
 -- TODO: boot plugins
 require 'start' -- was "magic"
 require 'globals'
+require 'plugins'
 require 'basic-settings'
 --require 'colors'
 require 'whitespace-settings'
@@ -22,7 +23,6 @@ require 'filetype-assignments'
 require 'window-settings'
 require 'scrolling-settings'
 require 'mappings'
-require 'plugin-config'
 -- NOTE: optimizations were removed
 require 'line-width-settings'
 require 'clipboard-settings'

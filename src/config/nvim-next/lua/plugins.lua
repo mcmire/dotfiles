@@ -1,6 +1,6 @@
--- ********************
--- Plugin configuration
--- ********************
+-- *******************************
+-- Plugins and their configuration
+-- *******************************
 
 require('lazy').setup({
   spec = {
