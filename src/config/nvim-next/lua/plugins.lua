@@ -6,7 +6,8 @@ require('lazy').setup({
   spec = {
     require('plugins.neotree'),
     require('plugins.selenized'),
-    require('plugins.telescope')
+    require('plugins.telescope'),
+    require('plugins.which-key')
   },
   ui = {
     icons = vim.g.have_nerd_font and {} or {

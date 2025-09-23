@@ -31,6 +31,6 @@ vim.api.nvim_create_autocmd({ 'FileChangedShellPost' }, {
   desc = 'Inform user when buffer was reloaded automatically',
   group = autoreload_group,
   callback = function()
-    vim.fn.echo('File changed on disk. Buffer reloaded.')
+    vim.cmd([[echo 'File changed on disk. Buffer reloaded.']])
   end,
 })

@@ -22,6 +22,7 @@ I haven't been keeping a changelog for these dotfiles, mostly because I keep the
       - Or [Picker](https://github.com/folke/snacks.nvim/blob/main/docs/picker.md) from Snacks?
       - Or [`fzf-lua`](https://github.com/ibhagwan/fzf-lua) ? (Well then I might as well use Telescope)
     - Ack has been replaced with [`nvim-rg`](https://github.com/duane9/nvim-rg)
+      - Actually Telescope too
     - NERDCommenter has been replaced with Neovim's built in commenting feature (see `:h commenting`)
     - SuperTab has been replaced with [`coq.nvim`](https://github.com/ms-jpq/coq_nvim)
       - Or maybe [compl.nvim](https://github.com/brianaung/compl.nvim)?
