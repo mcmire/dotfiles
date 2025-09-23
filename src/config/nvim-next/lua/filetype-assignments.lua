@@ -13,7 +13,7 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
   group = autoreload_group,
   callback = function()
     vim.bo.ft = 'ruby'
-  end
+  end,
 })
 
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
   group = autoreload_group,
   callback = function()
     vim.bo.ft = 'json'
-  end
+  end,
 })
 
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
@@ -31,7 +31,7 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
   group = autoreload_group,
   callback = function()
     vim.bo.ft = 'markdown'
-  end
+  end,
 })
 
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
@@ -40,5 +40,5 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
   group = autoreload_group,
   callback = function()
     vim.bo.ft = 'prolog'
-  end
+  end,
 })

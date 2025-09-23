@@ -1,13 +1,39 @@
--- *******************************
--- Plugins and their configuration
--- *******************************
+-- *******
+-- Plugins
+-- *******
 
 require('lazy').setup({
+  -- List of plugins.
+  --
+  -- Plugins can be added with a link (or for a github repo: 'owner/repo' link).
+  --
+  -- Use `opts = {}` to automatically pass options to a plugin's `setup()`
+  --   function, forcing the plugin to be loaded.
+  --
+  -- Alternatively, use `config = function() ... end` for full control over the
+  -- configuration.
+  --
+  -- For instance, if you prefer to call `setup` explicitly:
+  --
+  --    {
+  --      'lewis6991/gitsigns.nvim',
+  --      config = function()
+  --        require('gitsigns').setup({
+  --          -- Your gitsigns configuration here
+  --        })
+  --      end,
+  --    }
+  --
   spec = {
     require('plugins.neotree'),
     require('plugins.selenized'),
     require('plugins.telescope'),
-    require('plugins.which-key')
+    require('plugins.which-key'),
+    require('plugins.lazydev'),
+    require('plugins.nvim-treesitter'),
+    -- This disables line numbers for some reason
+    require('plugins.nvim-lspconfig'),
+    require('plugins.conform'),
   },
   ui = {
     icons = vim.g.have_nerd_font and {} or {

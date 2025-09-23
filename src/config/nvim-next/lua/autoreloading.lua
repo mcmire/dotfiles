@@ -20,10 +20,10 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHo
   desc = 'Detect file modifications outside of Neovim',
   group = autoreload_group,
   callback = function()
-    if not vim.fn.mode():match('^(c|r.?|!|t)$') and vim.fn.getcmdwintype() == '' then
+    if not vim.fn.mode():match '^(c|r.?|!|t)$' and vim.fn.getcmdwintype() == '' then
       -- Check to see if file was modified outside of Neovim
       -- and offer user choice if modified
-      vim.cmd('checktime')
+      vim.cmd 'checktime'
     end
   end,
 })
@@ -31,6 +31,6 @@ vim.api.nvim_create_autocmd({ 'FileChangedShellPost' }, {
   desc = 'Inform user when buffer was reloaded automatically',
   group = autoreload_group,
   callback = function()
-    vim.cmd([[echo 'File changed on disk. Buffer reloaded.']])
+    vim.cmd [[echo 'File changed on disk. Buffer reloaded.']]
   end,
 })

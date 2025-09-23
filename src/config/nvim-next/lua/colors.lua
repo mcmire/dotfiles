@@ -21,7 +21,7 @@ local function vim_color_test(outfile, fgend, bgend)
   end
   vim.fn.writefile(result, outfile)
   vim.cmd('edit ' .. outfile)
-  vim.cmd('source %')
+  vim.cmd 'source %'
 end
 vim.api.nvim_create_user_command('VimColorTest', function()
   vim_color_test('/tmp/vim-color-test.tmp', 255, 255)
@@ -32,14 +32,14 @@ end, {})
 
 -- Common Solarized colors
 local colors = {
-  yellow = "#b58900",
-  orange = "#cb4b16",
-  red = "#dc322f",
-  magenta = "#d33682",
-  violet = "#6c71c4",
-  blue = "#268bd2",
-  cyan = "#2aa198",
-  green = "#859900"
+  yellow = '#b58900',
+  orange = '#cb4b16',
+  red = '#dc322f',
+  magenta = '#d33682',
+  violet = '#6c71c4',
+  blue = '#268bd2',
+  cyan = '#2aa198',
+  green = '#859900',
 }
 
 local function chomp(str)
@@ -63,7 +63,7 @@ local function set_highlights()
     PMenu = { fg = colors.base3, bg = colors.base02 },
     CocErrorSign = { fg = colors.red },
     CocInfoSign = { fg = colors.blue },
-    CocWarningSign = { fg = colors.yellow }
+    CocWarningSign = { fg = colors.yellow },
   }
 
   for group, opts in pairs(highlights) do
@@ -72,52 +72,52 @@ local function set_highlights()
 end
 
 local function use_dark_color_scheme()
-  colors.base03 = "#002b36"
-  colors.base02 = "#073642"
-  colors.base01 = "#586e75"
-  colors.base00 = "#657b83"
-  colors.base0 = "#839496"
-  colors.base1 = "#93a1a1"
-  colors.base2 = "#eee8d5"
-  colors.base3 = "#fdf6e3"
+  colors.base03 = '#002b36'
+  colors.base02 = '#073642'
+  colors.base01 = '#586e75'
+  colors.base00 = '#657b83'
+  colors.base0 = '#839496'
+  colors.base1 = '#93a1a1'
+  colors.base2 = '#eee8d5'
+  colors.base3 = '#fdf6e3'
 
-  colors.color_scheme_type = "dark"
-  vim.opt.background = "dark"
-  pcall(vim.cmd.colorscheme, "solarized8_flat")
-  vim.g.airline_theme = "solarized"
-  vim.g.airline_solarized_bg = "dark"
+  colors.color_scheme_type = 'dark'
+  vim.opt.background = 'dark'
+  pcall(vim.cmd.colorscheme, 'solarized8_flat')
+  vim.g.airline_theme = 'solarized'
+  vim.g.airline_solarized_bg = 'dark'
 
   set_highlights()
 end
 
 local function use_light_color_scheme()
-  colors.base3 = "#002b36"
-  colors.base2 = "#073642"
-  colors.base1 = "#586e75"
-  colors.base0 = "#657b83"
-  colors.base00 = "#839496"
-  colors.base01 = "#93a1a1"
-  colors.base02 = "#eee8d5"
-  colors.base03 = "#fdf6e3"
+  colors.base3 = '#002b36'
+  colors.base2 = '#073642'
+  colors.base1 = '#586e75'
+  colors.base0 = '#657b83'
+  colors.base00 = '#839496'
+  colors.base01 = '#93a1a1'
+  colors.base02 = '#eee8d5'
+  colors.base03 = '#fdf6e3'
 
-  colors.color_scheme_type = "light"
-  vim.opt.background = "light"
-  pcall(vim.cmd.colorscheme, "solarized8_flat")
-  vim.g.airline_theme = "solarized"
-  vim.g.airline_solarized_bg = "light"
+  colors.color_scheme_type = 'light'
+  vim.opt.background = 'light'
+  pcall(vim.cmd.colorscheme, 'solarized8_flat')
+  vim.g.airline_theme = 'solarized'
+  vim.g.airline_solarized_bg = 'light'
 
   set_highlights()
 end
 
 local function refresh_color_scheme(color_scheme_mode)
-  color_scheme_mode = color_scheme_mode or chomp(vim.fn.system('color-scheme-mode'))
+  color_scheme_mode = color_scheme_mode or chomp(vim.fn.system 'color-scheme-mode')
 
-  if color_scheme_mode == "dark" then
+  if color_scheme_mode == 'dark' then
     use_dark_color_scheme()
-  elseif color_scheme_mode == "light" then
+  elseif color_scheme_mode == 'light' then
     use_light_color_scheme()
   else
-    error("Unknown color scheme mode " .. color_scheme_mode)
+    error('Unknown color scheme mode ' .. color_scheme_mode)
   end
 end
 
@@ -126,8 +126,8 @@ end
 --
 -- Roughly inspired by: <https://grrr.tech/posts/2020/switch-dark-mode-os/>
 local function toggle_color_scheme()
-  local new_color_scheme_mode = chomp(vim.fn.system('color-scheme-mode --toggle'))
-  vim.fn.system('propagate-color-scheme-mode')
+  local new_color_scheme_mode = chomp(vim.fn.system 'color-scheme-mode --toggle')
+  vim.fn.system 'propagate-color-scheme-mode'
   -- TODO: Propagate this across all instances of Vim
   refresh_color_scheme(new_color_scheme_mode)
 end
@@ -146,5 +146,5 @@ vim.api.nvim_create_autocmd('VimEnter', {
   nested = true,
   callback = function()
     refresh_color_scheme()
-  end
+  end,
 })

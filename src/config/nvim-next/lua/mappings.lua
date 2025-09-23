@@ -45,7 +45,12 @@ vim.keymap.set('n', '<Leader>tc', '<Cmd>tabc<CR>', { desc = 'Close current tab' 
 
 -- Convert Ruby keys in a hash from symbols to strings and vice versa
 vim.keymap.set('v', '<Leader>sym', '<Cmd>s/\\v["\']([^"\']+)["\'] \\=\\> /\\1: /g<CR><Cmd>nohls<CR>', { desc = 'Convert Ruby hash to symbol keys' })
-vim.keymap.set('v', '<Leader>str', '<Cmd>s/\\v%(:([^:]+) \\=\\>\\|([^[:space:]:]+): )/\'\\1\\2\' => /g<CR><Cmd>nohls<CR>', { desc = 'Convert Ruby hash to string keys' })
+vim.keymap.set(
+  'v',
+  '<Leader>str',
+  "<Cmd>s/\\v%(:([^:]+) \\=\\>\\|([^[:space:]:]+): )/'\\1\\2' => /g<CR><Cmd>nohls<CR>",
+  { desc = 'Convert Ruby hash to string keys' }
+)
 
 -- Highlight when yanking (copying) text
 vim.api.nvim_create_autocmd('TextYankPost', {

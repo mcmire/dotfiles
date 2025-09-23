@@ -9,4 +9,3 @@ vim.o.textwidth = 80
 
 -- Draw vertical line at current `textwidth`
 vim.o.colorcolumn = '+0'
-

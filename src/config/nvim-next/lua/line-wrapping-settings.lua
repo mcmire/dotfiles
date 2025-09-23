@@ -30,7 +30,7 @@ vim.keymap.set({ 'n', 'v' }, 'k', 'gk', { remap = false })
 vim.opt.formatoptions:append { r = true, o = true, v = true, b = true }
 
 -- Toggle hard-wrapping
-old_textwidth = 0
+local old_textwidth = 0
 vim.keymap.set('n', '<Leader>ww', function()
   if vim.o.textwidth > 0 then
     old_textwidth = vim.o.textwidth

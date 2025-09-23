@@ -10,7 +10,7 @@ vim.o.softtabstop = 2
 vim.o.shiftwidth = 2
 -- Always render tabs as 2 spaces.
 -- This means if a file has a mixture of tabs and spaces, the tabs will align
-  -- with the spaces.
+-- with the spaces.
 vim.o.tabstop = 2
 
 -- Highlight tabs, lines with nothing but spaces and spaces at the end of lines,

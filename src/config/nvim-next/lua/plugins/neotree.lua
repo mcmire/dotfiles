@@ -5,20 +5,30 @@ return {
     'nvim-tree/nvim-web-devicons',
     'MunifTanjim/nui.nvim',
   },
+  -- neo-tree lazily loads itself
   lazy = false,
   keys = {
     {
       '<Leader>tt',
-      ':Neotree reveal<CR>',
-      desc = 'NeoTree reveal',
+      ':Neotree action=show toggle=true<CR>',
+      desc = 'Neo[T]ree: [T]oggle',
+      silent = true,
+    },
+    {
+      '<Leader>tf',
+      ':Neotree action=focus reveal=true<CR>',
+      desc = 'Neo[T]ree: [F]ocus current file',
       silent = true,
     },
   },
+  ---@module "neo-tree"
+  ---@type neotree.Config?
   opts = {
     filesystem = {
       window = {
         mappings = {
-          ['<Leader>tt'] = 'close_window',
+          -- Compatibility with NERDTree
+          ['i'] = 'open_split',
         },
       },
     },
