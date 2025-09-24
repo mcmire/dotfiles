@@ -25,15 +25,17 @@ require('lazy').setup {
   --    }
   --
   spec = {
-    require 'plugins.neotree',
-    require 'plugins.selenized',
-    require 'plugins.telescope',
     require 'plugins.which-key',
+    require 'plugins.telescope',
     require 'plugins.lazydev',
-    require 'plugins.nvim-treesitter',
     require 'plugins.nvim-lspconfig',
     require 'plugins.conform',
     require 'plugins.blink',
+    require 'plugins.selenized',
+    require 'plugins.todo-comments',
+    require 'plugins.mini',
+    require 'plugins.nvim-treesitter',
+    require 'plugins.neotree',
   },
   ui = {
     icons = vim.g.have_nerd_font and {} or {

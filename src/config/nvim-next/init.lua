@@ -8,7 +8,6 @@
 -- Feel free to fork and make your own
 -- (or start directly with nvim-kickstart).
 
--- TODO: boot plugins
 require 'start' -- was "magic"
 require 'globals'
 require 'plugins'
