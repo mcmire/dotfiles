@@ -18,5 +18,27 @@ vim.o.tabstop = 2
 vim.o.list = true
 vim.opt.listchars = { tab = '⊢—', trail = '·', nbsp = '␣', extends = '⨠' }
 
--- TODO: Highlight trailing spaces
--- TODO: Command to trim whitespace
+-- Highlight whitespace at the end of a line,
+-- both when loading a file and when entering input
+local highlight_whitespace_augroup = vim.api.nvim_create_augroup('custom-highlight-whitespace', { clear = true })
+vim.api.nvim_create_autocmd({ 'BufWinEnter', 'InsertLeave' }, {
+  group = highlight_whitespace_augroup,
+  command = 'match ExtraWhitespace /\\s\\+$/',
+})
+vim.api.nvim_create_autocmd('InsertEnter', {
+  group = highlight_whitespace_augroup,
+  command = 'match ExtraWhitespace /\\s\\+\\%#\\@<!$/',
+})
+vim.api.nvim_create_autocmd('BufWinLeave', {
+  group = highlight_whitespace_augroup,
+  callback = function()
+    vim.fn.clearmatches()
+  end,
+})
+
+-- Source: http://vim.wikia.com/wiki/Remove_unwanted_spaces
+local function trim_whitespace()
+  vim.cmd '%s/\\s*$//'
+  vim.cmd "normal! ''"
+end
+vim.keymap.set('n', '<Leader>tw', trim_whitespace, { desc = 'Trim whitespace' })

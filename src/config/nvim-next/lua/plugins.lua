@@ -2,7 +2,7 @@
 -- Plugins
 -- *******
 
-require('lazy').setup({
+require('lazy').setup {
   -- List of plugins.
   --
   -- Plugins can be added with a link (or for a github repo: 'owner/repo' link).
@@ -25,15 +25,15 @@ require('lazy').setup({
   --    }
   --
   spec = {
-    require('plugins.neotree'),
-    require('plugins.selenized'),
-    require('plugins.telescope'),
-    require('plugins.which-key'),
-    require('plugins.lazydev'),
-    require('plugins.nvim-treesitter'),
-    -- This disables line numbers for some reason
-    require('plugins.nvim-lspconfig'),
-    require('plugins.conform'),
+    require 'plugins.neotree',
+    require 'plugins.selenized',
+    require 'plugins.telescope',
+    require 'plugins.which-key',
+    require 'plugins.lazydev',
+    require 'plugins.nvim-treesitter',
+    require 'plugins.nvim-lspconfig',
+    require 'plugins.conform',
+    require 'plugins.blink',
   },
   ui = {
     icons = vim.g.have_nerd_font and {} or {
@@ -52,4 +52,4 @@ require('lazy').setup({
       lazy = '💤 ',
     },
   },
-})
+}

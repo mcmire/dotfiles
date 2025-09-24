@@ -21,15 +21,28 @@ return {
       silent = true,
     },
   },
-  ---@module "neo-tree"
-  ---@type neotree.Config?
   opts = {
-    filesystem = {
-      window = {
-        mappings = {
-          -- Compatibility with NERDTree
-          ['i'] = 'open_split',
+    default_component_configs = {
+      git_status = {
+        symbols = {
+          -- Change type
+          added = 'A',
+          deleted = 'D',
+          modified = 'M',
+          renamed = 'R',
+          -- Status type
+          untracked = '?',
+          ignored = '#',
+          unstaged = 'O',
+          staged = '@',
+          conflict = 'x',
         },
+      },
+    },
+    window = {
+      mappings = {
+        -- Compatibility with NERDTree
+        ['i'] = 'open_split',
       },
     },
   },

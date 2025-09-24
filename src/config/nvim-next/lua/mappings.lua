@@ -25,19 +25,21 @@ vim.keymap.set('n', 'Q', 'gq', { desc = 'Reformat the current paragraph' })
 -- Add parity with `C` and `D`
 vim.keymap.set('n', 'Y', 'y$', { desc = 'Yank to the end of the line' })
 
--- Clear highlights on search when pressing <Esc> in normal mode
+-- Clear search highlights
+-- The <Esc> variant was copied from kickstart.nvim
+vim.keymap.set('n', '<Leader>h', '<Cmd>nohlsearch<CR>', { desc = 'Clear highlight' })
 vim.keymap.set('n', '<Esc>', '<Cmd>nohlsearch<CR>', { desc = 'Clear highlight' })
 
 -- Paste within a line, overwriting everything to the end
--- Will retain existing clipboard contents
+-- (Will retain existing clipboard contents)
 vim.keymap.set('n', '<Leader>p$', '"_Dp', { desc = 'Paste in line, overwriting rest' })
 
 -- Open a new line and paste into that line
--- Will retain existing clipboard contents
+-- (Will retain existing clipboard contents)
 vim.keymap.set('n', '<Leader>po', 'o<Space><Backspace><Esc>p', { desc = 'Open new line and paste into it' })
 
 -- Paste, overwriting the current line
--- Will retain existing clipboard contents
+-- (Will retain existing clipboard contents)
 vim.keymap.set('n', '<Leader>pc', '"_ddP', { desc = 'Paste, overwriting current line' })
 
 -- Close current tab

@@ -26,6 +26,7 @@ I haven't been keeping a changelog for these dotfiles, mostly because I keep the
     - NERDCommenter has been replaced with Neovim's built in commenting feature (see `:h commenting`)
     - SuperTab has been replaced with [`coq.nvim`](https://github.com/ms-jpq/coq_nvim)
       - Or maybe [compl.nvim](https://github.com/brianaung/compl.nvim)?
+      - Actually, [blink.cmp](https://github.com/Saghen/blink.cmp) with `super-tab`
     - AutoPairs has been replaced with [`autoclose`](https://github.com/m4xshen/autoclose.nvim)
     - `endwise` has been replaced with [`nvim-treesitter-endwise`](https://github.com/RRethy/nvim-treesitter-endwise)
     - `indentLine` has been replaced with [`simpleIndentGuides`](https://github.com/LucasTavaresA/simpleIndentGuides.nvim)

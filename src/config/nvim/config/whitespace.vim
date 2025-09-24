@@ -29,6 +29,7 @@ set nojoinspaces
 "
 " [color settings file]: colors.vim.md
 
+" COPIED
 augroup local
   autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
   autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
@@ -42,6 +43,7 @@ augroup END
 "
 " [remove-unwanted-spaces]: http://vim.wikia.com/wiki/Remove_unwanted_spaces
 
+" COPIED
 function! TrimWhiteSpace()
   %s/\s*$//
   exec "''"
