@@ -5,11 +5,25 @@ return {
   main = 'nvim-treesitter.configs',
   -- See `:help nvim-treesitter`
   opts = {
-    ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+    ensure_installed = {
+      'bash',
+      'c',
+      'diff',
+      'html',
+      'lua',
+      'luadoc',
+      --'markdown',
+      --'markdown_inline',
+      'query',
+      'vim',
+      'vimdoc',
+    },
     -- Autoinstall languages that are not installed
     auto_install = true,
     highlight = {
       enable = true,
+      -- Disable Treesitter in Markdown files for now as it's really slow
+      disable = { 'markdown' },
       -- Some languages depend on vim's regex highlighting system (such as Ruby)
       -- for indent rules.
       --

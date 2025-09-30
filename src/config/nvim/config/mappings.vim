@@ -56,14 +56,14 @@ nnoremap T V%
 " `K` is a useless mapping and may do something evil (although what exactly it
 " does has been lost to the sands of time):
 
-" COPIED
+" SKIPPED (already bound to LSP hover)
 noremap K <Esc>
 
 " In the [search settings](search.vim.md), we configure `/` to highlight
 " matches. It's common to want to clear that highlight, so `,h` lets you do this
 " with ease:
 
-" SKIPPED (replaced with <Esc>)
+" COPIED
 nnoremap <Leader>h :nohls<CR>
 inoremap <Leader>h <C-O>:nohls<CR>
 

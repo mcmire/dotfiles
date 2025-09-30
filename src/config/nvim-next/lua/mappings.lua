@@ -10,9 +10,6 @@ vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Move focus to the upper window'
 vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move focus to the right window' })
 
--- Disable default behavior of K (lookup man entry)
-vim.keymap.set('n', 'K', '', { desc = '(Do nothing for K)' })
-
 -- Keep selection after indenting or dedenting
 -- (`gv` will restore the selection after it disappears)
 vim.keymap.set('v', '<', '<gv', { desc = 'Indent and keep selection' })
@@ -28,6 +25,7 @@ vim.keymap.set('n', 'Y', 'y$', { desc = 'Yank to the end of the line' })
 -- Clear search highlights
 -- The <Esc> variant was copied from kickstart.nvim
 vim.keymap.set('n', '<Leader>h', '<Cmd>nohlsearch<CR>', { desc = 'Clear highlight' })
+vim.keymap.set('i', '<Leader>h', '<C-O><Cmd>nohlsearch<CR>', { desc = 'Clear highlight' })
 vim.keymap.set('n', '<Esc>', '<Cmd>nohlsearch<CR>', { desc = 'Clear highlight' })
 
 -- Paste within a line, overwriting everything to the end
