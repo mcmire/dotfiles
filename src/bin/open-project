@@ -68,11 +68,11 @@ switch-to-guaranteed-tmux-session() {
   # be the one selected)
   zoxide add "$project_directory"
 
-  if ! tmux has-session -t "$tmux_session_name" &>/dev/null; then
+  if ! tmux has-session -t "=$tmux_session_name" &>/dev/null; then
     # -d prevents attaching to the current terminal (we will do that next)
     tmux new-session -d -s "$tmux_session_name" -c "$project_directory"
   fi
-  tmux switch-client -t "$tmux_session_name"
+  tmux switch-client -t "=$tmux_session_name"
 }
 
 main() {
