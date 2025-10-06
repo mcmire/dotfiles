@@ -138,7 +138,7 @@ for app in \
   dash \
   dropbox \
   homebrew/cask/font-fira-code \
-  homebrew/cask/font-lilex-nerd-font \
+  homebrew/cask/font-caskaydia-mono-nerd-font \
   google-chrome \
   iterm2 \
   moom \
