@@ -17,7 +17,7 @@ vim.keymap.set('v', '>', '>gv', { desc = 'Indent and keep selection' })
 
 -- Reformat the current paragraph
 -- This is useful for Markdown, Git commits, or code comments
-vim.keymap.set('n', 'Q', 'gq', { desc = 'Reformat the current paragraph' })
+vim.keymap.set({ 'n', 'v' }, 'Q', 'gq', { desc = 'Reformat the current paragraph' })
 
 -- Add parity with `C` and `D`
 vim.keymap.set('n', 'Y', 'y$', { desc = 'Yank to the end of the line' })
