@@ -202,7 +202,7 @@ for language in ruby python nodejs; do
     fi
   fi
 
-  if [[ $(ls "$ASDF_DIRECTORY/installs/$language" | wc -l | sed -e 's/^ *//') -eq 0 ]]; then
+  if [[ ! -d "$ASDF_DIRECTORY/installs/$language" || $(ls "$ASDF_DIRECTORY/installs/$language" | wc -l | sed -e 's/^ *//') -eq 0 ]]; then
     banner "Installing latest version of $language"
 
     asdf install $language latest
@@ -210,7 +210,7 @@ for language in ruby python nodejs; do
 
   if [[ $(latest-version-of $language) != $(cat ~/.tool-versions | grep "^$language" | sed -e "s/^$language //") ]]; then
     banner "Making latest version of $language the default"
-    asdf global $language $(latest-version-of $language)
+    asdf set --home $language $(latest-version-of $language)
   fi
 done
 
