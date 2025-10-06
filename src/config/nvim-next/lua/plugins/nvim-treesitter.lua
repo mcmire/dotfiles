@@ -19,11 +19,12 @@ return {
       'vimdoc',
     },
     -- Autoinstall languages that are not installed
-    auto_install = true,
+    -- auto_install = true,
     highlight = {
       enable = true,
       -- Disable Treesitter in Markdown files for now as it's really slow
-      disable = { 'markdown' },
+      -- Disable Treesitter in tmux files as the highlighting isn't right
+      disable = { 'markdown', 'tmux' },
       -- Some languages depend on vim's regex highlighting system (such as Ruby)
       -- for indent rules.
       --
