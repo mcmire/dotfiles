@@ -3,13 +3,14 @@
 set -euo pipefail
 
 # ---
-# This file configures tmux to use the Solarized color scheme. It is adapted
-# from the files within <https://github.com/seebi/tmux-colors-solarized>, but
-# uses RGB values for colors instead of relying on terminal colors or tmux's
-# `colour*` values (which only gives us 256 colors to work with instead of the
-# full 16 million).
+# This file configures tmux to use the Selenized color scheme, adapted
+# from <https://github.com/jan-warchol/selenized/blob/master/the-values.md>.
+# Note we use RGB values for colors instead of relying on ANSI terminal colors
+# or tmux's `colour*` values (which only gives us 256 colors to work with
+# instead of the full 16 million).
 #
-# Roughly inspired by: <https://grrr.tech/posts/2020/switch-dark-mode-os/>
+# The light/dark switching is roughly inspired by:
+# <https://grrr.tech/posts/2020/switch-dark-mode-os/>
 # ---
 
 # First, let's start out by determing whether we are using the light or dark
@@ -18,38 +19,59 @@ set -euo pipefail
 
 color_scheme_mode=$(color-scheme-mode)
 
-# Then we'll define the colors that do not change in Solarized:
+# Next we'll define the two versions. These are based on "Selenized Dark"
+# and "Selenized Light".
 
-yellow="#b58900"
-orange="#cb4b16"
-red="#dc322f"
-magenta="#d33682"
-violet="#6c71c4"
-blue="#268bd2"
-cyan="#2aa198"
-green="#859900"
+if [[ $color_scheme_mode == "dark" ]]; then
+  bg_0="#112e38"
+  bg_1="#163945"
+  bg_2="#284954"
+  dim_0="#61777c"
+  fg_0="#9faeae"
+  fg_1="#bfd0d0"
 
-# Next we'll define the remaining colors, which swap places between light and
-# dark modes:
+  red="#f13c3e"
+  green="#69ad21"
+  yellow="#d1a416"
+  blue="#3a82f8"
+  magenta="#e75bb3"
+  cyan="#42bdaa"
+  orange="#e26f35"
+  violet="#9b72e9"
 
-if [[ $color_scheme_mode == "light" ]]; then
-  base3="#002b36"
-  base2="#073642"
-  base1="#586e75"
-  base0="#657b83"
-  base00="#839496"
-  base01="#93a1a1"
-  base02="#eee8d5"
-  base03="#fdf6e3"
-elif [[ $color_scheme_mode == "dark" ]]; then
-  base03="#002b36"
-  base02="#073642"
-  base01="#586e75"
-  base00="#657b83"
-  base0="#839496"
-  base1="#93a1a1"
-  base2="#eee8d5"
-  base3="#fdf6e3"
+  br_red="#ff4b49"
+  br_green="#78be2e"
+  br_yellow="#e4b424"
+  br_blue="#4a91ff"
+  br_magenta="#fb69c4"
+  br_cyan="#50cfba"
+  br_orange="#f67e41"
+  br_violet="#ab80fc"
+elif [[ $color_scheme_mode == "light" ]]; then
+  bg_0="#faf0d2"
+  bg_1="#e4dec4"
+  bg_2="#c4c3b0"
+  dim_0="#7e8783"
+  fg_0="#43545a"
+  fg_1="#2d3c42"
+
+  red="#c00221"
+  green="#3f8100"
+  yellow="#9b7600"
+  blue="#005dcc"
+  magenta="#b73088"
+  cyan="#038d7c"
+  orange="#b04713"
+  violet="#714cbc"
+
+  br_red="#b9001e"
+  br_green="#3a7b00"
+  br_yellow="#957000"
+  br_blue="#0059c6"
+  br_magenta="#b12b82"
+  br_cyan="#008777"
+  br_orange="#a9430f"
+  br_violet="#6b47b6"
 fi
 
 # Next we'll define some functions that will get applied when deactivating and
@@ -71,10 +93,10 @@ apply-to-all-windows() {
 deactivate() {
   tmux set-option prefix None
   tmux set-option key-table off
-  tmux set-option status-style "fg=${base03},bg=${base01}"
+  tmux set-option status-style "fg=${fg_1},bg=${bg_1}"
   apply-to-all-windows \
     set-option window-status-format " (#I) #W " ';' \
-    set-option window-status-current-format "#[fg=${base0}] (#I) #W #[default]"
+    set-option window-status-current-format "#[fg=${fg_1}] (#I) #W #[default]"
   tmux if-shell -F '#{pane_in_mode}' 'send-keys -X cancel'
   tmux refresh-client -S
 }
@@ -93,16 +115,16 @@ reactivate() {
 
 main() {
   # Base status bar style
-  tmux set-option -g status-style "fg=${base00},bg=${base02}"
+  tmux set-option -g status-style "fg=${fg_0},bg=${bg_0}"
   # Window title style
-  tmux set-option -g window-status-format " #[fg=${base1}](#I)#[default] #W "
-  tmux set-option -g window-status-current-format "#[fg=${base02},bold,bg=${blue}] (#I) #W #[default]"
+  tmux set-option -g window-status-format " #[fg=${fg_1}](#I)#[default] #W "
+  tmux set-option -g window-status-current-format "#[fg=${bg_0},bold,bg=${blue}] (#I) #W #[default]"
   tmux set-option -g window-status-separator " "
   # Pane border style
-  tmux set-option -g pane-border-style "fg=${base02}"
-  tmux set-option -g pane-active-border-style "fg=${base01}"
+  tmux set-option -g pane-border-style "fg=${fg_1}"
+  tmux set-option -g pane-active-border-style "fg=${fg_1}"
   # Message text style
-  tmux set-option -g message-style "fg=${orange},bg=${base02}"
+  tmux set-option -g message-style "fg=${orange},bg=${bg_1}"
   # Pane number display
   tmux set-option -g display-panes-colour "${orange}"
   tmux set-option -g display-panes-active-colour "${blue}"
