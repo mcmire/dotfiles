@@ -36,7 +36,7 @@ error() {
 latest-version-of() {
   asdf list $1 | \
     grep -v 'preview\|dev' | \
-    egrep '^\s+\d' | \
+    egrep '^\s*\*?\d' | \
     tail -n 1 | \
     sed -Ee 's/^[ ]+//g'
 }
@@ -208,9 +208,22 @@ for language in ruby python nodejs; do
     asdf install $language latest
   fi
 
-  if [[ $(latest-version-of $language) != $(cat ~/.tool-versions | grep "^$language" | sed -e "s/^$language //") ]]; then
-    banner "Making latest version of $language the default"
-    asdf set --home $language $(latest-version-of $language)
+  local latest_available_version="$(latest-version-of $language)"
+  local latest_installed_version="$(cat ~/.tool-versions | grep "^$language" | sed -e "s/^$language //")"
+
+  if [[ -z "$latest_available_version" ]]; then
+    echo "Could not determine available version of $language, skipping"
+    continue
+  fi
+
+  if [[ -z "$latest_installed_version" ]]; then
+    echo "Could not determine installed version of $language, skipping"
+    continue
+  fi
+
+  if [[ "$latest_available_version" != "$latest_installed_version" ]]; then
+    banner "Making latest version of $language ($latest_available_version) the default"
+    asdf set --home $language "$latest_available_version"
   fi
 done
 
