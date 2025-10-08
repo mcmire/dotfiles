@@ -41,6 +41,7 @@ require('lazy').setup {
     require 'plugins.nvim-treesitter-endwise',
     require 'plugins.simpleIndentGuides',
     require 'plugins.nvim-surround',
+    require 'plugins.ctrlp',
   },
   ui = {
     icons = vim.g.have_nerd_font and {} or {
