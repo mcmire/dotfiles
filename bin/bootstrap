@@ -193,7 +193,7 @@ for language in ruby python nodejs; do
     banner "Installing $language plugin for asdf"
     asdf plugin add $language
 
-    if [[ $language == "nodejs" ]]; then
+    if [[ $language == "nodejs" && -d ~/.gnupg ]]; then
       # Fix permissions on ~/.gnupg, which will be off on a fresh installation
       # Source: <https://gist.github.com/oseme-techguy/bae2e309c084d93b75a9b25f49718f85>
       chown -R $(whoami) ~/.gnupg/
