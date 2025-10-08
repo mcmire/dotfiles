@@ -208,8 +208,8 @@ for language in ruby python nodejs; do
     asdf install $language latest
   fi
 
-  local latest_available_version="$(latest-version-of $language)"
-  local latest_installed_version="$(cat ~/.tool-versions | grep "^$language" | sed -e "s/^$language //")"
+  latest_available_version="$(latest-version-of $language)"
+  latest_installed_version="$(cat ~/.tool-versions | grep "^$language" | sed -e "s/^$language //")"
 
   if [[ -z "$latest_available_version" ]]; then
     echo "Could not determine available version of $language, skipping"
