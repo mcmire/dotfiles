@@ -52,8 +52,56 @@ set-hostname() {
   if [[ "$specified_hostname" != "" ]]; then
     new_hostname="${specified_hostname%.local}.local"
     echo "Setting hostname to $new_hostname"
-    hostname "$new_hostname"
+    sudo hostname "$new_hostname"
   fi
+}
+
+initialize-restic() {
+  local answer
+
+  echo -n "Do you want to initialize Restic? (y/n) "
+  while read -r answer; do
+    if [[ "$answer" =~ ^y(es)?$ ]]; then
+      # Great, keep going
+    elif [[ "$answer" =~ ^no?$ ]]; then
+      echo "Skipping Restic initialization, then."
+      return 0
+    else
+      echo -n "Do you want to initialize Restic? (y/n) "
+    fi
+  done
+
+  banner "Initializing Restic repositories"
+
+  if ! [[ -f ~/Library/Preferences/resticprofile/profiles.json ]]; then
+    mkdir -p ~/Library/Preferences/resticprofile
+    cp -v extras/resticprofile/profiles.json ~/Library/Preferences/resticprofile/profiles.json
+  fi
+
+  if [[ -f ~/Library/Preferences/resticprofile/profiles.json ]] && grep -E '<<RSYNC_NET_USERNAME>>|<<HOSTNAME>>' ~/Library/Preferences/resticprofile/profiles.json &>/dev/null; then
+    echo "Please replace the RSYNC_NET_USERNAME and HOSTNAME placeholders in ~/Library/Preferences/resticprofile/profiles.json and re-run this script."
+    exit 1
+  fi
+
+  if ! [[ -f ~/Library/Preferences/resticprofile/rsync_net_password.txt ]]; then
+    echo "Please generate a password for the rsync.net Restic repository (ideally using 1Password) and write it to ~/Library/Preferences/resticprofile/rsync_net_password.txt."
+    exit 1
+  fi
+
+  if ! [[ -f ~/Library/Preferences/resticprofile/local_password.txt ]]; then
+    echo "Please generate a password for the local Restic repository (ideally using 1Password) and write it to ~/Library/Preferences/resticprofile/local_password.txt."
+    exit 1
+  fi
+
+  if ! resticprofile --name rsync_net snapshots &>/dev/null; then
+    resticprofile --name rsync_net init
+  fi
+
+  if ! resticprofile --name local snapshots &>/dev/null; then
+    resticprofile --name local init
+  fi
+
+  echo "Restic repositories initialized."
 }
 
 if ! type brew &>/dev/null; then
@@ -208,16 +256,14 @@ for language in ruby python nodejs; do
     asdf install $language latest
   fi
 
+  # Not sure why the script stops at this point, but get past it for now
+  set +e
   latest_available_version="$(latest-version-of $language)"
   latest_installed_version="$(cat ~/.tool-versions | grep "^$language" | sed -e "s/^$language //")"
+  set -e
 
   if [[ -z "$latest_available_version" ]]; then
     echo "Could not determine available version of $language, skipping"
-    continue
-  fi
-
-  if [[ -z "$latest_installed_version" ]]; then
-    echo "Could not determine installed version of $language, skipping"
     continue
   fi
 
@@ -234,38 +280,15 @@ fi
 
 if pip show neovim &>/dev/null; then
   banner "Installing Python plugin for Neovim"
-  pip install neovim
+  ~/.asdf/shims/pip install neovim
 fi
 
 banner "Upgrading pip"
-pip install --upgrade pip
+~/.asdf/shims/pip install --upgrade pip
 
 set-hostname
 
-banner "Initializing Restic repositories"
-if ! [[ -f ~/Library/Preferences/resticprofile/profiles.json ]]; then
-  mkdir -p ~/Library/Preferences/resticprofile
-  cp -v extras/resticprofile/profiles.json ~/Library/Preferences/resticprofile/profiles.json
-fi
-if [[ -f ~/Library/Preferences/resticprofile/profiles.json ]] && grep -E '<<RSYNC_NET_USERNAME>>|<<HOSTNAME>>' ~/Library/Preferences/resticprofile/profiles.json &>/dev/null; then
-  echo "Please replace the RSYNC_NET_USERNAME and HOSTNAME placeholders in ~/Library/Preferences/resticprofile/profiles.json and re-run this script."
-  exit 1
-fi
-if ! [[ -f ~/Library/Preferences/resticprofile/rsync_net_password.txt ]]; then
-  echo "Please generate a password for the rsync.net Restic repository (ideally using 1Password) and write it to ~/Library/Preferences/resticprofile/rsync_net_password.txt."
-  exit 1
-fi
-if ! [[ -f ~/Library/Preferences/resticprofile/local_password.txt ]]; then
-  echo "Please generate a password for the local Restic repository (ideally using 1Password) and write it to ~/Library/Preferences/resticprofile/local_password.txt."
-  exit 1
-fi
-if ! resticprofile --name rsync_net snapshots &>/dev/null; then
-  resticprofile --name rsync_net init
-fi
-if ! resticprofile --name local snapshots &>/dev/null; then
-  resticprofile --name local init
-fi
-echo "Restic repositories initialized."
+initialize-restic
 
 banner "Making a bunch of configuration changes to MacOS"
 extras/macos.sh
