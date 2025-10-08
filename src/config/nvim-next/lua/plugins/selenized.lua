@@ -6,5 +6,6 @@ return {
     -- TODO: Figure out why we need to do this.
     vim.o.background = 'dark'
     vim.cmd 'colorscheme selenized'
+    vim.cmd('highlight Whitespace guifg=' .. selenized.colors.dim_0)
   end,
 }
