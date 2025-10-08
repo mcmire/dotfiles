@@ -166,6 +166,7 @@ for pkg in \
   reattach-to-user-namespace \
   redis \
   restic \
+  ripgrep \
   sqlite \
   tig \
   tmux \

@@ -52,6 +52,10 @@ vim.keymap.set(
   { desc = 'Convert Ruby hash to string keys' }
 )
 
+-- Shortcut for commenting/uncommenting text
+vim.keymap.set('n', '<Leader>c', 'gcc', { desc = 'Toggle commenting (line)' })
+vim.keymap.set('v', '<Leader>c', 'gc', { desc = 'Toggle commenting (block)' })
+
 -- Highlight when yanking (copying) text
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',

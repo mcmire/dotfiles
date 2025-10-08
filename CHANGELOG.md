@@ -24,7 +24,7 @@ I haven't been keeping a changelog for these dotfiles, mostly because I keep the
     - [ ] Ack has been replaced with [`nvim-rg`](https://github.com/duane9/nvim-rg)
       - Actually Telescope too
       - `ripgrep` is required, maybe I just need to require `brew install ripgrep`
-    - [ ] NERDCommenter has been replaced with Neovim's built in commenting feature (see `:h commenting`)
+    - [x] NERDCommenter has been replaced with Neovim's built in commenting feature (see `:h commenting`)
       - But it would be nice to keep the old mappings
     - [x] SuperTab has been replaced with [`coq.nvim`](https://github.com/ms-jpq/coq_nvim)
       - Or maybe [compl.nvim](https://github.com/brianaung/compl.nvim)?

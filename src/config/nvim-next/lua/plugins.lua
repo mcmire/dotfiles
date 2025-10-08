@@ -36,6 +36,7 @@ require('lazy').setup {
     require 'plugins.mini',
     require 'plugins.nvim-treesitter',
     require 'plugins.neotree',
+    require 'plugins.grug-far',
   },
   ui = {
     icons = vim.g.have_nerd_font and {} or {
