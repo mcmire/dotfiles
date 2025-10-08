@@ -26,7 +26,7 @@ require('lazy').setup {
   --
   spec = {
     require 'plugins.which-key',
-    require 'plugins.telescope',
+    --require 'plugins.telescope',
     require 'plugins.lazydev',
     require 'plugins.nvim-lspconfig',
     require 'plugins.conform',

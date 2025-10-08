@@ -3,7 +3,7 @@
 -- ******************************
 
 -- Always show line numbers
-vim.go.number = true
+vim.o.number = true
 
 -- Don't show splash screen when Vim starts
 vim.opt.shortmess:append { I = true }

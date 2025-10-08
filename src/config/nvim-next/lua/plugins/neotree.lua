@@ -10,7 +10,7 @@ return {
   keys = {
     {
       '<Leader>tt',
-      ':Neotree action=show toggle=true<CR>',
+      ':Neotree action=focus toggle=true<CR>',
       desc = 'Neo[T]ree: [T]oggle',
       silent = true,
     },
