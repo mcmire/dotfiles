@@ -22,7 +22,7 @@ print-with-color() {
 }
 
 banner() {
-  print-with-color 34 "== $@ =="
+  print-with-color 34 "== $* =="
 }
 
 success() {
@@ -34,9 +34,9 @@ error() {
 }
 
 latest-version-of() {
-  asdf list $1 | \
+  asdf list "$1" | \
     grep -v 'preview\|dev' | \
-    egrep '^\s*\*?\d' | \
+    grep -E '^\s*\*?\d' | \
     tail -n 1 | \
     sed -Ee 's/^[ ]*\*?//g'
 }
@@ -62,7 +62,7 @@ initialize-restic() {
   echo -n "Do you want to initialize Restic? (y/n) "
   while read -r answer; do
     if [[ "$answer" =~ ^y(es)?$ ]]; then
-      # Great, keep going
+      true
     elif [[ "$answer" =~ ^no?$ ]]; then
       echo "Skipping Restic initialization, then."
       return 0
@@ -133,7 +133,6 @@ fi
 if ! type mas &>/dev/null; then
   banner "Installing mas-cli..."
   HOMEBREW_NO_INSTALL_UPGRADE=true brew install mas-cli/tap/mas
-  mas_was_just_installed=1
 
   banner "Making sure that you are signed into the App Store"
   if ! mas account &>/dev/null; then
@@ -215,7 +214,7 @@ mas_apps=(
 
 for app in "${mas_apps[@]}"; do
   banner "Installing $app"
-  mas install $app || error "App $app failed to install, continuing..."
+  mas install "$app" || error "App $app failed to install, continuing..."
 done
 
 if ! [[ -d "$HOME/.zsh-async" ]]; then
@@ -233,7 +232,7 @@ fi
 
 if ! type asdf &>/dev/null; then
   banner "Loading asdf"
-  source $ASDF_DIRECTORY/asdf.sh
+  source "$ASDF_DIRECTORY/asdf.sh"
 fi
 
 for language in ruby python nodejs; do
@@ -244,7 +243,7 @@ for language in ruby python nodejs; do
     if [[ $language == "nodejs" && -d ~/.gnupg ]]; then
       # Fix permissions on ~/.gnupg, which will be off on a fresh installation
       # Source: <https://gist.github.com/oseme-techguy/bae2e309c084d93b75a9b25f49718f85>
-      chown -R $(whoami) ~/.gnupg/
+      chown -R "$(whoami)" ~/.gnupg/
       chmod 600 ~/.gnupg/*
       chmod 700 ~/.gnupg
     fi
