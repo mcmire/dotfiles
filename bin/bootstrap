@@ -38,7 +38,7 @@ latest-version-of() {
     grep -v 'preview\|dev' | \
     egrep '^\s*\*?\d' | \
     tail -n 1 | \
-    sed -Ee 's/^[ ]+//g'
+    sed -Ee 's/^[ ]*\*?//g'
 }
 
 set-hostname() {
