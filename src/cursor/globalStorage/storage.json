@@ -1,37 +1,24 @@
 {
-    "userDataProfilesMigration": true,
-    "profileAssociations": {
-        "workspaces": {
-            "file:///Users/elliot/code/metamask/swaps-controller": "__default__profile__",
-            "file:///Users/elliot/code/metamask/core": "__default__profile__",
-            "file:///Users/elliot/code/personal/dotfiles": "__default__profile__",
-            "file:///Users/elliot/code/metamask/action-is-release": "__default__profile__",
-            "file:///Users/elliot/code/metamask/template-sync": "__default__profile__",
-            "file:///Users/elliot/code/metamask/metamask-extension": "__default__profile__",
-            "file:///Users/elliot/code/metamask/decisions": "__default__profile__",
-            "file:///Users/elliot/code/metamask/accounts": "__default__profile__",
-            "file:///Users/elliot/code/metamask/eslint-config": "__default__profile__",
-            "file:///Users/elliot/code/metamask/metamask-mobile": "__default__profile__",
-            "file:///private/var/folders/gz/d8jvtc0n0rncp1xz80k0x62m0000gn/T/xfs-a1a3817b/user": "__default__profile__",
-            "file:///Users/elliot/code/metamask/extension-port-stream": "__default__profile__"
-        },
-        "emptyWindows": {}
-    },
-    "profileAssociationsMigration": true,
     "telemetry.sqmId": "",
-    "telemetry.macMachineId": "f9e6057131df160438b7595b571a27efc86cd502445c1dcf85699b78764e8d14",
-    "telemetry.machineId": "a07266449e3ce842c7f68acaec7a2825d4de4cf1f2b5e4da7250dbbede9911c5",
-    "telemetry.devDeviceId": "1de17d37-f6fc-4b48-aaa6-7cb9c18b58d8",
+    "telemetry.macMachineId": "23170daef54ca42be01752ea941b58a4a66005c4c4293c675dc666713a793ff4",
+    "telemetry.machineId": "fd7f2085ca3f3ad67213cd4cf465448cf65cb08e5a9df6bd92174965fc46abd3",
+    "telemetry.devDeviceId": "8d39ab37-0d9c-452d-91f1-8ba452e91e69",
     "backupWorkspaces": {
         "workspaces": [],
-        "folders": [
+        "folders": [],
+        "emptyWindows": [
             {
-                "folderUri": "file:///Users/elliot/code/metamask/extension-port-stream"
+                "backupFolder": "1760036029744"
             }
-        ],
-        "emptyWindows": []
+        ]
     },
     "windowControlHeight": 31,
+    "profileAssociations": {
+        "workspaces": {},
+        "emptyWindows": {
+            "1760036029744": "__default__profile__"
+        }
+    },
     "lastKnownMenubarData": {
         "menus": {
             "File": {
@@ -78,110 +65,8 @@
                             "items": [
                                 {
                                     "id": "workbench.action.reopenClosedEditor",
-                                    "label": "&&Reopen Closed Editor"
-                                },
-                                {
-                                    "id": "vscode.menubar.separator"
-                                },
-                                {
-                                    "id": "openRecentFolder",
-                                    "uri": {
-                                        "$mid": 1,
-                                        "path": "/Users/elliot/code/metamask/extension-port-stream",
-                                        "scheme": "file"
-                                    },
-                                    "enabled": true,
-                                    "label": "~/code/metamask/extension-port-stream"
-                                },
-                                {
-                                    "id": "openRecentFolder",
-                                    "uri": {
-                                        "$mid": 1,
-                                        "path": "/Users/elliot/code/metamask/metamask-extension",
-                                        "scheme": "file"
-                                    },
-                                    "enabled": true,
-                                    "label": "~/code/metamask/metamask-extension"
-                                },
-                                {
-                                    "id": "openRecentFolder",
-                                    "uri": {
-                                        "$mid": 1,
-                                        "path": "/private/var/folders/gz/d8jvtc0n0rncp1xz80k0x62m0000gn/T/xfs-a1a3817b/user",
-                                        "scheme": "file"
-                                    },
-                                    "enabled": true,
-                                    "label": "/private/var/folders/gz/d8jvtc0n0rncp1xz80k0x62m0000gn/T/xfs-a1a3817b/user"
-                                },
-                                {
-                                    "id": "openRecentFolder",
-                                    "uri": {
-                                        "$mid": 1,
-                                        "path": "/Users/elliot/code/metamask/metamask-mobile",
-                                        "scheme": "file"
-                                    },
-                                    "enabled": true,
-                                    "label": "~/code/metamask/metamask-mobile"
-                                },
-                                {
-                                    "id": "openRecentFolder",
-                                    "uri": {
-                                        "$mid": 1,
-                                        "path": "/Users/elliot/code/metamask/core",
-                                        "scheme": "file"
-                                    },
-                                    "enabled": true,
-                                    "label": "~/code/metamask/core"
-                                },
-                                {
-                                    "id": "openRecentFolder",
-                                    "uri": {
-                                        "$mid": 1,
-                                        "path": "/Users/elliot/code/metamask/action-is-release",
-                                        "scheme": "file"
-                                    },
-                                    "enabled": true,
-                                    "label": "~/code/metamask/action-is-release"
-                                },
-                                {
-                                    "id": "openRecentFolder",
-                                    "uri": {
-                                        "$mid": 1,
-                                        "path": "/Users/elliot/code/metamask/eslint-config",
-                                        "scheme": "file"
-                                    },
-                                    "enabled": true,
-                                    "label": "~/code/metamask/eslint-config"
-                                },
-                                {
-                                    "id": "openRecentFolder",
-                                    "uri": {
-                                        "$mid": 1,
-                                        "path": "/Users/elliot/code/metamask/decisions",
-                                        "scheme": "file"
-                                    },
-                                    "enabled": true,
-                                    "label": "~/code/metamask/decisions"
-                                },
-                                {
-                                    "id": "openRecentFolder",
-                                    "uri": {
-                                        "$mid": 1,
-                                        "path": "/Users/elliot/code/metamask/accounts",
-                                        "scheme": "file"
-                                    },
-                                    "enabled": true,
-                                    "label": "~/code/metamask/accounts"
-                                },
-                                {
-                                    "id": "openRecentFolder",
-                                    "uri": {
-                                        "$mid": 1,
-                                        "path": "/Users/elliot/code/metamask/template-sync",
-                                        "scheme": "file"
-                                    },
-                                    "enabled": true,
-                                    "label": "~/code/metamask/template-sync"
+                                    "label": "&&Reopen Closed Editor",
+                                    "enabled": false
                                 },
                                 {
                                     "id": "vscode.menubar.separator"
@@ -240,13 +125,6 @@
                         "submenu": {
                             "items": [
                                 {
-                                    "id": "github.copyVscodeDevLinkFile",
-                                    "label": "Copy vscode.dev Link"
-                                },
-                                {
-                                    "id": "vscode.menubar.separator"
-                                },
-                                {
                                     "id": "workbench.profiles.actions.exportProfile",
                                     "label": "Export Profile (Default)..."
                                 }
@@ -270,10 +148,6 @@
                     {
                         "id": "workbench.action.closeActiveEditor",
                         "label": "&&Close Editor"
-                    },
-                    {
-                        "id": "workbench.action.closeFolder",
-                        "label": "Close &&Folder"
                     },
                     {
                         "id": "workbench.action.closeWindow",
@@ -457,8 +331,7 @@
                                 },
                                 {
                                     "id": "workbench.action.toggleSidebarVisibility",
-                                    "label": "&&Primary Side Bar",
-                                    "checked": true
+                                    "label": "&&Primary Side Bar"
                                 },
                                 {
                                     "id": "workbench.action.toggleAuxiliaryBar",
@@ -732,10 +605,6 @@
                         "label": "E&&xtensions"
                     },
                     {
-                        "id": "workbench.view.extension.test",
-                        "label": "T&&esting"
-                    },
-                    {
                         "id": "vscode.menubar.separator"
                     },
                     {
@@ -768,7 +637,8 @@
                 "items": [
                     {
                         "id": "workbench.action.navigateBack",
-                        "label": "&&Back"
+                        "label": "&&Back",
+                        "enabled": false
                     },
                     {
                         "id": "workbench.action.navigateForward",
@@ -1298,11 +1168,6 @@
                 "label": "Cmd+W",
                 "userSettingsLabel": "cmd+w"
             },
-            "workbench.action.closeFolder": {
-                "label": "⌘R F",
-                "isNative": false,
-                "userSettingsLabel": "cmd+r f"
-            },
             "workbench.action.closeWindow": {
                 "label": "Shift+Cmd+W",
                 "userSettingsLabel": "shift+cmd+w"
@@ -1698,7 +1563,7 @@
             "editorPartMinWidth": 220,
             "titleBarHeight": 28,
             "activityBarWidth": 0,
-            "sideBarWidth": 334,
+            "sideBarWidth": 0,
             "auxiliarySideBarWidth": 0,
             "statusBarHeight": 22,
             "windowBorder": false
@@ -1706,58 +1571,15 @@
     },
     "windowsState": {
         "lastActiveWindow": {
-            "folder": "file:///Users/elliot/code/metamask/extension-port-stream",
-            "backupPath": "/Users/elliot/Library/Application Support/Cursor/Backups/cf3bd5a9c8e27bb1eb305887d6982e8a",
+            "backupPath": "/Users/elliot/Library/Application Support/Cursor/Backups/1760036029744",
             "uiState": {
                 "mode": 1,
                 "x": 0,
-                "y": 25,
-                "width": 2560,
-                "height": 1415,
-                "isAgentWindow": false
+                "y": 34,
+                "width": 1728,
+                "height": 1083
             }
         },
-        "openedWindows": [
-            {
-                "folder": "file:///Users/elliot/code/metamask/extension-port-stream",
-                "backupPath": "/Users/elliot/Library/Application Support/Cursor/Backups/cf3bd5a9c8e27bb1eb305887d6982e8a",
-                "uiState": {
-                    "mode": 1,
-                    "x": 0,
-                    "y": 25,
-                    "width": 2560,
-                    "height": 1415,
-                    "isAgentWindow": false
-                }
-            },
-            {
-                "folder": "file:///Users/elliot/code/metamask/extension-port-stream",
-                "backupPath": "/Users/elliot/Library/Application Support/Cursor/Backups/cf3bd5a9c8e27bb1eb305887d6982e8a",
-                "uiState": {
-                    "mode": 1,
-                    "x": 0,
-                    "y": 38,
-                    "width": 1728,
-                    "height": 1079,
-                    "isAgentWindow": true
-                }
-            }
-        ]
-    },
-    "windowSplashWorkspaceOverride": {
-        "layoutInfo": {
-            "auxiliarySideBarWidth": [
-                400,
-                [
-                    "51bc1a3370b150ed2e5736a8f6ba5315",
-                    "aef2024efb3bf07da238525923d225bc",
-                    "f1e08e59ce562f813b19078c0b7bf99a",
-                    "c61926cc239862c0e2ca8709aa9c2166",
-                    "aff2a38ba5fe85ee14fe9339455fc9c0",
-                    "336430ad9cb3233720b9f24d260d4b6e",
-                    "89fcd627c5b45d6b61367bcbb6339f06"
-                ]
-            ]
-        }
+        "openedWindows": []
     }
 }
