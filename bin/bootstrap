@@ -187,6 +187,7 @@ for app in \
   homebrew/cask/font-fira-code \
   homebrew/cask/font-caskaydia-mono-nerd-font \
   google-chrome \
+  istat-menus \
   iterm2 \
   moom \
   ngrok \
