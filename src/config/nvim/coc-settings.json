@@ -1,5 +1,5 @@
 {
-  "[astro][css][ghmarkdown][javascript][javascriptreact][json][markdown][ruby][rust][scss][typescript][typescriptreact][vue]": {
+  "[css][ghmarkdown][javascript][javascriptreact][json][markdown][ruby][rust][scss][typescript][typescriptreact][vue]": {
     "coc.preferences.formatOnSave": true,
   },
   "coc.preferences.formatOnType": false,
@@ -17,7 +17,6 @@
   "eslint.fixOnSaveTimeout": 10000,
   "eslint.format.enable": true,
   "eslint.probe": [
-    "astro",
     "css",
     "javascript",
     "javascriptreact",
@@ -32,7 +31,6 @@
   ],
   "eslint.trace.server": "verbose",
   "eslint.validate": [
-    "astro",
     "css",
     "ghmarkdown",
     "javascript",
@@ -55,7 +53,6 @@
   "javascript.suggestionActions.enabled": false,
   "javascript.validate.enable": true,
   "json.format.enable": false,
-  "prettier.documentSelectors": ["**/*.astro"],
   "prettier.requireConfig": true,
   "signature.enable": false,
   "stylelintplus.autoFixOnSave": false,
