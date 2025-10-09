@@ -78,9 +78,17 @@ create-launch-agents-and-daemons() {
   fi
 }
 
+sync-cursor-extensions() {
+  if which cursor &>/dev/null; then
+    banner "Syncing Cursor extensions"
+    "$DOTFILES_PROJECT_DIR"/scripts/sync-cursor-extensions.sh
+  fi
+}
+
 main() {
   set-git-name-and-email
   create-launch-agents-and-daemons
+  sync-cursor-extensions
 
   success "Done!"
 }
