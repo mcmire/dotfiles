@@ -17,44 +17,55 @@ error() {
   print-with-color 31 "ERROR:" "$@" $'\n'
 }
 
-get-scored-project-directories-matching() {
-  local project_directory="$1"
-  zoxide query -l -s "$project_directory" 2>/dev/null
-}
-
-get-all-scored-project-directories() {
-  local project_directory
-
-  find ~/code -mindepth 2 -maxdepth 2 -type d |
-    while read -r project_directory; do
-      get-scored-project-directories-matching "$project_directory"
-    done
-}
-
-get-all-or-matching-scored-project-directories() {
-  local project_directory="$1"
-  local matching_scored_project_directories
-
-  if [[ -n "$project_directory" ]]; then
-    matching_scored_project_directories="$(get-scored-project-directories-matching "$project_directory")"
-  fi
-
-  if [[ -n "$matching_scored_project_directories" ]]; then
-    echo "$matching_scored_project_directories"
-  else
-    get-all-scored-project-directories
-  fi
-}
-
 search-for-project() {
-  local project_directory="$1"
+  zoxide query --list --score "$1"
+}
 
-  if [[ -d "$project_directory" ]]; then
-    echo "$project_directory"
+get-project-candidate-with-score() {
+  local match
+
+  while read -r query; do
+    match="$(search-for-project "$query")"
+
+    if [[ -n "$match" ]]; then
+      echo "$match"
+    elif [[ -d "$query" ]]; then
+      echo "  -1.0 $query"
+    fi
+  done
+}
+
+get-all-projects() {
+  find ~/code -mindepth 2 -maxdepth 2 -type d "$@"
+}
+
+get-project-candidates-with-scores() {
+  local query="$1"
+  local matches
+
+  if [[ -z "$query" ]]; then
+    # TODO: This is slow, is there a faster way to get the zoxide directory?
+    get-all-projects | get-project-candidate-with-score
   else
-    get-all-or-matching-scored-project-directories "$project_directory" | \
+    matches="$(search-for-project "$query")"
+
+    if [[ -n "$matches" ]]; then
+      echo "$matches"
+    else
+      get-all-projects -name "$query" | get-project-candidate-with-score
+    fi
+  fi
+}
+
+select-project() {
+  local query="$1"
+
+  if [[ -d "$query" ]]; then
+    echo "$query"
+  else
+    get-project-candidates-with-scores "$query" | \
       sort --key 1 --numeric-sort --reverse | \
-      fzf --query "$project_directory" --no-sort --select-1 --exit-0 | \
+      fzf --query "$query" --no-sort --select-1 --exit-0 | \
       awk '{print $2}'
   fi
 }
@@ -62,11 +73,6 @@ search-for-project() {
 switch-to-guaranteed-tmux-session() {
   local tmux_session_name="$1"
   local project_directory="$2"
-
-  # "Adding" is a misnomer here; we're just bumping the rank so the next time we
-  # switch, this directory will be at the bottom of the fzf list (and will thus
-  # be the one selected)
-  zoxide add "$project_directory"
 
   if ! tmux has-session -t "=$tmux_session_name" &>/dev/null; then
     # -d prevents attaching to the current terminal (we will do that next)
@@ -76,7 +82,7 @@ switch-to-guaranteed-tmux-session() {
 }
 
 main() {
-  local given_project_directory="$1"
+  local query="$1"
 
   if [[ -z "$TMUX" ]]; then
     error "It appears you are not in an active tmux session."
@@ -84,17 +90,19 @@ main() {
     exit 1
   fi
 
-  local resolved_project_directory="$(search-for-project "$given_project_directory")"
-  echo "Resolved project directory: $resolved_project_directory"
+  local resolved_project_directory="$(select-project "$query")"
 
   if [[ -z "$resolved_project_directory" ]]; then
-    # User must have canceled the fzf, or there were no matches. Silently abort.
-    exit 0
+    error "Could not find a project matching '$query'."
+    exit 1
   fi
 
-  local tmux_session_name="$(basename "$resolved_project_directory" | tr . _)"
-  echo "Generated tmux session name: $tmux_session_name"
+  # "Adding" is a misnomer here; we're just bumping the rank so the next time we
+  # switch, this directory will be at the bottom of the fzf list (and will thus
+  # be the one selected)
+  zoxide add "$resolved_project_directory"
 
+  local tmux_session_name="$(basename "$resolved_project_directory" | tr . _)"
   switch-to-guaranteed-tmux-session "$tmux_session_name" "$resolved_project_directory"
 }
 
