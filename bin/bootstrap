@@ -171,6 +171,7 @@ for pkg in \
   tree \
   universal-ctags \
   watchexec \
+  watchman \
   yq \
   zoxide \
   creativeprojects/tap/resticprofile \
