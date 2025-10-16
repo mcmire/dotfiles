@@ -26,37 +26,62 @@ alias ba="b && be appraisal install"
 
 #== Git ==
 
-alias gA="g add -A ."
-alias gP="g pull"
-alias gPr="gP --rebase"
-alias gR="g reset --hard"
-alias gRhu="gR HEAD~"
-alias ga="g add -A"
-alias gb="g branch"
-alias gbd="git delete-branch-and-remote"
-alias gbm="gb --move --force"
-alias gbr="git branches"
-alias gc="g commit --verbose --no-verify"
-alias gca="gc --amend"
-alias gcan="gc --amend --no-edit"
-alias gcm="gc --message"
+# Checking out
 alias gco="git checkout"
 alias gcob="gco --branch"
-alias gcp="git cherry-pick"
+
+# Adding
+alias ga="g add -A"
+alias gA="g add -A ."
+
+# Removing
+alias grm="g rm"
+
+# Committing
+alias gc="g commit --verbose --no-verify"
+alias gcm="gc --message"
+alias gca="gc --amend"
+alias gcan="gc --amend --no-edit"
+
+# Pulling
+alias gp="g pull"
+alias gpr="gP --rebase"
+
+# Pushing
+alias gP="g push"
+alias gPf="gp --force"
+
+# Resetting
+alias gR="g reset --hard"
+alias gRhu="gR HEAD~"
+alias grhu="g reset HEAD~"
+
+# Branches
+alias gb="g branch"
+alias gbr="git branches"
+alias gbd="git delete-branch-and-remote"
+alias gbm="gb --move --force"
+
+# Diffing
 alias gd="git diff"
 alias gdc="gd --cached"
+
+# Logging
 alias gl="g log"
+
+# Cherry picking
+alias gcp="git cherry-pick"
+
+# Merging
 alias gm="g merge --ff-only"
 alias gma="g merge --abort"
 alias gmc="g merge --continue"
-alias gp="g push"
-alias gpf="gp --force"
+
+# Rebasing
 alias gr="g rebase"
 alias gra="gr --abort"
 alias grc="gr --continue"
-alias grhu="g reset HEAD~"
 alias gri="gr --interactive"
-alias grm="g rm"
 alias grs="gr --skip"
 
 #== Zeus ==
