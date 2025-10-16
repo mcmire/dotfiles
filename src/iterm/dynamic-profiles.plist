@@ -2,8 +2,8 @@
   "Profiles" : [
     {
       "Rewritable" : true,
+      "Scrollback Lines" : 0,
       "Guid" : "BD0100B7-4929-4053-8104-023ABBF4D339",
-      "Normal Font" : "CascadiaCode-Regular 14",
       "Selected Text Color" : {
         "Red Component" : 0.34509803921568627,
         "Color Space" : "sRGB",
@@ -18,17 +18,17 @@
         "Blue Component" : 0.45882352941176469,
         "Green Component" : 0.43137254901960786
       },
-      "Foreground Color" : {
-        "Red Component" : 0.396078431372549,
-        "Color Space" : "sRGB",
-        "Blue Component" : 0.51372549019607838,
-        "Green Component" : 0.4823529411764706
-      },
       "Selection Color" : {
         "Red Component" : 0.93333333333333335,
         "Color Space" : "sRGB",
         "Blue Component" : 0.83529411764705885,
         "Green Component" : 0.90980392156862744
+      },
+      "Foreground Color" : {
+        "Red Component" : 0.396078431372549,
+        "Color Space" : "sRGB",
+        "Blue Component" : 0.51372549019607838,
+        "Green Component" : 0.4823529411764706
       },
       "Background Color" : {
         "Red Component" : 0.99215686274509807,
@@ -36,7 +36,6 @@
         "Blue Component" : 0.8901960784313725,
         "Green Component" : 0.96470588235294119
       },
-      "Non Ascii Font" : "SymbolsNFM 14",
       "Cursor Text Color" : {
         "Red Component" : 0.93333333333333335,
         "Color Space" : "sRGB",
@@ -52,8 +51,8 @@
     },
     {
       "Use Separate Colors for Light and Dark Mode" : false,
-      "Rewritable" : true,
       "Name" : "Solarized Dark",
+      "Rewritable" : true,
       "Guid" : "AF757F2E-86DA-43FE-AA63-D6368E1DBA2B"
     }
   ]
