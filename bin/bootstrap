@@ -153,6 +153,7 @@ for pkg in \
   coreutils \
   direnv \
   fzf \
+  gh \
   git \
   git-delta \
   grip \
