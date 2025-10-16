@@ -162,6 +162,10 @@ yw() {
   yarn $command "$@"
 }
 
+ywa() {
+  yarn workspaces foreach --all --no-private --parallel --verbose "$@"
+}
+
 ywd() {
   yw "$1" run since-latest-release -- diff
 }
