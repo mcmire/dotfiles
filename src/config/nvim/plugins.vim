@@ -70,5 +70,6 @@ Plug 'wuelnerdotexe/vim-astro', { 'branch': 'main' }
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'jeetsukumaran/vim-markology'
 Plug 'junegunn/goyo.vim'
+Plug 'lervag/lists.vim'
 Plug 'reedes/vim-pencil'
 Plug 'tpope/vim-rails'
