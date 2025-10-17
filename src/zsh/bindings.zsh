@@ -37,50 +37,56 @@ bindkey -M viins '^X,' _history-complete-newer \
                  '^X`' _bash_complete-word
 
 # Switch the cursor between line and block modes when going between command and
-# insert mode
+# insert mode.
+#
+# This was cobbled together from ChatGPT and also this source:
+#
+# - <https://unix.stackexchange.com/questions/433273/changing-cursor-style-based-on-mode-in-both-zsh-and-vim>
+#
+# We are using an ANSI escape seqeunce to set the cursor shape. Different
+# terminals and terminal multiplexers have different levels of support for ANSI
+# escape sequences. See here for some background info:
+#
+# - <https://jvns.ca/blog/2025/03/07/escape-code-standards/>
+# - <https://iterm2.com/documentation-escape-codes.html>
+# - <https://github.com/tmux/tmux/blob/882fb4d295deb3e4b803eb444915763305114e4f/tools/ansicode.txt>
+#
+# Setting the cursor shape used to be complicated, but is much improved on
+# recent versions of tmux because it passes escape sequences through by default:
+#
+# - <https://github.com/tmux/tmux/wiki/FAQ#what-is-the-passthrough-escape-sequence-and-how-do-i-use-it>
+#
+# Some old resources which may or may not be relevant:
+#
+# - <http://micahelliott.com/posts/2015-07-20-vim-zsh-tmux-cursor.html>
+# - <http://stackoverflow.com/questions/30985436/>
+# - <https://bbs.archlinux.org/viewtopic.php?id=95078>
+# - <http://unix.stackexchange.com/questions/115009/>
+# - <https://vt100.net/docs/vt510-rm/DECSCUSR.html>
+# - <https://github.com/jszakmeister/vim-togglecursor/blob/master/plugin/togglecursor.vim>
 
-# Modal cursor color for vi's insert/normal modes.
-# * http://micahelliott.com/posts/2015-07-20-vim-zsh-tmux-cursor.html
-# * http://stackoverflow.com/questions/30985436/
-# * https://bbs.archlinux.org/viewtopic.php?id=95078
-# * http://unix.stackexchange.com/questions/115009/
-# * https://vt100.net/docs/vt510-rm/DECSCUSR.html
-# * https://github.com/jszakmeister/vim-togglecursor/blob/master/plugin/togglecursor.vim
-zle-line-init () {
-  zle -K viins
-  echo -ne "\033]12;Gray\007"
-  # "6" changes to an underline
-  echo -ne "\033[6 q"
-
-  #zle reset-prompt
-  #zle -R
+zle-keymap-select() {
+  case $KEYMAP in
+    vicmd)
+      # Switch to a block
+      print -n '\e[2 q'
+      ;;
+    viins|main|)
+      # Switch to a line
+      print -n '\e[6 q'
+      ;;
+  esac
 }
+
+zle-line-init() {
+  # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
+  zle -K viins
+  # Default cursor is a line
+  print -n '\e[6 q'
+}
+
+zle -N zle-keymap-select
 zle -N zle-line-init
 
-zle-keymap-select () {
-  if [[ $KEYMAP == vicmd ]]; then
-    if [[ -n $TMUX ]]; then
-      printf "\033Ptmux;\033\033]12;red\007\033\\"
-      # "2" changes to a block
-      printf "\033Ptmux;\033\033[2 q\033\\"
-    else
-      printf "\033]12;Green\007"
-      # "2" changes to a block
-      printf "\033[2 q"
-    fi
-  else
-    if [[ -n $TMUX ]]; then
-      printf "\033Ptmux;\033\033]12;grey\007\033\\"
-      # "6" changes to n line
-      printf "\033Ptmux;\033\033[6 q\033\\"
-    else
-      printf "\033]12;Grey\007"
-      # "6" changes to an underline
-      printf "\033[6 q"
-    fi
-  fi
-
-  #zle reset-prompt
-  #zle -R
-}
-zle -N zle-keymap-select
+# Reset to line cursor on exit
+trap 'print -n "\e[6 q"' EXIT
