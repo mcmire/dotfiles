@@ -2,6 +2,6 @@ return {
   'LucasTavaresA/simpleIndentGuides.nvim',
   event = 'VimEnter',
   config = function()
-    require('simpleIndentGuides').setup '┊'
+    require('simpleIndentGuides').setup '│'
   end,
 }

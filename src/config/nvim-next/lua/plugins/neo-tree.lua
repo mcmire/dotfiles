@@ -2,8 +2,8 @@ return {
   'nvim-neo-tree/neo-tree.nvim',
   dependencies = {
     'nvim-lua/plenary.nvim',
-    'nvim-tree/nvim-web-devicons',
     'MunifTanjim/nui.nvim',
+    'nvim-tree/nvim-web-devicons',
   },
   -- neo-tree lazily loads itself
   lazy = false,
@@ -22,7 +22,26 @@ return {
     },
   },
   opts = {
+    enable_git_status = false,
     default_component_configs = {
+      popup_border_style = 'NC',
+      icon = {
+        folder_closed = ' ',
+        folder_open = ' ',
+        folder_empty = '󰜌 ',
+        provider = function(icon, node)
+          if node.type == 'file' or node.type == 'terminal' then
+            local success, web_devicons = pcall(require, 'nvim-web-devicons')
+            local name = node.type == 'terminal' and 'terminal' or node.name
+            if success then
+              local devicon, hl = web_devicons.get_icon(name)
+              icon.text = (devicon or icon.text) .. ' '
+              icon.highlight = hl or icon.highlight
+            end
+          end
+        end,
+        default = '',
+      },
       git_status = {
         symbols = {
           -- Change type
