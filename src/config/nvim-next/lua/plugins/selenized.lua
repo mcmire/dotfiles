@@ -44,6 +44,8 @@ return {
 
     -- Color indent lines
     vim.cmd('highlight Whitespace guifg=' .. selenized.colors.bg_2)
+    vim.cmd('highlight IndentLine guifg=' .. selenized.colors.bg_2)
+    vim.cmd('highlight IndentLineCurrent guifg=' .. selenized.colors.dim_0)
     -- Color neo-tree title bar
     vim.cmd('highlight NeoTreeTitleBar guifg=' .. selenized.colors.bg_0 .. ' guibg=' .. selenized.colors.blue)
     -- Color neo-tree directory
