@@ -2,17 +2,6 @@
 -- Options
 -- ******************************
 
--- Always show line numbers
--- NOTE: Sometimes after Lazy opens, line numbers disappear.
--- We use an autocmd to fix this.
-vim.api.nvim_create_autocmd('BufReadPost', {
-  desc = 'Ensure line numbers are enabled',
-  group = vim.api.nvim_create_augroup('custom-ensure-line-numbers', { clear = true }),
-  callback = function()
-    vim.o.number = true
-  end,
-})
-
 -- Don't show splash screen when Vim starts
 vim.opt.shortmess:append { I = true }
 
@@ -21,6 +10,11 @@ vim.o.exrc = true
 
 -- Treat dashes as valid word characters
 vim.opt.iskeyword:append { '-' }
+
+-- Reduce updatetime
+-- This also affects how fast CursorHold fires, which affects how fast words
+-- under the cursor are highlighted (see `nvim-lspconfig.lua`)
+vim.o.updatetime = 250
 
 -- Don't load netrw
 -- vim.g.loaded_netrw = 1
