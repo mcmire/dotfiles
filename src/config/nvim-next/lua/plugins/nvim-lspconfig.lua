@@ -93,6 +93,7 @@ return {
         -- The following two autocommands to highlight references of the word
         -- under the cursor after resting for a little while, and then clearing
         -- them after the cursor is moved
+        --[[
         local client = vim.lsp.get_client_by_id(event.data.client_id)
         if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
           local highlight_augroup = vim.api.nvim_create_augroup('custom-lsp-highlight', { clear = false })
@@ -116,6 +117,7 @@ return {
             end,
           })
         end
+        ]]
 
         -- Toggle inlay hints in your code, if the language server you are using
         -- supports them. Use with caution.
