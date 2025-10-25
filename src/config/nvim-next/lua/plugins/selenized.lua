@@ -42,14 +42,18 @@ return {
     vim.o.background = 'dark'
     vim.cmd 'colorscheme selenized'
 
+    -- Color floats
+    vim.cmd('highlight NormalFloat guifg=' .. selenized.colors.fg_0 .. ' guibg=' .. selenized.colors.bg_0)
     -- Color indent lines
     vim.cmd('highlight Whitespace guifg=' .. selenized.colors.bg_2)
     vim.cmd('highlight IndentLine guifg=' .. selenized.colors.bg_2)
-    vim.cmd('highlight IndentLineCurrent guifg=' .. selenized.colors.dim_0)
+    vim.cmd('highlight IndentLineCurrent guifg=' .. selenized.colors.bg_2)
     -- Color neo-tree title bar
     vim.cmd('highlight NeoTreeTitleBar guifg=' .. selenized.colors.bg_0 .. ' guibg=' .. selenized.colors.blue)
     -- Color neo-tree directory
     vim.cmd('highlight NeoTreeDirectoryIcon guifg=' .. selenized.colors.blue)
     vim.cmd('highlight NeoTreeDirectoryName guifg=' .. selenized.colors.blue)
+    -- Color render-markdown
+    vim.cmd('highlight RenderMarkdownDash guifg=' .. selenized.colors.dim_0 .. ' guibg=' .. selenized.colors.bg_2)
   end,
 }
