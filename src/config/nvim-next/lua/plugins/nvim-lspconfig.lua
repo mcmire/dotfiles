@@ -150,6 +150,7 @@ return {
           [vim.diagnostic.severity.HINT] = '󰌶 ',
         },
       } or {},
+      --[[
       virtual_text = {
         source = 'if_many',
         spacing = 2,
@@ -163,6 +164,8 @@ return {
           return diagnostic_message[diagnostic.severity]
         end,
       },
+      ]]
+      virtual_text = false,
     }
 
     -- LSP servers and clients are able to communicate to each other what
