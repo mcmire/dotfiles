@@ -10,6 +10,7 @@
 
 require 'start' -- was "magic"
 require 'globals'
+--require 'lsp-hover'
 require 'plugins'
 require 'basic-settings'
 -- require 'colors'

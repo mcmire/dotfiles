@@ -75,7 +75,14 @@ return {
         map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
         -- Show documentation
-        -- map('K', vim.lsp.buf.hover, 'Show documentation')
+        -- NOTE: Neovim already defines this but we want to customize the
+        -- floating window
+        -- vim.keymap.set('n', 'K', function()
+        --   vim.lsp.buf.hover { offset_x = 2, offset_y = 2 }
+        -- end, { buffer = event.buf, desc = 'LSP: Show documentation', remap = true })
+
+        -- Show diagnostics in a floating window
+        vim.keymap.set('n', '<Leader>d', '<C-w>d', { buffer = event.buf, desc = 'LSP: Show [D]iagnostics', remap = true })
 
         -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
         ---@param client vim.lsp.Client
