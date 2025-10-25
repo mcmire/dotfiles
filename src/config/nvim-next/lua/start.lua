@@ -55,3 +55,13 @@ vim.api.nvim_create_autocmd('BufReadPost', {
     vim.o.number = true
   end,
 })
+
+-- When we're editing a file, new diagnostics and signs may appear and
+-- disappear, and we don't want the sign column popping in and out
+vim.api.nvim_create_autocmd('BufReadPost', {
+  desc = 'Ensure line numbers are enabled',
+  group = vim.api.nvim_create_augroup('custom-ensure-sign-column-visible', { clear = true }),
+  callback = function()
+    vim.o.signcolumn = 'yes:1'
+  end,
+})
