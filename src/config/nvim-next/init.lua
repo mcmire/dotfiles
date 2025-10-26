@@ -13,7 +13,7 @@ require 'globals'
 --require 'lsp-hover'
 require 'plugins'
 require 'basic-settings'
--- require 'colors'
+--require 'colors'
 require 'whitespace-settings'
 require 'line-wrapping-settings'
 -- NOTE: search settings were removed
