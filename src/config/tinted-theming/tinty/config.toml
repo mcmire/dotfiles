@@ -1,0 +1,8 @@
+[[items]]
+path = "https://github.com/tinted-theming/tinted-terminal"
+name = "tinted-terminal"
+themes-dir = "themes/iterm2"
+hook = '''
+~/.iterm/apply-tinty-colorscheme.py
+'''
+supported-systems = ["base16", "base24"]
