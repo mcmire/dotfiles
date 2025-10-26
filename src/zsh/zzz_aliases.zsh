@@ -16,7 +16,7 @@ alias olhc="open-latest-html-capture"
 alias olic="open-latest-image-capture"
 alias ll="ls -l"
 alias o=open-project
-alias newvim="NVIM_APPNAME=nvim-kickstart nvim"
+alias nvim-next="NVIM_APPNAME=nvim-next nvim"
 
 #== Bundle ==
 
