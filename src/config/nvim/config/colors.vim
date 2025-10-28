@@ -48,7 +48,7 @@ function! VimColorTest(outfile, fgend, bgend)
   source %
 endfunction
 
-command! VimColorTest call VimColorTest('/tmp/vim-color-test.tmp', 255, 255)
+command! VimColorTest call VimColorTest('/tmp/vim-color-test.tmp', 16, 16)
 
 " Solarized has two modes: dark and light. The colors between them are are
 " mostly the same except for two sets of four colors which swap places. The

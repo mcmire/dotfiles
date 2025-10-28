@@ -153,7 +153,7 @@ async def update_iterm_profile(
         await iterm_profile.async_set_ansi_14_color(hex_to_iterm_color(colors['base15']))  # Bright Cyan
     else:
         # Base16: Reuse base colors for bright variants
-        await iterm_profile.async_set_ansi_8_color(hex_to_iterm_color(colors['base13']))   # Bright Black
+        await iterm_profile.async_set_ansi_8_color(hex_to_iterm_color(colors['base03']))   # Bright Black
         await iterm_profile.async_set_ansi_9_color(hex_to_iterm_color(colors['base08']))   # Bright Red
         await iterm_profile.async_set_ansi_10_color(hex_to_iterm_color(colors['base0B']))  # Bright Green
         await iterm_profile.async_set_ansi_11_color(hex_to_iterm_color(colors['base0A']))  # Bright Yellow (Orange)
