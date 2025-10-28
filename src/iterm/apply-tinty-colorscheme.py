@@ -126,6 +126,15 @@ async def update_iterm_profile(
     """
 
     is_base24 = 'base10' in colors
+
+    # We could follow Tinted's recommendations here, but we are choosing:
+    #
+    # - base00 -> ansi 0
+    # - base04 -> ansi 8
+    # - base05 -> ansi 7
+    # - base07 -> ansi 15
+    #
+    # Note that we are effectively ignoring base10 and base11 for Base24.
     
     # Background and foreground
     await iterm_profile.async_set_background_color(hex_to_iterm_color(colors['base00']))
@@ -144,7 +153,7 @@ async def update_iterm_profile(
     # ANSI color mapping
     if is_base24:
         # Base24: Use base10-base17 for bright variants
-        await iterm_profile.async_set_ansi_8_color(hex_to_iterm_color(colors['base10']))   # Bright Black
+        await iterm_profile.async_set_ansi_8_color(hex_to_iterm_color(colors['base04']))   # Bright Black
         await iterm_profile.async_set_ansi_9_color(hex_to_iterm_color(colors['base12']))   # Bright Red
         await iterm_profile.async_set_ansi_10_color(hex_to_iterm_color(colors['base14']))  # Bright Green
         await iterm_profile.async_set_ansi_11_color(hex_to_iterm_color(colors['base13']))  # Bright Yellow (Orange)
@@ -153,7 +162,7 @@ async def update_iterm_profile(
         await iterm_profile.async_set_ansi_14_color(hex_to_iterm_color(colors['base15']))  # Bright Cyan
     else:
         # Base16: Reuse base colors for bright variants
-        await iterm_profile.async_set_ansi_8_color(hex_to_iterm_color(colors['base03']))   # Bright Black
+        await iterm_profile.async_set_ansi_8_color(hex_to_iterm_color(colors['base04']))   # Bright Black
         await iterm_profile.async_set_ansi_9_color(hex_to_iterm_color(colors['base08']))   # Bright Red
         await iterm_profile.async_set_ansi_10_color(hex_to_iterm_color(colors['base0B']))  # Bright Green
         await iterm_profile.async_set_ansi_11_color(hex_to_iterm_color(colors['base0A']))  # Bright Yellow (Orange)

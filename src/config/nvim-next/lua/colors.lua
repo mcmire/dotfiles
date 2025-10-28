@@ -8,25 +8,6 @@
 -- Source: <https://github.com/neovim/neovim/issues/32116>
 local this_file_path = debug.getinfo(1, 'S').source:sub(2)
 
--- Test truecolor support
-local function vim_color_test(outfile, fgend, bgend)
-  local result = {}
-  for fg = 0, fgend - 1 do
-    for bg = 0, bgend - 1 do
-      local kw = string.format('%-7s', string.format('c_%d_%d', fg, bg))
-      local h = string.format('hi %s ctermfg=%d ctermbg=%d', kw, fg, bg)
-      local s = string.format('syn keyword %s %s', kw, kw)
-      table.insert(result, string.format('%-32s | %s', h, s))
-    end
-  end
-  vim.fn.writefile(result, outfile)
-  vim.cmd('edit ' .. outfile)
-  vim.cmd 'source %'
-end
-vim.api.nvim_create_user_command('VimColorTest', function()
-  vim_color_test('/tmp/vim-color-test.tmp', 16, 16)
-end, {})
-
 local function tablelength(T)
   local count = 0
   for _ in pairs(T) do
@@ -46,6 +27,7 @@ M.highlight = setmetatable({}, {
 
     local guifg, guibg, gui, guisp = args.guifg or nil, args.guibg or nil, args.gui or nil, args.guisp or nil
     local ctermfg, ctermbg = args.ctermfg or nil, args.ctermbg or nil
+    local bold, italic, underline = args.bold or false, args.italic or false, args.underline or false
     local val = {}
     if guifg then
       val.fg = guifg
@@ -59,6 +41,9 @@ M.highlight = setmetatable({}, {
     if ctermbg then
       val.ctermbg = ctermbg
     end
+    val.bold = bold
+    val.italic = italic
+    val.underline = underline
     if guisp then
       val.sp = guisp
     end
@@ -91,6 +76,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   pattern = { this_file_path },
   group = vim.api.nvim_create_augroup('custom-reload-colors', { clear = false }),
   callback = function()
+    vim.cmd 'echo "Reloading colors"'
     vim.cmd('source "' .. this_file_path .. '"')
   end,
 })
@@ -154,12 +140,12 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 --
 M.colors = {
   cterm00 = 0, -- Background
-  cterm01 = 0, -- Darkest Gray
-  cterm02 = 7, -- Bright Black
-  cterm03 = 7, -- Gray
+  cterm01 = 0, -- (Darkest Gray)
+  cterm02 = 0, -- (Bright Black)
+  cterm03 = 8, -- Gray
   cterm04 = 8, -- Light Gray (0 + bold?)
-  cterm05 = 8, -- Foreground (0 + bold?)
-  cterm06 = 15, -- White (7 + bold?)
+  cterm05 = 7, -- (Foreground) (0 + bold?)
+  cterm06 = 15, -- (White) (7 + bold?)
   cterm07 = 15, -- Bright White (7 + bold?)
   cterm08 = 1, -- Red
   cterm09 = 3, -- Orange
@@ -189,7 +175,6 @@ hi.Normal = {
   ctermfg = M.colors.cterm05,
   ctermbg = M.colors.cterm00,
 }
---[[
 hi.Bold = { guifg = nil, guibg = nil, gui = 'bold', guisp = nil, ctermfg = nil, ctermbg = nil }
 hi.Debug = { guifg = M.colors.base08, guibg = nil, gui = nil, guisp = nil, ctermfg = M.colors.cterm08, ctermbg = nil }
 hi.Directory = { guifg = M.colors.base0D, guibg = nil, gui = nil, guisp = nil, ctermfg = M.colors.cterm0D, ctermbg = nil }
@@ -410,20 +395,20 @@ hi.TabLineFill = {
   ctermbg = M.colors.cterm01,
 }
 hi.TabLineSel = {
-  guifg = M.colors.base0B,
-  guibg = M.colors.base01,
+  guifg = M.colors.base01,
+  guibg = M.colors.base0B,
   gui = 'none',
   guisp = nil,
-  ctermfg = M.colors.cterm0B,
-  ctermbg = M.colors.cterm01,
+  ctermfg = M.colors.cterm0A,
+  ctermbg = M.colors.cterm00,
+  bold = true,
+  underline = true,
 }
-]]
 
 -- Standard syntax highlighting
 hi.Boolean = { guifg = M.colors.base09, guibg = nil, gui = nil, guisp = nil, ctermfg = M.colors.cterm09, ctermbg = nil }
---[[
 hi.Character = { guifg = M.colors.base08, guibg = nil, gui = nil, guisp = nil, ctermfg = M.colors.cterm08, ctermbg = nil }
-hi.Comment = { guifg = M.colors.base03, guibg = nil, gui = nil, guisp = nil, ctermfg = M.colors.cterm03, ctermbg = nil }
+hi.Comment = { guifg = M.colors.base03, guibg = nil, gui = nil, guisp = nil, ctermfg = M.colors.cterm03, ctermbg = nil, italic = true }
 hi.Conditional = { guifg = M.colors.base0E, guibg = nil, gui = nil, guisp = nil, ctermfg = M.colors.cterm0E, ctermbg = nil }
 hi.Constant = { guifg = M.colors.base09, guibg = nil, gui = nil, guisp = nil, ctermfg = M.colors.cterm09, ctermbg = nil }
 hi.Define = { guifg = M.colors.base0E, guibg = nil, gui = 'none', guisp = nil, ctermfg = M.colors.cterm0E, ctermbg = nil }
@@ -455,7 +440,6 @@ hi.Todo = {
 }
 hi.Type = { guifg = M.colors.base0A, guibg = nil, gui = 'none', guisp = nil, ctermfg = M.colors.cterm0A, ctermbg = nil }
 hi.Typedef = { guifg = M.colors.base0A, guibg = nil, gui = nil, guisp = nil, ctermfg = M.colors.cterm0A, ctermbg = nil }
-]]
 
 -- Diff highlighting
 hi.DiffAdd = {
