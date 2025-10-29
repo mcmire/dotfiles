@@ -29,7 +29,7 @@ require('lazy').setup {
     --require 'plugins.simpleIndentGuides',
     require 'plugins.splitjoin',
     --require 'plugins.telescope',
-    --require 'plugins.tinted',
+    require 'plugins.tinted',
     --require 'plugins.todo-comments',
     require 'plugins.which-key',
   },

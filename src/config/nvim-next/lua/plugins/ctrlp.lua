@@ -2,7 +2,7 @@ return {
   'ctrlpvim/ctrlp.vim',
   -- It's already lazy
   lazy = false,
-  config = function()
+  init = function()
     -- We position Ctrl-P at the top, set the maximum number of matches to 20, and
     -- have better matches appear before worse ones:
     vim.g.ctrlp_match_window_bottom = 0
