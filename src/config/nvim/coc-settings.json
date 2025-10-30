@@ -64,5 +64,6 @@
   "typescript.preferences.importModuleSpecifier": "project-relative",
   "typescript.suggest.enabled": false,
   "typescript.suggest.completeFunctionCalls": false,
-  "typescript.suggestionActions.enabled": false
+  "typescript.suggestionActions.enabled": false,
+  "typescript.autoClosingTags": false
 }
