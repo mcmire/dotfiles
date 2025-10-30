@@ -78,5 +78,8 @@
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "rewrap.autoWrap.enabled": true,
-  "editor.rulers": [80]
+  "editor.rulers": [80],
+  "vim.leader": ",",
+  "vim.highlightedyank.enable": true,
+  "vim.highlightedyank.color": "rgba(250, 240, 170, 0.25)"
 }
