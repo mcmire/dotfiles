@@ -15,6 +15,7 @@ Loosely inspired by:
 * <https://grrr.tech/posts/2020/switch-dark-mode-os/>
 """
 
+import argparse
 import asyncio
 import subprocess
 import yaml
@@ -244,10 +245,23 @@ async def globally_set_iterm_profile(
 async def main(iterm_connection):
     """The entrypoint to this script."""
 
-    tinty_color_scheme = get_current_tinty_color_scheme()
-    iterm_profile = await find_iterm_profile(tinty_color_scheme.name, iterm_connection)
-    await update_iterm_profile(iterm_profile, tinty_color_scheme.colors)
-    await globally_set_iterm_profile(iterm_profile, iterm_connection)
+    parser = argparse.ArgumentParser(description='Sync Tinty colorscheme to iTerm2')
+    parser.add_argument('--verify', metavar='COLORSCHEME',
+                        help='Verify that the iTerm profile exists for the given colorscheme without updating it')
+    args = parser.parse_args()
+
+    if args.verify:
+        # Verify mode: use the provided colorscheme name
+        colorscheme_name = args.verify
+        print(f"Verifying iTerm profile for colorscheme: {colorscheme_name}")
+        iterm_profile = await find_iterm_profile(colorscheme_name, iterm_connection)
+        print(f"iTerm profile for colorscheme {colorscheme_name} exists")
+    else:
+        # Normal mode: get current Tinty colorscheme and apply it
+        tinty_color_scheme = get_current_tinty_color_scheme()
+        iterm_profile = await find_iterm_profile(tinty_color_scheme.name, iterm_connection)
+        await update_iterm_profile(iterm_profile, tinty_color_scheme.colors)
+        await globally_set_iterm_profile(iterm_profile, iterm_connection)
 
 
 iterm2.run_until_complete(main)

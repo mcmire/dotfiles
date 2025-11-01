@@ -1,1 +1,3 @@
-hooks = ["~/.tinty/apply-colorscheme.sh"]
+# Define something so that tinted-terminal won't be used,
+# but also do nothing
+hooks = []
