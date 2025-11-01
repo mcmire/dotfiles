@@ -1,1 +1,1 @@
-hooks = ["~/.iterm/apply-tinty-colorscheme.py", "~/.tmux/apply-tinty-colorscheme.sh"]
+hooks = ["~/.tinty/apply-colorscheme.sh"]
