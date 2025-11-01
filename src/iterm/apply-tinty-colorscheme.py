@@ -210,7 +210,6 @@ async def find_iterm_profile(name, iterm_connection) -> iterm2.PartialProfile:
     """Find an iTerm profile by the given name, or raise an error."""
 
     partial_iterm_profiles = await iterm2.PartialProfile.async_query(iterm_connection)
-    iterm_profile = None
 
     for partial_iterm_profile in partial_iterm_profiles:
         if partial_iterm_profile.name == name:
