@@ -36,3 +36,4 @@ I haven't been keeping a changelog for these dotfiles, mostly because I keep the
       - Or maybe [`mini.surround`](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-surround.md)?
     - [x] `togglecursor` has been replaced with the use of the `guicursor` setting.
     - [x] CoC has been replaced with Vim's built-in LSP support
+    - [x] `copilot.vim` has been replaced with `copilot.lua`

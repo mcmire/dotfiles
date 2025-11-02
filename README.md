@@ -228,6 +228,17 @@ The first time you run this,
 Neovim (thanks to Lazy) should install all plugins.
 Just sit back and relax.
 
+### Step 8 (optional): Log in to Github (for Copilot)
+
+To use Copilot, run:
+
+    :Copilot auth
+
+If this doesn't work, then it probably means you don't have Node 22.x installed.
+You can do this by modifying `~/.tool-versions` and adding `nodejs <version>`,
+replacing `<version>` as appropriate.
+Then run `asdf install`.
+
 ### Prologue: Making your own changes
 
 So you've installed this configuration onto your own machine. Now what?

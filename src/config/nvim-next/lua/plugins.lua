@@ -9,6 +9,7 @@ require('lazy').setup {
     require 'plugins.blink-cmp',
     --require 'plugins.blink-indent',
     require 'plugins.conform',
+    require 'plugins.copilot',
     require 'plugins.ctrlp',
     require 'plugins.eunuch',
     --require 'plugins.indentmini',
