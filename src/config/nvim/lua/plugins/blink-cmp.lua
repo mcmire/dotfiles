@@ -47,6 +47,12 @@ return {
             return cmp.show_and_insert_or_accept_single()
           end
         end,
+        function() -- sidekick next edit suggestion
+          return require('sidekick').nes_jump_or_apply()
+        end,
+        function() -- if you are using Neovim's native inline completions
+          return vim.lsp.inline_completion.get()
+        end,
         'fallback',
       },
       ['<S-Tab>'] = { 'select_prev', 'fallback' },
@@ -67,6 +73,7 @@ return {
       default = { 'buffer' },
     },
   },
+  --[[
   init = function()
     -- Dismiss Copilot suggestion when completion menu opens.
     -- Note, this will only work if the Copilot plugin is installed.
@@ -90,4 +97,5 @@ return {
       end,
     })
   end,
+  ]]
 }
