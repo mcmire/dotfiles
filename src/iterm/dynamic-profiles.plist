@@ -2,7 +2,12 @@
   "Profiles" : [
     {
       "Rewritable" : true,
-      "Scrollback Lines" : 0,
+      "Cursor Color" : {
+        "Red Component" : 0.396078431372549,
+        "Color Space" : "sRGB",
+        "Blue Component" : 0.51372549019607838,
+        "Green Component" : 0.4823529411764706
+      },
       "Guid" : "BD0100B7-4929-4053-8104-023ABBF4D339",
       "Selected Text Color" : {
         "Red Component" : 0.34509803921568627,
@@ -42,17 +47,12 @@
         "Blue Component" : 0.83529411764705885,
         "Green Component" : 0.90980392156862744
       },
-      "Cursor Color" : {
-        "Red Component" : 0.396078431372549,
-        "Color Space" : "sRGB",
-        "Blue Component" : 0.51372549019607838,
-        "Green Component" : 0.4823529411764706
-      }
+      "Scrollback Lines" : 0
     },
     {
       "Use Separate Colors for Light and Dark Mode" : false,
-      "Name" : "Solarized Dark",
       "Rewritable" : true,
+      "Name" : "Solarized Dark",
       "Guid" : "AF757F2E-86DA-43FE-AA63-D6368E1DBA2B"
     }
   ]
