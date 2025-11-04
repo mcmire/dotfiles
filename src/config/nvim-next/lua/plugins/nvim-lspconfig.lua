@@ -11,11 +11,67 @@ return {
     'saghen/blink.cmp',
   },
   config = function()
+    -- The following language servers and tools will automatically be installed.
+    --
+    -- Available configuration options are:
+    -- * cmd (table): Override the default command used to start the server.
+    -- * filetypes (table): Override the default list of associated filetypes
+    --   for the server.
+    -- * capabilities (table): Override fields in capabilities. Can be used to
+    --   disable certain LSP features.
+    -- * settings (table): Override the default settings passed when
+    --   initializing the server. For example, to see the options for `lua_ls`,
+    --   you could go to: https://luals.github.io/wiki/settings/
+    --
+    -- See `:help lspconfig-all` for a list of all the pre-configured LSPs.
+    --
+    -- Some languages (like typescript) have entire language plugins that can be
+    -- useful (e.g. https://github.com/pmizio/typescript-tools.nvim).
+    -- But for many setups, the LSP (e.g.`ts_ls`) will work just fine.
+    --
+    -- To check the current status of installed tools and/or manually install
+    -- other tools, you can run:
+    --
+    --    :Mason
+    --
+    -- Make sure to update this list if you do choose to manually install
+    -- anything.
+    --
+    local packages = {
+      -- Copilot
+      copilot = {},
+
+      -- Lua
+      lua_ls = {
+        -- cmd = { ... },
+        -- filetypes = { ... },
+        -- capabilities = {},
+        settings = {
+          Lua = {
+            completion = {
+              callSnippet = 'Replace',
+            },
+            -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+            -- diagnostics = { disable = { 'missing-fields' } },
+          },
+        },
+      },
+      stylua = {},
+
+      -- JavaScript/TypeScript
+      ts_ls = {},
+      eslint = {},
+      prettier = {},
+
+      -- Python
+      pyright = {},
+    }
+
     -- This function gets run when an LSP attaches to a particular buffer.
     -- That is to say, every time a new file is opened that is associated with
     -- an LSP (for example, opening `main.rs` is associated with
     -- `rust_analyzer`) this function will be executed to configure the
-    -- current buffer
+    -- current buffer.
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('custom-lsp-attach', { clear = true }),
       callback = function(event)
@@ -97,35 +153,6 @@ return {
           end
         end
 
-        -- The following two autocommands to highlight references of the word
-        -- under the cursor after resting for a little while, and then clearing
-        -- them after the cursor is moved
-        --[[
-        local client = vim.lsp.get_client_by_id(event.data.client_id)
-        if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
-          local highlight_augroup = vim.api.nvim_create_augroup('custom-lsp-highlight', { clear = false })
-          vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-            buffer = event.buf,
-            group = highlight_augroup,
-            callback = vim.lsp.buf.document_highlight,
-          })
-
-          vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-            buffer = event.buf,
-            group = highlight_augroup,
-            callback = vim.lsp.buf.clear_references,
-          })
-
-          vim.api.nvim_create_autocmd('LspDetach', {
-            group = vim.api.nvim_create_augroup('custom-lsp-detach', { clear = true }),
-            callback = function(event2)
-              vim.lsp.buf.clear_references()
-              vim.api.nvim_clear_autocmds { group = 'custom-lsp-highlight', buffer = event2.buf }
-            end,
-          })
-        end
-        ]]
-
         -- Toggle inlay hints in your code, if the language server you are using
         -- supports them. Use with caution.
         if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
@@ -150,21 +177,8 @@ return {
           [vim.diagnostic.severity.HINT] = '󰌶 ',
         },
       } or {},
-      --[[
-      virtual_text = {
-        source = 'if_many',
-        spacing = 2,
-        format = function(diagnostic)
-          local diagnostic_message = {
-            [vim.diagnostic.severity.ERROR] = diagnostic.message,
-            [vim.diagnostic.severity.WARN] = diagnostic.message,
-            [vim.diagnostic.severity.INFO] = diagnostic.message,
-            [vim.diagnostic.severity.HINT] = diagnostic.message,
-          }
-          return diagnostic_message[diagnostic.severity]
-        end,
-      },
-      ]]
+      -- Don't show diagnostics as virtual text, as it tends to run off the
+      -- screen. We will use `<Leader>d` to view them on demand.
       virtual_text = false,
     }
 
@@ -175,86 +189,16 @@ return {
     -- blink.cmp, and then broadcast that to the servers.
     local capabilities = require('blink.cmp').get_lsp_capabilities()
 
-    -- Enable the following language servers. They will automatically be
-    -- installed.
-    --
-    -- Available configuration options are:
-    -- * cmd (table): Override the default command used to start the server.
-    -- * filetypes (table): Override the default list of associated filetypes
-    --   for the server.
-    -- * capabilities (table): Override fields in capabilities. Can be used to
-    --   disable certain LSP features.
-    -- * settings (table): Override the default settings passed when
-    --   initializing the server. For example, to see the options for `lua_ls`,
-    --   you could go to: https://luals.github.io/wiki/settings/
-    --
-    -- See `:help lspconfig-all` for a list of all the pre-configured LSPs
-    --
-    -- Some languages (like typescript) have entire language plugins that can be
-    -- useful (e.g. https://github.com/pmizio/typescript-tools.nvim).
-    --
-    -- But for many setups, the LSP (e.g.`ts_ls`) will work just fine.
-    local servers = {
-      -- Copilot
-      copilot = {},
-
-      -- Lua
-      lua_ls = {
-        -- cmd = { ... },
-        -- filetypes = { ... },
-        -- capabilities = {},
-        settings = {
-          Lua = {
-            completion = {
-              callSnippet = 'Replace',
-            },
-            -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-            -- diagnostics = { disable = { 'missing-fields' } },
-          },
-        },
-      },
-      stylua = {},
-
-      -- JavaScript/TypeScript
-      ts_ls = {},
-      eslint = {},
-      prettier = {},
-
-      -- Python
-      pyright = {},
+    -- Ensure the servers and tools above are installed.
+    -- (Surprisingly, Mason itself doesn't allow you to pre-specify a list
+    -- like this.)
+    -- Note that `mason` had to be set up earlier: to configure its options see
+    -- the `dependencies` table for `nvim-lspconfig` above.
+    require('mason-tool-installer').setup {
+      ensure_installed = vim.tbl_keys(packages or {}),
     }
 
-    -- Ensure the servers and tools above are installed
-    --
-    -- To check the current status of installed tools and/or manually install
-    -- other tools, you can run:
-    --
-    --    :Mason
-    --
-    -- You can press `g?` for help in this menu.
-    --
-    -- `mason` had to be set up earlier: to configure its options see the
-    -- `dependencies` table for `nvim-lspconfig` above.
-    --
-    -- You can add other tools here that you want Mason to install for you, so
-    -- that they are available from within Neovim.
-    local ensure_installed = vim.tbl_keys(servers or {})
-    require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
-    require('mason-lspconfig').setup {
-      -- We use mason-tool-installer above, so we don't need to ensure_installed
-      ensure_installed = {},
-      automatic_installation = false,
-      handlers = {
-        function(server_name)
-          local server = servers[server_name] or {}
-          -- This handles overriding only values explicitly passed
-          -- by the server configuration above. Useful when disabling
-          -- certain features of an LSP (for example, turning off formatting for ts_ls)
-          server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-          require('lspconfig')[server_name].setup(server)
-        end,
-      },
-    }
+    -- Automatically enable all of the Mason-installed packages.
+    require('mason-lspconfig').setup {}
   end,
 }
