@@ -195,6 +195,9 @@ return {
     --
     -- But for many setups, the LSP (e.g.`ts_ls`) will work just fine.
     local servers = {
+      -- Copilot
+      copilot = {},
+
       -- Lua
       lua_ls = {
         -- cmd = { ... },
@@ -216,6 +219,9 @@ return {
       ts_ls = {},
       eslint = {},
       prettier = {},
+
+      -- Python
+      pyright = {},
     }
 
     -- Ensure the servers and tools above are installed
