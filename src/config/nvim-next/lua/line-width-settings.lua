@@ -8,4 +8,12 @@
 vim.o.textwidth = 80
 
 -- Draw vertical line at current `textwidth`
-vim.o.colorcolumn = '+0'
+-- For some reason simply setting this option doesn't work,
+-- we have to wait until a window is opened I guess
+vim.api.nvim_create_autocmd('BufReadPost', {
+  desc = 'Set color column',
+  group = vim.api.nvim_create_augroup('custom-set-color-column', { clear = true }),
+  callback = function()
+    vim.o.colorcolumn = '+0'
+  end,
+})

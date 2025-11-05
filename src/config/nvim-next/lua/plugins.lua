@@ -5,6 +5,7 @@
 require('lazy').setup {
   spec = {
     require 'plugins.autoclose',
+    require 'plugins.avante',
     require 'plugins.abolish',
     require 'plugins.blink-cmp',
     require 'plugins.conform',

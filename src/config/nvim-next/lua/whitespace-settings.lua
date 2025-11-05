@@ -40,5 +40,6 @@ vim.api.nvim_create_autocmd('BufWinLeave', {
 local function trim_whitespace()
   vim.cmd '%s/\\s*$//'
   vim.cmd "normal! ''"
+  vim.cmd 'nohlsearch'
 end
 vim.keymap.set('n', '<Leader>tw', trim_whitespace, { desc = 'Trim whitespace' })
