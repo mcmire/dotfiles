@@ -55,6 +55,7 @@ benchmarked-source ~/.zsh/_rubyfmt.zsh
 benchmarked-source ~/.zsh/android-studio.zsh
 benchmarked-source ~/.zsh/asdf.zsh
 benchmarked-source ~/.zsh/autojump.zsh
+benchmarked-source ~/.zsh/avante.zsh
 benchmarked-source ~/.zsh/bindings.zsh
 benchmarked-source ~/.zsh/bun.zsh
 benchmarked-source ~/.zsh/clojure.zsh

@@ -9,5 +9,7 @@ return {
   },
   ---@module 'avante'
   ---@type avante.Config
-  opts = {},
+  opts = {
+    provider = 'gemini',
+  },
 }
