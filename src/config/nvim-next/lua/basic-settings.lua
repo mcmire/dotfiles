@@ -15,7 +15,3 @@ vim.opt.iskeyword:append { '-' }
 -- This also affects how fast CursorHold fires, which affects how fast words
 -- under the cursor are highlighted (see `nvim-lspconfig.lua`)
 -- vim.o.updatetime = 150
-
--- Don't load netrw
--- vim.g.loaded_netrw = 1
--- vim.g.loaded_netrwPlugin = 1

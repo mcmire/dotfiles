@@ -17,6 +17,7 @@ require('lazy').setup {
     require 'plugins.neo-tree',
     require 'plugins.nvim-lspconfig',
     require 'plugins.nvim-surround',
+    -- require 'plugins.nvim-tree',
     require 'plugins.nvim-treesitter',
     require 'plugins.nvim-treesitter-endwise',
     require 'plugins.rg',

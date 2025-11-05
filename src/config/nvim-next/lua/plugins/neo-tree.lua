@@ -21,7 +21,10 @@ return {
       silent = true,
     },
   },
+  ---@module "neo-tree"
+  ---@type neotree.Config?
   opts = {
+    close_if_last_window = true,
     enable_git_status = false,
     default_component_configs = {
       popup_border_style = 'NC',
@@ -65,4 +68,30 @@ return {
       },
     },
   },
+  init = function()
+    -- Don't load netrw
+    vim.g.loaded_netrw = 1
+    vim.g.loaded_netrwPlugin = 1
+
+    local function should_open_tree()
+      if vim.fn.argc() == 0 then
+        return true
+      end
+
+      local first_arg = vim.fn.argv(0)
+
+      if type(first_arg) == 'string' and vim.fn.argc() == 1 and vim.fn.isdirectory(first_arg) then
+        return true
+      end
+
+      return false
+    end
+
+    if should_open_tree() then
+      require('neo-tree.command').execute {
+        action = 'show',
+        reveal_file = vim.fn.getcwd(),
+      }
+    end
+  end,
 }
