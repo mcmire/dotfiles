@@ -13,8 +13,6 @@ require 'globals'
 --require 'lsp-hover'
 require 'plugins'
 require 'basic-settings'
-require 'custom-colors-autocmds'
-require('custom-colors').customize_colors()
 require 'whitespace-settings'
 require 'line-wrapping-settings'
 -- NOTE: search settings were removed

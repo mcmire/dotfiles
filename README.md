@@ -208,6 +208,23 @@ It should look like this:
 
 ![Example of iTerm](./docs/iterm.png)
 
+If you get an error from `op` (1Password),
+log into your 1Password app, go to Settings, go to Developer,
+and check "Integrate with 1Password CLI".
+Then restart iTerm.
+
+Once you are here, you can load a colorscheme.
+Run:
+
+    tinty install
+    tinty apply <colorscheme>
+
+(You can see a list of colorschemes by running `tinty list`,
+or by visiting <https://tinted-theming.github.io/tinted-gallery/>).
+
+You may need to add an iTerm profile with the same name as your colorscheme.
+If so, do that and then re-run the `tinty apply` command.
+
 ### Step 6: Install tmux plugins
 
 Launch tmux by running this from iTerm:

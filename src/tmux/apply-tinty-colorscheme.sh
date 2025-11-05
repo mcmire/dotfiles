@@ -30,10 +30,12 @@ main() {
     exit 1
   fi
 
+  echo "Loaded colors for $current_color_scheme."
   echo "$colors" | while read -r name value; do
     tmux set-environment -gh "$name" "$value"
-    tmux source-file "$HOME/.tmux/custom-colors.conf"
   done
+  echo "Reloading custom colors."
+  tmux source-file "$HOME/.tmux/custom-colors.conf"
 }
 
 main "$@"
