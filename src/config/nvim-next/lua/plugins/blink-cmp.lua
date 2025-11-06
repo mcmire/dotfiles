@@ -1,3 +1,12 @@
+local has_words_before = function()
+  local col = vim.api.nvim_win_get_cursor(0)[2]
+  if col == 0 then
+    return false
+  end
+  local line = vim.api.nvim_get_current_line()
+  return line:sub(col, col):match '%s' == nil
+end
+
 return {
   'saghen/blink.cmp',
   event = 'VimEnter',
@@ -32,15 +41,24 @@ return {
         function(cmp)
           if cmp.is_visible() then
             return cmp.select_next()
-          else
+          end
+
+          if has_words_before() then
             return cmp.show_and_insert_or_accept_single()
           end
         end,
         'fallback',
       },
+      ['<S-Tab>'] = { 'select_prev', 'fallback' },
       ['<Up>'] = { 'select_prev', 'fallback' },
       ['<Down>'] = { 'select_next', 'fallback' },
-      ['<Esc>'] = { 'hide', 'fallback' },
+      ['<Esc>'] = {
+        function(cmp)
+          cmp.hide()
+          -- Don't return so that we escape Insert mode
+        end,
+        'fallback',
+      },
     },
 
     sources = {
