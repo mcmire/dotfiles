@@ -92,6 +92,10 @@ return {
         -- Execute a code action, usually your cursor needs to be on top of an error
         -- or a suggestion from your LSP for this to activate.
         map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
+        map('<Leader>ca', function()
+          print 'TIP: Use `gra` instead of `<Leader>ca` to open code actions.'
+          vim.lsp.buf.code_action()
+        end, 'Open [C]ode [A]ctions', { 'n', 'x' })
 
         local has_telescope, telescope = pcall(require, 'telescope.builtin')
 
