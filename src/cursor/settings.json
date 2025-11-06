@@ -1,6 +1,6 @@
 {
     "graphviz-interactive-preview.view.transitionDuration": 100,
-    "editor.fontFamily": "CaskaydiaCove NF",
+    "editor.fontFamily": "Cascadia Code",
     "editor.fontLigatures": true,
     "editor.formatOnSave": true,
     "workbench.colorTheme": "Solarized Dark",
@@ -104,7 +104,7 @@
     "window.clickThroughInactive": false,
     "window.zoomLevel": 0.5,
     "terminal.integrated.fontSize": 13,
-    "editor.fontSize": 12.5,
+    "editor.fontSize": 12.75,
     "debug.console.fontSize": 12.5,
     "scm.inputFontSize": 12.5,
     "eslint.format.enable": true,
