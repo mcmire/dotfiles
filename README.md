@@ -52,7 +52,7 @@ I update it all the time!
 
 ### Neovim configuration
 
-> [!INFO]
+> [!IMPORTANT]
 > For the first time in 15 years, I have rehauled my Vim configuration.
 > It's now written in Lua and makes use of some modern plugins, such as Lazy.
 > Check out the [README](./src/config/nvim/README.md) for more.
