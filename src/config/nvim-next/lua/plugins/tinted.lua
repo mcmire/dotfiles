@@ -17,9 +17,13 @@ function table.uniq(values)
 end
 
 local customize_colors = function()
-  if vim.g.tinted_gui00 ~= nil and vim.g.tinted_gui04 ~= nil then
+  -- If the variable for base00 isn't defined, then we can assume the rest
+  -- aren't defined, either
+  if vim.g.tinted_gui00 ~= nil then
+    print 'Reloading custom colors...'
     vim.cmd('highlight TabLine guifg=' .. vim.g.tinted_gui04 .. ' guibg=' .. vim.g.tinted_gui02)
     vim.cmd('highlight TabLineSel guibg=' .. vim.g.tinted_gui00 .. ' gui=underline')
+    vim.cmd('highlight NormalFloat guibg=' .. vim.g.tinted_gui01)
   end
 end
 
@@ -33,7 +37,7 @@ return {
     end
   end,
   init = function()
-    local autogroup = vim.api.nvim_create_augroup('custom-reload-colors', { clear = true })
+    local autogroup = vim.api.nvim_create_augroup('custom-reload-colors', { clear = false })
 
     vim.api.nvim_create_autocmd('BufWritePost', {
       desc = 'Reload custom colors when updated',
@@ -53,7 +57,5 @@ return {
       group = autogroup,
       callback = customize_colors,
     })
-
-    customize_colors()
   end,
 }
