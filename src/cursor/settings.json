@@ -12,28 +12,58 @@
   "typescript.preferGoToSourceDefinition": true,
   "vim.normalModeKeyBindingsNonRecursive": [
     {
-      "before": ["j"],
-      "after": ["g", "j"]
+      "before": [
+        "j"
+      ],
+      "after": [
+        "g",
+        "j"
+      ]
     },
     {
-      "before": ["k"],
-      "after": ["g", "k"]
+      "before": [
+        "k"
+      ],
+      "after": [
+        "g",
+        "k"
+      ]
     },
     {
-      "before": ["<C-h>"],
-      "after": ["<C-w>", "<C-h>"]
+      "before": [
+        "<C-h>"
+      ],
+      "after": [
+        "<C-w>",
+        "<C-h>",
+      ]
     },
     {
-      "before": ["<C-l>"],
-      "after": ["<C-w>", "<C-l>"]
+      "before": [
+        "<C-l>",
+      ],
+      "after": [
+        "<C-w>",
+        "<C-l>",
+      ]
     },
     {
-      "before": ["<C-j>"],
-      "after": ["<C-w>", "<C-j>"]
+      "before": [
+        "<C-j>"
+      ],
+      "after": [
+        "<C-w>",
+        "<C-j>",
+      ]
     },
     {
-      "before": ["<C-k>"],
-      "after": ["<C-w>", "<C-k>"]
+      "before": [
+        "<C-k>",
+      ],
+      "after": [
+        "<C-w>",
+        "<C-k>",
+      ]
     }
   ],
   "editor.inlineSuggest.suppressSuggestions": true,
@@ -64,8 +94,8 @@
   "window.clickThroughInactive": false,
   "window.zoomLevel": 0.5,
   "terminal.integrated.fontSize": 13,
-  "editor.fontSize": 13,
-  "debug.console.fontSize": 13,
+  "editor.fontSize": 12.75,
+  "debug.console.fontSize": 12.5,
   "scm.inputFontSize": 12.5,
   "eslint.format.enable": true,
   "editor.minimap.enabled": true,
