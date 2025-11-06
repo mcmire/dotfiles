@@ -41,13 +41,12 @@
 maximize = true
 
 # Set the theme.
-theme = light:Builtin Solarized Light,dark:Builtin Solarized Dark
+theme = light:Selenized Light,dark:Selenized Dark
 
 # Set the font.
-font-family = Fira Code Nerd Font Mono Ret
-font-family-bold = Fira Code Nerd Font Mono Bold
-#font-family = GeistMono NFM
-#font-family-bold = GeistMono NFM Bold
-font-size = 12
-font-thicken = true
+font-family = Cascadia Code
+font-size = 13.5
+font-thicken = false
 font-thicken-strength = 128
+adjust-font-baseline = 0
+adjust-cell-height = 30%
