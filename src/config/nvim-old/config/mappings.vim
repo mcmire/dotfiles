@@ -1,0 +1,169 @@
+" Mappings
+" ========
+
+" `,ep` lets us **e**dit the list of **p**lugins:
+
+" SKIPPED
+nmap <Leader>ep :tabe ~/.config/nvim/plugins.vim<CR>
+
+" `,ip` lets us **i**nstall **p**lugins:
+
+" SKIPPED
+nmap <Leader>ip :source ~/.config/nvim/plugins.vim<CR> :PlugInstall<CR>
+
+" `,rv` lets us **r**eload the **V**im configuration if we need to:
+
+" SKIPPED
+nmap <Leader>rv :source ~/.config/nvim/init.vim<CR>
+
+" Moving between windows is so common that it should be easier. With these
+" mappings, we can simply use `Ctrl` and a direction key:
+
+" COPIED
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-h> <C-w>h
+noremap <C-l> <C-w>l
+noremap <C-_> <C-w>_
+
+" `\<` and `\>` are useful for indenting a selection of text, but unfortunately,
+" after you do so, the selection goes away. The following mappings prevents that
+" from happening (`gv` will take all text that was last selected and re-select
+" it):
+
+" COPIED
+vnoremap < <gv
+vnoremap > >gv
+
+" It's very common, especially when writing text such as in Markdown documents,
+" Git commits or code comments, to want to re-format a paragraph. `gq` will do
+" this, but we map it to `Q`:
+
+" COPIED
+noremap Q gq
+
+" `C` is the same thing as saying `c$`; `D` is the same as `d$`. So why not do
+" the same for `y$`?
+
+" COPIED
+nnoremap Y y$
+
+" `T` is the same thing as saying `V%`. This helps when highlighting blocks.
+
+" SKIPPED
+nnoremap T V%
+
+" `K` is a useless mapping and may do something evil (although what exactly it
+" does has been lost to the sands of time):
+
+" SKIPPED (already bound to LSP hover)
+noremap K <Esc>
+
+" In the [search settings](search.vim.md), we configure `/` to highlight
+" matches. It's common to want to clear that highlight, so `,h` lets you do this
+" with ease:
+
+" COPIED
+nnoremap <Leader>h :nohls<CR>
+inoremap <Leader>h <C-O>:nohls<CR>
+
+" Now for a few mappings that make pasting easier.
+"
+" `,p$` will paste, overwriting everything to the end of the line:
+
+" COPIED
+nmap <Leader>p$ "_Dp
+
+" `,po` will open a new line and paste into that line:
+
+" COPIED
+nmap <Leader>po o<Space><Backspace><Esc>p
+
+" `,pc` will paste, overwriting the current line:
+
+" COPIED
+nmap <Leader>pc "_ddP
+
+" Finally, `,pw` will paste, overwriting the current word:
+
+" SKIPPED
+nmap <Leader>pw viw"_dP
+
+" Now for some formatting-related mappings.
+"
+" `,gqc` reformats a selected comment block by ensuring that all lines are
+" `textwidth` characters long, removing and repositioning `#` appropriately.
+
+" SKIPPED
+vmap <Leader>gqc <Leader>jc<S-V>gqc
+
+" `,jc` takes a selection containing a multi-line comment block and joins it
+" into one line. It is used internally by `,gqc`, but may be useful on its own. 
+" SKIPPED
+vmap <Leader>jc :s/\v[\n ]+#[ ]+/ /g<CR>:nohls<CR>i<Space>#<Space><Esc>
+
+" `,gqp` will reformat the paragraph that surrounds the cursor:
+
+" SKIPPED
+nmap <Leader>gqp vipQ$
+
+" `,tc` lets you close a tab quickly without having to close all of the buffers
+" inside of it:
+
+" COPIED
+nmap <Leader>tc :tabc<CR>
+
+" We recommend you make Escape more easy to press. But if you enjoy jamming a
+" couple of characters together then you can do that easily as well:
+
+" SKIPPED
+imap jj <Esc>
+imap jk <Esc>
+imap kj <Esc>
+
+" When saving a file that has syntax or other errors, Neomake will populate the
+" gutter with symbols, but it will not list the errors in the quickfix window
+" unless you say so. `,el` will **l**ist the **e**rrors and `,ef` will jump to
+" the **f**irst **e**rror:
+
+" SKIPPED
+nmap <Leader>el :lopen<CR>
+nmap <Leader>ef :ll 1<CR>
+
+" When working with hashes in Ruby, it's sometimes useful to be able to quickly
+" convert all of the keys in that hash from symbols to strings, or vice versa.
+" This adds `,sym` and `,str` to let you do that:
+
+" COPIED
+vmap <Leader>sym :s/\v["']([^"']+)["'] \=\> /\1: /g<CR>:nohls<CR>
+vmap <Leader>str :s/\v%(:([^:]+) \=\>\|([^[:space:]:]+): )/'\1\2' => /g<CR>:nohls<CR>
+
+" When running tests, it's helpful to know the path of the test file you're
+" working on so you can feed it to `rspec`. `,cp` will copy the path to the
+" clipboard so you can paste it in another terminal window:
+" SKIPPED
+nmap <Leader>cp :let @* = expand("%")<CR>
+
+" Since we've modified the `syn sync` command to start from 256 lines up from
+" the current line by default (see optimizations.vim), sometimes this messes
+" causes highlighting to get messed up, so we give ourselves a way to
+" reset highlighting for the whole file:
+" SKIPPED
+nmap <Leader>sr :syntax sync fromstart
+
+" Finally, when modifying a colorscheme, sometimes it's helpful to know which
+" syntax group the cursor sits within. `,si` lets us do this
+" ([source][identify-syntax-group]):
+"
+" [identify-syntax-group]: http://vim.wikia.com/wiki/Identify_the_syntax_highlighting_group_used_at_the_cursor
+
+" SKIPPED
+map <Leader>si :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+" SKIPPED
+nmap <Leader>w :wa<CR>
+
+" SKIPPED
+nmap gm g*/\v<def <C-r>/>/;?\v<def <C-r>/><CR>

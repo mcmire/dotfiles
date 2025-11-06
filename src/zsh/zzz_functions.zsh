@@ -173,3 +173,28 @@ ywd() {
 ywdh() {
   yw "$1" run since-latest-release --include-head -- diff
 }
+
+real_tinty_path="$(which tinty)"
+
+# This is a wrapper around tinty that manually runs hooks.
+#
+# The reason we do this is that tinty seems to run hooks asynchronously,
+# so the prompt is shown immediately, and then the output from the hooks,
+# which looks strange.
+#
+# Maybe this is a quirk of zsh or something, but either way, we get around this
+# by executing the hooks ourselves.
+#
+function tinty() {
+  if [[ -n "$real_tinty_path" ]]; then
+    case "$1" in
+      apply)
+        ~/.tinty/apply-colorscheme.sh "$real_tinty_path" "$2"
+        ;;
+      *)
+        $real_tinty_path "$@"
+    esac
+  else
+    echo "ERROR: tinty is not installed"
+  fi
+}

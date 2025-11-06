@@ -166,6 +166,7 @@ for pkg in \
   reattach-to-user-namespace \
   redis \
   restic \
+  ripgrep \
   sqlite \
   tig \
   tmux \
@@ -177,7 +178,8 @@ for pkg in \
   zoxide \
   creativeprojects/tap/resticprofile \
   heroku/brew/heroku \
-  mas-cli/tap/mas
+  mas-cli/tap/mas \
+  tinted-theming/tinted/tinty
 do
   banner "Installing $pkg"
   HOMEBREW_NO_INSTALL_UPGRADE=true brew install $pkg || error "Package $pkg failed to install, continuing..."
