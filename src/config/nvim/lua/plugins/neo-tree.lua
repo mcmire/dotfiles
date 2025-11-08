@@ -65,6 +65,7 @@ return {
       mappings = {
         -- Compatibility with NERDTree
         ['i'] = 'open_split',
+        ['I'] = 'toggle_hidden',
       },
     },
   },
