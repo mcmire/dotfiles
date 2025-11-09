@@ -2,6 +2,7 @@ return {
   'folke/sidekick.nvim',
   dependencies = {
     'neovim/nvim-lspconfig',
+    'zbirenbaum/copilot.lua',
   },
   event = 'VimEnter',
   cmd = 'Sidekick',
@@ -69,4 +70,12 @@ return {
       desc = 'Sidekick Select Prompt',
     },
   },
+  init = function()
+    -- Not sure why Sidekick doesn't add this for us, but whatever
+    vim.lsp.config('copilot', {
+      handlers = {
+        didChangeStatus = require('sidekick.status').on_status,
+      },
+    })
+  end,
 }
