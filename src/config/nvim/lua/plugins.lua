@@ -8,7 +8,7 @@ require('lazy').setup {
     require 'plugins.autoclose',
     require 'plugins.blink-cmp',
     require 'plugins.conform',
-    --require 'plugins.copilot',
+    require 'plugins.copilot',
     require 'plugins.ctrlp',
     require 'plugins.eunuch',
     require 'plugins.indent-blankline',

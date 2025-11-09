@@ -13,10 +13,10 @@ return {
     --   },
     -- }
     require('copilot').setup {
-      suggestion = {
-        -- We need to figure out how to enable this on keymap
-        auto_trigger = false,
-      },
+      -- suggestion = {
+      -- We need to figure out how to enable this on keymap
+      -- auto_trigger = false,
+      -- },
     }
   end,
 }
