@@ -19,3 +19,5 @@
 
 - Replace status line, as the left icon jumps around in insert mode
   - Maybe lualine?
+- Cool plugins maybe worth adding:
+  - `stevearc/aerial.nvim`
