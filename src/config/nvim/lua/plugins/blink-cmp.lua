@@ -38,6 +38,12 @@ return {
       preset = 'none',
 
       ['<Tab>'] = {
+        function()
+          local has_copilot_suggestion, copilot_suggestion = pcall(require, 'copilot.suggestion')
+          if has_copilot_suggestion and copilot_suggestion.is_visible() then
+            copilot_suggestion.accept_line()
+          end
+        end,
         function(cmp)
           if cmp.is_visible() then
             return cmp.select_next()
@@ -47,18 +53,24 @@ return {
             return cmp.show_and_insert_or_accept_single()
           end
         end,
-        function() -- sidekick next edit suggestion
-          return require('sidekick').nes_jump_or_apply()
-        end,
-        function() -- if you are using Neovim's native inline completions
-          return vim.lsp.inline_completion.get()
-        end,
+        -- function() -- sidekick next edit suggestion
+        --   return require('sidekick').nes_jump_or_apply()
+        -- end,
+        -- function() -- if you are using Neovim's native inline completions
+        --   return vim.lsp.inline_completion.get()
+        -- end,
         'fallback',
       },
       ['<S-Tab>'] = { 'select_prev', 'fallback' },
       ['<Up>'] = { 'select_prev', 'fallback' },
       ['<Down>'] = { 'select_next', 'fallback' },
       ['<Esc>'] = {
+        function()
+          local has_copilot_suggestion, copilot_suggestion = pcall(require, 'copilot.suggestion')
+          if has_copilot_suggestion and copilot_suggestion.is_visible() then
+            copilot_suggestion.dismiss()
+          end
+        end,
         function(cmp)
           cmp.hide()
           -- Don't return so that we escape Insert mode
@@ -73,10 +85,8 @@ return {
       default = { 'buffer' },
     },
   },
-  --[[
   init = function()
     -- Dismiss Copilot suggestion when completion menu opens.
-    -- Note, this will only work if the Copilot plugin is installed.
 
     local autogroup = vim.api.nvim_create_augroup('custom-blink-cmp', { clear = true })
 
@@ -84,8 +94,11 @@ return {
       pattern = 'BlinkCmpMenuOpen',
       group = autogroup,
       callback = function()
-        require('copilot.suggestion').dismiss()
-        vim.b.copilot_suggestion_hidden = true
+        local has_copilot_suggestion, copilot_suggestion = pcall(require, 'copilot.suggestion')
+        if has_copilot_suggestion then
+          copilot_suggestion.dismiss()
+          vim.b.copilot_suggestion_hidden = true
+        end
       end,
     })
 
@@ -97,5 +110,4 @@ return {
       end,
     })
   end,
-  ]]
 }

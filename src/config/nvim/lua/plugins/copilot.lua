@@ -16,21 +16,13 @@ return {
     --   },
     -- }
     require('copilot').setup {
-      -- suggestion = {
-      -- We need to figure out how to enable this on keymap
-      -- auto_trigger = false,
-      -- },
+      suggestion = {
+        auto_trigger = true,
+      },
       server_opts_overrides = {
         handlers = {
           didChangeStatus = require('sidekick.status').on_status,
         },
-      },
-      logger = {
-        file_log_level = vim.log.levels.TRACE,
-        print_log_level = vim.log.levels.WARN,
-        trace_lsp = 'verbose',
-        log_lsp_messages = true,
-        trace_lsp_progress = true,
       },
     }
   end,
