@@ -25,6 +25,7 @@ require('lazy').setup {
     require 'plugins.nvim-treesitter',
     require 'plugins.splitjoin',
     require 'plugins.tinted',
+    require 'plugins.typescript-tools',
     --require 'plugins.todo-comments',
     require 'plugins.which-key',
   },

@@ -59,7 +59,7 @@ return {
       stylua = {},
 
       -- JavaScript/TypeScript
-      ts_ls = {},
+      -- ts_ls = {},
       eslint = {},
       prettier = {},
 
