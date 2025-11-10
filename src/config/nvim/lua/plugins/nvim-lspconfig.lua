@@ -39,7 +39,7 @@ return {
     --
     local packages = {
       -- Copilot
-      copilot = {},
+      --copilot = {},
 
       -- Lua
       lua_ls = {
