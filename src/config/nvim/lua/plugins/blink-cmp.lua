@@ -42,6 +42,7 @@ return {
           local has_copilot_suggestion, copilot_suggestion = pcall(require, 'copilot.suggestion')
           if has_copilot_suggestion and copilot_suggestion.is_visible() then
             copilot_suggestion.accept_line()
+            return true
           end
         end,
         function(cmp)

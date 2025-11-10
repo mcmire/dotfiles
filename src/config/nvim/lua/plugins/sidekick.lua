@@ -78,4 +78,8 @@ return {
   --     },
   --   })
   -- end,
+  -- I don't know why this is not called automatically :(
+  config = function()
+    require('sidekick').setup {}
+  end,
 }

@@ -8,7 +8,7 @@ return {
   --"copilotlsp-nvim/copilot-lsp"
   -- },
   -- We need this to be loaded first
-  dependencies = { 'folke/sidekick.nvim' },
+  -- dependencies = { 'folke/sidekick.nvim' },
   config = function()
     -- require('copilot').setup {
     --   server = {
