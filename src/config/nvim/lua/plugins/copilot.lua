@@ -21,6 +21,8 @@ return {
       },
       server_opts_overrides = {
         handlers = {
+          -- I don't know why Sidekick doesn't do this automatically,
+          -- but whatever
           didChangeStatus = require('sidekick.status').on_status,
         },
       },
