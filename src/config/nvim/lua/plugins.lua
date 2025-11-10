@@ -5,7 +5,7 @@
 require('lazy').setup {
   spec = {
     require 'plugins.abolish',
-    require 'plugins.autoclose',
+    -- require 'plugins.autoclose',
     require 'plugins.blink-cmp',
     require 'plugins.conform',
     -- require 'plugins.copilot',
@@ -19,6 +19,7 @@ require('lazy').setup {
     require 'plugins.nvim-lspconfig',
     require 'plugins.nvim-notify',
     require 'plugins.nvim-rg',
+    require 'plugins.nvim-autopairs',
     require 'plugins.nvim-surround',
     require 'plugins.nvim-treesitter-endwise',
     require 'plugins.nvim-treesitter',
