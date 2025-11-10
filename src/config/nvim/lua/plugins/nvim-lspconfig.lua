@@ -142,7 +142,14 @@ return {
         -- end, { buffer = event.buf, desc = 'LSP: Show documentation', remap = true })
 
         -- Show diagnostics in a floating window
+        -- (alias for '<C-w>d')
         vim.keymap.set('n', '<Leader>d', '<C-w>d', { buffer = event.buf, desc = 'LSP: Show [D]iagnostics', remap = true })
+        -- Jump to the next diagnostic
+        -- (alias for ']d')
+        vim.keymap.set('n', ']g', ']d', { buffer = event.buf, desc = 'LSP: Jump to next diagnostic', remap = true })
+        -- Jump to the previous diagnostic
+        -- (alias for '[d')
+        vim.keymap.set('n', '[g', '[d', { buffer = event.buf, desc = 'LSP: Jump to previous diagnostic', remap = true })
 
         -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
         ---@param client vim.lsp.Client
