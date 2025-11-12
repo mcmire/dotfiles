@@ -69,7 +69,6 @@ return {
   },
   init = function()
     -- Dismiss Copilot suggestion when completion menu opens.
-    -- Note, this will only work if the Copilot plugin is installed.
 
     local autogroup = vim.api.nvim_create_augroup('custom-blink-cmp', { clear = true })
 
@@ -77,8 +76,12 @@ return {
       pattern = 'BlinkCmpMenuOpen',
       group = autogroup,
       callback = function()
-        require('copilot.suggestion').dismiss()
-        vim.b.copilot_suggestion_hidden = true
+        has_copilot_suggestion, copilot_suggestion = pcall(require, 'copilot.suggestion')
+
+        if has_copilot_suggestion then
+          copilot_suggestion.dismiss()
+          vim.b.copilot_suggestion_hidden = true
+        end
       end,
     })
 
