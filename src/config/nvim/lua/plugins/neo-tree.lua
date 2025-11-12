@@ -71,6 +71,7 @@ return {
   },
   init = function()
     -- Don't load netrw
+    -- Supposedly neo-tree already handles this, but I guess not?
     vim.g.loaded_netrw = 1
     vim.g.loaded_netrwPlugin = 1
 
@@ -81,7 +82,7 @@ return {
 
       local first_arg = vim.fn.argv(0)
 
-      if type(first_arg) == 'string' and vim.fn.argc() == 1 and vim.fn.isdirectory(first_arg) then
+      if type(first_arg) == 'string' and vim.fn.isdirectory(first_arg) == 1 then
         return true
       end
 
