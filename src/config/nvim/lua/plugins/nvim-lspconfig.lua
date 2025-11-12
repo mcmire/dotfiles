@@ -128,6 +128,13 @@ return {
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
           map('grt', telescope.lsp_type_definitions, '[G]oto [T]ype Definition')
+        else
+          -- Jump to the definition of the word under your cursor.
+          --  This is where a variable was first declared, or where a function is defined, etc.
+          --  To jump back, press <C-t>.
+          map('grd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+          -- Old habits die hard
+          vim.keymap.set('n', 'gd', 'grd', { buffer = event.buf, desc = 'LSP: [G]oto [D]efinition', remap = true })
         end
 
         -- WARN: This is not Goto Definition, this is Goto Declaration.
