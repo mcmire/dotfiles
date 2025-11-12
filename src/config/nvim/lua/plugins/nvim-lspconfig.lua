@@ -61,7 +61,7 @@ return {
       -- JavaScript/TypeScript
       -- ts_ls = {},
       eslint = {},
-      prettier = {},
+      prettierd = {},
 
       -- Python
       pyright = {},

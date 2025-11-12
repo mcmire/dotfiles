@@ -1,6 +1,6 @@
 return {
   'stevearc/conform.nvim',
-  event = { 'BufWritePre' },
+  event = { 'BufWritePre', 'BufWritePost' },
   cmd = { 'ConformInfo' },
   keys = {
     {
@@ -16,23 +16,34 @@ return {
     notify_on_error = true,
     format_on_save = function(bufnr)
       -- Disable "format_on_save lsp_fallback" for languages that don't
-      -- have a well standardized coding style. You can add additional
-      -- languages here or re-enable it for the disabled ones.
-      local disable_filetypes = { c = true, cpp = true }
+      -- have a well standardized coding style, and for slow formatters (like
+      -- Prettier).
+      local disable_filetypes = { c = true, cpp = true, javascript = true, typescript = true }
       if disable_filetypes[vim.bo[bufnr].filetype] then
         return nil
       else
         return {
-          -- Prettier can take a long time for some reason
-          timeout_ms = 2000,
+          lsp_format = 'fallback',
+          timeout_ms = 500,
+        }
+      end
+    end,
+    format_after_save = function(bufnr)
+      -- Only use this hook for slow formatters (like Prettier).
+      -- See <https://github.com/stevearc/conform.nvim/issues/401#issuecomment-2108453243>
+      local enable_filetypes = { javascript = true, typescript = true }
+      if enable_filetypes[vim.bo[bufnr].filetype] then
+        return {
           lsp_format = 'fallback',
         }
+      else
+        return nil
       end
     end,
     formatters_by_ft = {
       lua = { 'stylua' },
-      javascript = { 'prettier' },
-      typescript = { 'prettier' },
+      javascript = { 'prettierd' },
+      typescript = { 'prettierd' },
 
       -- Conform can also run multiple formatters sequentially
       -- python = { "isort", "black" },
