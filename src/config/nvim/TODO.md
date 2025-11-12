@@ -7,6 +7,9 @@
 - Add Copilot NES
 - Make Copilot easily toggleable
 - How do I scroll down in documentation hover popup?
+- Add ,cf keymap to autofix a single lint violation
+- Figure out how to highlight unused variables with a different color and
+  deprecated variables with strikethrough
 
 ## Medium priority
 
