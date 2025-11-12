@@ -4,7 +4,7 @@ return {
   opts = {
     settings = {
       tsserver_file_preferences = {
-        importModuleSpecifierPreference = 'project-relative',
+        -- importModuleSpecifierPreference = 'project-relative',
       },
     },
   },
