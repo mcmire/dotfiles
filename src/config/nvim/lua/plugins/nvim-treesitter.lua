@@ -1,5 +1,7 @@
 return {
   'nvim-treesitter/nvim-treesitter',
+  -- It's already lazy
+  lazy = false,
   build = ':TSUpdate',
   -- Sets main module to use for opts
   main = 'nvim-treesitter.configs',
@@ -17,6 +19,7 @@ return {
       'query',
       'vim',
       'vimdoc',
+      'typescript',
     },
     -- Autoinstall languages that are not installed
     -- auto_install = true,
