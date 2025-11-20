@@ -130,9 +130,9 @@ return {
           map('grt', telescope.lsp_type_definitions, '[G]oto [T]ype Definition')
         else
           -- Jump to the definition of the word under your cursor.
-          --  This is where a variable was first declared, or where a function is defined, etc.
-          --  To jump back, press <C-t>.
-          map('grd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+          -- Opens in a new tab.
+          -- (Source: <https://www.reddit.com/r/neovim/comments/1abayyi/lazy_how_to_have_goto_definition_open_in_a_new_tab/>)
+          map('grd', '<cmd>tab split | lua vim.lsp.buf.definition()<CR>', '[G]oto [D]efinition')
           -- Old habits die hard
           vim.keymap.set('n', 'gd', 'grd', { buffer = event.buf, desc = 'LSP: [G]oto [D]efinition', remap = true })
         end
