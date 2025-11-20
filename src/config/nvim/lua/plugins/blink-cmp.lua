@@ -29,7 +29,16 @@ return {
 
     fuzzy = {
       -- The default algorithm tries too hard to find matches, creating noise
-      max_typos = 0,
+      -- max_typos = 0,
+      -- max_typos = function(keyword)
+      --   return math.floor(#keyword / 2)
+      -- end,
+      -- Prioritize exact matches
+      sorts = {
+        -- 'exact',
+        'score',
+        'sort_text',
+      },
     },
 
     keymap = {
@@ -64,7 +73,7 @@ return {
     sources = {
       -- Populate the completion menu from open buffers, to better mimic SuperTab.
       -- We might add LSP/LazyDev support later.
-      default = { 'buffer' },
+      default = { 'lsp', 'path', 'buffer' },
     },
   },
   init = function()
@@ -76,7 +85,7 @@ return {
       pattern = 'BlinkCmpMenuOpen',
       group = autogroup,
       callback = function()
-        has_copilot_suggestion, copilot_suggestion = pcall(require, 'copilot.suggestion')
+        local has_copilot_suggestion, copilot_suggestion = pcall(require, 'copilot.suggestion')
 
         if has_copilot_suggestion then
           copilot_suggestion.dismiss()
