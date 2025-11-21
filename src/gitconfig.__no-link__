@@ -43,4 +43,5 @@
 [pull]
   ff = only
 [push]
-  default = current
+  autoSetupRemote = true
+  default = upstream
