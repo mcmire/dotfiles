@@ -63,9 +63,13 @@ return {
     },
     window = {
       mappings = {
-        -- Compatibility with NERDTree
+        -- Use NERDTree-compatible mappings
         ['i'] = 'open_split',
         ['I'] = 'toggle_hidden',
+        -- Restore use of `z` to center the tree
+        ['z'] = 'noop',
+        -- Disable fuzzy finder
+        ['/'] = 'noop',
       },
     },
   },
