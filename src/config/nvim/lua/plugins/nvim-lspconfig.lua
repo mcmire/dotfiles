@@ -65,6 +65,9 @@ return {
 
       -- Python
       pyright = {},
+
+      -- Deno
+      deno = {},
     }
 
     -- This function gets run when an LSP attaches to a particular buffer.
