@@ -19,7 +19,7 @@ require('lazy').setup {
     require 'plugins.neo-tree',
     -- require 'plugins.noice',
     require 'plugins.nvim-lspconfig',
-    require 'plugins.nvim-notify',
+    -- require 'plugins.nvim-notify',
     require 'plugins.nvim-autopairs',
     require 'plugins.nvim-surround',
     require 'plugins.nvim-treesitter-endwise',
