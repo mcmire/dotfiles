@@ -1,3 +1,5 @@
+local utils = require '../utils'
+
 return {
   'neovim/nvim-lspconfig',
   dependencies = {
@@ -67,7 +69,16 @@ return {
       pyright = {},
 
       -- Deno
-      deno = {},
+      denols = {
+        root_dir = function(bufnr, on_dir)
+          local root_dir = utils.get_deno_project_dir(bufnr)
+
+          -- Sometimes on_dir is a number, not sure why
+          if root_dir ~= nil and type(on_dir) == 'function' then
+            on_dir(root_dir)
+          end
+        end,
+      },
 
       -- Astro
       astro = {},
@@ -211,7 +222,7 @@ return {
     -- is in the LSP specification. When you add blink.cmp, luasnip, etc. Neovim
     -- now has *more* capabilities. So, we create new capabilities with
     -- blink.cmp, and then broadcast that to the servers.
-    local capabilities = require('blink.cmp').get_lsp_capabilities()
+    local blink_capabilities = require('blink.cmp').get_lsp_capabilities()
 
     -- Ensure the servers and tools above are installed.
     -- (Surprisingly, Mason itself doesn't allow you to pre-specify a list
@@ -221,6 +232,14 @@ return {
     require('mason-tool-installer').setup {
       ensure_installed = vim.tbl_keys(packages or {}),
     }
+
+    -- Configure the LSP servers given above.
+    for name, config in pairs(packages) do
+      local modified_capabilities = vim.tbl_deep_extend('force', {}, blink_capabilities, config.capabilities or {})
+      local modified_config = vim.tbl_extend('force', {}, config, { capabilities = modified_capabilities })
+      -- print('lsp: Configuring ' .. name .. ' with ' .. vim.inspect(modified_config))
+      vim.lsp.config(name, modified_config)
+    end
 
     -- Automatically enable all of the Mason-installed packages.
     require('mason-lspconfig').setup {}
