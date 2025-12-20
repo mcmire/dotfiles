@@ -179,11 +179,6 @@ unlock() {
   fi
 }
 
-remove-working-branch() {
-  info "Deleting branch \`$WORKING_BRANCH_NAME\`..."
-  run-command remove-branch "$WORKING_BRANCH_NAME"
-}
-
 cleanup() {
   enforce-primary-branch "$(get-current-branch)"
 
@@ -221,6 +216,7 @@ enforce-primary-branch() {
 pull-primary-branch() {
   info "Fetching updates..."
   run-command git pull --rebase --prune
+  run-command git submodule update --init --recursive
 }
 
 commit-files-to-sync() {
@@ -239,7 +235,7 @@ commit-files-to-sync() {
 
 push-primary-branch() {
   info "Pushing \`$primary_branch_name\`..."
-  run-command git push origin "$primary_branch_name"
+  run-command git push origin "$primary_branch_name" --recurse-submodules=on-demand
 }
 
 sync() {
