@@ -28,6 +28,10 @@ return {
     enable_git_status = false,
     default_component_configs = {
       popup_border_style = 'NC',
+      container = {
+        -- Account for long file names
+        width = '150%',
+      },
       icon = {
         folder_closed = ' ',
         folder_open = ' ',
