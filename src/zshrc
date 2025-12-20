@@ -65,6 +65,7 @@ benchmarked-source ~/.zsh/direnv.zsh
 benchmarked-source ~/.zsh/foundry.zsh
 benchmarked-source ~/.zsh/fzf.zsh
 benchmarked-source ~/.zsh/git.zsh
+benchmarked-source ~/.zsh/git-subrepo.zsh
 benchmarked-source ~/.zsh/google-cloud-sdk.zsh
 benchmarked-source ~/.zsh/haskell.zsh
 benchmarked-source ~/.zsh/history.zsh
