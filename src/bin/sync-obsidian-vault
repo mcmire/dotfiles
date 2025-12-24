@@ -182,7 +182,7 @@ lock() {
   local pid_file_path
   pid_file_path="$(get-pid-file-path)"
 
-  if [[ -n "$pid_file_path" ]]; then
+  if [[ -z "$pid_file_path" ]]; then
     error "Could not lock: Could not generate PID file path" >&2
     return 1
   fi
