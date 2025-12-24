@@ -1,10 +1,10 @@
 #!/bin/bash
 
+# shellcheck source=./src/config/core-helpers.sh
 source "$HOME/.config/core-helpers.sh"
 
 ## Constants
 
-WORKING_BRANCH_NAME="sync-$(date +%s)"
 PID_FILE_DIRECTORY=/tmp
 LOCKED_EXIT_CODE=-700
 
@@ -123,16 +123,18 @@ parse-args() {
         ;;
       --help | -h)
         print-usage
-        exit 0
+        return 0
         ;;
       *)
         error "Unknown option or argument: $1" >&2
         echo >&2
         print-usage >&2
-        exit 1
+        return 1
         ;;
     esac
   done
+
+  return 0
 }
 
 validate-args() {
@@ -140,61 +142,55 @@ validate-args() {
     error "Missing required option: --repo-directory" >&2
     echo >&2
     print-usage >&2
-    exit 1
+    return 1
   fi
 
   if [[ -z $primary_branch_name ]]; then
     error "Missing required option: --primary-branch-name" >&2
     echo >&2
     print-usage >&2
-    exit 1
+    return 1
   fi
+
+  return 0
 }
 
 get-pid-file-path() {
-  local command_hash=$(echo -n "$repo_directory" "$primary_branch_name" | /opt/homebrew/bin/md5sum | head -c 32)
+  local command_hash
+  command_hash=$(echo -n "$repo_directory" "$primary_branch_name" | /opt/homebrew/bin/md5sum | head -c 32)
   echo "$PID_FILE_DIRECTORY/sync-obsidian-vault.$command_hash.pid"
 }
 
 lock() {
-  local pid_file_path="$(get-pid-file-path)"
+  local pid_file_path
+  pid_file_path="$(get-pid-file-path)"
 
   if [[ -f "$pid_file_path" ]]; then
     if ps -p "$(cat "$pid_file_path")" >/dev/null; then
       error "This Obsidian vault is already in the process of being synced." >&2
-      exit $LOCKED_EXIT_CODE
+      return $LOCKED_EXIT_CODE
     else
       rm "$pid_file_path"
     fi
   else
     echo $$ > "$pid_file_path"
   fi
+
+  return 0
 }
 
 unlock() {
-  local pid_file_path="$(get-pid-file-path)"
+  local pid_file_path
+  pid_file_path="$(get-pid-file-path)"
 
   if [[ -f "$pid_file_path" ]]; then
     rm "$pid_file_path"
   fi
 }
 
-cleanup() {
-  enforce-primary-branch "$(get-current-branch)"
-
-  info "Unstaging staged files..."
-  run-command git restore --staged .
-  info "Reverting changes to existing files..."
-  run-command git checkout .
-  info "Removing added files..."
-  run-command git clean -fd
-
-  unlock
-}
-
 change-directory() {
   info "Entering \`$repo_directory\`..."
-  cd "$repo_directory"
+  cd "$repo_directory" || return $?
 }
 
 enforce-git-repository() {
@@ -205,27 +201,44 @@ enforce-git-repository() {
 }
 
 enforce-primary-branch() {
-  local current_branch="$1"
+  local current_branch
+  current_branch="$(get-current-branch)"
 
-  if ! [[ "$current_branch" = "$primary_branch_name" ]]; then
+  if [[ "$current_branch" != "$primary_branch_name" ]]; then
     error "The current branch must be \`$primary_branch_name\` to continue."
     return 1
   fi
 }
 
 pull-primary-branch() {
-  info "Fetching updates..."
+  info "- Fetching updates..."
   run-command git pull --rebase --prune
   run-command git submodule update --init --recursive
 }
 
 commit-files-to-sync() {
   local files_to_sync=("$@")
+  local submodule_path
+  local submodule_paths=()
+  local is_submodule=
 
-  info "Committing all files..."
+  info "- Committing all files..."
 
+  # shellcheck disable=SC2016
+  while read -r submodule_path; do
+    submodule_paths+=("$submodule_path")
+  done < <(git submodule --quiet foreach 'echo $sm_path')
+
+  is_submodule="false"
   for file in "${files_to_sync[@]}"; do
-    if [[ $file == *.md || $file == .obsidian/* ]]; then
+    for submodule_path in "${submodule_paths[@]}"; do
+      if [[ $submodule_path == "$file" ]]; then
+        is_submodule="true"
+        break
+      fi
+    done
+
+    if [[ $file == *.md || $file == .obsidian/* || "$is_submodule" == "true" ]]; then
       run-command git add "$file"
     fi
   done
@@ -234,19 +247,37 @@ commit-files-to-sync() {
 }
 
 push-primary-branch() {
-  info "Pushing \`$primary_branch_name\`..."
-  run-command git push origin "$primary_branch_name" --recurse-submodules=on-demand
+  info "- Pushing \`$primary_branch_name\`..."
+  run-command git push origin "$primary_branch_name"
 }
 
-sync() {
-  local files_to_sync=()
-  local current_branch
+sync-all() {
+  local submodule_path
 
   change-directory || return $?
-
   enforce-git-repository || return $?
-  current_branch="$(get-current-branch)"
-  enforce-primary-branch "$current_branch" || return $?
+  enforce-primary-branch || return $?
+
+  # shellcheck disable=SC2016
+  git submodule --quiet foreach 'echo $sm_path' | while read -r submodule_path; do
+    sync-directory "$submodule_path" || return $?
+    echo
+  done
+
+  sync-directory "." || return $?
+}
+
+sync-directory() {
+  local directory="$1"
+  local file
+  local files_to_sync=()
+
+  if [[ "$directory" == "." ]]; then
+    cyan "Syncing root directory..." $'\n'
+  else
+    cyan "Syncing submodule \`$directory\`..." $'\n'
+    cd "$directory" || return $?
+  fi
 
   while IFS= read -r file; do
     if [[ -n $file ]]; then
@@ -259,32 +290,35 @@ sync() {
     pull-primary-branch || return $?
     push-primary-branch || return $?
     if [[ $dry_run == "false" ]]; then
-      echo
-      success "Sync completed successfully!"
+      success "- Sync completed successfully!"
     fi
   else
     pull-primary-branch || return $?
 
     if [[ $dry_run == "true" ]]; then
-      echo
-      success "No changes would have been synced."
+      success "- No changes would have been synced."
     else
-      echo
-      success "No changes to sync, all good!"
+      success "- No changes to sync, all good!"
     fi
   fi
+
+  if [[ "$directory" != "." ]]; then
+    cd - >/dev/null || return $?
+  fi
+
+  return 0
 }
 
 main() {
   local exitcode
+  local current_branch
 
-  parse-args "$@"
-  validate-args
+  parse-args "$@" || return $?
+  validate-args || return $?
 
-  lock
+  lock || return $?
   trap unlock INT TERM
-
-  sync
+  sync-all
   exitcode=$?
   unlock
 

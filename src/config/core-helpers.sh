@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 DEBUG="${DEBUG:-false}"
 USE_COLOR="${USE_COLOR:-true}"
 
