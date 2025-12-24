@@ -1,11 +1,19 @@
 #!/bin/bash
 
+# NOTE: To install this on Android, you'll need to:
+#
+# * Download the `gh` package
+# * Clone dotfiles to ~ (`gh repo clone dotfiles`)
+# * `ln -s ~/dotfiles/src/config/core-helpers.sh ~/.config/core-helpers.sh`
+# * `cd /storage/emulated/0 && gh repo clone obsidian-vault`
+# * `ln -s /storage/emulated/0/obsidian-vault ~/obsidian-vault`
+# * `git config --global --add safe.directory ~/obsidian-vault/<submodule>` for each submodule
+
 # shellcheck source=./src/config/core-helpers.sh
 source "$HOME/.config/core-helpers.sh"
 
 ## Constants
 
-PID_FILE_DIRECTORY=/tmp
 LOCKED_EXIT_CODE=-700
 
 ## Parameters
@@ -13,6 +21,7 @@ LOCKED_EXIT_CODE=-700
 repo_directory=
 primary_branch_name=
 dry_run=false
+pid_file_directory=/tmp
 
 ## Helpers
 
@@ -84,6 +93,10 @@ OPTIONS:
 -b, --primary-branch BRANCH
   Name of the primary branch to sync with.
 
+-p, --pid-file-directory DIRECTORY
+  Path to the directory used to record a lockfile for this script.
+  (Default: /tmp)
+
 -n, --dry-run
   Don't perform any Git operations; just print what would have happened.
 
@@ -112,6 +125,10 @@ parse-args() {
       --dry-run | -n)
         dry_run="true"
         shift
+        ;;
+      --pid-file-directory | -p)
+        pid_file_directory="$2"
+        shift 2
         ;;
       --no-color)
         set-color-mode "false"
@@ -157,13 +174,18 @@ validate-args() {
 
 get-pid-file-path() {
   local command_hash
-  command_hash=$(echo -n "$repo_directory" "$primary_branch_name" | /opt/homebrew/bin/md5sum | head -c 32)
-  echo "$PID_FILE_DIRECTORY/sync-obsidian-vault.$command_hash.pid"
+  command_hash=$(echo -n "$repo_directory" "$primary_branch_name" | md5sum | head -c 32)
+  echo "$pid_file_directory/sync-obsidian-vault.$command_hash.pid"
 }
 
 lock() {
   local pid_file_path
   pid_file_path="$(get-pid-file-path)"
+
+  if [[ -n "$pid_file_path" ]]; then
+    error "Could not lock: Could not generate PID file path" >&2
+    return 1
+  fi
 
   if [[ -f "$pid_file_path" ]]; then
     if ps -p "$(cat "$pid_file_path")" >/dev/null; then
@@ -173,6 +195,7 @@ lock() {
       rm "$pid_file_path"
     fi
   else
+    mkdir -p "$(dirname "$pid_file_path")"
     echo $$ > "$pid_file_path"
   fi
 
