@@ -25,6 +25,22 @@ pid_file_directory=/tmp
 
 ## Helpers
 
+success-with-tag() {
+  success "[$1] ${@:2}"
+}
+
+warn-with-tag() {
+  warn "[$1] ${@:2}"
+}
+
+error-with-tag() {
+  error "[$1] ${@:2}"
+}
+
+info-with-tag() {
+  info "[$1] ${@:2}"
+}
+
 is-git-repository() {
   git rev-parse --is-inside-work-tree >/dev/null 2>&1
 }
@@ -224,13 +240,13 @@ enforce-primary-branch() {
   current_branch="$(get-current-branch)"
 
   if [[ "$current_branch" != "$primary_branch_name" ]]; then
-    error "The current branch must be \`$primary_branch_name\` to continue."
+    error-with-tag "$PWD" "The current branch must be \`$primary_branch_name\` to continue."
     return 1
   fi
 }
 
 pull-primary-branch() {
-  info "- Fetching updates..."
+  info-with-tag "$PWD" "Fetching updates..."
   run-command git pull origin "$primary_branch_name" --rebase --prune
 }
 
@@ -240,7 +256,7 @@ commit-files-to-sync() {
   local submodule_paths=()
   local is_submodule=
 
-  info "- Committing all files..."
+  info-with-tag "$PWD" "Committing all files..."
 
   # shellcheck disable=SC2016
   while read -r submodule_path; do
@@ -265,30 +281,25 @@ commit-files-to-sync() {
 }
 
 push-primary-branch() {
-  info "- Pushing \`$primary_branch_name\`..."
+  info-with-tag "$PWD" "Pushing \`$primary_branch_name\`..."
   run-command git push origin "$primary_branch_name"
 }
 
 sync-directory() {
-  local submodule_path
   local directory="$1"
+
+  local submodule_path
   local file
   local files_to_sync=()
 
-  if [[ "$directory" == "." ]]; then
-    info "Entering \`$repo_directory\`..."
-    cd "$repo_directory" || return $?
-  else
-    info "Entering submodule \`$directory\`..."
-    cd "$directory" || return $?
-  fi
+  cd "$directory" || return $?
 
   enforce-git-repository || return $?
   enforce-primary-branch || return $?
 
   # shellcheck disable=SC2016
   while read -r submodule_path; do
-    sync-directory "$submodule_path" || return $?
+    sync-directory "${directory}/${submodule_path}" || return $?
     echo
   done < <(git submodule --quiet foreach 'echo $sm_path')
 
@@ -303,19 +314,19 @@ sync-directory() {
     pull-primary-branch || return $?
     push-primary-branch || return $?
     if [[ $dry_run == "false" ]]; then
-      success "- Sync completed successfully!"
+      success-with-tag "$directory" "Sync completed successfully!"
     fi
   else
     pull-primary-branch || return $?
 
     if [[ $dry_run == "true" ]]; then
-      success "- No changes would have been synced."
+      success-with-tag "$directory" "No changes would have been synced."
     else
-      success "- No changes to sync, all good!"
+      success-with-tag "$directory" "No changes to sync, all good!"
     fi
   fi
 
-  if [[ "$directory" != "." ]]; then
+  if [[ "$directory" != "$repo_directory" ]]; then
     cd - >/dev/null || return $?
   fi
 
@@ -331,7 +342,7 @@ main() {
 
   lock || return $?
   trap unlock INT TERM
-  sync-directory "." || return $?
+  sync-directory "$repo_directory" || return $?
   exitcode=$?
   unlock
 
