@@ -19,7 +19,7 @@ LOCKED_EXIT_CODE=-700
 ## Parameters
 
 repo_directory=
-primary_branch_name=
+primary_branch_name=main
 dry_run=false
 pid_file_directory=/tmp
 
@@ -92,6 +92,7 @@ OPTIONS:
 
 -b, --primary-branch BRANCH
   Name of the primary branch to sync with.
+  (Default: main)
 
 -p, --pid-file-directory DIRECTORY
   Path to the directory used to record a lockfile for this script.
@@ -230,8 +231,7 @@ enforce-primary-branch() {
 
 pull-primary-branch() {
   info "- Fetching updates..."
-  run-command git pull --rebase --prune
-  run-command git submodule update --rebase --init --recursive
+  run-command git pull origin "$primary_branch_name" --rebase --prune
 }
 
 commit-files-to-sync() {
