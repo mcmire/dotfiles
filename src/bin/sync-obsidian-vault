@@ -287,6 +287,7 @@ push-primary-branch() {
 
 sync-directory() {
   local directory="$1"
+  local previous_directory="$2"
 
   local submodule_path
   local file
@@ -299,7 +300,7 @@ sync-directory() {
 
   # shellcheck disable=SC2016
   while read -r submodule_path; do
-    sync-directory "${directory}/${submodule_path}" || return $?
+    sync-directory "${directory}/${submodule_path}" "$PWD" || return $?
     echo
   done < <(git submodule --quiet foreach 'echo $sm_path')
 
@@ -308,7 +309,7 @@ sync-directory() {
       files_to_sync+=("$file")
     fi
   done < <(get-modified-deleted-and-untracked-files)
-
+  
   if [[ ${#files_to_sync[@]} -gt 0 ]]; then
     commit-files-to-sync "${files_to_sync[@]}" || return $?
     pull-primary-branch || return $?
@@ -327,7 +328,7 @@ sync-directory() {
   fi
 
   if [[ "$directory" != "$repo_directory" ]]; then
-    cd - >/dev/null || return $?
+    cd "$previous_directory" >/dev/null || return $?
   fi
 
   return 0
@@ -342,7 +343,7 @@ main() {
 
   lock || return $?
   trap unlock INT TERM
-  sync-directory "$repo_directory" || return $?
+  sync-directory "$repo_directory" "$PWD" || return $?
   exitcode=$?
   unlock
 
