@@ -57,8 +57,9 @@ has-staged-changes() {
   fi
 }
 
-get-modified-deleted-and-untracked-files() {
-  git ls-files --modified --deleted --others --deduplicate --exclude-standard
+get-files-to-sync() {
+  git diff --name-only || echo ""
+  git diff --cached --name-only || echo ""
 }
 
 remove-branch() {
@@ -308,7 +309,7 @@ sync-directory() {
     if [[ -n $file ]]; then
       files_to_sync+=("$file")
     fi
-  done < <(get-modified-deleted-and-untracked-files)
+  done < <(get-files-to-sync)
   
   if [[ ${#files_to_sync[@]} -gt 0 ]]; then
     commit-files-to-sync "${files_to_sync[@]}" || return $?
