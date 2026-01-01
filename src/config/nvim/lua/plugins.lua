@@ -16,6 +16,7 @@ require('lazy').setup {
     require 'plugins.lazydev',
     require 'plugins.lualine',
     -- require 'plugins.mini',
+    require 'plugins.mdx',
     require 'plugins.neo-tree',
     -- require 'plugins.noice',
     require 'plugins.nvim-lspconfig',

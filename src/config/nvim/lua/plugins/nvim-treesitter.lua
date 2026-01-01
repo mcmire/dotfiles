@@ -27,7 +27,8 @@ return {
       enable = true,
       -- Disable Treesitter in Markdown files for now as it's really slow
       -- Disable Treesitter in tmux files as the highlighting isn't right
-      disable = { 'markdown', 'tmux' },
+      -- disable = { 'markdown', 'tmux' },
+      disable = { 'tmux' },
       -- Some languages depend on vim's regex highlighting system (such as Ruby)
       -- for indent rules.
       --
