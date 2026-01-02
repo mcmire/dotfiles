@@ -256,6 +256,7 @@ commit-files-to-sync() {
   local submodule_path
   local submodule_paths=()
   local is_submodule=
+  local num_files_added=0
 
   info-with-tag "$PWD" "Committing all files..."
 
@@ -273,12 +274,17 @@ commit-files-to-sync() {
       fi
     done
 
-    if [[ $file == *.md || $file == .obsidian/* || "$is_submodule" == "true" ]]; then
+    if [[ $file == *.md || $file == *.mdx || $file == .obsidian/* || "$is_submodule" == "true" ]]; then
+      info-with-tag "$PWD" "- Adding file: $file"
       run-command git add "$file"
     fi
   done
 
-  run-command git commit -m "Automatic sync"
+  num_files_added="$(git diff --cached --name-only | wc -l)"
+
+  if [[ $num_files_added -gt 0 ]]; then
+    run-command git commit -m "Automatic sync"
+  fi
 }
 
 push-primary-branch() {
