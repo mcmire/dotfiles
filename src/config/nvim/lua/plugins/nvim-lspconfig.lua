@@ -161,12 +161,14 @@ return {
         -- Show documentation
         -- NOTE: Neovim already defines this but we want to customize the
         -- floating window
+        -- You can press this again to go into the floating window and scroll
         -- vim.keymap.set('n', 'K', function()
         --   vim.lsp.buf.hover { offset_x = 2, offset_y = 2 }
         -- end, { buffer = event.buf, desc = 'LSP: Show documentation', remap = true })
 
         -- Show diagnostics in a floating window
         -- (alias for '<C-w>d')
+        -- You can press this again to go into the floating window and scroll
         vim.keymap.set('n', '<Leader>d', '<C-w>d', { buffer = event.buf, desc = 'LSP: Show [D]iagnostics', remap = true })
         -- Jump to the next diagnostic
         -- (alias for ']d')
