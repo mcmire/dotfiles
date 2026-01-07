@@ -1,360 +1,48 @@
 #!/bin/bash
 
-# NOTE: To install this on Android, you'll need to:
-#
-# * Download the `gh` package
-# * Clone dotfiles to ~ (`gh repo clone dotfiles`)
-# * `ln -s ~/dotfiles/src/config/core-helpers.sh ~/.config/core-helpers.sh`
-# * `cd /storage/emulated/0 && gh repo clone obsidian-vault`
-# * `ln -s /storage/emulated/0/obsidian-vault ~/obsidian-vault`
-# * `git config --global --add safe.directory ~/obsidian-vault/<submodule>` for each submodule
+main() {
+  local command_args=()
+  local repo_directory
+  local wants_help=0
 
-# shellcheck source=./src/config/core-helpers.sh
-source "$HOME/.config/core-helpers.sh"
-
-## Constants
-
-LOCKED_EXIT_CODE=-700
-
-## Parameters
-
-repo_directory=
-primary_branch_name=main
-dry_run=false
-pid_file_directory=/tmp
-
-## Helpers
-
-success-with-tag() {
-  success "[$1] ${@:2}"
-}
-
-warn-with-tag() {
-  warn "[$1] ${@:2}"
-}
-
-error-with-tag() {
-  error "[$1] ${@:2}"
-}
-
-info-with-tag() {
-  info "[$1] ${@:2}"
-}
-
-is-git-repository() {
-  git rev-parse --is-inside-work-tree >/dev/null 2>&1
-}
-
-get-current-branch() {
-  git rev-parse --abbrev-ref HEAD
-}
-
-has-staged-changes() {
-  if git diff-index --quiet --cached HEAD >/dev/null 2>&1; then
-    return 1
-  else
-    return 0
-  fi
-}
-
-get-files-to-sync() {
-  git diff --name-only || echo ""
-  git diff --cached --name-only || echo ""
-}
-
-remove-branch() {
-  local branch_name="$1"
-  git branch -D "$branch_name" && (git push origin --delete "$branch_name" || true)
-}
-
-run-command() {
-  local command_executable="$1"
-  local command_args=("${@:2}")
-  local exit_status
-  local tempfile
-  tempfile="$(mktemp)"
-
-  local command="$command_executable"
-  for command_arg in "${command_args[@]}"; do
-    command+=" "
-    command+=$(printf "%q" "$command_arg")
-  done
-
-  if [[ $dry_run == "true" ]]; then
-    echo "Would have run: $(cyan "$command")"
-  else
-    eval "$command" >"$tempfile" 2>&1
-    exit_status=$?
-
-    if [[ $exit_status -ne 0 ]]; then
-      error "Command '${command[*]}' failed with exit status $exit_status."
-      echo "Command output:"
-      cat "$tempfile"
-    fi
-
-    return $exit_status
-  fi
-}
-
-## Actions
-
-print-usage() {
-  echo "\
-USAGE: $0 OPTIONS
-
-OPTIONS:
-
--d, --repo-directory PATH
-  Path to the Git repository to sync.
-
--b, --primary-branch BRANCH
-  Name of the primary branch to sync with.
-  (Default: main)
-
--p, --pid-file-directory DIRECTORY
-  Path to the directory used to record a lockfile for this script.
-  (Default: /tmp)
-
--n, --dry-run
-  Don't perform any Git operations; just print what would have happened.
-
---no-color
-  Disable color.
-
---debug
-  Enable debugging.
-
--h, --help
-  Print this message and exit.
-"
-}
-
-parse-args() {
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --repo-directory | -d)
         repo_directory="$2"
         shift 2
         ;;
-      --primary-branch | -b)
-        primary_branch_name="$2"
-        shift 2
-        ;;
-      --dry-run | -n)
-        dry_run="true"
-        shift
-        ;;
-      --pid-file-directory | -p)
-        pid_file_directory="$2"
-        shift 2
-        ;;
-      --no-color)
-        set-color-mode "false"
-        shift
-        ;;
-      --debug)
-        set-debug-mode "true"
-        shift
-        ;;
       --help | -h)
-        print-usage
-        return 0
+        wants_help=1
+        command_args+=("$1")
+        shift
         ;;
       *)
-        error "Unknown option or argument: $1" >&2
-        echo >&2
-        print-usage >&2
-        return 1
+        command_args+=("$1")
+        shift
         ;;
     esac
   done
 
-  return 0
-}
+  if [[ $wants_help -eq 1 ]]; then
+    echo "This is a wrapper around the sync script in an Obsidian vault repo."
+    if [[ -n $repo_directory ]]; then
+      echo "The help message from this script follows."
+      echo
+    fi
+  fi
 
-validate-args() {
   if [[ -z $repo_directory ]]; then
-    error "Missing required option: --repo-directory" >&2
-    echo >&2
-    print-usage >&2
-    return 1
-  fi
-
-  if [[ -z $primary_branch_name ]]; then
-    error "Missing required option: --primary-branch-name" >&2
-    echo >&2
-    print-usage >&2
-    return 1
-  fi
-
-  return 0
-}
-
-get-pid-file-path() {
-  local command_hash
-  command_hash=$(echo -n "$repo_directory" "$primary_branch_name" | md5sum | head -c 32)
-  echo "$pid_file_directory/sync-obsidian-vault.$command_hash.pid"
-}
-
-lock() {
-  local pid_file_path
-  pid_file_path="$(get-pid-file-path)"
-
-  if [[ -z "$pid_file_path" ]]; then
-    error "Could not lock: Could not generate PID file path" >&2
-    return 1
-  fi
-
-  if [[ -f "$pid_file_path" ]]; then
-    if ps -p "$(cat "$pid_file_path")" >/dev/null; then
-      error "This Obsidian vault is already in the process of being synced." >&2
-      return $LOCKED_EXIT_CODE
+    if [[ $wants_help -eq 1 ]]; then
+      echo "You can specify the repo (and get more specific help) by passing --repo-directory in addition to --help."
+      return 0
     else
-      rm "$pid_file_path"
-    fi
-  else
-    mkdir -p "$(dirname "$pid_file_path")"
-    echo $$ > "$pid_file_path"
-  fi
-
-  return 0
-}
-
-unlock() {
-  local pid_file_path
-  pid_file_path="$(get-pid-file-path)"
-
-  if [[ -f "$pid_file_path" ]]; then
-    rm "$pid_file_path"
-  fi
-}
-
-enforce-git-repository() {
-  if ! is-git-repository; then
-    error "\`$PWD\` is not a Git repository."
-    return 1
-  fi
-}
-
-enforce-primary-branch() {
-  local current_branch
-  current_branch="$(get-current-branch)"
-
-  if [[ "$current_branch" != "$primary_branch_name" ]]; then
-    error-with-tag "$PWD" "The current branch must be \`$primary_branch_name\` to continue."
-    return 1
-  fi
-}
-
-pull-primary-branch() {
-  info-with-tag "$PWD" "Fetching updates..."
-  run-command git pull origin "$primary_branch_name" --rebase --prune
-}
-
-commit-files-to-sync() {
-  local files_to_sync=("$@")
-  local submodule_path
-  local submodule_paths=()
-  local is_submodule=
-  local num_files_added=0
-
-  info-with-tag "$PWD" "Committing all files..."
-
-  # shellcheck disable=SC2016
-  while read -r submodule_path; do
-    submodule_paths+=("$submodule_path")
-  done < <(git submodule --quiet foreach 'echo $sm_path')
-
-  is_submodule="false"
-  for file in "${files_to_sync[@]}"; do
-    for submodule_path in "${submodule_paths[@]}"; do
-      if [[ $submodule_path == "$file" ]]; then
-        is_submodule="true"
-        break
-      fi
-    done
-
-    if [[ $file == *.md || $file == *.mdx || $file == .obsidian/* || "$is_submodule" == "true" ]]; then
-      info-with-tag "$PWD" "- Adding file: $file"
-      run-command git add "$file"
-    fi
-  done
-
-  num_files_added="$(git diff --cached --name-only | wc -l)"
-
-  if [[ $num_files_added -gt 0 ]]; then
-    run-command git commit -m "Automatic sync"
-  fi
-}
-
-push-primary-branch() {
-  info-with-tag "$PWD" "Pushing \`$primary_branch_name\`..."
-  run-command git push origin "$primary_branch_name"
-}
-
-sync-directory() {
-  local directory="$1"
-  local previous_directory="$2"
-
-  local submodule_path
-  local file
-  local files_to_sync=()
-
-  cd "$directory" || return $?
-
-  enforce-git-repository || return $?
-  enforce-primary-branch || return $?
-
-  # shellcheck disable=SC2016
-  while read -r submodule_path; do
-    sync-directory "${directory}/${submodule_path}" "$PWD" || return $?
-    echo
-  done < <(git submodule --quiet foreach 'echo $sm_path')
-
-  while IFS= read -r file; do
-    if [[ -n $file ]]; then
-      files_to_sync+=("$file")
-    fi
-  done < <(get-files-to-sync)
-  
-  if [[ ${#files_to_sync[@]} -gt 0 ]]; then
-    commit-files-to-sync "${files_to_sync[@]}" || return $?
-    pull-primary-branch || return $?
-    push-primary-branch || return $?
-    if [[ $dry_run == "false" ]]; then
-      success-with-tag "$directory" "Sync completed successfully!"
-    fi
-  else
-    pull-primary-branch || return $?
-
-    if [[ $dry_run == "true" ]]; then
-      success-with-tag "$directory" "No changes would have been synced."
-    else
-      success-with-tag "$directory" "No changes to sync, all good!"
+      echo "ERROR: Missing required option: --repo-directory" >&2
+      return 1
     fi
   fi
 
-  if [[ "$directory" != "$repo_directory" ]]; then
-    cd "$previous_directory" >/dev/null || return $?
-  fi
-
-  return 0
-}
-
-main() {
-  local exitcode
-  local current_branch
-
-  parse-args "$@" || return $?
-  validate-args || return $?
-
-  lock || return $?
-  trap unlock INT TERM
-  sync-directory "$repo_directory" "$PWD" || return $?
-  exitcode=$?
-  unlock
-
-  return $exitcode
+  cd "$repo_directory" || return $?
+  ./_scripts/sync.sh "${command_args[@]}"
 }
 
 main "$@"
