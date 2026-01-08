@@ -8,7 +8,6 @@
     <key>ProgramArguments</key>
     <array>
       <string>{{ HOME }}/.bin/sync-obsidian-vault-when-changed</string>
-      <string>--no-color</string>
     </array>
 
     <key>KeepAlive</key>

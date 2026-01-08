@@ -8,7 +8,6 @@
     <key>ProgramArguments</key>
     <array>
       <string>{{ HOME }}/.bin/sync-obsidian-vault-with-logging</string>
-      <string>--no-color</string>
     </array>
 
     <key>StartCalendarInterval</key>

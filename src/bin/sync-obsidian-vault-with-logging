@@ -1,24 +1,7 @@
 #!/bin/bash
 
-source "$HOME/.config/core-helpers.sh"
-
 LOG_FILE_PATH=$HOME/Library/Logs/sync-obsidian-vault.log
 TEMP_LOG_FILE_PATH="$(mktemp /tmp/$(basename $0).XXXXXX)" || exit 1
-
-parse-args() {
-  while [[ $# -gt 0 ]]; do
-    case "${1:-}" in
-      --no-color)
-        set-color-mode "false"
-        shift
-        ;;
-      --debug)
-        set-debug-mode "true"
-        shift
-        ;;
-    esac
-  done
-}
 
 cleanup() {
   rm -f "$TEMP_LOG_FILE_PATH"
@@ -29,7 +12,7 @@ sync() {
   local exitcode
   local try=1
 
-  command=("$HOME/.bin/sync-obsidian-vault" --repo-directory "$HOME/obsidian-vault" --primary-branch main --no-color)
+  command=("$HOME/.bin/sync-obsidian-vault" --repo-directory "$HOME/obsidian-vault" --primary-branch main)
 
   echo "Date: $(date)" | tee -a "$TEMP_LOG_FILE_PATH"
   echo "Current directory: $PWD" | tee -a "$TEMP_LOG_FILE_PATH"
@@ -73,8 +56,6 @@ sync() {
 
 main() {
   local exitcode
-
-  parse-args "$@"
 
   trap cleanup INT QUIT
 
