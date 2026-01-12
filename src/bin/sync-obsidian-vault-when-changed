@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# This script is designed to be run within a launch agent or init sript and
+# therefore executables may not be on the PATH.
+#
+# On macOS, you can get this by running: `brew install watchexec`
+# On Termux, you can get this by running: `pkg install watchexec`
 path_to_watchexec=
 if [[ -e /data/data/com.termux/files/usr/bin/watchexec ]]; then
   path_to_watchexec=/data/data/com.termux/files/usr/bin/watchexec
@@ -10,12 +15,7 @@ else
   exit 1
 fi
 
-# This script is designed to be run within a launch agent and therefore
-# Homebrew-installed executables may not be on the PATH.
-#
-# On macOS, you can get this by running: `brew install watchexec`
-# On Termux, you can get this by running: `pkg install watchexec`
-$path_to_watchexec \
+exec $path_to_watchexec \
   --watch "$HOME/obsidian-vault" \
   --on-busy-update=restart \
   --debounce 5s \
