@@ -1,5 +1,7 @@
-asdf_dir=$(brew --prefix asdf)
+if which brew &>/dev/null; then
+  asdf_dir=$(brew --prefix asdf)
 
-if [[ -f $asdf_dir/libexec/asdf.sh ]]; then
-  source $asdf_dir/libexec/asdf.sh
+  if [[ -f $asdf_dir/libexec/asdf.sh ]]; then
+    source $asdf_dir/libexec/asdf.sh
+  fi
 fi
