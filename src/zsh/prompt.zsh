@@ -58,16 +58,17 @@ zle::keymap-select() {
 
 prompt::set() {
   prompt__time='%F{blue}%D{%-I:%M:%S %p}%f'
+  prompt__hostname='%F{cyan}%n@%m%f'
   prompt__cwd='%F{green}%~%f'
   prompt__git_branch='%(1V. on %F{yellow}%1v%f.)'
   prompt__language_versions_separator='%(2V. using.%(3V. using.%(4V. using.)))'
   prompt__ruby_version='%(2V. %F{red}%2v%f.)'
   prompt__nodejs_version='%(3V.%(2V., . )%F{red}%3v%f.)'
   prompt__python_version='%(4V.%(2V., .%(3V., . ))%F{red}%4v%f.)'
-  prompt__indicator='➤  '
+  prompt__indicator='%# '
   newline=$'\n'
 
-  PROMPT="(${prompt__time}) ${prompt__cwd}${prompt__git_branch}${prompt__language_versions_separator}${prompt__ruby_version}${prompt__nodejs_version}${prompt__python_version}${newline}${prompt__indicator}"
+  PROMPT="[${prompt__time}] $prompt__hostname in ${prompt__cwd}${prompt__git_branch}${prompt__language_versions_separator}${prompt__ruby_version}${prompt__nodejs_version}${prompt__python_version}${newline}${prompt__indicator}"
 }
 
 job::read-git-status() {
