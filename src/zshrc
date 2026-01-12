@@ -35,7 +35,7 @@ benchmarked-source() {
   fi
 }
 
-if [[ $BENCHMARK_SHELL_INIT ]]; then
+if [[ $BENCHMARK_SHELL_INIT -eq 1 ]]; then
   rm -f $BENCHMARK_LOG
   touch $BENCHMARK_LOG
 fi
