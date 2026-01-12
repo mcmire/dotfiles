@@ -26,29 +26,33 @@ success() {
 }
 
 create-global-launch-daemon() {
-  local launch_agent="$1"
+  if which launchctl &>/dev/null; then
+    local launch_agent="$1"
 
-  echo "- Enabling $launch_agent"
+    echo "- Enabling $launch_agent"
 
-  sudo launchctl unload "/Library/LaunchDaemons/${launch_agent}.plist" || true
-  sed -Ee 's|{{ HOME }}|'"$HOME"'|' "$DOTFILES_PROJECT_DIR/extras/LaunchDaemons/${launch_agent}.plist.tpl" > "/tmp/${launch_agent}.plist"
-  sudo cp -f "/tmp/${launch_agent}.plist" "/Library/LaunchDaemons/${launch_agent}.plist"
-  rm "/tmp/${launch_agent}.plist"
-  sudo chmod 644 "/Library/LaunchDaemons/${launch_agent}.plist"
-  sudo launchctl load "/Library/LaunchDaemons/${launch_agent}.plist"
+    sudo launchctl unload "/Library/LaunchDaemons/${launch_agent}.plist" || true
+    sed -Ee 's|{{ HOME }}|'"$HOME"'|' "$DOTFILES_PROJECT_DIR/extras/LaunchDaemons/${launch_agent}.plist.tpl" > "/tmp/${launch_agent}.plist"
+    sudo cp -f "/tmp/${launch_agent}.plist" "/Library/LaunchDaemons/${launch_agent}.plist"
+    rm "/tmp/${launch_agent}.plist"
+    sudo chmod 644 "/Library/LaunchDaemons/${launch_agent}.plist"
+    sudo launchctl load "/Library/LaunchDaemons/${launch_agent}.plist"
+  fi
 }
 
 create-user-launch-agent() {
-  local launch_agent="$1"
+  if which launchctl &>/dev/null; then
+    local launch_agent="$1"
 
-  echo "- Enabling $launch_agent"
+    echo "- Enabling $launch_agent"
 
-  launchctl unload "$HOME/Library/LaunchAgents/${launch_agent}.plist" || true
-  sed -Ee 's|{{ HOME }}|'"$HOME"'|' "$DOTFILES_PROJECT_DIR/extras/LaunchAgents/${launch_agent}.plist.tpl" > "/tmp/${launch_agent}.plist"
-  cp -f "/tmp/${launch_agent}.plist" "$HOME/Library/LaunchAgents/${launch_agent}.plist"
-  rm "/tmp/${launch_agent}.plist"
-  chmod 644 "$HOME/Library/LaunchAgents/${launch_agent}.plist"
-  launchctl load "$HOME/Library/LaunchAgents/${launch_agent}.plist"
+    launchctl unload "$HOME/Library/LaunchAgents/${launch_agent}.plist" || true
+    sed -Ee 's|{{ HOME }}|'"$HOME"'|' "$DOTFILES_PROJECT_DIR/extras/LaunchAgents/${launch_agent}.plist.tpl" > "/tmp/${launch_agent}.plist"
+    cp -f "/tmp/${launch_agent}.plist" "$HOME/Library/LaunchAgents/${launch_agent}.plist"
+    rm "/tmp/${launch_agent}.plist"
+    chmod 644 "$HOME/Library/LaunchAgents/${launch_agent}.plist"
+    launchctl load "$HOME/Library/LaunchAgents/${launch_agent}.plist"
+  fi
 }
 
 set-git-name-and-email() {
