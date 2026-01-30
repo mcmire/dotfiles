@@ -15,7 +15,7 @@ end)
 -- by indenting and marking them
 vim.o.linebreak = true
 vim.o.breakindent = true
-vim.o.showbreak = '> '
+-- vim.o.showbreak = '> '
 
 -- Allow for navigating wrapped lines as though they are real lines
 vim.keymap.set({ 'n', 'v' }, 'j', 'gj', { remap = false })

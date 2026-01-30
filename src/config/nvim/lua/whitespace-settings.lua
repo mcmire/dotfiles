@@ -16,7 +16,7 @@ vim.o.tabstop = 2
 -- Highlight tabs, lines with nothing but spaces and spaces at the end of lines,
 -- and lines that continue past the visible viewport.
 vim.o.list = true
-vim.opt.listchars = { tab = '⊢—', trail = '·', nbsp = '␣', extends = '⨠' }
+vim.opt.listchars = { tab = '->', trail = '·', nbsp = '␣', extends = '⨠' }
 
 -- Highlight whitespace at the end of a line,
 -- both when loading a file and when entering input
