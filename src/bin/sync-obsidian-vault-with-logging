@@ -1,4 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env zsh
+
+# PATH is empty-ish when this script is running via launchd
+source "$HOME/.zsh/_path.zsh"
+source "$HOME/.zsh/_homebrew.zsh"
 
 LOG_FILE_PATH=$HOME/Library/Logs/sync-obsidian-vault.log
 TEMP_LOG_FILE_PATH="$(mktemp /tmp/$(basename $0).XXXXXX)" || exit 1
@@ -15,6 +19,7 @@ sync() {
   command=("$HOME/.bin/sync-obsidian-vault" --repo-directory "$HOME/obsidian-vault" --primary-branch main)
 
   echo "Date: $(date)" | tee -a "$TEMP_LOG_FILE_PATH"
+  echo "Current user: $USER" | tee -a "$TEMP_LOG_FILE_PATH"
   echo "Current directory: $PWD" | tee -a "$TEMP_LOG_FILE_PATH"
   echo "Command: ${command[@]}" | tee -a "$TEMP_LOG_FILE_PATH"
   echo | tee -a "$TEMP_LOG_FILE_PATH"

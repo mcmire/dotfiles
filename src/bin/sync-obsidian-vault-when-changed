@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
 # This script is designed to be run within a launch agent or init sript and
 # therefore executables may not be on the PATH.
