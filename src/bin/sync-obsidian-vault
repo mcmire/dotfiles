@@ -42,7 +42,7 @@ main() {
   fi
 
   cd "$repo_directory" || return $?
-  bash _scripts/sync.sh "${command_args[@]}"
+  bash scripts/sync.sh "${command_args[@]}"
 }
 
 main "$@"
