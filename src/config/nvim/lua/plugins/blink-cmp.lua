@@ -52,6 +52,7 @@ return {
             return cmp.select_next()
           end
 
+          -- Don't show anything if at the very beginning of a line
           if has_words_before() then
             return cmp.show_and_insert_or_accept_single()
           end
