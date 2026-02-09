@@ -17,9 +17,6 @@ fi
 
 exec $path_to_watchexec \
   --watch "$HOME/obsidian-vault" \
-  --on-busy-update=restart \
-  --debounce 5s \
-  $HOME/.bin/debounce \
-  --duration 120 \
-  -- \
+  --on-busy-update=queue \
+  --debounce 120s \
   $HOME/.bin/sync-obsidian-vault-with-logging "$@"
