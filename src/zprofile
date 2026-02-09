@@ -1,4 +1,4 @@
-# This file gets loaded for login shells, e.g. when using `ssh`.
+#echo ".zprofile loaded"
 
 # /etc/zprofile (which macOS provides by default) will run a script call
 # path_helper, which will set the PATH. Unfortunately this gets re-run when we
@@ -8,9 +8,9 @@
 # order.
 # Source: <https://superuser.com/questions/544989/does-tmux-sort-the-path-variable>
 if [[ -n $TMUX && -f /etc/zprofile ]]; then
+  #echo "tmux detected, resetting PATH"
   PATH=""
   source /etc/zprofile
 fi
 
-# We want to load all of the usual stuff we load for non-login shells.
-source ~/.zshrc
+#echo "PATH: $PATH"

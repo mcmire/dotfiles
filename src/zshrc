@@ -1,5 +1,5 @@
-# This file gets loaded for non-login shells, e.g. using a terminal or terminal
-# multiplexer as usual.
+#echo ".zshrc loaded"
+#echo "PATH: $PATH"
 
 BENCHMARK_SHELL_INIT=0
 BENCHMARK_LOG=/tmp/zsh-benchmark.log
@@ -90,3 +90,5 @@ benchmarked-source ~/.zsh/zzz_functions.zsh
 if [[ -f ~/.zshrc.local ]]; then
   benchmarked-source ~/.zshrc.local
 fi
+
+#echo "(end of .zshrc) PATH: $PATH"
