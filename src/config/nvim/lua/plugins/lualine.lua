@@ -6,6 +6,12 @@ return {
       theme = 'base16',
     },
     sections = {
+      lualine_b = {
+        {
+          'b:gitsigns_head',
+          icon = '',
+        },
+      },
       lualine_c = {
         {
           'filename',

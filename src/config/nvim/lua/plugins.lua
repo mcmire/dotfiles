@@ -12,6 +12,7 @@ require('lazy').setup {
     require 'plugins.ctrlp',
     require 'plugins.eunuch',
     require 'plugins.ferret',
+    require 'plugins.gitsigns',
     require 'plugins.indent-blankline',
     require 'plugins.lazydev',
     require 'plugins.lualine',
