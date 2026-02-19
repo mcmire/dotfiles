@@ -3,7 +3,7 @@
   "editor.fontFamily": "Cascadia Code",
   "editor.fontLigatures": true,
   "editor.formatOnSave": true,
-  "workbench.colorTheme": "Solarized Dark",
+  "workbench.colorTheme": "Monokai Dimmed",
   "workbench.preferredDarkColorTheme": "Solarized Dark",
   "workbench.preferredLightColorTheme": "Solarized Light",
   "workbench.preferredHighContrastColorTheme": "Solarized Dark",
