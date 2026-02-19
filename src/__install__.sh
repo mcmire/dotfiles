@@ -78,6 +78,8 @@ create-launch-agents-and-daemons() {
       banner "Setting up Obsidian vault syncing"
       create-user-launch-agent com.elliotwinkler.sync-obsidian-vault-periodically
       create-user-launch-agent com.elliotwinkler.sync-obsidian-vault-when-changed
+      create-user-launch-agent com.elliotwinkler.sync-writings-repo-periodically
+      create-user-launch-agent com.elliotwinkler.sync-writings-repo-when-changed
     fi
   fi
 }

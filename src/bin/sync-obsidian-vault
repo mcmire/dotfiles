@@ -1,48 +1,423 @@
 #!/bin/bash
 
-main() {
-  local command_args=()
-  local repo_directory
-  local wants_help=0
+shopt -s extglob
 
+## Constants
+
+LOCKED_EXIT_CODE=-700
+CANCELED_EXIT_CODE=100
+
+## Parameters
+
+primary_branch_name=main
+commit_message="Automatic commit"
+prompt_for_commit_message=0
+dry_run=0
+simulate_commit=0
+vault_directory=
+pid_file_directory=
+
+## Helpers
+
+error() {
+  echo "ERROR:" "$@" >&2
+}
+
+is-git-repository() {
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1
+}
+
+get-current-branch() {
+  git rev-parse --abbrev-ref HEAD
+}
+
+has-staged-changes() {
+  if git diff-index --quiet --cached HEAD >/dev/null 2>&1; then
+    return 1
+  else
+    return 0
+  fi
+}
+
+get-files-to-sync() {
+  while IFS= read -r file; do
+    if [[ -n $file ]]; then
+      # shellcheck disable=SC2086
+      # No need to quote - it's already quoted
+      eval echo $file
+    fi
+  done < <(git status --porcelain --no-renames | cut -c 4-)
+}
+
+remove-branch() {
+  local branch_name="$1"
+  git branch -D "$branch_name" && (git push origin --delete "$branch_name" || true)
+}
+
+run-command() {
+  local command
+  local command_executable
+  local exit_status
+  local tempfile
+
+  for arg in "$@"; do
+    if [[ -n "$command" ]]; then
+      command+=" "
+    fi
+    if [[ $arg == "|" || "$arg" == ">" ]]; then
+      # This is a pipe or redirect; don't escape it
+      command+="$arg"
+      # Forget the current executable so that if we encounter another one
+      # we won't escape it
+      command_executable=
+    elif [[ -z "$command_executable" ]]; then
+      # This is the name of an executable; don't escape it
+      command+="$arg"
+      command_executable="$arg"
+    else
+      # This is an argument to the current executable; escape it
+      command+=$(printf "%q" "$arg")
+    fi
+  done
+
+  tempfile="$(mktemp)"
+
+  if [[ $dry_run -eq 1 ]]; then
+    echo "Would have run: $command"
+  else
+    eval "$command" >"$tempfile" 2>&1
+    exit_status=$?
+
+    if [[ $exit_status -ne 0 ]]; then
+      error "Command '${command[*]}' failed with exit status $exit_status."
+      echo "Command output:"
+      echo "---[ START OF OUTPUT ]-----------"
+      cat "$tempfile"
+      echo "---[ END OF OUTPUT   ]-----------"
+    fi
+
+    return $exit_status
+  fi
+}
+
+## Actions
+
+print-usage() {
+  echo "\
+USAGE: $0 ARGUMENTS
+
+ARGUMENTS:
+
+-d, --vault-directory DIRECTORY
+  The path to the vault you want to sync.
+
+-b, --primary-branch BRANCH
+  Name of the primary branch to sync with.
+  (Default: \"main\")
+
+-p, --pid-file-directory DIRECTORY
+  Path to the directory used to record a lockfile for this script.
+  (Default: \"/tmp\")
+
+-m, --commit-message MESSAGE
+  The message to use when making a commit. May contain newlines.
+  (Default: \"Automatic commit\")
+
+-P, --prompt-for-commit-message
+  Before making a commit, displays a dialog asking the user to enter a commit
+  message. Discarding the dialog will cancel the commit.
+  Overrides --commit-message.
+
+-n, --dry-run
+  Don't perform any Git operations; just print what would have happened.
+  (Default: false)
+
+--simulate-commit
+  Pretend that some files have changes to cause a new commit to be created.
+  Implies --dry-run.
+  (Default: false)
+
+-h, --help
+  Print this message and exit.
+"
+}
+
+parse-args() {
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      --repo-directory | -d)
-        repo_directory="$2"
+      --vault-directory | -d)
+        vault_directory="$2"
         shift 2
         ;;
-      --help | -h)
-        wants_help=1
-        command_args+=("$1")
+      --primary-branch | -b)
+        primary_branch_name="$2"
+        shift 2
+        ;;
+      --pid-file-directory | -p)
+        pid_file_directory="$2"
+        shift 2
+        ;;
+      --commit-message | -m)
+        commit_message="$2"
+        shift 2
+        ;;
+      --prompt-for-commit-message | -P)
+        prompt_for_commit_message=1
         shift
         ;;
-      *)
-        command_args+=("$1")
+      --dry-run | -n)
+        dry_run=1
         shift
+        ;;
+      --simulate-commit)
+        simulate_commit=1
+        dry_run=1
+        shift
+        ;;
+      --help | -h)
+        print-usage
+        exit
+        ;;
+      *)
+        error "Unknown option or argument: $1" $'\n'
+        print-usage >&2
+        return 1
         ;;
     esac
   done
 
-  if [[ $wants_help -eq 1 ]]; then
-    echo "This is a wrapper around the sync script in an Obsidian vault repo."
-    if [[ -n $repo_directory ]]; then
-      echo "The help message from this script follows."
-      echo
-    fi
-  fi
-
-  if [[ -z $repo_directory ]]; then
-    if [[ $wants_help -eq 1 ]]; then
-      echo "You can specify the repo (and get more specific help) by passing --repo-directory in addition to --help."
-      return 0
+  if [[ -z $pid_file_directory ]]; then
+    if ls /tmp &>/dev/null; then
+      pid_file_directory="/tmp"
     else
-      echo "ERROR: Missing required option: --repo-directory" >&2
-      return 1
+      pid_file_directory="$HOME/tmp"
     fi
   fi
 
-  cd "$repo_directory" || return $?
-  bash scripts/sync.sh "${command_args[@]}"
+  return 0
+}
+
+validate-args() {
+  if [[ -z $vault_directory ]]; then
+    error "Missing required option: --vault-directory" $'\n'
+    print-usage >&2
+    return 1
+  fi
+
+  if [[ -z $primary_branch_name ]]; then
+    error "Missing required option: --primary-branch-name" $'\n'
+    print-usage >&2
+    return 1
+  fi
+
+  return 0
+}
+
+get-pid-file-path() {
+  local command_hash
+  command_hash=$(echo -n "$vault_directory" "$primary_branch_name" | md5sum | head -c 32)
+  echo "$pid_file_directory/sync-obsidian-vault.$command_hash.pid"
+}
+
+lock() {
+  local pid_file_path
+  pid_file_path="$(get-pid-file-path)"
+
+  if [[ -z "$pid_file_path" ]]; then
+    error "Could not lock: Could not generate PID file path"
+    return 1
+  fi
+
+  if [[ -f "$pid_file_path" ]]; then
+    if ps -p "$(cat "$pid_file_path")" >/dev/null; then
+      error "This Obsidian vault is already in the process of being synced."
+      return $LOCKED_EXIT_CODE
+    else
+      rm "$pid_file_path"
+    fi
+  else
+    mkdir -p "$(dirname "$pid_file_path")"
+    echo $$ > "$pid_file_path"
+  fi
+
+  return 0
+}
+
+unlock() {
+  local pid_file_path
+  pid_file_path="$(get-pid-file-path)"
+
+  if [[ -f "$pid_file_path" ]]; then
+    rm "$pid_file_path"
+  fi
+}
+
+enforce-git-repository() {
+  if ! is-git-repository; then
+    error "\`$PWD\` is not a Git repository."
+    return 1
+  fi
+}
+
+enforce-primary-branch() {
+  local current_branch
+  current_branch="$(get-current-branch)"
+
+  if [[ "$current_branch" != "$primary_branch_name" ]]; then
+    error "The current branch must be \`$primary_branch_name\` to continue."
+    return 1
+  fi
+}
+
+pull-primary-branch() {
+  echo "Fetching updates..."
+  # Don't run hooks, otherwise we may run `git lfs` twice
+  run-command git pull origin --rebase --prune --no-verify "$primary_branch_name" || return $?
+  run-command git lfs pull origin "$primary_branch_name" || return $?
+}
+
+is-file-to-sync() {
+  [[ $1 == *.@(md|mdx|jpg|png|webp) || $1 == .obsidian/* ]]
+}
+
+get-commit-message-file() {
+  local message_file
+  local directory_name
+  local script_file
+  local should_make_commit
+  local exitcode
+
+  message_file="$(mktemp)"
+
+  if [[ $prompt_for_commit_message -eq 1 ]]; then
+    directory_name="$(basename "$PWD")"
+    script_file="$(mktemp)"
+    cat <<EOT > "$script_file"
+set dialogResult to display dialog "Save $directory_name?" default answer ""
+return text returned of dialogResult
+EOT
+    osascript "$script_file" > "$message_file" 2>&1
+    exitcode=$?
+    if [[ $exitcode -ne 0 && "$(cat "$message_file")" =~ User\ canceled ]]; then
+      should_make_commit="false"
+    fi
+  elif [[ -n "$commit_message" ]]; then
+    echo "$commit_message" > "$message_file"
+    should_make_commit="true"
+  else
+    should_make_commit="false"
+  fi
+
+  if [[ -z $should_make_commit ]]; then
+    should_make_commit="false"
+    while IFS= read -r line; do
+      if [[ -n "$line" ]]; then
+        should_make_commit="true"
+        break
+      fi
+    done < "$message_file"
+  fi
+
+  if [[ $should_make_commit == "true" ]]; then
+    echo "$message_file"
+  fi
+}
+
+commit-files-to-sync() {
+  local files_to_sync="$1"
+  local commit_message_file="$2"
+  local num_files_added=0
+
+  echo "Committing all files..."
+
+  while IFS= read -r file; do
+    if [[ -n "$file" ]]; then
+      if is-file-to-sync "$file"; then
+        echo "- Adding file: $file"
+        run-command git add "$file"
+      else
+        echo "- Not adding file as it's filtered out: $file"
+      fi
+    fi
+  done < <(echo "$files_to_sync")
+
+  num_files_added="$(git diff --cached --name-only | wc -l)"
+
+  if [[ $num_files_added -gt 0 || $simulate_commit -eq 1 ]]; then
+    run-command git commit -F "$commit_message_file" || return $?
+  fi
+}
+
+push-primary-branch() {
+  echo "Pushing \`$primary_branch_name\`..."
+  # Don't run hooks, otherwise we may run `git lfs` twice
+  run-command git push origin --no-verify "$primary_branch_name" || return $?
+  run-command git lfs push origin "$primary_branch_name" || return $?
+}
+
+sync-directory() {
+  local file
+  local files_to_sync
+  local has_files_to_sync=0
+  local commit_message_file
+
+  cd "$vault_directory" || return $?
+  enforce-git-repository || return $?
+  enforce-primary-branch || return $?
+
+  files_to_sync="$(get-files-to-sync)"
+  while IFS= read -r file; do
+    if [[ -n "$file" ]]; then
+      has_files_to_sync=1
+      break
+    fi
+  done < <(echo "$files_to_sync")
+
+  if [[ $simulate_commit -eq 1 ]]; then
+    has_files_to_sync=1
+  fi
+  
+  if [[ $has_files_to_sync -eq 1 ]]; then
+    commit_message_file="$(get-commit-message-file)"
+    if [[ -z $commit_message_file ]]; then
+      echo "Sync canceled."
+      return $CANCELED_EXIT_CODE
+    fi
+    commit-files-to-sync "$files_to_sync" "$commit_message_file" || return $?
+    pull-primary-branch || return $?
+    # push-primary-branch || return $?
+
+    if [[ $dry_run -eq 0 ]]; then
+      echo "Sync completed successfully!"
+    fi
+  else
+    pull-primary-branch || return $?
+    # push-primary-branch || return $?
+
+    if [[ $dry_run -eq 1 ]]; then
+      echo "No changes would have been synced."
+    else
+      echo "No changes to sync, all good!"
+    fi
+  fi
+
+  return 0
+}
+
+main() {
+  local exitcode
+  local current_branch
+
+  parse-args "$@" || return $?
+  validate-args || return $?
+
+  lock || return $?
+  trap unlock INT TERM
+  sync-directory
+  exitcode=$?
+  unlock || return $?
+
+  return $exitcode
 }
 
 main "$@"

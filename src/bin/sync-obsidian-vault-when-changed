@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-# This script is designed to be run within a launch agent or init sript and
+# This script is designed to be run within a launch agent or init script and
 # therefore executables may not be on the PATH.
 #
 # On macOS, you can get this by running: `brew install watchexec`
@@ -15,8 +15,32 @@ else
   exit 1
 fi
 
+saw_vault_directory_option=0
+vault_directory="$1"
+
+for arg in "$@"; do
+  if [[ $saw_vault_directory_option -eq 1 ]]; then
+    vault_directory="$arg"
+    break
+  fi
+
+  if [[ $arg == "--vault-directory" || $arg == "-d" ]]; then
+    saw_vault_directory_option=1
+  fi
+done
+
+if [[ -z $vault_directory ]]; then
+  echo "USAGE: $0 VAULT_DIRECTORY"
+  exit 1
+fi
+
+if ! [[ -d $vault_directory ]]; then
+  echo "ERROR: Could not find vault directory: $vault_directory"
+  exit 1
+fi
+
 exec $path_to_watchexec \
-  --watch "$HOME/obsidian-vault" \
+  --watch "$vault_directory" \
   --on-busy-update=queue \
-  --debounce 120s \
+  --debounce 30s \
   $HOME/.bin/sync-obsidian-vault-with-logging "$@"

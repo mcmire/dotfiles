@@ -6,17 +6,45 @@ source "$HOME/.zsh/_homebrew.zsh"
 
 LOG_FILE_PATH=$HOME/Library/Logs/sync-obsidian-vault.log
 TEMP_LOG_FILE_PATH="$(mktemp /tmp/$(basename $0).XXXXXX)" || exit 1
+CANCELED_EXIT_CODE=100
+
+vault_directory=
+
+parse-args() {
+  saw_vault_directory_option=0
+
+  for arg in "$@"; do
+    if [[ $saw_vault_directory_option -eq 1 ]]; then
+      vault_directory="$arg"
+      break
+    fi
+
+    if [[ $arg == "--vault-directory" || $arg == "-d" ]]; then
+      saw_vault_directory_option=1
+    fi
+  done
+
+  if [[ -z $vault_directory ]]; then
+    echo "USAGE: $0 VAULT_DIRECTORY"
+    exit 1
+  fi
+
+  if ! [[ -d $vault_directory ]]; then
+    echo "ERROR: Could not find vault directory: $vault_directory"
+    exit 1
+  fi
+}
 
 cleanup() {
   rm -f "$TEMP_LOG_FILE_PATH"
 }
 
 sync() {
+  local command=("$HOME/.bin/sync-obsidian-vault" "$@")
+  local vault_directory_name="$(basename "$vault_directory")"
   local output
   local exitcode
   local try=1
-
-  command=("$HOME/.bin/sync-obsidian-vault" --repo-directory "$HOME/obsidian-vault" --primary-branch main)
 
   echo "Date: $(date)" | tee -a "$TEMP_LOG_FILE_PATH"
   echo "Current user: $USER" | tee -a "$TEMP_LOG_FILE_PATH"
@@ -35,7 +63,7 @@ sync() {
       echo "---[ END OF OUTPUT   ]-----------"
     fi
 
-    if [[ $exitcode -eq 0 ]]; then
+    if [[ $exitcode -eq 0 || $exitcode -eq $CANCELED_EXIT_CODE ]]; then
       break
     fi
 
@@ -51,9 +79,11 @@ sync() {
   cat "$TEMP_LOG_FILE_PATH" >> "$LOG_FILE_PATH"
 
   if [[ $exitcode -eq 0 ]]; then
-    /opt/homebrew/bin/terminal-notifier -title "Obsidian vault" -message "Obsidian vault synced successfully."
+    /opt/homebrew/bin/terminal-notifier -title "$vault_directory_name" -message "Synced successfully." || return $?
+  elif [[ $exitcode -eq $CANCELED_EXIT_CODE ]]; then
+    /opt/homebrew/bin/terminal-notifier -title "$vault_directory_name" -message "Sync was canceled." || return $?
   else
-    /opt/homebrew/bin/terminal-notifier -title "Obsidian vault" -message "Obsidian vault failed to sync. See log file for more: $LOG_FILE_PATH"
+    /opt/homebrew/bin/terminal-notifier -title "$vault_directory_name" -message "Failed to sync. See log file for more: $LOG_FILE_PATH" || return $?
   fi
 
   return $exitcode
@@ -62,14 +92,12 @@ sync() {
 main() {
   local exitcode
 
+  parse-args "$@" || return $?
+
   trap cleanup INT QUIT
-
-  set +e
-  sync
-  set -e
+  sync "$@"
   exitcode=$?
-
-  cleanup
+  cleanup || return $?
 
   return $exitcode
 }

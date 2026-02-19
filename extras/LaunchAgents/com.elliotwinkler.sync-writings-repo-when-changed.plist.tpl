@@ -3,13 +3,13 @@
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>com.elliotwinkler.sync-obsidian-vault-when-changed</string>
+    <string>com.elliotwinkler.sync-writings-repo-when-changed</string>
 
     <key>ProgramArguments</key>
     <array>
       <string>{{ HOME }}/.bin/sync-obsidian-vault-when-changed</string>
       <string>--vault-directory</string>
-      <string>{{ HOME }}/obsidian-vault</string>
+      <string>{{ HOME }}/personal-content--writings</string>
       <string>--prompt-for-commit-message</string>
     </array>
 
@@ -20,9 +20,9 @@
     <true/>
 
     <key>StandardOutPath</key>
-    <string>{{ HOME }}/Library/Logs/com.elliotwinkler.sync-obsidian-vault-when-changed.plist.stdout.log</string>
+    <string>{{ HOME }}/Library/Logs/com.elliotwinkler.sync-writings-repo-when-changed.plist.stdout.log</string>
 
     <key>StandardErrorPath</key>
-    <string>{{ HOME }}/Library/Logs/com.elliotwinkler.sync-obsidian-vault-when-changed.plist.stderr.log</string>
+    <string>{{ HOME }}/Library/Logs/com.elliotwinkler.sync-writings-repo-when-changed.plist.stderr.log</string>
   </dict>
 </plist>
