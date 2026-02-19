@@ -105,13 +105,9 @@ jf() {
         shift
         ;;
       *)
-        if [[ $is_monorepo -eq 0 || parse_rest_as_command_args -eq 1 ]]; then
+        if [[ $is_monorepo -eq 0 || parse_rest_as_command_args -eq 1 || -n "$workspace_package_name" ]]; then
           command_args+=("$1")
         else
-          if [[ -n $workspace_package_name ]]; then
-            echo "ERROR: Workspace package name is already set. This seems like a bug."
-            return 1
-          fi
           workspace_package_name="$1"
         fi
         shift
