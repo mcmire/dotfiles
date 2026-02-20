@@ -42,5 +42,5 @@ fi
 exec $path_to_watchexec \
   --watch "$vault_directory" \
   --on-busy-update=queue \
-  --debounce 30s \
+  --debounce 120s \
   $HOME/.bin/sync-obsidian-vault-with-logging "$@"
