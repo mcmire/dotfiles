@@ -387,14 +387,14 @@ sync-directory() {
     fi
     commit-files-to-sync "$files_to_sync" "$commit_message_file" || return $?
     pull-primary-branch || return $?
-    # push-primary-branch || return $?
+    push-primary-branch || return $?
 
     if [[ $dry_run -eq 0 ]]; then
       echo "Sync completed successfully!"
     fi
   else
     pull-primary-branch || return $?
-    # push-primary-branch || return $?
+    push-primary-branch || return $?
 
     if [[ $dry_run -eq 1 ]]; then
       echo "No changes would have been synced."
