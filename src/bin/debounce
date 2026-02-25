@@ -15,8 +15,9 @@ print-usage() {
   cat <<EOT
 USAGE: $EXECUTABLE [OPTIONS] -- [COMMAND]
 
-\`$EXECUTABLE\` waits for the given number of seconds to run the given command.
-If it is sent the signal USR1, then it starts the timer over again.
+\`$EXECUTABLE\` runs the given command once and then waits for the given number
+of seconds to run the given command again. If it is sent the signal USR1, then it
+starts the timer over again.
 
 OPTIONS:
 
@@ -94,9 +95,20 @@ validate-args() {
 main() {
   local current_time
   local time_to_run
+  local exit_status
 
   parse-args "$@"
   validate-args
+
+  set +e
+  debug "Executing command..."
+  "${command[@]}"
+  set -e
+  exit_status=$?
+
+  if [[ $exit_status -ne 0 ]]; then
+    exit $exit_status
+  fi
 
   current_time=$(date +%s)
   time_to_run="$((current_time+duration))"
