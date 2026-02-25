@@ -7,6 +7,7 @@ source "$HOME/.zsh/_homebrew.zsh"
 LOG_FILE_PATH=$HOME/Library/Logs/sync-obsidian-vault.log
 TEMP_LOG_FILE_PATH="$(mktemp /tmp/$(basename $0).XXXXXX)" || exit 1
 CANCELED_EXIT_CODE=100
+NOTHING_TO_SYNC_EXIT_CODE=101
 
 vault_directory=
 
@@ -39,9 +40,14 @@ cleanup() {
   rm -f "$TEMP_LOG_FILE_PATH"
 }
 
+notify() {
+  local vault_directory_name="$(basename "$vault_directory")"
+
+  /opt/homebrew/bin/terminal-notifier -title "$vault_directory_name" -message "$1"
+}
+
 sync() {
   local command=("$HOME/.bin/sync-obsidian-vault" "$@")
-  local vault_directory_name="$(basename "$vault_directory")"
   local output
   local exitcode
   local try=1
@@ -63,7 +69,7 @@ sync() {
       echo "---[ END OF OUTPUT   ]-----------"
     fi
 
-    if [[ $exitcode -eq 0 || $exitcode -eq $CANCELED_EXIT_CODE ]]; then
+    if [[ $exitcode -eq 0 || $exitcode -eq $CANCELED_EXIT_CODE || $exitcode -eq $NOTHING_TO_SYNC_EXIT_CODE ]]; then
       break
     fi
 
@@ -79,11 +85,13 @@ sync() {
   cat "$TEMP_LOG_FILE_PATH" >> "$LOG_FILE_PATH"
 
   if [[ $exitcode -eq 0 ]]; then
-    /opt/homebrew/bin/terminal-notifier -title "$vault_directory_name" -message "Synced successfully." || return $?
+    notify "Synced successfully." || return $?
   elif [[ $exitcode -eq $CANCELED_EXIT_CODE ]]; then
-    /opt/homebrew/bin/terminal-notifier -title "$vault_directory_name" -message "Sync was canceled." || return $?
+    notify "Sync was canceled." || return $?
+  elif [[ $exitcode -eq $NOTHING_TO_SYNC_EXIT_CODE ]]; then
+    notify "Nothing to sync." || return $?
   else
-    /opt/homebrew/bin/terminal-notifier -title "$vault_directory_name" -message "Failed to sync. See log file for more: $LOG_FILE_PATH" || return $?
+    notify "Failed to sync. See log file for more: $LOG_FILE_PATH" || return $?
   fi
 
   return $exitcode

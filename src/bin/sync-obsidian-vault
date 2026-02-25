@@ -6,6 +6,7 @@ shopt -s extglob
 
 LOCKED_EXIT_CODE=-700
 CANCELED_EXIT_CODE=100
+NOTHING_TO_SYNC_EXIT_CODE=101
 DEFAULT_COMMIT_MESSAGE="Automatic commit"
 
 ## Parameters
@@ -401,6 +402,8 @@ sync-directory() {
     else
       echo "No changes to sync, all good!"
     fi
+
+    return $NOTHING_TO_SYNC_EXIT_CODE
   fi
 
   return 0
