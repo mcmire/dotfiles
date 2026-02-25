@@ -16,8 +16,8 @@ print-usage() {
 USAGE: $EXECUTABLE [OPTIONS] -- [COMMAND]
 
 \`$EXECUTABLE\` runs the given command once and then waits for the given number
-of seconds to run the given command again. If it is sent the signal USR1, then it
-starts the timer over again.
+of seconds to run the given command again. If it is sent the signal USR1, then
+it starts the timer over again.
 
 OPTIONS:
 
@@ -100,6 +100,8 @@ main() {
   parse-args "$@"
   validate-args
 
+  trap true SIGUSR1
+
   set +e
   debug "Executing command..."
   "${command[@]}"
@@ -114,18 +116,24 @@ main() {
   time_to_run="$((current_time+duration))"
 
   while true; do
-    trap 'debug "Received SIGUSR1, advancing timer by $duration."; current_time=$(date +%s); trap : USR1; echo "Moving on."' USR1
+    trap 'debug "Received SIGUSR1, advancing timer by $duration."; current_time=$(date +%s)' SIGUSR1
 
     if [[ $current_time -gt $time_to_run || $current_time -eq $time_to_run ]]; then
       debug "Time to run the command!"
+      trap true SIGUSR1
       break
     fi
 
     debug "It's not time to run this command yet, waiting a second..."
+    # We need to disable `set -e` because `sleep 1` does not trap `SIGUSR1`
+    # (since it runs in a subshell) so it will die, causing the whole script to
+    # die. We don't want that to happen so we need to ignore errors.
+    set +e
     sleep 1
+    set -e
 
     current_time=$(date +%s)
-    trap : USR1
+    trap true SIGUSR1
   done
 
   set +e

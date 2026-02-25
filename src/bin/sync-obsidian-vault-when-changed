@@ -41,9 +41,8 @@ fi
 
 exec $path_to_watchexec \
   --watch "$vault_directory" \
-  --on-busy-update=signal \
   --signal USR1 \
-  --debounce 1s \
+  --debounce 5s \
   $HOME/.bin/debounce \
   --duration 240 \
   -- \
