@@ -46,6 +46,11 @@ notify() {
   /opt/homebrew/bin/terminal-notifier -title "$vault_directory_name" -message "$1"
 }
 
+exited-successfully() {
+  local exitcode="$1"
+  [[ $exitcode -eq 0 || $exitcode -eq $CANCELED_EXIT_CODE || $exitcode -eq $NOTHING_TO_SYNC_EXIT_CODE ]]
+}
+
 sync() {
   local command=("$HOME/.bin/sync-obsidian-vault" "$@")
   local output
@@ -69,7 +74,7 @@ sync() {
       echo "---[ END OF OUTPUT   ]-----------"
     fi
 
-    if [[ $exitcode -eq 0 || $exitcode -eq $CANCELED_EXIT_CODE || $exitcode -eq $NOTHING_TO_SYNC_EXIT_CODE ]]; then
+    if exited-successfully $exitcode; then
       break
     fi
 
@@ -94,7 +99,11 @@ sync() {
     notify "Failed to sync. See log file for more: $LOG_FILE_PATH" || return $?
   fi
 
-  return $exitcode
+  if exited-successfully $exitcode; then
+    return 0
+  else
+    return $exitcode
+  fi
 }
 
 main() {
