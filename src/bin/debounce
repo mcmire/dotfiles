@@ -100,14 +100,6 @@ main() {
   parse-args "$@"
   validate-args
 
-  trap true SIGUSR1
-
-  set +e
-  debug "Executing command..."
-  "${command[@]}"
-  set -e
-  exit_status=$?
-
   if [[ $exit_status -ne 0 ]]; then
     exit $exit_status
   fi

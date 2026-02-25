@@ -39,6 +39,10 @@ if ! [[ -d $vault_directory ]]; then
   exit 1
 fi
 
+# Run once to ensure vault status is reset
+$HOME/.bin/sync-obsidian-vault-with-logging "$@"
+
+# Start watching vault
 exec $path_to_watchexec \
   --watch "$vault_directory" \
   --signal USR1 \
