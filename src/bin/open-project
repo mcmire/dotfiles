@@ -17,44 +17,62 @@ error() {
   print-with-color 31 "ERROR:" "$@" $'\n'
 }
 
-search-for-project() {
-  zoxide query --list --score "$1"
-}
-
-get-project-candidate-with-score() {
-  local match
-
-  while read -r query; do
-    match="$(search-for-project "$query")"
-
-    if [[ -n "$match" ]]; then
-      echo "$match"
-    elif [[ -d "$query" ]]; then
-      echo "  -1.0 $query"
-    fi
-  done
-}
-
 get-all-projects() {
-  find ~/code -mindepth 2 -maxdepth 2 -type d "$@"
+  find ~/code -mindepth 2 -maxdepth 2 -type d
 }
 
 get-project-candidates-with-scores() {
   local query="$1"
-  local matches
+  local score
+  local path
 
-  if [[ -z "$query" ]]; then
-    # TODO: This is slow, is there a faster way to get the zoxide directory?
-    get-all-projects | get-project-candidate-with-score
-  else
-    matches="$(search-for-project "$query")"
-
-    if [[ -n "$matches" ]]; then
-      echo "$matches"
-    else
-      get-all-projects -name "$query" | get-project-candidate-with-score
-    fi
+  if [[ -n "$query" ]]; then
+    zoxide query --list --score "$query"
+    return
   fi
+
+  # Load the entire zoxide db into an associative array once
+  declare -A scores
+  while read -r score path; do
+    scores[$path]="$score"
+  done < <(zoxide query --list --score)
+
+  while read -r project; do
+    if [[ -v scores[$project] ]]; then
+      echo "${scores[$project]} $project"
+    else
+      echo "-1.0 $project"
+    fi
+  done < <(get-all-projects)
+}
+
+get-open-session-paths() {
+  tmux list-sessions -F '#{session_path}' 2>/dev/null
+}
+
+format-for-display() {
+  declare -A open
+  local _
+  local path
+  local simplified_path
+  local path_with_open_indicator
+
+  while read -r session_path; do
+    open[$session_path]=1
+  done < <(get-open-session-paths)
+
+  local cyan=$'\033[36m'
+  local reset=$'\033[0m'
+
+  while read -r _ path; do
+    simplified_path="${path/#$HOME/\~}"
+    if [[ -v open[$path] ]]; then
+      path_with_open_indicator="${cyan}${simplified_path}  (open)${reset}"
+    else
+      path_with_open_indicator="${simplified_path}"
+    fi
+    echo "${path}"$'\t'"${path_with_open_indicator}"
+  done < <(sort --key 1 --numeric-sort --reverse)
 }
 
 select-project() {
@@ -64,9 +82,11 @@ select-project() {
     echo "$query"
   else
     get-project-candidates-with-scores "$query" | \
-      sort --key 1 --numeric-sort --reverse | \
-      fzf --query "$query" --no-sort --select-1 --exit-0 | \
-      awk '{print $2}'
+      format-for-display | \
+      # For each line, show the second column, but choose the first
+      fzf --query "$query" --no-sort --select-1 --exit-0 \
+          --with-nth=2 --delimiter='\t' --ansi | \
+      cut -f1
   fi
 }
 
@@ -90,11 +110,14 @@ main() {
     exit 1
   fi
 
-  local resolved_project_directory="$(select-project "$query")"
+  local resolved_project_directory
+  resolved_project_directory="$(select-project "$query")"
 
-  if [[ -z "$resolved_project_directory" ]]; then
+  if [[ -z "$resolved_project_directory" && -n "$query" ]]; then
     error "Could not find a project matching '$query'."
     exit 1
+  elif [[ -z "$resolved_project_directory" ]]; then
+    exit 0
   fi
 
   # "Adding" is a misnomer here; we're just bumping the rank so the next time we
@@ -102,7 +125,8 @@ main() {
   # be the one selected)
   zoxide add "$resolved_project_directory"
 
-  local tmux_session_name="$(basename "$resolved_project_directory" | tr . _)"
+  local tmux_session_name
+  tmux_session_name="$(basename "$resolved_project_directory" | tr . _)"
   switch-to-guaranteed-tmux-session "$tmux_session_name" "$resolved_project_directory"
 }
 
