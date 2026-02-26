@@ -45,11 +45,11 @@ alias gcan="gc --amend --no-edit"
 
 # Pulling
 alias gp="g pull"
-alias gpr="gP --rebase"
+alias gpr="gp --rebase"
 
 # Pushing
 alias gP="g push"
-alias gPf="gp --force"
+alias gPf="gP --force"
 
 # Resetting
 alias gR="g reset --hard"
