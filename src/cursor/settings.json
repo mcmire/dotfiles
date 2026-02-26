@@ -3,7 +3,7 @@
   "editor.fontFamily": "Cascadia Code",
   "editor.fontLigatures": true,
   "editor.formatOnSave": true,
-  "workbench.colorTheme": "Monokai Dimmed",
+  "workbench.colorTheme": "Catppuccin Frappé",
   "workbench.preferredDarkColorTheme": "Solarized Dark",
   "workbench.preferredLightColorTheme": "Solarized Light",
   "workbench.preferredHighContrastColorTheme": "Solarized Dark",
@@ -12,94 +12,82 @@
   "typescript.preferGoToSourceDefinition": true,
   "vim.normalModeKeyBindingsNonRecursive": [
     {
-      "before": [
-        "j"
-      ],
-      "after": [
-        "g",
-        "j"
-      ]
+      "before": ["j"],
+      "after": ["g", "j"],
     },
     {
-      "before": [
-        "k"
-      ],
-      "after": [
-        "g",
-        "k"
-      ]
+      "before": ["k"],
+      "after": ["g", "k"],
     },
     {
-      "before": [
-        "<C-h>"
-      ],
-      "after": [
-        "<C-w>",
-        "<C-h>",
-      ]
+      "before": ["<C-h>"],
+      "after": ["<C-w>", "<C-h>"],
     },
     {
-      "before": [
-        "<C-l>",
-      ],
-      "after": [
-        "<C-w>",
-        "<C-l>",
-      ]
+      "before": ["<C-l>"],
+      "after": ["<C-w>", "<C-l>"],
     },
     {
-      "before": [
-        "<C-j>"
-      ],
-      "after": [
-        "<C-w>",
-        "<C-j>",
-      ]
+      "before": ["<C-j>"],
+      "after": ["<C-w>", "<C-j>"],
     },
     {
-      "before": [
-        "<C-k>",
-      ],
-      "after": [
-        "<C-w>",
-        "<C-k>",
-      ]
-    }
+      "before": ["<C-k>"],
+      "after": ["<C-w>", "<C-k>"],
+    },
+    {
+      "before": ["Y"],
+      "after": ["y", "$"],
+    },
+    {
+      "before": ["<Leader>", "p", "$"],
+      "after": ["\"", "_", "D", "p"],
+    },
+    {
+      "before": ["<Leader>", "p", "o"],
+      "after": ["o", "<Space>", "<Backspace>", "<Esc>", "p"],
+    },
+    {
+      "before": ["<Leader>", "p", "c"],
+      "after": ["_", "d", "d", "P"],
+    },
   ],
   "editor.inlineSuggest.suppressSuggestions": true,
   "remote.SSH.remotePlatform": {
-    "sandbox.njmtnd.csb": "linux"
+    "sandbox.njmtnd.csb": "linux",
   },
   "vim.visualModeKeyBindingsNonRecursive": [
     {
-      "before": [
-        "j"
-      ],
-      "after": [
-        "g",
-        "j"
-      ]
+      "before": ["j"],
+      "after": ["g", "j"],
     },
     {
-      "before": [
-        "k"
-      ],
-      "after": [
-        "g",
-        "k"
-      ]
-    }
+      "before": ["k"],
+      "after": ["g", "k"],
+    },
+    {
+      "before": [">"],
+      "after": [">", "g", "v"],
+    },
+    {
+      "before": ["<"],
+      "after": ["<", "g", "v"],
+    },
+    {
+      "before": ["Q"],
+      "after": ["g", "q"],
+    },
   ],
   "vim.useSystemClipboard": true,
   "workbench.editor.highlightModifiedTabs": true,
   "git.autofetch": true,
   "[javascript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   },
   "editor.indentSize": "tabSize",
   "editor.tabSize": 2,
   "[typescript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   },
   "window.clickThroughInactive": false,
   "window.zoomLevel": 0.5,
@@ -115,14 +103,15 @@
   "cursor.composer.queueMessageDefaultBehavior": "queue",
   "eslint.notebooks.rules.customizations": [],
   "[typescriptreact]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   },
-  "editor.rulers": [
-    80
-  ],
+  "editor.rulers": [80],
   "vim.leader": ",",
   "vim.highlightedyank.enable": true,
   "vim.highlightedyank.color": "rgba(250, 240, 170, 0.25)",
   "editor.quickSuggestionsDelay": 150,
-  "editor.suggest.localityBonus": true
+  "editor.suggest.localityBonus": true,
+  "explorer.excludeGitIgnore": true,
+  "search.useGlobalIgnoreFiles": true,
+  "explorer.autoReveal": "focusNoScroll",
 }
