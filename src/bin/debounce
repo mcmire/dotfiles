@@ -105,10 +105,10 @@ main() {
   fi
 
   current_time=$(date +%s)
-  time_to_run="$((current_time+duration))"
+  time_to_run=$((current_time+duration))
 
   while true; do
-    trap 'debug "Received SIGUSR1, advancing timer by $duration."; current_time=$(date +%s)' SIGUSR1
+    trap 'debug "Received SIGUSR1, advancing timer by $duration."; current_time=$(date +%s); time_to_run=$((current_time+duration))' SIGUSR1
 
     if [[ $current_time -gt $time_to_run || $current_time -eq $time_to_run ]]; then
       debug "Time to run the command!"
@@ -116,7 +116,7 @@ main() {
       break
     fi
 
-    debug "It's not time to run this command yet, waiting a second..."
+    debug "[$current_time] It's not time to run this command yet, waiting a second..."
     # We need to disable `set -e` because `sleep 1` does not trap `SIGUSR1`
     # (since it runs in a subshell) so it will die, causing the whole script to
     # die. We don't want that to happen so we need to ignore errors.
