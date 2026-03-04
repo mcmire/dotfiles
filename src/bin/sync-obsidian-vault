@@ -328,8 +328,8 @@ EOT
 
 commit-files-to-sync() {
   local files_to_sync="$1"
-  local commit_message_file="$2"
   local num_files_added=0
+  local commit_message_file
 
   echo "Committing all files..."
 
@@ -347,7 +347,20 @@ commit-files-to-sync() {
   num_files_added="$(git diff --cached --name-only | wc -l)"
 
   if [[ $num_files_added -gt 0 || $simulate_commit -eq 1 ]]; then
+    commit_message_file="$(get-commit-message-file)"
+    if [[ -z $commit_message_file ]]; then
+      echo "Sync canceled."
+      return $CANCELED_EXIT_CODE
+    fi
     run-command git commit -F "$commit_message_file" || return $?
+  else
+    if [[ $dry_run -eq 1 ]]; then
+      echo "No changes would have been synced."
+    else
+      echo "No changes to sync, all good!"
+    fi
+
+    return $NOTHING_TO_SYNC_EXIT_CODE
   fi
 }
 
@@ -381,12 +394,7 @@ sync-directory() {
   fi
   
   if [[ $has_files_to_sync -eq 1 ]]; then
-    commit_message_file="$(get-commit-message-file)"
-    if [[ -z $commit_message_file ]]; then
-      echo "Sync canceled."
-      return $CANCELED_EXIT_CODE
-    fi
-    commit-files-to-sync "$files_to_sync" "$commit_message_file" || return $?
+    commit-files-to-sync "$files_to_sync" || return $?
     pull-primary-branch || return $?
     push-primary-branch || return $?
 
