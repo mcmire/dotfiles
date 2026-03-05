@@ -3,7 +3,6 @@ return {
   -- It's already lazy
   lazy = false,
   build = ':TSUpdate',
-  -- Sets main module to use for opts
   main = 'nvim-treesitter.configs',
   -- See `:help nvim-treesitter`
   opts = {
@@ -14,20 +13,18 @@ return {
       'html',
       'lua',
       'luadoc',
-      --'markdown',
-      --'markdown_inline',
+      'markdown',
+      'markdown_inline',
       'query',
+      'typescript',
+      'tsx',
       'vim',
       'vimdoc',
-      'typescript',
     },
-    -- Autoinstall languages that are not installed
-    -- auto_install = true,
+    auto_install = true,
     highlight = {
       enable = true,
-      -- Disable Treesitter in Markdown files for now as it's really slow
       -- Disable Treesitter in tmux files as the highlighting isn't right
-      -- disable = { 'markdown', 'tmux' },
       disable = { 'tmux' },
       -- Some languages depend on vim's regex highlighting system (such as Ruby)
       -- for indent rules.
