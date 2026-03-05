@@ -36,6 +36,9 @@ end
 
 return {
   'tinted-theming/tinted-nvim',
+  version = '0.1.*',
+  priority = 1000,
+  lazy = false,
   config = function()
     if vim.fn.executable 'tinty' == 0 then
       vim.notify(
