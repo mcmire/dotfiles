@@ -274,10 +274,27 @@ enforce-primary-branch() {
   fi
 }
 
-pull-primary-branch() {
+fetch-primary-branch() {
   echo "Fetching updates..."
-  # Don't run hooks, otherwise we may run `git lfs` twice
-  run-command git pull origin --rebase --prune --no-verify "$primary_branch_name" || return $?
+  run-command git fetch origin --prune || return $?
+}
+
+get-primary-branch-sync-status() {
+  local local_ref
+  local remote_ref
+  local_ref=$(git rev-parse "$primary_branch_name" 2>/dev/null) || return $?
+  remote_ref=$(git rev-parse "origin/$primary_branch_name" 2>/dev/null) || return $?
+
+  if [[ $local_ref != "$remote_ref" ]]; then
+    echo "out-of-sync"
+  else
+    echo "in-sync"
+  fi
+}
+
+merge-primary-branch() {
+  echo "Merging updates..."
+  run-command git rebase "origin/$primary_branch_name" || return $?
   run-command git lfs pull origin "$primary_branch_name" || return $?
 }
 
@@ -376,6 +393,7 @@ sync-directory() {
   local files_to_sync
   local has_files_to_sync=0
   local commit_message_file
+  local sync_status
 
   cd "$vault_directory" || return $?
   enforce-git-repository || return $?
@@ -393,25 +411,29 @@ sync-directory() {
     has_files_to_sync=1
   fi
   
+  fetch-primary-branch || return $?
+  sync_status="$(get-primary-branch-sync-status)" || return $?
+
   if [[ $has_files_to_sync -eq 1 ]]; then
     commit-files-to-sync "$files_to_sync" || return $?
-    pull-primary-branch || return $?
+    merge-primary-branch || return $?
     push-primary-branch || return $?
 
     if [[ $dry_run -eq 0 ]]; then
       echo "Sync completed successfully!"
     fi
   else
-    pull-primary-branch || return $?
+    merge-primary-branch || return $?
     push-primary-branch || return $?
 
     if [[ $dry_run -eq 1 ]]; then
       echo "No changes would have been synced."
+    elif [[ $sync_status == "out-of-sync" ]]; then
+      echo "Sync completed successfully!"
     else
       echo "No changes to sync, all good!"
+      return $NOTHING_TO_SYNC_EXIT_CODE
     fi
-
-    return $NOTHING_TO_SYNC_EXIT_CODE
   fi
 
   return 0
