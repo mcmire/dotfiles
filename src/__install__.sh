@@ -25,21 +25,6 @@ success() {
   print-with-color 32 "$@"
 }
 
-create-global-launch-daemon() {
-  if which launchctl &>/dev/null; then
-    local launch_agent="$1"
-
-    echo "- Enabling $launch_agent"
-
-    sudo launchctl unload "/Library/LaunchDaemons/${launch_agent}.plist" || true
-    sed -Ee 's|{{ HOME }}|'"$HOME"'|' "$DOTFILES_PROJECT_DIR/extras/LaunchDaemons/${launch_agent}.plist.tpl" > "/tmp/${launch_agent}.plist"
-    sudo cp -f "/tmp/${launch_agent}.plist" "/Library/LaunchDaemons/${launch_agent}.plist"
-    rm "/tmp/${launch_agent}.plist"
-    sudo chmod 644 "/Library/LaunchDaemons/${launch_agent}.plist"
-    sudo launchctl load "/Library/LaunchDaemons/${launch_agent}.plist"
-  fi
-}
-
 create-user-launch-agent() {
   if which launchctl &>/dev/null; then
     local launch_agent="$1"
