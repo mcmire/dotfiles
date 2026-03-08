@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+if [[ $# -gt 0 ]]; then
+  color_scheme="$1"
+else
+  color_scheme="$(tinty current 2>/dev/null)"
+fi
+
+if [[ -z "$color_scheme" ]]; then
+  echo "Could not detect current color scheme"
+  exit 1
+fi
+
+exec tinty list --json | \
+  jq --arg color_scheme "$color_scheme" \
+  '
+    map(select(.id == $color_scheme)) |
+      .[0].palette |
+      if . then
+      (map_values(.hex_str) |
+      to_entries |
+      sort_by(.key) |
+      from_entries) end
+  '

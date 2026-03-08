@@ -12,9 +12,8 @@ set -euo pipefail
 
 get-colors() {
   local color_scheme="$1"
-  tinty list --json | \
-    jq --raw-output --arg color_scheme "$color_scheme" \
-    'map(select(.id == $color_scheme)) | .[0].palette | map_values(.hex_str) | to_entries | sort_by(.key) | map("\(.key) \(.value)") | .[]'
+  tinty-current-colors "$color_scheme" |
+    jq --raw-output 'to_entries | map("\(.key) \(.value)") | .[]'
 }
 
 main() {
