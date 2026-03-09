@@ -128,9 +128,9 @@ jf() {
     fi
 
     if [[ $verbose -eq 1 ]]; then
-      NODE_OPTIONS=--experimental-vm-modules yarn workspace "$workspace_package_name" exec jest "${command_args[@]}" --no-coverage
+      NODE_OPTIONS=--experimental-vm-modules yarn workspace "$workspace_package_name" exec jest "${command_args[@]}" --no-coverage --reporters default
     else
-      NODE_OPTIONS=--experimental-vm-modules yarn workspace "$workspace_package_name" exec jest "${command_args[@]}" --verbose=false --no-coverage
+      NODE_OPTIONS=--experimental-vm-modules yarn workspace "$workspace_package_name" exec jest "${command_args[@]}" --verbose=false --no-coverage --reporters default
     fi
   fi
 }
