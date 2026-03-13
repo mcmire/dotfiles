@@ -64,6 +64,7 @@ return {
       -- ts_ls = {},
       eslint = {},
       prettierd = {},
+      oxfmt = {},
 
       -- Python
       pyright = {},

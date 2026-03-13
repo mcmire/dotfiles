@@ -42,16 +42,43 @@ return {
     end,
     formatters_by_ft = {
       lua = { 'stylua' },
-      javascript = { 'prettierd' },
-      typescript = { 'prettierd' },
-      json = { 'prettierd' },
+      javascript = { 'oxfmt', 'prettierd', stop_after_first = true },
+      typescript = { 'oxfmt', 'prettierd', stop_after_first = true },
+      json = { 'oxfmt', 'prettierd', stop_after_first = true },
 
       -- Conform can also run multiple formatters sequentially
       -- python = { "isort", "black" },
-
-      -- You can use 'stop_after_first' to run the first available formatter from the list
     },
     formatters = {
+      oxfmt = {
+        condition = function(self, ctx)
+          local project_with_oxfmt_config = vim.fs.root(ctx.dirname, {
+            '.oxfmtrc.json',
+            '.oxfmtrc.jsonc',
+            'oxfmt.config.ts',
+          })
+          if project_with_oxfmt_config then
+            return true
+          end
+
+          local project_with_package_json = vim.fs.root(ctx.dirname, { 'package.json' })
+          if project_with_package_json then
+            local package_json_path = vim.fs.joinpath(project_with_package_json, 'package.json')
+            local ok, data = pcall(function()
+              return vim.json.decode(table.concat(vim.fn.readfile(package_json_path), '\n'))
+            end)
+            if ok and data then
+              local deps = data.dependencies or {}
+              local dev_deps = data.devDependencies or {}
+              if deps['oxfmt'] or dev_deps['oxfmt'] then
+                return true
+              end
+            end
+          end
+
+          return false
+        end,
+      },
       prettierd = {
         condition = function(self, ctx)
           local project_with_prettier_config = vim.fs.root(ctx.dirname, {
