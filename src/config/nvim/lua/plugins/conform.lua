@@ -51,5 +51,51 @@ return {
 
       -- You can use 'stop_after_first' to run the first available formatter from the list
     },
+    formatters = {
+      prettierd = {
+        condition = function(self, ctx)
+          local project_with_prettier_config = vim.fs.root(ctx.dirname, {
+            '.prettierrc',
+            '.prettierrc.cjs',
+            '.prettierrc.cts',
+            '.prettierrc.js',
+            '.prettierrc.json',
+            '.prettierrc.json5',
+            '.prettierrc.mjs',
+            '.prettierrc.mts',
+            '.prettierrc.toml',
+            '.prettierrc.ts',
+            '.prettierrc.yaml',
+            '.prettierrc.yml',
+            'prettier.config.cjs',
+            'prettier.config.cts',
+            'prettier.config.js',
+            'prettier.config.mjs',
+            'prettier.config.mts',
+            'prettier.config.ts',
+          })
+          if project_with_prettier_config then
+            return true
+          end
+
+          local project_with_package_json = vim.fs.root(ctx.dirname, { 'package.json' })
+          if project_with_package_json then
+            local package_json_path = vim.fs.joinpath(project_with_package_json, 'package.json')
+            local ok, data = pcall(function()
+              return vim.json.decode(table.concat(vim.fn.readfile(package_json_path), '\n'))
+            end)
+            if ok and data then
+              local deps = data.dependencies or {}
+              local dev_deps = data.devDependencies or {}
+              if deps['prettier'] or dev_deps['prettier'] then
+                return true
+              end
+            end
+          end
+
+          return false
+        end,
+      },
+    },
   },
 }
