@@ -12,7 +12,7 @@ set -euo pipefail
 
 get-colors() {
   local color_scheme="$1"
-  tinty-current-colors "$color_scheme" |
+  tinty-get-colors "$color_scheme" |
     jq --raw-output 'to_entries | map("\(.key) \(.value)") | .[]'
 }
 
