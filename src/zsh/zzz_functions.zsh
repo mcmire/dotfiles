@@ -116,7 +116,7 @@ jf() {
   done
 
   if [[ $is_monorepo -eq 0 ]]; then
-    yarn jest "${command_args[@]}" --verbose=false --no-coverage
+    yarn jest "${command_args[@]}" --verbose=false --no-coverage --reporters default
   else
     if [[ -z $workspace_package_name ]]; then
       workspace_package_names="$(yarn workspaces list --json | jq --slurp --raw-output 'map(.name) | .[]')"
