@@ -3,6 +3,9 @@
 # Inspired by: <https://github.com/caarlos0/dotfiles.fish/blob/d0ee6e9fc5991c80b412a313e913b83c3289d257/bin/tmux-sessionizer>
 # Also see: <https://carlosbecker.com/posts/tmux-sessionizer/>
 
+PROJECTS_DIRECTORY="$HOME/code"
+WORKTREES_PATH="_worktrees"
+
 print-with-color() {
   echo -ne "\033[${1}m"
   echo -n "${@:2}"
@@ -17,8 +20,31 @@ error() {
   print-with-color 31 "ERROR:" "$@" $'\n'
 }
 
+get-non-worktree-projects() {
+  # Example: $HOME/code/metamask/core
+  find "$PROJECTS_DIRECTORY" \
+    -mindepth 2 -maxdepth 2 \
+    -type d \
+    -not -name '.*' \
+    -not -name "$WORKTREES_PATH"
+}
+
+get-worktree-projects() {
+  # Example: $HOME/code/metamask/_worktrees/core
+  find "$PROJECTS_DIRECTORY" \
+    -mindepth 3 -maxdepth 3 \
+    -type d \
+    -path "**/$WORKTREES_PATH/*" |
+    xargs -I {} \
+    find {} \
+    -mindepth 1 -maxdepth 1 \
+    -type d \
+    -not -name '.*'
+}
+
 get-all-projects() {
-  find ~/code -mindepth 2 -maxdepth 2 -type d
+  get-non-worktree-projects
+  get-worktree-projects
 }
 
 get-project-candidates-with-scores() {
