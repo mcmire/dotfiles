@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "plugin": ["@slkiser/opencode-quota"],
   "provider": {
     "ollama": {
       "npm": "@ai-sdk/openai-compatible",
