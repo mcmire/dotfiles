@@ -39,6 +39,14 @@ git-fix-js() {
   fi
 }
 
+gbr() {
+  if [[ $# -gt 0 ]]; then
+    git branches | grep "$1"
+  else
+    git branches
+  fi
+}
+
 _git_delete_branch_and_remote() {
   __gitcomp_nl "$(__git_heads)"
 }

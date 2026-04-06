@@ -58,7 +58,6 @@ alias grhu="g reset HEAD~"
 
 # Branches
 alias gb="g branch"
-alias gbr="git branches"
 alias gbd="git delete-branch-and-remote"
 alias gbm="gb --move --force"
 
