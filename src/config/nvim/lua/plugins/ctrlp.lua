@@ -14,11 +14,10 @@ return {
     -- directory:
     vim.g.ctrlp_working_path_mode = 'w'
 
-    -- We use Ag to generate search results.
-    -- TODO: Change to ripgrep
-
-    if vim.fn.executable 'ag' then
-      vim.g.ctrlp_user_command = 'ag %s --path-to-ignore ~/.ignore --hidden --files-with-matches --nocolor --filename-pattern ""'
+    -- We use ripgrep to generate search results.
+    if vim.fn.executable 'rg' then
+      -- vim.g.ctrlp_user_command = 'ag %s --path-to-ignore ~/.ignore --hidden --files-with-matches --nocolor --filename-pattern ""'
+      vim.g.ctrlp_user_command = 'rg %s --files --color=never --ignore-file ~/.ignore --hidden'
     end
   end,
 }
