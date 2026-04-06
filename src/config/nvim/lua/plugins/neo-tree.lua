@@ -65,6 +65,14 @@ return {
         },
       },
     },
+    filesystem = {
+      filtered_items = {
+        hide_dotfiles = false,
+        ignore_files = {
+          '~/.ignore',
+        },
+      },
+    },
     window = {
       mappings = {
         -- Use NERDTree-compatible mappings
