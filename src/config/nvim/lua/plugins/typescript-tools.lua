@@ -6,7 +6,7 @@ return {
   opts = {
     settings = {
       tsserver_file_preferences = {
-        -- importModuleSpecifierPreference = 'project-relative',
+        importModuleSpecifierPreference = 'project-relative',
       },
     },
     root_dir = function(bufnr, on_dir, extra)
