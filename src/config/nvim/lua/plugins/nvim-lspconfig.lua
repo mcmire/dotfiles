@@ -65,6 +65,9 @@ return {
       eslint = {},
       prettierd = {},
       oxfmt = {},
+      oxlint = {
+        cmd = { 'oxlint', '--lsp' },
+      },
 
       -- Python
       pyright = {},
