@@ -18,7 +18,7 @@ return {
       -- Disable "format_on_save lsp_fallback" for languages that don't
       -- have a well standardized coding style, and for slow formatters (like
       -- Prettier).
-      local disable_filetypes = { c = true, cpp = true, javascript = true, typescript = true }
+      local disable_filetypes = { c = true, cpp = true, javascript = true, typescript = true, json = true }
       if disable_filetypes[vim.bo[bufnr].filetype] then
         return nil
       else
@@ -31,7 +31,7 @@ return {
     format_after_save = function(bufnr)
       -- Only use this hook for slow formatters (like Prettier).
       -- See <https://github.com/stevearc/conform.nvim/issues/401#issuecomment-2108453243>
-      local enable_filetypes = { javascript = true, typescript = true }
+      local enable_filetypes = { javascript = true, typescript = true, json = true }
       if enable_filetypes[vim.bo[bufnr].filetype] then
         return {
           lsp_format = 'fallback',
