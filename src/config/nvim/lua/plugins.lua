@@ -33,6 +33,7 @@ require('lazy').setup {
     require 'plugins.typescript-tools',
     --require 'plugins.todo-comments',
     require 'plugins.which-key',
+    require 'plugins.vim-rzip',
   },
   ui = {
     icons = vim.g.have_nerd_font and {} or {
