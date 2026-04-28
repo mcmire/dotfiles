@@ -6,6 +6,11 @@
 
 <!-- Add your JavaScript/TypeScript and general code style preferences here. -->
 
+### General code guidelines
+
+- If you find that you need to use a comment to explain a section of code, that is a code smell and you probably want to split that code off into a separate function.
+- Don't allow functions to grow out of control and do too many things. Same goes for React components.
+
 ### JavaScript/TypeScript
 
 - Use braces to surround the body of an `if` statement, even if it could fit on one line.
