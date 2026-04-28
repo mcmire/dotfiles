@@ -22,6 +22,21 @@
           "name": "Llama 3.2 (3B)"
         }
       }
+    },
+    "litellm": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LiteLLM",
+      "options": {
+        "baseURL": "https://litellm.consensys.info"
+      },
+      "models": {
+        "Kimi-K2.5": {
+          "name": "Kimi K2.5"
+        },
+        "Kimi-K2.6": {
+          "name": "Kimi K2.6"
+        }
+      }
     }
   }
 }
