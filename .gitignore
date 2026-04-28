@@ -3,6 +3,8 @@
 Brewfile.lock.json
 **/node_modules
 src/config/nvim/bundle
+src/config/opencode/bun.lock
+src/config/opencode/node_modules
 src/tmux/plugins/*
 !src/tmux/plugins/powerline
 !src/tmux/plugins/tpm
