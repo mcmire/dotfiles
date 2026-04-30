@@ -2,6 +2,8 @@
 vim.bo.autoindent = true
 -- For some reason, whitespace indicators aren't enabled either
 vim.wo.list = true
+-- ...and linebreak settings
+vim.wo.linebreak = true
 -- Make sure this is set too
 vim.opt.listchars = { tab = '->', trail = '·', nbsp = '␣', extends = '⨠' }
 -- Override indentation size

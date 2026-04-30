@@ -14,6 +14,7 @@ require('lazy').setup {
     require 'plugins.ferret',
     require 'plugins.github-preview',
     require 'plugins.gitsigns',
+    -- require 'plugins.goyo',
     require 'plugins.indent-blankline',
     require 'plugins.lazydev',
     require 'plugins.lualine',
@@ -34,6 +35,7 @@ require('lazy').setup {
     --require 'plugins.todo-comments',
     require 'plugins.which-key',
     require 'plugins.vim-rzip',
+    require 'plugins.zen-mode',
   },
   ui = {
     icons = vim.g.have_nerd_font and {} or {
