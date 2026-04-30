@@ -29,6 +29,7 @@ require('lazy').setup {
     require 'plugins.nvim-surround',
     require 'plugins.nvim-treesitter-endwise',
     require 'plugins.nvim-treesitter',
+    require 'plugins.render-markdown',
     require 'plugins.splitjoin',
     require 'plugins.tinted',
     require 'plugins.typescript-tools',

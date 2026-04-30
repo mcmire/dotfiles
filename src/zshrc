@@ -74,6 +74,7 @@ benchmarked-source ~/.zsh/opencode.zsh
 benchmarked-source ~/.zsh/orb-stack.zsh
 benchmarked-source ~/.zsh/perl6.zsh
 benchmarked-source ~/.zsh/rust.zsh
+benchmarked-source ~/.zsh/terminfo.zsh
 benchmarked-source ~/.zsh/tmux.zsh
 benchmarked-source ~/.zsh/travis.zsh
 benchmarked-source ~/.zsh/unicode.zsh
