@@ -1,0 +1,291 @@
+#!/bin/bash
+
+DEFAULT_GIT_COMMAND=(log --oneline)
+
+start_processing_git_command=0
+git_command=()
+commit_range=
+
+red() {
+  printf "\x1B[31m"
+  echo -n "$@"
+  printf "\x1B[0m"
+}
+
+magenta() {
+  printf "\x1B[35m"
+  echo -n "$@"
+  printf "\x1B[0m"
+}
+
+bold() {
+  printf "\x1B[1m"
+  echo -n "$@"
+  printf "\x1B[22m"
+}
+
+print-usage() {
+  cat <<EOT
+USAGE: $0 [-- GIT_COMMAND GIT_COMMAND_ARGS...]"
+
+Compare changes between two releases for a package.
+
+For a polyrepo package, it can be used like this:
+
+  git compare-releases ^latest
+  git compare-releases 13.0.0...14.0.0
+
+For a Yarn workspace package, it can be used like this:
+
+  yarn workspace some-package run git compare-releases ^latest
+  yarn workspace some-package run git compare-releases 13.0.0...14.0.0
+
+Note that this command is also a proxy for other Git commands, so you can also say:
+
+  git compare-releases ^latest <command>
+  yarn workspace some-package exec git compare-releases 13.0.0...14.0.0 <command>
+
+EOT
+}
+
+parse-args() {
+  local first_positional=1
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --help | -h)
+        print-usage
+        exit 0
+        ;;
+      --)
+        start_processing_git_command=1
+        shift
+        ;;
+      -*)
+        if [[ $start_processing_git_command -eq 0 ]]; then
+          red "ERROR: Unknown option '$1'." $'\n'
+          echo
+          print-usage
+          exit 1
+        else
+          git_command+=("$1")
+          shift
+        fi
+        ;;
+      *)
+        if [[ $start_processing_git_command -eq 1 ]]; then
+          git_command+=("$1")
+          shift
+        elif [[ $first_positional -eq 1 ]]; then
+          commit_range="$1"
+          first_positional=0
+          shift
+        else
+          red "ERROR: Unknown argument '$1'." $'\n'
+          echo
+          print-usage
+          exit 1
+        fi
+        ;;
+    esac
+  done
+
+  if [[ ${#git_command[@]} -eq 0 ]]; then
+    git_command=("${DEFAULT_GIT_COMMAND[@]}")
+  fi
+
+  if [[ -z "$commit_range" ]]; then
+    red "ERROR: Missing commit range (e.g. '^latest' or '13.0.0...14.0.0')." $'\n'
+    echo
+    print-usage
+    exit 1
+  fi
+}
+
+get-package-name() {
+  local package_name
+
+  if [[ -f package.json ]]; then
+    package_name="$(jq --raw-output '.name' < package.json)"
+  fi
+  if [[ -z "$package_name" ]]; then
+    red "ERROR: Could not determine package name. Are you in a package?" $'\n'
+    exit 1
+  fi
+
+  echo "$package_name"
+}
+
+get-package-version() {
+  local package_version
+
+  if [[ -f package.json ]]; then
+    package_version="$(jq --raw-output '.version' < package.json)"
+  fi
+  if [[ -z "$package_version" ]]; then
+    red "ERROR: Could not determine package version from package.json." $'\n'
+    exit 1
+  fi
+
+  echo "$package_version"
+}
+
+# The canonical list of release ref families, each encoded as
+# "prefix:ref_type". The version string is appended to the prefix to form the
+# full ref name (e.g. prefix "v" + version "1.2.3" -> tag "v1.2.3").
+# The package name placeholder "__PKG__" is substituted at runtime.
+REF_FAMILIES=(
+  "v:refs/tags"
+  "release/v:refs/tags"
+  "release/:refs/tags"
+  "Version-v:refs/heads"
+  "__PKG__@:refs/tags"
+)
+
+# Attempt to resolve a git ref (tag or branch) for a given version string by
+# iterating REF_FAMILIES in order. On success, writes into the named variables:
+#   $3: commit ID
+#   $4: human-readable ref name (e.g. "v1.2.3")
+#   $5: prefix of the matched family (e.g. "v" or "release/v")
+#   $6: ref type of the matched family (e.g. "refs/tags")
+# Exits with a non-zero status on failure.
+resolve-version-ref() {
+  local version="$1"
+  local package_name="$2"
+  local commit_id_var="$3"
+  local ref_name_var="$4"
+  local prefix_var="$5"
+  local ref_type_var="$6"
+  local prefix ref_type ref_name commit_id
+
+  for family in "${REF_FAMILIES[@]}"; do
+    prefix="${family%%:*}"
+    prefix="${prefix/__PKG__/$package_name}"
+    ref_type="${family##*:}"
+    ref_name="${prefix}${version}"
+    commit_id="$(git rev-parse --verify "${ref_type}/${ref_name}" 2>/dev/null)" && {
+      printf -v "$commit_id_var" '%s' "$commit_id"
+      printf -v "$ref_name_var" '%s' "$ref_name"
+      printf -v "$prefix_var"   '%s' "$prefix"
+      printf -v "$ref_type_var" '%s' "$ref_type"
+      return 0
+    }
+  done
+
+  red "ERROR: Could not find a ref for version '${version}'." $'\n'
+  exit 1
+}
+
+# List all refs belonging to the same family as the resolved ref (identified by
+# $2 prefix and $3 ref_type), strip the prefix to get bare version strings,
+# sort them by semver, and resolve the version immediately before $1
+# target_version. On success, writes into the named variables:
+#   $4: commit ID
+#   $5: human-readable ref name
+# Exits with a non-zero status if no previous version is found.
+find-previous-release-ref() {
+  local target_version="$1"
+  local prefix="$2"
+  local ref_type="$3"
+  local prev_commit_id_var="$4"
+  local prev_ref_name_var="$5"
+  local package_name="$6"
+  local ignored_prefix
+  local ignored_ref_type
+
+  # Collect all version strings for this family, sorted by semver.
+  local sorted_versions
+  sorted_versions="$(git for-each-ref --format='%(refname:short)' "${ref_type}" \
+    | grep -F "${prefix}" \
+    | sed "s|^${prefix}||" \
+    | sort -t. -k1,1n -k2,2n -k3,3n)"
+
+  # Find the version that immediately precedes target_version.
+  local prev_version=""
+  while IFS= read -r ver; do
+    if [[ "$ver" == "$target_version" ]]; then
+      break
+    fi
+    prev_version="$ver"
+  done <<< "$sorted_versions"
+
+  if [[ -z "$prev_version" ]]; then
+    red "ERROR: Could not find a release before version '${target_version}'." $'\n'
+    exit 1
+  fi
+
+  resolve-version-ref "$prev_version" "$package_name" "$prev_commit_id_var" "$prev_ref_name_var" ignored_prefix ignored_ref_type
+}
+
+# Resolve a commit range string into from/to commit IDs and human-readable ref
+# names. Writes results into the named variables passed as $3–$6:
+#   $3: from commit ID
+#   $4: to commit ID
+#   $5: from ref name (e.g. "v63.1.0")
+#   $6: to ref name (e.g. "v63.3.1")
+# Returns 1 if the commit_range format is not recognised.
+resolve-commit-range() {
+  local commit_range="$1"
+  local package_name="$2"
+  local from_ref_var="$3"
+  local to_ref_var="$4"
+  local from_ref_name_var="$5"
+  local to_ref_name_var="$6"
+  local specifier
+  local version
+  local from_version
+  local to_version
+  local to_prefix
+  local to_ref_type
+  # shellcheck disable=SC2034
+  local ignored_prefix
+  # shellcheck disable=SC2034
+  local ignored_ref_type
+
+  if [[ "$commit_range" =~ ^\^(.+)$ ]]; then
+    specifier="${BASH_REMATCH[1]}"
+    if [[ "$specifier" == "latest" ]]; then
+      version="$(get-package-version)"
+    else
+      version="$specifier"
+    fi
+    resolve-version-ref "$version" "$package_name" "$to_ref_var" "$to_ref_name_var" to_prefix to_ref_type
+    find-previous-release-ref "$version" "$to_prefix" "$to_ref_type" "$from_ref_var" "$from_ref_name_var" "$package_name"
+  elif [[ "$commit_range" =~ ^(.+)\.\.\.(.+)$ ]]; then
+    from_version="${BASH_REMATCH[1]}"
+    to_version="${BASH_REMATCH[2]}"
+    resolve-version-ref "$from_version" "$package_name" "$from_ref_var" "$from_ref_name_var" ignored_prefix ignored_ref_type
+    resolve-version-ref "$to_version" "$package_name" "$to_ref_var" "$to_ref_name_var" ignored_prefix ignored_ref_type
+  else
+    return 1
+  fi
+}
+
+main() {
+  local package_name
+  local package_directory
+  local from_ref
+  local to_ref
+  local from_ref_name
+  local to_ref_name
+
+  parse-args "$@"
+
+  package_name="$(get-package-name)"
+  package_directory="$PWD"
+  magenta "$(bold "Directory:")" "$package_directory" $'\n'
+  magenta "$(bold "Package:")" "$package_name" $'\n'
+
+  if ! resolve-commit-range "$commit_range" "$package_name" from_ref to_ref from_ref_name to_ref_name; then
+    red "ERROR: Unrecognized commit range format '${commit_range}'. Expected '^<version>', '^latest', or '<from>...<to>'." $'\n'
+    exit 1
+  fi
+
+  magenta "$(bold "Release range:")" "${from_ref_name}...${to_ref_name}" $'\n'
+  magenta "$(bold "Commit range:")" "${from_ref}...${to_ref}" $'\n'
+
+  echo
+  git "${git_command[@]}" "${from_ref}...${to_ref}" -- "$package_directory"
+}
+
+main "$@"
