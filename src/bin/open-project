@@ -27,6 +27,14 @@ get-non-worktree-projects() {
     -type d \
     -not -name '.*' \
     -not -name "$WORKTREES_PATH"
+
+  if [[ -e "$HOME/obsidian-vault" ]]; then
+    echo "$HOME/obsidian-vault"
+  fi
+
+  if [[ -e "$HOME/personal-content--writings" ]]; then
+    echo "$HOME/personal-content--writings"
+  fi
 }
 
 get-worktree-projects() {
