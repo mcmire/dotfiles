@@ -1,9 +1,10 @@
 return {
   'MeanderingProgrammer/render-markdown.nvim',
   dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
-  -- opts = {
-  --   enabled = true,
-  --   render_modes = true,
-  --   debounce = 200,
-  -- },
+  opts = {
+    enabled = false,
+  },
+  init = function()
+    vim.keymap.set('n', '<leader>mrt', require('render-markdown').toggle)
+  end,
 }
