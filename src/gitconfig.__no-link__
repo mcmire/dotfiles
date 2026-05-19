@@ -5,6 +5,8 @@
   tree-all = log --graph --pretty=format:'%h %Cred(%cD)%Creset%Cgreen%d%Creset %s' --color --all --decorate=full
   tree-by-date = log --pretty=format:'%h | %cD | %Cgreen%d%Creset %s' --date-order --graph --all --color --decorate=full
   unstage = reset HEAD
+[blame]
+  pager = delta
 [checkout]
   defaultRemote = origin
 [color "status"]
@@ -16,11 +18,43 @@
   gpgsign = false
 [core]
   excludesFile = ~/.gitignore
-  # pager = "delta --features solarized"
+  pager = delta
 [delta]
-  side-by-side = true
-[delta "solarized"]
-  syntax-theme = Solarized Dark
+  # diff-so-fancy = true
+  features = navigate selenized
+  # hyperlinks = true
+  line-numbers = true
+  # map-styles = bold purple => syntax magenta, bold cyan => syntax blue
+  navigate = true
+  # side-by-side = true
+[delta "selenized"]
+  dark = true
+  # diff backgrounds: dark red/green tints against the teal base00 (#103c48)
+  minus-style                   = syntax "#2d1515"
+  minus-emph-style              = syntax "#3d1f1f"
+  plus-style                    = syntax "#152d15"
+  plus-emph-style               = syntax "#1f3d1f"
+  zero-style                    = syntax
+  # line number gutter: fg from base08/base0B, bg matches diff bg
+  line-numbers-minus-style      = "#fa5750" "#200f0f"
+  line-numbers-plus-style       = "#75b938" "#0f200f"
+  line-numbers-zero-style       = "#72898f" "#103c48"
+  line-numbers-left-style       = "#2d5b69"
+  line-numbers-right-style      = "#2d5b69"
+  # file / hunk headers
+  #file-style                    = "#4695f7" bold
+  file-style                    = "#41c7b9" bold
+  file-decoration-style         = "#4695f7" box
+  hunk-header-style             = file line-number syntax
+  hunk-header-file-style        = "#4695f7"
+  hunk-header-line-number-style = "#ed8649"
+  hunk-header-decoration-style  = "#2d5b69" ul
+  # commit header
+  commit-decoration-style       = "#dbb32d" bold box
+  # blame alternating row palette (base00 → base02 range)
+  blame-palette                 = "#103c48" "#184956" "#1a3040" "#2d5b69"
+# [diff]
+#    colorMoved = default
 [diff "ruby"]
   funcname = ^ *\\(\\(class\\|module\\|def\\) .*\\)
 [difftool "sourcetree"]
@@ -31,11 +65,14 @@
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
-#[interactive]
-#  diffFilter = delta --color-only --features="interactive solarized"
+[include]
+  path = /opt/homebrew/share/git-delta/themes.gitconfig
+[interactive]
+  diffFilter = delta --color-only
 [init]
   defaultBranch = main
 [merge]
+  conflictStyle = zdiff3
   renamelimit = 2000
 [mergetool "sourcetree"]
   cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
