@@ -6,7 +6,7 @@
   tree-by-date = log --pretty=format:'%h | %cD | %Cgreen%d%Creset %s' --date-order --graph --all --color --decorate=full
   unstage = reset HEAD
 [blame]
-  pager = delta
+  # pager = delta
 [checkout]
   defaultRemote = origin
 [color "status"]
@@ -18,7 +18,7 @@
   gpgsign = false
 [core]
   excludesFile = ~/.gitignore
-  pager = delta
+  # pager = delta
 [delta]
   # diff-so-fancy = true
   features = navigate selenized
@@ -67,8 +67,8 @@
 	clean = git-lfs clean -- %f
 [include]
   path = /opt/homebrew/share/git-delta/themes.gitconfig
-[interactive]
-  diffFilter = delta --color-only
+# [interactive]
+#   diffFilter = delta --color-only
 [init]
   defaultBranch = main
 [merge]
