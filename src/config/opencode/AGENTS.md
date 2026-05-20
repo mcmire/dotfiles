@@ -11,6 +11,12 @@
 - If you find that you need to use a comment to explain a section of code, that is a code smell and you probably want to split that code off into a separate function.
 - Don't allow functions to grow out of control and do too many things. Same goes for React components.
 
+### General testing guidelines
+
+- When writing tests, if you need to define test helpers in the same file, place them below all tests. (But if you need to define types, place them at the top of the file.)
+- When writing a test, mentally break it up into three stages: "arrange", "act", and "assert". Always use empty lines to divide them.
+- Prefer testing one clear behavior per test. This doesn't necessarily mean making one assertion per test. Use the test name as a guide; if you find you are saying "it does this thing AND it does that" or "it does this thing AND NOT that", then divide the test into two.
+
 ### JavaScript/TypeScript
 
 - Use braces to surround the body of an `if` statement, even if it could fit on one line.
