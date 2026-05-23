@@ -58,6 +58,7 @@ benchmarked-source ~/.zsh/autojump.zsh
 benchmarked-source ~/.zsh/avante.zsh
 benchmarked-source ~/.zsh/bindings.zsh
 benchmarked-source ~/.zsh/bun.zsh
+benchmarked-source ~/.zsh/claude-code.zsh
 benchmarked-source ~/.zsh/clojure.zsh
 benchmarked-source ~/.zsh/cucumber.zsh
 benchmarked-source ~/.zsh/deno.zsh
