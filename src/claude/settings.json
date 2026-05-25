@@ -8,7 +8,7 @@
   "autoUpdatesChannel": "stable",
   "minimumVersion": "2.1.92",
   "showThinkingSummaries": true,
-  "theme": "light",
+  "theme": "dark",
   "editorMode": "vim",
   "verbose": true
 }
