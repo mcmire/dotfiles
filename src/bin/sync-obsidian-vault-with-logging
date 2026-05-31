@@ -52,6 +52,7 @@ exited-successfully() {
 }
 
 sync() {
+  local vault_directory_name="$(basename "$vault_directory")"
   local command=("$HOME/.bin/sync-obsidian-vault" "$@")
   local output
   local exitcode
@@ -62,6 +63,8 @@ sync() {
   echo "Current directory: $PWD" | tee -a "$TEMP_LOG_FILE_PATH"
   echo "Command: ${command[@]}" | tee -a "$TEMP_LOG_FILE_PATH"
   echo | tee -a "$TEMP_LOG_FILE_PATH"
+
+  notify "Syncing $vault_directory_name..." || return $?
 
   # Three retries
   while [[ $try -lt 4 ]]; do
