@@ -395,6 +395,7 @@ sync-directory() {
   local commit_message_file
   local sync_status
 
+  echo "Vault directory: $vault_directory"
   cd "$vault_directory" || return $?
   enforce-git-repository || return $?
   enforce-primary-branch || return $?
