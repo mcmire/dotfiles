@@ -8,6 +8,7 @@ LOCKED_EXIT_CODE=-700
 CANCELED_EXIT_CODE=100
 NOTHING_TO_SYNC_EXIT_CODE=101
 DEFAULT_COMMIT_MESSAGE="Automatic commit"
+SYNC_PATHSPECS=('*.md' '*.mdx' '*.jpg' '*.png' '*.webp' '.obsidian/')
 
 ## Parameters
 
@@ -298,10 +299,6 @@ merge-primary-branch() {
   run-command git lfs pull origin "$primary_branch_name" || return $?
 }
 
-is-file-to-sync() {
-  [[ $1 == *.@(md|mdx|jpg|png|webp) || $1 == .obsidian/* ]]
-}
-
 get-commit-message-file() {
   local message_file
   local directory_name
@@ -343,6 +340,36 @@ EOT
   fi
 }
 
+is-file-to-stage() {
+  local path="$1"
+  local pathspec
+  for pathspec in "${SYNC_PATHSPECS[@]}"; do
+    if [[ $pathspec == */ ]]; then
+      if [[ $path == "${pathspec}"* ]]; then
+        return 0
+      fi
+    else
+      # shellcheck disable=SC2053
+      # Glob matching is intentional here: pathspecs like '*.md' should match as globs
+      if [[ $path == $pathspec ]]; then
+        return 0
+      fi
+    fi
+  done
+  return 1
+}
+
+print-files-to-stage() {
+  local files_to_sync="$1"
+  local path
+
+  while IFS= read -r path; do
+    if is-file-to-stage "$path"; then
+      echo "  $path"
+    fi
+  done < <(echo "$files_to_sync")
+}
+
 commit-files-to-sync() {
   local files_to_sync="$1"
   local num_files_added=0
@@ -350,16 +377,9 @@ commit-files-to-sync() {
 
   echo "Committing all files..."
 
-  while IFS= read -r file; do
-    if [[ -n "$file" ]]; then
-      if is-file-to-sync "$file"; then
-        echo "- Adding file: $file"
-        run-command git add "$file"
-      else
-        echo "- Not adding file as it's filtered out: $file"
-      fi
-    fi
-  done < <(echo "$files_to_sync")
+  echo "- Staging qualifying files:"
+  print-files-to-stage "$files_to_sync"
+  run-command git add -- "${SYNC_PATHSPECS[@]}"
 
   num_files_added="$(git diff --cached --name-only | wc -l)"
 
