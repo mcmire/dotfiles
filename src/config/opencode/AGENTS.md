@@ -59,6 +59,7 @@
 ## Shell Scripting
 
 - Always run `shellcheck` after updating a Bash script.
+- Use `if` statements for conditional logic, not `&&` or `||` shorthand.
 
 ---
 
