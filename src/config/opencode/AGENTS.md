@@ -54,6 +54,7 @@
   ```
 - TypeScript: Don't use type assertions (`as ...`) or non-null assertions (`foo!`) unless absolutely necessary. If you do need to use either, add a comment above the line such as `Type assertion: <Reason>` or `Non-null assertion: <Reason>`.
 - TypeScript: Try using `satisfies` instead of type annotations when defining variables (e.g., `const foo: SomeType = { ... }`).
+- TypeScript: Don't extract function/method argument types or return types by default; wait until we get to a point where we need to use the type in more than one place.
 
 ## Shell Scripting
 
