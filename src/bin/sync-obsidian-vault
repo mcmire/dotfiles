@@ -379,7 +379,9 @@ commit-files-to-sync() {
 
   echo "- Staging qualifying files:"
   print-files-to-stage "$files_to_sync"
-  run-command git add -- "${SYNC_PATHSPECS[@]}"
+  for pathspec in "${SYNC_PATHSPECS[@]}"; do
+    run-command git add --verbose -- "$pathspec" || true
+  done
 
   num_files_added="$(git diff --cached --name-only | wc -l)"
 
