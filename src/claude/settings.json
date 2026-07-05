@@ -10,5 +10,6 @@
   "showThinkingSummaries": true,
   "theme": "dark",
   "editorMode": "vim",
-  "verbose": true
+  "verbose": true,
+  "tui": "fullscreen"
 }
