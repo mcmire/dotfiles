@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+
+require_subtitles=0
+remaining_args_are_yt_dlp_args=0
+url=
+output=
+
+print-usage() {
+  echo <<EOT
+Downloads the 720p and 1080p variants of a YouTube video (or all videos in a playlist).
+
+USAGE: $0 [--require-subtitles] URL [-- <yt-dlp-options>]
+
+ARGUMENTS:
+  --require-subtitles - Abort if any of the videos that would be downloaded do not have subtitles.
+  URL - The URL of the video or playlist to download.
+  <yt-dlp-options> - See \`yt-dlp --help\`.
+EOT
+}
+
+parse-args() {
+  local args=()
+
+  while [[ -n "$1" ]]; do
+    case "$1" in
+      --require-subtitles)
+        require_subtitles=1
+        shift
+        ;;
+      --help | -h)
+        print-usage
+        exit
+        ;;
+      --)
+        remaining_args_are_yt_dlp_args=1
+        shift
+        ;;
+      *)
+        if [[ $remaining_args_are_yt_dlp_args -eq 1 ]]; then
+          yt_dlp_args+=("$1")
+        else
+          args+=("$1")
+        fi
+        shift
+        ;;
+    esac
+  done
+
+  if [[ ${#args} -eq 0 ]]; then
+    echo "ERROR: Must supply a URL."
+    print-usage
+    echo 1
+  fi
+
+  url="${args[0]}"
+}
+
+video-has-subtitles() {
+  yt-dlp -j "$url" | jq -e '.subtitles | length > 0' > /dev/null
+}
+
+download-video() {
+  yt-dlp -f "bv[height<=1080][ext=webm]+ba" -S "height:1080,codec:av1:vp9" --embed-subs --embed-metadata --cookies-from-browser chrome -o "%(playlist_index&{} - |)s%(title)s [%(id)s,%(resolution)s].%(ext)s" "${yt_dlp_args[@]}" "$url"
+  yt-dlp -f "bv[height<=720][ext=webm]+ba" -S "height:720,codec:av1:vp9" --embed-subs --embed-metadata --cookies-from-browser chrome -o "%(playlist_index&{} - |)s%(title)s [%(id)s,%(resolution)s].%(ext)s" "${yt_dlp_args[@]}" "$url"
+}
+
+main() {
+  parse-args "$@"
+
+  if [[ $require_subtitles -eq 1 ]]; then
+    echo "Checking whether $url has subtitles..."
+    if video-has-subtitles; then
+      echo "Subtitles found. Continuing..."
+      download-video
+    else
+      echo "No subtitles found, not downloading video."
+      exit 1
+    fi
+  else
+    download-video
+  fi
+}
+
+main "$@"
