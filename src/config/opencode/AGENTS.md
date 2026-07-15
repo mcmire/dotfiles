@@ -6,6 +6,12 @@
 
 <!-- Add your JavaScript/TypeScript and general code style preferences here. -->
 
+### General development workflow
+
+- Always test your work to make sure that it passes the user's intentions. Unit tests are preferred, but any kinds of tests will do. If you find yourself creating smoke tests in temporary files, stop and consider adding real files so that the behavior being added or the fix being made won't break in the future.
+- Always write tests first, watch them fail, then implement the code to make them pass.
+- When you reach a stopping point where you would print a summary of changes to the user or reach a critical point, create a commit.
+
 ### General code guidelines
 
 - If you find that you need to use a comment to explain a section of code, that is a code smell and you probably want to split that code off into a separate function.
