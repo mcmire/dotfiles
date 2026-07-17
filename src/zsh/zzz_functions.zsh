@@ -202,3 +202,8 @@ function tinty() {
     echo "ERROR: tinty is not installed"
   fi
 }
+
+# Source: https://macmost.com/3-ways-to-generate-random-passwords-on-a-mac.html
+random-hash() {
+  openssl rand -base64 6
+}
