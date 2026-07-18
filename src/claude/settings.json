@@ -1,15 +1,15 @@
 {
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline.sh",
-    "padding": 2
-  },
-  "effortLevel": "high",
   "autoUpdatesChannel": "stable",
+  "editorMode": "vim",
+  "effortLevel": "high",
   "minimumVersion": "2.1.92",
   "showThinkingSummaries": true,
+  "statusLine": {
+    "command": "~/.claude/statusline.sh",
+    "padding": 2
+    "type": "command",
+  },
   "theme": "dark",
-  "editorMode": "vim",
-  "verbose": true,
-  "tui": "fullscreen"
+  "tui": "fullscreen",
+  "verbose": true
 }
