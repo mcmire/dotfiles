@@ -47,6 +47,101 @@ gbr() {
   fi
 }
 
+gwa() {
+  local branch="$1"
+  if [[ -z "$branch" ]]; then
+    echo "Usage: gwa <branch>"
+    return 1
+  fi
+
+  local git_root
+  git_root=$(git rev-parse --show-toplevel 2>/dev/null)
+  if [[ -z "$git_root" ]]; then
+    echo "Error: Not in a git repository."
+    return 1
+  fi
+
+  local parent leaf target_dir main_repo
+  if [[ "$git_root" =~ "/_worktrees/" ]]; then
+    local base_part="${git_root%%/_worktrees/*}"
+    local rest_part="${git_root#*/_worktrees/}"
+    local repo_name="${rest_part%%/*}"
+
+    parent="$base_part"
+    leaf="$repo_name"
+    main_repo="${parent}/${leaf}"
+  else
+    parent=$(dirname "$git_root")
+    leaf=$(basename "$git_root")
+    main_repo="$git_root"
+  fi
+
+  target_dir="${parent}/_worktrees/${leaf}/${branch}"
+
+  # Determine if branch already exists
+  local branch_exists=0
+  if git show-ref --quiet --verify "refs/heads/$branch"; then
+    branch_exists=1
+  elif git show-ref --quiet --verify "refs/remotes/origin/$branch"; then
+    branch_exists=1
+  elif git rev-parse --verify "$branch" &>/dev/null; then
+    branch_exists=1
+  fi
+
+  if [[ $branch_exists -eq 1 ]]; then
+    git worktree add "$target_dir" "$branch"
+  else
+    git worktree add -b "$branch" "$target_dir"
+  fi
+
+  echo "Worktree created for $branch at $target_dir"
+}
+
+gwr() {
+  local branch="$1"
+  if [[ -z "$branch" ]]; then
+    echo "Usage: gwr <branch>"
+    return 1
+  fi
+
+  local git_root
+  git_root=$(git rev-parse --show-toplevel 2>/dev/null)
+  if [[ -z "$git_root" ]]; then
+    echo "Error: Not in a git repository."
+    return 1
+  fi
+
+  local parent leaf target_dir main_repo
+  if [[ "$git_root" =~ "/_worktrees/" ]]; then
+    local base_part="${git_root%%/_worktrees/*}"
+    local rest_part="${git_root#*/_worktrees/}"
+    local repo_name="${rest_part%%/*}"
+
+    parent="$base_part"
+    leaf="$repo_name"
+    main_repo="${parent}/${leaf}"
+  else
+    parent=$(dirname "$git_root")
+    leaf=$(basename "$git_root")
+    main_repo="$git_root"
+  fi
+
+  target_dir="${parent}/_worktrees/${leaf}/${branch}"
+
+  if [[ "$git_root" == "$target_dir" ]]; then
+    echo "You can't remove a worktree that you are currently in. Switch back to the main session for this repo."
+    return 1
+  fi
+
+  if [[ -d "$target_dir" ]]; then
+    git worktree remove "$target_dir"
+    echo "Worktree removed: $target_dir"
+  else
+    echo "Error: Worktree directory not found at $target_dir"
+    return 1
+  fi
+}
+
 _git_delete_branch_and_remote() {
   __gitcomp_nl "$(__git_heads)"
 }
