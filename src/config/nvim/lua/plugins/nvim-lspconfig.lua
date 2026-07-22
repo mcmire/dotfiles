@@ -15,17 +15,23 @@ return {
   config = function()
     -- The following language servers and tools will automatically be installed.
     --
-    -- Available configuration options are:
+    -- Some available configuration options are:
     -- * cmd (table): Override the default command used to start the server.
     -- * filetypes (table): Override the default list of associated filetypes
     --   for the server.
     -- * capabilities (table): Override fields in capabilities. Can be used to
     --   disable certain LSP features.
     -- * settings (table): Override the default settings passed when
-    --   initializing the server. For example, to see the options for `lua_ls`,
-    --   you could go to: https://luals.github.io/wiki/settings/
+    --   initializing the server. To find all options, open Mason, find the LSP
+    --   client, press Enter, go down to "LSP server configuration schema" and
+    --   press Enter again. Some LSPs have settings publicly documented; for
+    --   example, for `lua_ls`, you could go to:
+    --   https://luals.github.io/wiki/settings/
     --
-    -- See `:help lspconfig-all` for a list of all the pre-configured LSPs.
+    -- See `:help vim.lsp.ClientConfig` and `:help vim.lsp.Config` for the full
+    -- list of configuration options.
+    --
+    -- Or, see `:help lspconfig-all` for a list of all the pre-configured LSPs.
     --
     -- Some languages (like typescript) have entire language plugins that can be
     -- useful (e.g. https://github.com/pmizio/typescript-tools.nvim).
