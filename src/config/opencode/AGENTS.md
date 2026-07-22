@@ -27,7 +27,7 @@
 
 - Use braces to surround the body of an `if` statement, even if it could fit on one line.
 - Always define types and constants at the top of the file (in that order).
-- Always use `function` to define named functions, never use arrow functions (unless the function needs access to `this`).
+- When defining named functions, especially those at the top level, always use `function`, never use `const` + arrow functions. (Use arrow functions for methods like `map`, `reduce`, etc.)
 - When writing scripts:
   - Always define the `main` function first, and then define supporting functions in reverse order below that.
   - If the file is executable, add a shebang at the top (`#!/usr/bin/env yarn tsx` if it is present in `package.json`, `#!/usr/bin/env node` otherwise) and include this above the main function:
@@ -59,7 +59,8 @@
   }
   ```
 - TypeScript: Don't use type assertions (`as ...`) or non-null assertions (`foo!`) unless absolutely necessary. If you do need to use either, add a comment above the line such as `Type assertion: <Reason>` or `Non-null assertion: <Reason>`.
-- TypeScript: Try using `satisfies` instead of type annotations when defining variables (e.g., `const foo: SomeType = { ... }`).
+- TypeScript: Instead of using type annotations, have TypeScript infer the type as much as possible. Use `as const` for statically defined data. If you really need to use a type annotation, try using `satisfies` instead.
+  - The only exception to this rule is return types on functions/methods — type annotations are acceptable there (and even required for some projects).
 - TypeScript: Don't extract function/method argument types or return types by default; wait until we get to a point where we need to use the type in more than one place.
 
 ## Shell Scripting
@@ -86,3 +87,5 @@ After completing a non-trivial task — especially debugging, a workaround, or a
 
 <!-- memory_update appends entries here in the format: -->
 <!-- - [[filename]] (namespace): one-line summary -->
+- [[messenger-adapter-minimal-namespace-support]] (procedural): How to type a function/class that requires a MetaMask Messenger to minimally support certain namespaces while allowing extra ones (canonical BaseController capability-check pattern, not open-template structural adapter)
+- [[typescript-subclass-structural-checking]] (semantic): Why a subclass of a generic base class can fail an `extends BaseClass<...wide args...>` constraint that the base class itself passes (structural check on private fields), and how to work around it by inferring type args instead of constraining
