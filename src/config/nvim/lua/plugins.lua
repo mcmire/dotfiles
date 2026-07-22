@@ -32,7 +32,7 @@ require('lazy').setup {
     require 'plugins.render-markdown',
     require 'plugins.splitjoin',
     require 'plugins.tinted',
-    require 'plugins.typescript-tools',
+    -- require 'plugins.typescript-tools',
     --require 'plugins.todo-comments',
     require 'plugins.which-key',
     require 'plugins.vim-rzip',

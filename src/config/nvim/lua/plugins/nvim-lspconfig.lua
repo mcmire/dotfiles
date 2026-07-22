@@ -61,7 +61,29 @@ return {
       stylua = {},
 
       -- JavaScript/TypeScript
-      -- ts_ls = {},
+      ts_ls = {
+        init_options = {
+          hostInfo = 'neovim',
+          preferences = {
+            importModuleSpecifierPreference = 'project-relative',
+          },
+          javascript = {
+            preferences = {
+              importModuleSpecifier = 'project-relative',
+            },
+          },
+          typescript = {
+            preferences = {
+              importModuleSpecifier = 'project-relative',
+            },
+          },
+          ['js/ts'] = {
+            preferences = {
+              importModuleSpecifier = 'project-relative',
+            },
+          },
+        },
+      },
       eslint = {},
       prettierd = {},
       oxfmt = {},
