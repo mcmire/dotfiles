@@ -74,7 +74,9 @@ alias gcp="git cherry-pick"
 # Merging
 alias gm="g merge --ff-only"
 alias gma="g merge --abort"
-alias gmc="g merge --continue"
+# `gc` passes `--no-verify` to commit,
+# but `git merge --continue` does not take `--no-verify`
+alias gmc="gc"
 
 # Rebasing
 alias gr="g rebase"
