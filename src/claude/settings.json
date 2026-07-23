@@ -6,8 +6,8 @@
   "showThinkingSummaries": true,
   "statusLine": {
     "command": "~/.claude/statusline.sh",
-    "padding": 2
-    "type": "command",
+    "padding": 2,
+    "type": "command"
   },
   "theme": "dark",
   "tui": "fullscreen",
