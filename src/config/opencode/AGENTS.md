@@ -63,6 +63,7 @@
 - TypeScript: Instead of using type annotations, have TypeScript infer the type as much as possible. Use `as const` for statically defined data. If you really need to use a type annotation, try using `satisfies` instead.
   - The only exception to this rule is return types on functions/methods — type annotations are acceptable there (and even required for some projects).
 - TypeScript: Don't extract function/method argument types or return types by default; wait until we get to a point where we need to use the type in more than one place.
+- TypeScript: Don't use the `private` keyword, use ES private fields instead. 
 
 ## Shell Scripting
 
