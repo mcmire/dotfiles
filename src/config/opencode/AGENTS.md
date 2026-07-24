@@ -37,7 +37,7 @@
       error.exitCode = 1;
     });
     ```
-- Always use `yargs` to parse command-line options, never parse them by hand. Set up Yargs such that `--help` (or `-h`) works. Add a brief summary for each option and one or two examples.
+    - Always use `yargs` to parse command-line options, never parse them by hand. Set up Yargs such that `--help` (or `-h`) works. Add a brief summary for each option and one or two examples.
 - Import Node's `path` module using a wildcard import (`import * as ...`, not `import { ... } as ...`).
 - Provide JSDoc when defining types, interfaces, properties of types/interfaces, functions, classes, and top-level variables (constants). Explain why the symbol exists and where it is used.
 - Use the "long" block comment when providing JSDoc, not the "short" block comment. This particularly applies to properties of types/interfaces. In other words:
