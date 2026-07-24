@@ -16,6 +16,7 @@
 
 - If you find that you need to use a comment to explain a section of code, that is a code smell and you probably want to split that code off into a separate function.
 - Don't allow functions to grow out of control and do too many things. Same goes for React components.
+- Before implementing a task you think will be complex, search the web to see if anyone else has solved the presented problems before and come up with any existing solutions. Search for existing packages, GitHub gists, blog posts, etc.
 
 ### General testing guidelines
 
