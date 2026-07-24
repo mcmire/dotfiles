@@ -6,7 +6,7 @@ return {
     {
       '<Leader>F',
       function()
-        require('conform').format { async = true, lsp_format = 'fallback' }
+        require('conform').format { async = true }
       end,
       mode = '',
       desc = '[F]ormat buffer',
@@ -14,6 +14,9 @@ return {
   },
   opts = {
     notify_on_error = true,
+    default_format_opts = {
+      lsp_format = 'fallback',
+    },
     format_on_save = function(bufnr)
       -- Disable "format_on_save lsp_fallback" for languages that don't
       -- have a well standardized coding style, and for slow formatters (like
@@ -23,7 +26,6 @@ return {
         return nil
       else
         return {
-          lsp_format = 'fallback',
           timeout_ms = 500,
         }
       end
@@ -33,9 +35,7 @@ return {
       -- See <https://github.com/stevearc/conform.nvim/issues/401#issuecomment-2108453243>
       local enable_filetypes = { javascript = true, typescript = true, json = true }
       if enable_filetypes[vim.bo[bufnr].filetype] then
-        return {
-          lsp_format = 'fallback',
-        }
+        return {}
       else
         return nil
       end
