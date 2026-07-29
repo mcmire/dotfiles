@@ -28,10 +28,10 @@
 ### JavaScript/TypeScript
 
 - Use braces to surround the body of an `if` statement, even if it could fit on one line.
-- Always define types and constants at the top of the file (in that order).
+- Always define constants and types at the top of the file (in that order).
 - When defining named functions, especially those at the top level, always use `function`, never use `const` + arrow functions. (Use arrow functions for methods like `map`, `reduce`, etc.)
 - When writing scripts:
-  - Always define the `main` function first, and then define supporting functions in reverse order below that.
+  - Always define the `main` function first, and then define supporting functions in reverse order below that (for instance, if `main` calls `foo`, and `foo` calls `bar`, then the order would be `main`, `foo`, `bar`).
   - If the file is executable, add a shebang at the top (`#!/usr/bin/env yarn tsx` if it is present in `package.json`, `#!/usr/bin/env node` otherwise) and include this above the main function:
     ```typescript
     // Run the script.
@@ -61,6 +61,9 @@
   }
   ```
 - Prefer using arrow functions (`() => { ... }`) over function expressions (`function () { ... }`), particularly when passing functions to other functions (e.g. `it` / `test` in test files). Only use `function () { ... }` if you need a function whose `this` needs to be rebound.
+- When adding or modifying a function or method so that it takes more than three arguments, convert the arguments to an options bag rather than use positional arguments.
+- When using Vitest, prefer `it` over `test`.
+- When naming variables, never use a past tense verb (e.g. `collected`). If the variable is an abbreviated version of an existing concept, use the full name (e.g. `collected` -> `collectedMetrics`).
 - TypeScript: Don't use type assertions (`as ...`) or non-null assertions (`foo!`) unless absolutely necessary. If you do need to use either, add a comment above the line such as `Type assertion: <Reason>` or `Non-null assertion: <Reason>`.
 - TypeScript: Instead of using type annotations, have TypeScript infer the type as much as possible. Use `as const` for statically defined data. If you really need to use a type annotation, try using `satisfies` instead.
   - The only exception to this rule is return types on functions/methods — type annotations are acceptable there (and even required for some projects).
