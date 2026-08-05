@@ -90,7 +90,27 @@ return {
           },
         },
       },
-      eslint = {},
+      eslint = {
+        before_init = function(_, config)
+          local root_dir = config.root_dir
+
+          if not root_dir then
+            return
+          end
+
+          local config_file = root_dir .. '/.eslintrc.js'
+
+          if vim.uv.fs_stat(config_file) then
+            config.settings.options = config.settings.options or {}
+            config.settings.options.overrideConfigFile = config_file
+          end
+
+          config.settings.workspaceFolder = {
+            uri = root_dir,
+            name = vim.fn.fnamemodify(root_dir, ':t'),
+          }
+        end,
+      },
       prettierd = {},
       oxfmt = {},
       oxlint = {
