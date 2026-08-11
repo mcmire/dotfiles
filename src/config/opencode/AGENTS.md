@@ -8,9 +8,11 @@
 
 ### General development workflow
 
-- Always test your work to make sure that it passes the user's intentions. Unit tests are preferred, but any kinds of tests will do. If you find yourself creating smoke tests in temporary files, stop and consider adding real files so that the behavior being added or the fix being made won't break in the future.
+- Always test your work to make sure that it passes the user's intentions. Unit tests are preferred, but any kinds of tests will do.
+  - If you find yourself creating smoke tests in temporary files, stop and consider adding real files so that the behavior being added or the fix being made won't break in the future.
 - Always write tests first, watch them fail, then implement the code to make them pass.
-- When you reach a stopping point where you would print a summary of changes to the user or reach a critical point, create a commit.
+  - But don't write tests for private methods or functions that aren't already exported; test them indirectly through something that's already exported.
+- When you complete a task and reach a point where you would print a summary of changes to the user, create a commit.
 
 ### General code guidelines
 
@@ -96,3 +98,4 @@ After completing a non-trivial task — especially debugging, a workaround, or a
 <!-- - [[filename]] (namespace): one-line summary -->
 - [[messenger-adapter-minimal-namespace-support]] (procedural): How to type a function/class that requires a MetaMask Messenger to minimally support certain namespaces while allowing extra ones (canonical BaseController capability-check pattern, not open-template structural adapter)
 - [[typescript-subclass-structural-checking]] (semantic): Why a subclass of a generic base class can fail an `extends BaseClass<...wide args...>` constraint that the base class itself passes (structural check on private fields), and how to work around it by inferring type args instead of constraining
+- [[typescript-deferred-any-circular-imports]] (procedural): How to detect a "deferred" `any` from circular imports (a union collapsing to `any`), why structural `IsAny` (`0 extends 1 & T`) fails on it, and the `[T] extends [Brand]` assignability fix plus per-key-object diagnostic.
