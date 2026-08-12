@@ -10,8 +10,7 @@
 
 - Always test your work to make sure that it passes the user's intentions. Unit tests are preferred, but any kinds of tests will do.
   - If you find yourself creating smoke tests in temporary files, stop and consider adding real files so that the behavior being added or the fix being made won't break in the future.
-- Always write tests first, watch them fail, then implement the code to make them pass.
-  - But don't write tests for private methods or functions that aren't already exported; test them indirectly through something that's already exported.
+- Always write tests first, watch them fail, then implement the code to make them pass. (See "General testing guidelines" for more.)
 - When you complete a task and reach a point where you would print a summary of changes to the user, create a commit.
 
 ### General code guidelines
@@ -26,6 +25,7 @@
 - When writing tests, if you need to define test helpers in the same file, place them below all tests. (But if you need to define types, place them at the top of the file.)
 - When writing a test, mentally break it up into three stages: "arrange", "act", and "assert". Always use empty lines to divide them.
 - Prefer testing one clear behavior per test. This doesn't necessarily mean making one assertion per test. Use the test name as a guide; if you find you are saying "it does this thing AND it does that" or "it does this thing AND NOT that", then divide the test into two.
+- If a function isn't exported, don't export it just so you can test it. Test it indirectly through something else that's already exported.
 
 ### JavaScript/TypeScript
 
