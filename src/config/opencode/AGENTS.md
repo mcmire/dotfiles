@@ -27,6 +27,10 @@
 - Prefer testing one clear behavior per test. This doesn't necessarily mean making one assertion per test. Use the test name as a guide; if you find you are saying "it does this thing AND it does that" or "it does this thing AND NOT that", then divide the test into two.
 - If a function isn't exported, don't export it just so you can test it. Test it indirectly through something else that's already exported.
 
+### GitHub Actions
+
+- When using a public action (e.g. `actions/checkout`, `actions/setup-node`, etc.) make sure to use the latest version, unless there is a good reason not to do so (e.g. organization requires that certain actions be pinned).
+
 ### JavaScript/TypeScript
 
 - Use braces to surround the body of an `if` statement, even if it could fit on one line.
@@ -66,6 +70,7 @@
 - When adding or modifying a function or method so that it takes more than three arguments, convert the arguments to an options bag rather than use positional arguments.
 - When using Vitest, prefer `it` over `test`.
 - When naming variables, never use a past tense verb (e.g. `collected`). If the variable is an abbreviated version of an existing concept, use the full name (e.g. `collected` -> `collectedMetrics`).
+- When adding a dependency to a project, make sure to add the latest version of the package, unless there is a specific reason not to do so (e.g. project requires CommonJS but package is only ESM-compatible).
 - TypeScript: Don't use type assertions (`as ...`) or non-null assertions (`foo!`) unless absolutely necessary. If you do need to use either, add a comment above the line such as `Type assertion: <Reason>` or `Non-null assertion: <Reason>`.
 - TypeScript: Instead of using type annotations, have TypeScript infer the type as much as possible. Use `as const` for statically defined data. If you really need to use a type annotation, try using `satisfies` instead.
   - The only exception to this rule is return types on functions/methods — type annotations are acceptable there (and even required for some projects).
