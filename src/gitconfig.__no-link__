@@ -72,7 +72,7 @@
 [init]
   defaultBranch = main
 [merge]
-  conflictStyle = zdiff3
+  # conflictStyle = zdiff3
   renamelimit = 2000
 [mergetool "sourcetree"]
   cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
