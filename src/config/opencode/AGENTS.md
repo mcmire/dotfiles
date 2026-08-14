@@ -2,7 +2,12 @@
 
 <!-- OpenCode must never modify this section automatically. -->
 
-## Code Style
+## Writing English
+
+- Choose alternatives for the following words and phrases, which are uncommon:
+  - "watermark"
+
+## Writing code
 
 <!-- Add your JavaScript/TypeScript and general code style preferences here. -->
 
@@ -104,3 +109,5 @@ After completing a non-trivial task — especially debugging, a workaround, or a
 - [[messenger-adapter-minimal-namespace-support]] (procedural): How to type a function/class that requires a MetaMask Messenger to minimally support certain namespaces while allowing extra ones (canonical BaseController capability-check pattern, not open-template structural adapter)
 - [[typescript-subclass-structural-checking]] (semantic): Why a subclass of a generic base class can fail an `extends BaseClass<...wide args...>` constraint that the base class itself passes (structural check on private fields), and how to work around it by inferring type args instead of constraining
 - [[typescript-deferred-any-circular-imports]] (procedural): How to detect a "deferred" `any` from circular imports (a union collapsing to `any`), why structural `IsAny` (`0 extends 1 & T`) fails on it, and the `[T] extends [Brand]` assignability fix plus per-key-object diagnostic.
+- [[sqlite-in-git-for-metrics]] (procedural): How to store a small structured dataset as SQLite committed to Git, feeding a browser dashboard
+- [[version-accurate-historical-dependency-scanning]] (procedural): Scan a dependency's API across git history version-accurately without per-commit installs

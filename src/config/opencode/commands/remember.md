@@ -42,8 +42,9 @@ Based on the user's choice, draft the following and present it clearly for revie
   style preferences the user explicitly wants to store
 - **title**: short human-readable title
 - **tags**: array of relevant tags
-- **content**: the full memory body in Markdown — be specific and concrete; include
-  context, the problem, the solution, and any caveats
+- **content**: the full memory body in Markdown — distill the problem, solution,
+  and context to a generalized version that is free of sensitive details about any
+  one company or project (as all memories will be stored in a public repository)
 - **append_to_existing**: `true` if appending to an existing file, `false` if creating new
 - **agents_md_summary**: a single line (under 80 chars) summarising this memory for the
   index in AGENTS.md
