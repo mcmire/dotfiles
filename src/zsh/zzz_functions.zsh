@@ -89,12 +89,14 @@ gwa() {
   fi
 
   if [[ $branch_exists -eq 1 ]]; then
+    echo "Branch already exists, not re-creating."
     git worktree add "$target_dir" "$branch"
   else
+    echo "Creating branch $branch."
     git worktree add -b "$branch" "$target_dir"
   fi
 
-  echo "Worktree created for $branch at $target_dir"
+  echo "Worktree created for $branch at $target_dir."
 }
 
 gwr() {
@@ -136,8 +138,9 @@ gwr() {
   if [[ -d "$target_dir" ]]; then
     git worktree remove "$target_dir"
     echo "Worktree removed: $target_dir"
+    echo "(Don't worry, the branch still exists.)"
   else
-    echo "Error: Worktree directory not found at $target_dir"
+    echo "Error: Worktree directory not found at $target_dir!"
     return 1
   fi
 }
