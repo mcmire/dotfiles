@@ -31,6 +31,7 @@
 - When writing a test, mentally break it up into three stages: "arrange", "act", and "assert". Always use empty lines to divide them.
 - Prefer testing one clear behavior per test. This doesn't necessarily mean making one assertion per test. Use the test name as a guide; if you find you are saying "it does this thing AND it does that" or "it does this thing AND NOT that", then divide the test into two.
 - If a function isn't exported, don't export it just so you can test it. Test it indirectly through something else that's already exported.
+- Don't test constants or variables. Only test logic, which would only be contained in functions or methods.
 
 ### GitHub Actions
 
@@ -74,7 +75,13 @@
 - Prefer using arrow functions (`() => { ... }`) over function expressions (`function () { ... }`), particularly when passing functions to other functions (e.g. `it` / `test` in test files). Only use `function () { ... }` if you need a function whose `this` needs to be rebound.
 - When adding or modifying a function or method so that it takes more than three arguments, convert the arguments to an options bag rather than use positional arguments.
 - When using Vitest, prefer `it` over `test`.
-- When naming variables, never use a past tense verb (e.g. `collected`). If the variable is an abbreviated version of an existing concept, use the full name (e.g. `collected` -> `collectedMetrics`).
+- When naming variables, never use a past tense verb (e.g. `collected`) unless the variable represents a boolean.
+- When naming variables, recognize and reuse full names of concepts instead of abbreviating them when possible. For instance:
+  - Don't shorten `messengerClientIdentification` to `identification`
+  - Don't shorten `networkConfiguration` to `networkConfig` or `config`
+  - Don't shorten `context` to `ctx`
+  - Don't shorten `transaction` to `tx`
+  The only case in which it's acceptable to use an abbrevation is `i` for `index`, but only do so if it's the only argument to a function.
 - When adding a dependency to a project, make sure to add the latest version of the package, unless there is a specific reason not to do so (e.g. project requires CommonJS but package is only ESM-compatible).
 - TypeScript: Don't use type assertions (`as ...`) or non-null assertions (`foo!`) unless absolutely necessary. If you do need to use either, add a comment above the line such as `Type assertion: <Reason>` or `Non-null assertion: <Reason>`.
 - TypeScript: Instead of using type annotations, have TypeScript infer the type as much as possible. Use `as const` for statically defined data. If you really need to use a type annotation, try using `satisfies` instead.
