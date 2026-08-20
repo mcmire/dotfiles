@@ -24,6 +24,14 @@
 - Don't allow functions to grow out of control and do too many things. Same goes for React components.
 - Before implementing a task you think will be complex, search the web to see if anyone else has solved the presented problems before and come up with any existing solutions. Search for existing packages, GitHub gists, blog posts, etc.
 - Name functions verbs or verb phrases, never nouns or noun phrases (e.g., use `replaceBrackets` instead of `bracketReplacement`).
+- When writing documentation blocks for symbols (e.g. JSDoc, PyDoc, etc.), use the first line to summarize what the symbol represents or does, but then use the remaining paragraphs (short of tags) to explain the reason that the symbol exists and how it's used. Don't describe implementation details in a JSDoc block; that's what inline comments are for.
+- When naming variables, never use a past tense verb (e.g. `collected`) unless the variable represents a boolean.
+- When naming variables, recognize and reuse full names of concepts instead of abbreviating them when possible. For instance:
+  - Don't shorten `messengerClientIdentification` to `identification`
+  - Don't shorten `networkConfiguration` to `networkConfig` or `config`
+  - Don't shorten `context` to `ctx`
+  - Don't shorten `transaction` to `tx`
+  The only cases in which it's acceptable to use an abbrevation is `i` for `index`, but only do so if it's the only argument to a function.
 
 ### General testing guidelines
 
@@ -31,7 +39,79 @@
 - When writing a test, mentally break it up into three stages: "arrange", "act", and "assert". Always use empty lines to divide them.
 - Prefer testing one clear behavior per test. This doesn't necessarily mean making one assertion per test. Use the test name as a guide; if you find you are saying "it does this thing AND it does that" or "it does this thing AND NOT that", then divide the test into two.
 - If a function isn't exported, don't export it just so you can test it. Test it indirectly through something else that's already exported.
-- Don't test constants or variables. Only test logic, which would only be contained in functions or methods.
+- Don't test constants or variables that return static values (strings, numbers, etc.). Only test logic, which would only be contained in functions or methods.
+- If data that is set up in a test matters to the test — i.e., if it's referenced directly or indirectly in an assertion — then state it explicitly in the test itself, do not define it in a test helper which is shared by other tests.
+  ``` typescript
+  // ❌ BAD
+  it('parses wallet-library migration rows', () => {
+    const metrics = parseMetricsData(createPersistedMetrics());
+
+    expect(metrics.walletLibraryMigrations[0]).toStrictEqual({
+      id: 'MetaMask/metamask-extension:AccountsController:2026-01-01',
+      repository: 'MetaMask/metamask-extension',
+      createdAt: new Date('2026-01-01T00:00:00.000Z'),
+      occurredAt: new Date('2026-01-01T00:00:00.000Z'),
+      messengerClientName: 'AccountsController',
+      isPresentInWalletLibrary: true,
+      commitSha: 'abc123',
+      walletLibraryVersion: '10.0.0',
+    });
+  });
+
+  function createPersistedMetrics(): PersistedMetricsFixture {
+    return {
+      // ...
+      walletLibraryMigrations: [
+        {
+          id: 'MetaMask/metamask-extension:AccountsController:2026-01-01',
+          repository: 'MetaMask/metamask-extension',
+          createdAt: '2026-01-01T00:00:00.000Z',
+          occurredAt: '2026-01-01T00:00:00.000Z',
+          messengerClientName: 'AccountsController',
+          isPresentInWalletLibrary: true,
+          commitSha: 'abc123',
+          walletLibraryVersion: '10.0.0',
+        },
+      ],
+    }
+  }
+
+  // ✅ GOOD
+  it('parses wallet-library migration rows', () => {
+    const metrics = parseMetricsData(
+      createPersistedMetrics({
+        id: 'MetaMask/metamask-extension:AccountsController:2026-01-01',
+        repository: 'MetaMask/metamask-extension',
+        createdAt: '2026-01-01T00:00:00.000Z',
+        occurredAt: '2026-01-01T00:00:00.000Z',
+        messengerClientName: 'AccountsController',
+        isPresentInWalletLibrary: true,
+        commitSha: 'abc123',
+        walletLibraryVersion: '10.0.0',
+      })
+    );
+
+    expect(metrics.walletLibraryMigrations[0]).toStrictEqual({
+      id: 'MetaMask/metamask-extension:AccountsController:2026-01-01',
+      repository: 'MetaMask/metamask-extension',
+      createdAt: new Date('2026-01-01T00:00:00.000Z'),
+      occurredAt: new Date('2026-01-01T00:00:00.000Z'),
+      messengerClientName: 'AccountsController',
+      isPresentInWalletLibrary: true,
+      commitSha: 'abc123',
+      walletLibraryVersion: '10.0.0',
+    });
+  });
+
+  function createPersistedMetrics(overrides?: Partial<PersistedMetricsFixture> = {}): PersistedMetricsFixture {
+    const defaults = {
+      // ...
+      walletLibraryMigrations: [],
+    };
+    return { ...defaults, ...overrides };
+  }
+  ```
+- When writing tests for a file, prefer to not mock functions or methods that are imported from another file. Only choose to mock imported functions/methods if they make requests or execute shell commands, or if it would be too complex not to mock them.
 
 ### GitHub Actions
 
@@ -53,7 +133,7 @@
     ```
     - Always use `yargs` to parse command-line options, never parse them by hand. Set up Yargs such that `--help` (or `-h`) works. Add a brief summary for each option and one or two examples.
 - Import Node's `path` module using a wildcard import (`import * as ...`, not `import { ... } as ...`).
-- Provide JSDoc when defining types, interfaces, properties of types/interfaces, functions, classes, and top-level variables (constants). Explain why the symbol exists and where it is used.
+- Provide JSDoc when defining types, interfaces, properties of types/interfaces, functions, classes, and top-level variables (constants). Use the first line to summarize what the symbol represents or does, but then use the remaining paragraphs (short of tags) to explain the reason that the symbol exists and how it's used.
 - Use the "long" block comment when providing JSDoc, not the "short" block comment. This particularly applies to properties of types/interfaces. In other words:
   ```typescript
   type Foo = {
@@ -75,14 +155,10 @@
 - Prefer using arrow functions (`() => { ... }`) over function expressions (`function () { ... }`), particularly when passing functions to other functions (e.g. `it` / `test` in test files). Only use `function () { ... }` if you need a function whose `this` needs to be rebound.
 - When adding or modifying a function or method so that it takes more than three arguments, convert the arguments to an options bag rather than use positional arguments.
 - When using Vitest, prefer `it` over `test`.
-- When naming variables, never use a past tense verb (e.g. `collected`) unless the variable represents a boolean.
-- When naming variables, recognize and reuse full names of concepts instead of abbreviating them when possible. For instance:
-  - Don't shorten `messengerClientIdentification` to `identification`
-  - Don't shorten `networkConfiguration` to `networkConfig` or `config`
-  - Don't shorten `context` to `ctx`
-  - Don't shorten `transaction` to `tx`
-  The only case in which it's acceptable to use an abbrevation is `i` for `index`, but only do so if it's the only argument to a function.
 - When adding a dependency to a project, make sure to add the latest version of the package, unless there is a specific reason not to do so (e.g. project requires CommonJS but package is only ESM-compatible).
+- When writing or updating tests, check to see if the test harness has been configured to automatically reset mocks, and if so, then do not call `jest.resetAllMocks`/`jest.restoreAllMocks` or `vi.clearAllMocks`/`vi.restoreAllMocks` (or some variation of this) in `beforeEach`/`afterEach` hooks.
+- Don't use `await` to call an asynchronous function/method and then act on the result within the same statement. Make the asynchronous call in one statement and then act on the result in another.
+- When calling an asynchronous function/method but *not* using `await` but rather capturing the promise, call the variable `promiseFor${nameOfAction` (e.g. `promiseForScanning`, `promiseForFetching`, etc.).
 - TypeScript: Don't use type assertions (`as ...`) or non-null assertions (`foo!`) unless absolutely necessary. If you do need to use either, add a comment above the line such as `Type assertion: <Reason>` or `Non-null assertion: <Reason>`.
 - TypeScript: Instead of using type annotations, have TypeScript infer the type as much as possible. Use `as const` for statically defined data. If you really need to use a type annotation, try using `satisfies` instead.
   - The only exception to this rule is return types on functions/methods — type annotations are acceptable there (and even required for some projects).
