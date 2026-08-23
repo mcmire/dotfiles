@@ -1,15 +1,43 @@
 {
-  "autoUpdatesChannel": "stable",
-  "editorMode": "vim",
-  "effortLevel": "high",
-  "minimumVersion": "2.1.92",
-  "showThinkingSummaries": true,
   "statusLine": {
+    "type": "command",
     "command": "~/.claude/statusline.sh",
-    "padding": 2,
-    "type": "command"
+    "padding": 2
   },
-  "theme": "dark",
+  "effortLevel": "high",
+  "autoUpdatesChannel": "stable",
+  "minimumVersion": "2.1.92",
   "tui": "fullscreen",
-  "verbose": true
+  "showThinkingSummaries": true,
+  "theme": "dark",
+  "editorMode": "vim",
+  "verbose": true,
+  "autoMode": {
+    "environment": [
+      "### Org-wide",
+      "**Organization**: None configured",
+      "**Cloud provider(s)**: None configured",
+      "**Repository visibility**: private — mcmire/obsidian-vault (github.com)",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: None configured",
+      "**Default / protected branches**: main (default); no classic protection rules listed — rulesets not queryable here, so protection status is not fully confirmed",
+      "**CI/CD deploy targets**: None configured",
+      "**Network posture**: None configured",
+      "**Source control**: The trusted repo and its remote (https://github.com/mcmire/obsidian-vault.git) only — no additional orgs configured",
+      "**Trusted internal domains**: None configured",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: None configured",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment (hyphen/underscore/dot-delimited)",
+      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
+      "### User-specific",
+      "**Primary use of Claude Code**: personal knowledge management (Obsidian vault maintenance) — software development tooling (npx) also seen routinely in this repo",
+      "**Trusted repo**: /Users/elliot/obsidian-vault and its remote https://github.com/mcmire/obsidian-vault.git (private) — confidential material is fine to commit here; secrets and other sensitive data are never cleared into it by visibility alone",
+      "**Org-specific CLIs**: None configured",
+      "routine under /Users/elliot/obsidian-vault/ prefix: npx, git, and read-only local operations"
+    ]
+  }
 }
