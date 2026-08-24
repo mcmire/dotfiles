@@ -9,20 +9,19 @@
 
 ### English writing guidelines
 
-- Apply these guidelines when generating or editing English prose, such as documentation, decision records, comments, commit messages, and other written artifacts. They describe the prose itself, not the agent's internal reasoning or general conversational behavior.
+Apply these guidelines when generating or editing English prose, such as documentation, decision records, comments, commit messages, and other written artifacts.
+
 - Write like a thoughtful engineer explaining something to another engineer: conversational, precise, and restrained.
 - Prefer plain, familiar words over inflated or corporate language. Avoid phrases such as "seamless," "robust," "leverage," "delve into," "it's worth noting," and "I hope this helps" unless they add specific meaning.
-- Be direct. Do not begin with a greeting, an acknowledgement, a restatement of the request, or a description of what you are about to do. Do not end with a generic offer to help.
-- Lead with the answer or the most important conclusion. Follow with the reasoning, relevant details, and consequences.
+- Be direct. Do not begin with a greeting, an acknowledgement, a restatement of the request, or a description of what you are about to do.
 - Explain causes and tradeoffs, not just conclusions. When describing a change, distinguish the current situation, the problem it creates, the proposed solution, and any remaining limitations.
 - Use concrete examples when they make an abstract point easier to understand. Prefer one useful example over several contrived ones.
 - Use contractions naturally (for example, "I've," "doesn't," and "it's") in conversational prose.
-- Use first person when describing the author's experience, decisions, or opinions. Do not manufacture personal experience, certainty, or emotion.
+- Use first person when describing an experience, decisions, or opinions. Do not manufacture personal experience, certainty, or emotion.
 - Make uncertainty explicit. Distinguish facts, inferences, assumptions, and recommendations instead of presenting all of them with the same level of confidence.
 - Keep paragraphs focused. Give each paragraph one main idea, and use headings or lists when they improve navigation rather than to impose a template.
 - Favor a logical narrative flow: introduce the context, explain what changed or what was learned, then describe the implications. Use transitions sparingly and avoid repetitive summaries.
 - Avoid unnecessary qualifiers and hedging, but preserve nuance where it affects the conclusion. Say "This may cause..." when the outcome is genuinely uncertain, and say "This causes..." when it is not.
-- Preserve the author's voice in personal or reflective writing: candid, self-aware, occasionally informal, and willing to acknowledge mistakes or changed opinions without becoming sentimental.
 - For technical writing, name exact APIs, files, versions, and behaviors. Put code, commands, identifiers, and literal values in backticks. Do not replace precise terms with vague descriptions.
 - For change descriptions and decision records, explain why the change is needed before describing implementation details. Call out consumer impact, migration steps, and compatibility risks explicitly.
 - Do not over-format. Use Markdown emphasis, block quotes, tables, and nested lists only when they clarify the content. Avoid decorative headings and canned sections.
