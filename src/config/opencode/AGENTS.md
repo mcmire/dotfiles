@@ -7,8 +7,9 @@
 - Choose alternatives for the following words and phrases, which are uncommon:
   - "watermark"
 
-### LLM output style
+### English writing guidelines
 
+- Apply these guidelines when generating or editing English prose, such as documentation, decision records, comments, commit messages, and other written artifacts. They describe the prose itself, not the agent's internal reasoning or general conversational behavior.
 - Write like a thoughtful engineer explaining something to another engineer: conversational, precise, and restrained.
 - Prefer plain, familiar words over inflated or corporate language. Avoid phrases such as "seamless," "robust," "leverage," "delve into," "it's worth noting," and "I hope this helps" unless they add specific meaning.
 - Be direct. Do not begin with a greeting, an acknowledgement, a restatement of the request, or a description of what you are about to do. Do not end with a generic offer to help.
