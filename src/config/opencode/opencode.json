@@ -27,24 +27,108 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "LiteLLM",
       "options": {
-        "baseURL": "https://litellm.consensys.info"
+        "baseURL": "https://litellm.consensys.info/v1"
       },
       "models": {
-        "DeepSeek-V4-Flash": { "name": "DeepSeek v4 Flash" },
-        "DeepSeek-V4-Pro": { "name": "DeepSeek v4 Pro" },
-        "Kimi-K2.6": { "name": "Kimi K2.6" },
+        "claude-fable-5": { "name": "Claude Fable 5" },
         "claude-opus-4-8": { "name": "Claude Opus 4.8" },
         "claude-opus-5": { "name": "Claude Opus 5" },
         "claude-opus-5": { "name": "Claude Opus 5" },
         "claude-sonnet-4-6": { "name": "Claude Sonnet 4.6" },
         "claude-sonnet-5": { "name": "Claude Sonnet 5" },
-        "claude-fable-5": { "name": "Claude Fable 5" },
         "gemini-3.7-flash": { "name": "Gemini 3.7 Flash" },
-        "gpt-5.6-luna": { "name": "GPT 5.6 Luna" },
-        "gpt-5.6-sol": { "name": "GPT 5.6 Sol" },
-        "gpt-5.6-terra": { "name": "GPT 5.6 Terra" },
-        "grok-4-20-reasoning": { "name": "Grok 4.20 Reasoning" },
-        "kimi-k3": { "name": "Kimi K3" }
+        "grok-4-20-reasoning": {
+          "name": "grok-4-20-reasoning",
+          "variants": {
+            "none": {
+              "reasoningEffort": "none"
+            },
+            "minimal": {
+              "reasoningEffort": "minimal"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            }
+          }
+        },
+        "gpt-5.6-luna": {
+          "name": "gpt-5.6-luna",
+          "variants": {
+            "none": {
+              "reasoningEffort": "none"
+            },
+            "minimal": {
+              "reasoningEffort": "minimal"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            }
+          }
+        },
+        "gpt-5.6-sol": {
+          "name": "gpt-5.6-sol",
+          "variants": {
+            "none": {
+              "reasoningEffort": "none"
+            },
+            "minimal": {
+              "reasoningEffort": "minimal"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            }
+          }
+        },
+        "gpt-5.6-terra": {
+          "name": "gpt-5.6-terra",
+          "variants": {
+            "none": {
+              "reasoningEffort": "none"
+            },
+            "minimal": {
+              "reasoningEffort": "minimal"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            }
+          }
+        },
       }
     }
   }
