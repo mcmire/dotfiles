@@ -38,7 +38,7 @@
         "claude-sonnet-5": { "name": "Claude Sonnet 5" },
         "gemini-3.7-flash": { "name": "Gemini 3.7 Flash" },
         "grok-4-20-reasoning": {
-          "name": "grok-4-20-reasoning",
+          "name": "Grok 4.20 (reasoning)",
           "variants": {
             "none": {
               "reasoningEffort": "none"
@@ -61,7 +61,7 @@
           }
         },
         "gpt-5.6-luna": {
-          "name": "gpt-5.6-luna",
+          "name": "GPT 5.6 Luna",
           "variants": {
             "none": {
               "reasoningEffort": "none"
@@ -84,7 +84,7 @@
           }
         },
         "gpt-5.6-sol": {
-          "name": "gpt-5.6-sol",
+          "name": "GPT 5.6 Sol",
           "variants": {
             "none": {
               "reasoningEffort": "none"
@@ -107,7 +107,7 @@
           }
         },
         "gpt-5.6-terra": {
-          "name": "gpt-5.6-terra",
+          "name": "GPT 5.6 Terra",
           "variants": {
             "none": {
               "reasoningEffort": "none"
