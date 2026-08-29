@@ -39,5 +39,6 @@
       "**Org-specific CLIs**: None configured",
       "routine under /Users/elliot/obsidian-vault/ prefix: npx, git, and read-only local operations"
     ]
-  }
+  },
+  "agentPushNotifEnabled": true
 }
