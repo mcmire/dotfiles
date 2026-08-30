@@ -1,0 +1,57 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    haml (7.5.0)
+      prism (>= 1.1.0)
+      temple (>= 0.8.2)
+      thor
+      tilt
+    logger (1.7.0)
+    prettier_print (1.2.1)
+    prism (1.9.0)
+    rbs (4.2.0)
+      logger
+      prism (>= 1.6.0)
+      tsort
+    syntax_tree (6.3.0)
+      prettier_print (>= 1.2.0)
+    syntax_tree-haml (4.0.3)
+      haml (>= 5.2)
+      prettier_print (>= 1.2.1)
+      syntax_tree (>= 6.0.0)
+    syntax_tree-rbs (1.0.0)
+      prettier_print
+      rbs
+      syntax_tree (>= 2.0.1)
+    temple (0.10.7)
+    thor (1.5.0)
+    tilt (2.9.0)
+    tsort (0.2.0)
+
+PLATFORMS
+  arm64-darwin-24
+  ruby
+
+DEPENDENCIES
+  prettier_print (~> 1.2)
+  syntax_tree (~> 6.3)
+  syntax_tree-haml (~> 4.0)
+  syntax_tree-rbs (~> 1.0)
+
+CHECKSUMS
+  bundler (4.0.19) sha256=b48056e4c77fb3853cc47775b5447ede44aaa4f53c32f168014ab4fe86587d47
+  haml (7.5.0) sha256=f84519100c81ee1c3ab55faf9bafe0d9dfbdb19cf75b204897025a719c92cd6e
+  logger (1.7.0) sha256=196edec7cc44b66cfb40f9755ce11b392f21f7967696af15d274dde7edff0203
+  prettier_print (1.2.1) sha256=a72838b5f23facff21f90a5423cdcdda19e4271092b41f4ea7f50b83929e6ff9
+  prism (1.9.0) sha256=7b530c6a9f92c24300014919c9dcbc055bf4cdf51ec30aed099b06cd6674ef85
+  rbs (4.2.0) sha256=51f7b886dcc05bc09e10b901daa6a81829f6adc03101d6ca9ea4aac6103e0674
+  syntax_tree (6.3.0) sha256=56e25a9692c798ec94c5442fe94c5e94af76bef91edc8bb02052cbdecf35f13d
+  syntax_tree-haml (4.0.3) sha256=dcf676677dc28b0f4b908dd414c0e75721fbd6261a2d0f07b378246059196359
+  syntax_tree-rbs (1.0.0) sha256=596728cb588a78a197f5b0c0d09e58a00bad1d9856dc3dfaa065199f521436bd
+  temple (0.10.7) sha256=369fe560adb6534674ce232899c2232df614bcb29c5359b05efedff7a57ed9c0
+  thor (1.5.0) sha256=e3a9e55fe857e44859ce104a84675ab6e8cd59c650a49106a05f55f136425e73
+  tilt (2.9.0) sha256=da5735d0280bba96e9a91041bb14aee435ccad5c17b0fa519249ae543d9aa3a5
+  tsort (0.2.0) sha256=9650a793f6859a43b6641671278f79cfead60ac714148aabe4e3f0060480089f
+
+BUNDLED WITH
+  4.0.19

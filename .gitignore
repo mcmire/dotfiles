@@ -11,3 +11,12 @@ src/tmux/plugins/*
 src/vim/.netrwhist
 src/vim/sessions/*
 tags
+
+# Yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

@@ -1,0 +1,11 @@
+{
+  "plugins": ["@prettier/plugin-ruby"],
+  "overrides": [
+    {
+      "files": ["bin/manage"],
+      "options": {
+        "parser": "ruby"
+      }
+    }
+  ]
+}

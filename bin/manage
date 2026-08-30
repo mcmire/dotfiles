@@ -230,7 +230,8 @@ module DotfilesManager
           else
             raise Error.new(
                     "Unknown argument #{args[i].inspect} given.",
-                    details: "Please run #{$0} #{command_name} --help for usage."
+                    details:
+                      "Please run #{$0} #{command_name} --help for usage."
                   )
           end
         end
@@ -273,9 +274,7 @@ module DotfilesManager
     end
 
     def announce(subaction, action, source: nil, destination: nil)
-      if source
-        formatted_source_path = format_source_path(source)
-      end
+      formatted_source_path = format_source_path(source) if source
 
       if destination
         formatted_destination_path =
@@ -536,15 +535,16 @@ and OTHER_OPTIONS are one or more of:
     end
 
     def run_install_script(file)
-      env = config.to_h.inject({}) do |hash, (key, value)|
-        hash.merge(key.to_s.upcase => value.to_s)
-      end
+      env =
+        config
+          .to_h
+          .inject({}) do |hash, (key, value)|
+            hash.merge(key.to_s.upcase => value.to_s)
+          end
 
-      env['DOTFILES_PROJECT_DIR'] = DotfilesManager.project_dir.to_s
+      env["DOTFILES_PROJECT_DIR"] = DotfilesManager.project_dir.to_s
 
-      if config.verbose?
-        inspect_command(env, file.to_s)
-      end
+      inspect_command(env, file.to_s) if config.verbose?
 
       if !config.dry_run?
         Open3.popen2e(env, file.to_s) do |stdin, stdout_and_stderr, wait_thr|
@@ -554,8 +554,8 @@ and OTHER_OPTIONS are one or more of:
             exit_code = exit_status >> 8
             puts stdout_and_stderr.read
             raise Error.new(
-              "#{format_source_path(file)} failed with exit code #{exit_code}."
-            )
+                    "#{format_source_path(file)} failed with exit code #{exit_code}."
+                  )
           end
         end
       end
@@ -579,9 +579,7 @@ and OTHER_OPTIONS are one or more of:
       if config.verbose?
         puts "Making directory #{target.dirname}..."
 
-        if config.force?
-          puts "Removing #{target}..."
-        end
+        puts "Removing #{target}..." if config.force?
 
         puts "Symlinking #{symlink} to #{target}..."
       end
@@ -589,9 +587,7 @@ and OTHER_OPTIONS are one or more of:
       if !config.dry_run?
         target.parent.mkpath
 
-        if config.force?
-          FileUtils.rm_rf(target)
-        end
+        FileUtils.rm_rf(target) if config.force?
 
         target.make_symlink(symlink)
       end
@@ -601,9 +597,7 @@ and OTHER_OPTIONS are one or more of:
       if config.verbose?
         puts "Making directory #{destination.dirname}..."
 
-        if config.force?
-          puts "Removing #{destination}..."
-        end
+        puts "Removing #{destination}..." if config.force?
 
         puts "Copying #{source} to #{target}..."
       end
@@ -611,9 +605,7 @@ and OTHER_OPTIONS are one or more of:
       if !config.dry_run?
         destination.parent.mkpath
 
-        if config.force?
-          FileUtils.rm_rf(destination)
-        end
+        FileUtils.rm_rf(destination) if config.force?
 
         FileUtils.cp(source, destination)
       end
@@ -765,13 +757,9 @@ where OPTIONS are:
     private
 
     def remove_file(file)
-      if config.verbose?
-        puts "Removing #{file}..."
-      end
+      puts "Removing #{file}..." if config.verbose?
 
-      if !config.dry_run?
-        file.delete
-      end
+      file.delete if !config.dry_run?
     end
   end
 
@@ -786,7 +774,7 @@ where OPTIONS are:
 
     def initialize(args)
       @args = args
-      @config_file = ConfigFile.new(DotfilesManager.config_file_path)
+      @config_file = GlobalConfigFile.new(DotfilesManager.config_file_path)
       @command = nil
     end
 
@@ -799,9 +787,7 @@ where OPTIONS are:
 
       read_config_file
       parse_args
-      if !config.main.dry_run?
-        write_config_file
-      end
+      write_config_file if !config.main.dry_run?
       if config.main.dry_run?
         info "Running in dry-run mode."
         puts
@@ -911,9 +897,7 @@ If you want to know what either of these commands do, say:
 
       # Process subdirectories
       directory.children.each do |child|
-        if child.directory?
-          process_entry(child)
-        end
+        process_entry(child) if child.directory?
       end
 
       # Process __install__.sh
