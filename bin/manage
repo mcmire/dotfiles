@@ -27,15 +27,26 @@ module DotfilesManager
     project_dir.join("src")
   end
 
-  def self.config_file_path
+  def self.global_config_file_path
     dotfiles_home.join(".dotfilesrc")
+  end
+
+  def self.local_config_file_path
+    source_dir.join("__overrides__.cfg")
   end
 
   self.dotfiles_home =
     Pathname.new(ENV["DOTFILES_HOME"] || ENV["HOME"]).expand_path(Dir.pwd)
 
   module MessageHelpers
-    COLOR_CODES = { bold: 1, red: 31, green: 32, yellow: 33, blue: 34 }
+    COLOR_CODES = {
+      bold: 1,
+      red: 31,
+      green: 32,
+      yellow: 33,
+      blue: 34,
+      grey: 90
+    }
 
     def success(text)
       puts_in(:green, text)
@@ -69,7 +80,7 @@ module DotfilesManager
     end
   end
 
-  class Config
+  class GlobalConfig
     def initialize(data)
       @data = data.transform_keys(&:to_sym)
     end
@@ -166,18 +177,61 @@ module DotfilesManager
     attr_reader :data
   end
 
-  class ConfigFile
+  class GlobalConfigFile
     def initialize(path)
       @path = path
     end
 
     def read
-      path.exist? ? Config.new(JSON.parse(path.read)) : Config.new({})
+      if path.exist?
+        GlobalConfig.new(JSON.parse(path.read))
+      else
+        GlobalConfig.new({})
+      end
     end
 
     def write(config)
       hash = config.to_h
       path.write(JSON.pretty_generate(hash.slice(*(hash.keys - [:main]))))
+    end
+
+    private
+
+    attr_reader :path
+  end
+
+  class LocalConfig
+    attr_reader :file, :symlinks, :ignore_paths
+
+    def initialize(file, data)
+      @file = file
+      @data = data.transform_keys(&:to_sym)
+      @symlinks =
+        @data
+          .fetch(:symlinks, [])
+          .reduce({}) do |hash, (symlink_path, target_path)|
+            symlink = DotfilesManager.source_dir.join(symlink_path)
+            target = Pathname.new(target_path.gsub("~/", ENV["HOME"] + "/"))
+            hash.merge(symlink => target)
+          end
+      @ignore_paths =
+        Dir
+          .glob(@data.fetch(:ignores, []), base: DotfilesManager.source_dir)
+          .map { |path| DotfilesManager.source_dir.join(path) }
+    end
+  end
+
+  class LocalConfigFile
+    def initialize(path)
+      @path = path
+    end
+
+    def read
+      if path.exist?
+        LocalConfig.new(path, JSON.parse(path.read))
+      else
+        LocalConfig.new({})
+      end
     end
 
     private
@@ -197,8 +251,8 @@ module DotfilesManager
   class Command
     include MessageHelpers
 
-    def initialize(config)
-      @config = config
+    def initialize(options)
+      @options = options
     end
 
     def parse_args(args)
@@ -210,9 +264,9 @@ module DotfilesManager
         when /^--(.+)$/
           if future_name
             if future_value == nil
-              config.public_send("#{future_name}=", true)
+              options.public_send("#{future_name}=", true)
             else
-              config.public_send("#{future_name}=", future_value)
+              options.public_send("#{future_name}=", future_value)
             end
             future_name = nil
             future_value = nil
@@ -239,9 +293,9 @@ module DotfilesManager
 
       if future_name
         if future_value == nil
-          config.public_send("#{future_name}=", true)
+          options.public_send("#{future_name}=", true)
         else
-          config.public_send("#{future_name}=", future_value)
+          options.public_send("#{future_name}=", future_value)
         end
       end
     end
@@ -256,6 +310,10 @@ module DotfilesManager
 
     def process_non_link(entry)
       raise NotImplementedError
+    end
+
+    def ignore_entry(entry)
+      # do nothing by default
     end
 
     def print_result
@@ -352,6 +410,11 @@ module DotfilesManager
   end
 
   class InstallCommand < Command
+    def initialize(options, config)
+      super(options)
+      @config = config
+    end
+
     def print_help
       puts <<-TEXT
 #{colorize :blue, "## DESCRIPTION"}
@@ -384,6 +447,10 @@ There are some exceptions to this:
   EXAMPLE: src/zsh, because it contains a .no-recurse file, creates a symlink at
   ~/.zsh.
 
+In addition, src/__overrides__.cfg allows you to create symlinks for files
+outside of the src/ directory, and it also allows you to prevent symlinks from
+being created for files that need to exist in src/ (e.g. node_modules/).
+
 No files will be overwritten unless you specify --force.
 
 Finally, if you want to know what this command will do before running it for
@@ -414,15 +481,14 @@ and OTHER_OPTIONS are one or more of:
       TEXT
     end
 
+    def preprocess
+      process_overrides_file
+    end
+
     def process_entry(source)
       destination = build_destination_for(source)
 
-      # TODO: Have this be JSON or TOML
-      if source.basename.to_s == "__overrides__.cfg"
-        announce(:config, :read, source: source)
-        read_config_file(source)
-        # TODO: Have this be whatever
-      elsif source.basename.to_s == "__install__.sh"
+      if source.basename.to_s == "__install__.sh"
         # TODO: Should this be 'script' or something?
         announce(:command, :run, source: source)
         run_install_script(source)
@@ -436,7 +502,7 @@ and OTHER_OPTIONS are one or more of:
       destination = build_destination_for(source.sub(/\.__no-link__$/, ""))
 
       if destination.symlink?
-        if config.force?
+        if options.force?
           announce(
             :non_link,
             :overwrite,
@@ -462,8 +528,12 @@ and OTHER_OPTIONS are one or more of:
       end
     end
 
+    def ignore_entry(entry)
+      announce(:entry, :ignore, source: entry)
+    end
+
     def print_result
-      if config.dry_run?
+      if options.dry_run?
         puts
         info "Don't worry — no files were created!"
       else
@@ -489,6 +559,8 @@ and OTHER_OPTIONS are one or more of:
         :red
       when :exists, :same, :unknown
         :blue
+      when :ignore
+        :grey
       else
         raise Error.new(
                 "Could not determine color for action #{action.inspect}."
@@ -519,24 +591,23 @@ and OTHER_OPTIONS are one or more of:
 
     private
 
-    attr_reader :config
+    attr_reader :options, :config
 
-    # TODO: If any of the designated source files here are inside of the
-    # source dir, then symlinks will also be created for them elsewhere
-    def read_config_file(file)
-      JSON
-        .parse(file.read)
-        .fetch("symlinks")
-        .each do |symlink_path, target_path|
-          symlink = DotfilesManager.source_dir.join(symlink_path)
-          target = Pathname.new(target_path.gsub("~/", ENV["HOME"] + "/"))
-          link_file_with_announcement(symlink, target)
-        end
+    def process_overrides_file
+      # Technically, we already read it, but we only use it for the install
+      # command, so we can keep this here
+      announce(:config, :read, source: config.file)
+
+      # TODO: If any of the designated source files here are inside of the
+      # source dir, then symlinks will also be created for them elsewhere
+      config.symlinks.each do |symlink, target|
+        link_file_with_announcement(symlink, target)
+      end
     end
 
     def run_install_script(file)
       env =
-        config
+        options
           .to_h
           .inject({}) do |hash, (key, value)|
             hash.merge(key.to_s.upcase => value.to_s)
@@ -544,9 +615,9 @@ and OTHER_OPTIONS are one or more of:
 
       env["DOTFILES_PROJECT_DIR"] = DotfilesManager.project_dir.to_s
 
-      inspect_command(env, file.to_s) if config.verbose?
+      inspect_command(env, file.to_s) if options.verbose?
 
-      if !config.dry_run?
+      if !options.dry_run?
         Open3.popen2e(env, file.to_s) do |stdin, stdout_and_stderr, wait_thr|
           exit_status = wait_thr.value
 
@@ -563,7 +634,7 @@ and OTHER_OPTIONS are one or more of:
 
     def link_file_with_announcement(symlink, target)
       if target.exist? || target.symlink?
-        if config.force?
+        if options.force?
           announce(:link, :overwrite, source: symlink, destination: target)
           link_file(symlink, target)
         else
@@ -576,36 +647,36 @@ and OTHER_OPTIONS are one or more of:
     end
 
     def link_file(symlink, target)
-      if config.verbose?
+      if options.verbose?
         puts "Making directory #{target.dirname}..."
 
-        puts "Removing #{target}..." if config.force?
+        puts "Removing #{target}..." if options.force?
 
         puts "Symlinking #{symlink} to #{target}..."
       end
 
-      if !config.dry_run?
+      if !options.dry_run?
         target.parent.mkpath
 
-        FileUtils.rm_rf(target) if config.force?
+        FileUtils.rm_rf(target) if options.force?
 
         target.make_symlink(symlink)
       end
     end
 
     def copy_file(source, destination)
-      if config.verbose?
+      if options.verbose?
         puts "Making directory #{destination.dirname}..."
 
-        puts "Removing #{destination}..." if config.force?
+        puts "Removing #{destination}..." if options.force?
 
         puts "Copying #{source} to #{target}..."
       end
 
-      if !config.dry_run?
+      if !options.dry_run?
         destination.parent.mkpath
 
-        FileUtils.rm_rf(destination) if config.force?
+        FileUtils.rm_rf(destination) if options.force?
 
         FileUtils.cp(source, destination)
       end
@@ -677,7 +748,7 @@ where OPTIONS are:
         announce(:link, :delete, source: source, destination: destination)
         remove_file(destination)
       elsif destination.exists?
-        if config.force?
+        if options.force?
           announce(:entry, :purge, source: source)
           remove_file(destination)
         else
@@ -691,7 +762,7 @@ where OPTIONS are:
       destination = build_destination_for(source)
 
       if destination.exist?
-        if files_have_same_content?(source, destination) || config.force?
+        if files_have_same_content?(source, destination) || options.force?
           announce(:non_link, :delete, source: source, destination: destination)
           remove_file(destination)
         else
@@ -708,7 +779,7 @@ where OPTIONS are:
     end
 
     def print_result
-      if config.dry_run?
+      if options.dry_run?
         puts
         info "Don't worry — no files were created!"
       else
@@ -757,9 +828,9 @@ where OPTIONS are:
     private
 
     def remove_file(file)
-      puts "Removing #{file}..." if config.verbose?
+      puts "Removing #{file}..." if options.verbose?
 
-      file.delete if !config.dry_run?
+      file.delete if !options.dry_run?
     end
   end
 
@@ -774,8 +845,11 @@ where OPTIONS are:
 
     def initialize(args)
       @args = args
-      @config_file = GlobalConfigFile.new(DotfilesManager.config_file_path)
       @command = nil
+      @global_config_file =
+        GlobalConfigFile.new(DotfilesManager.global_config_file_path)
+      @local_config_file =
+        LocalConfigFile.new(DotfilesManager.local_config_file_path)
     end
 
     def call
@@ -785,13 +859,16 @@ where OPTIONS are:
               )
       end
 
-      read_config_file
+      read_global_config_file
+      read_local_config_file
       parse_args
-      write_config_file if !config.main.dry_run?
-      if config.main.dry_run?
+      write_global_config_file if !global_config.main.dry_run?
+
+      if global_config.main.dry_run?
         info "Running in dry-run mode."
         puts
       end
+      command.preprocess if command.respond_to?(:preprocess, true)
       recurse(DotfilesManager.source_dir)
       command.print_result
     rescue Error => error
@@ -802,14 +879,25 @@ where OPTIONS are:
 
     private
 
-    attr_reader :args, :config_file, :config, :command
+    attr_reader(
+      :args,
+      :command,
+      :global_config_file,
+      :global_config,
+      :local_config_file,
+      :local_config
+    )
 
-    def read_config_file
-      @config = config_file.read
+    def read_global_config_file
+      @global_config = global_config_file.read
     end
 
-    def write_config_file
-      config_file.write(config)
+    def write_global_config_file
+      global_config_file.write(global_config)
+    end
+
+    def read_local_config_file
+      @local_config = local_config_file.read
     end
 
     def parse_args
@@ -826,10 +914,10 @@ where OPTIONS are:
           print_help
           exit
         when "install"
-          @command = InstallCommand.new(config.install)
+          @command = InstallCommand.new(global_config.install, local_config)
           break
         when "uninstall"
-          @command = UninstallCommand.new(config.uninstall)
+          @command = UninstallCommand.new(global_config.uninstall)
           break
         else
           raise Error.new(
@@ -843,11 +931,11 @@ where OPTIONS are:
       args[1..-1].each do |arg|
         case arg
         when "--dry-run", "--noop", "-n"
-          config.main.dry_run = true
+          global_config.main.dry_run = true
         when "--force", "-f"
-          config.main.force = true
+          global_config.main.force = true
         when "--verbose", "-V"
-          config.main.verbose = true
+          global_config.main.verbose = true
         when "--help", "-h", "-?"
           command.print_help
           exit
@@ -881,12 +969,6 @@ If you want to know what either of these commands do, say:
     end
 
     def recurse(directory)
-      # Process overrides
-      if directory == DotfilesManager.source_dir &&
-           directory.join("__overrides__.cfg").exist?
-        process_entry(directory.join("__overrides__.cfg"))
-      end
-
       # Process files
       directory.children.each do |child|
         if child.file? &&
@@ -895,7 +977,7 @@ If you want to know what either of these commands do, say:
         end
       end
 
-      # Process subdirectories
+      # Process subdirectories AFTER processing files
       directory.children.each do |child|
         process_entry(child) if child.directory?
       end
@@ -908,7 +990,9 @@ If you want to know what either of these commands do, say:
     end
 
     def process_entry(entry)
-      if entry.directory? && !entry.join(".no-recurse").exist?
+      if local_config.ignore_paths.include?(entry)
+        command.ignore_entry(entry)
+      elsif entry.directory? && !entry.join(".no-recurse").exist?
         recurse(entry)
       elsif entry.basename.to_s.end_with?(".__no-link__")
         command.process_non_link(entry)
