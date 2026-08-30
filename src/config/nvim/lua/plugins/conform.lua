@@ -45,6 +45,7 @@ return {
       javascript = { 'oxfmt', 'prettierd', stop_after_first = true },
       typescript = { 'oxfmt', 'prettierd', stop_after_first = true },
       json = { 'oxfmt', 'prettierd', stop_after_first = true },
+      ruby = { 'prettierd', stop_after_first = true },
 
       -- Conform can also run multiple formatters sequentially
       -- python = { "isort", "black" },
