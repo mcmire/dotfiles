@@ -67,29 +67,30 @@ return {
       stylua = {},
 
       -- JavaScript/TypeScript
-      ts_ls = {
-        init_options = {
-          hostInfo = 'neovim',
-          preferences = {
-            importModuleSpecifierPreference = 'project-relative',
-          },
-          javascript = {
-            preferences = {
-              importModuleSpecifier = 'project-relative',
-            },
-          },
-          typescript = {
-            preferences = {
-              importModuleSpecifier = 'project-relative',
-            },
-          },
-          ['js/ts'] = {
-            preferences = {
-              importModuleSpecifier = 'project-relative',
-            },
-          },
-        },
-      },
+      -- ts_ls = {
+      --   init_options = {
+      --     hostInfo = 'neovim',
+      --     preferences = {
+      --       importModuleSpecifierPreference = 'project-relative',
+      --     },
+      --     javascript = {
+      --       preferences = {
+      --         importModuleSpecifier = 'project-relative',
+      --       },
+      --     },
+      --     typescript = {
+      --       preferences = {
+      --         importModuleSpecifier = 'project-relative',
+      --       },
+      --     },
+      --     ['js/ts'] = {
+      --       preferences = {
+      --         importModuleSpecifier = 'project-relative',
+      --       },
+      --     },
+      --   },
+      -- },
+      tsc = {},
       eslint = {
         before_init = function(_, config)
           local root_dir = config.root_dir
