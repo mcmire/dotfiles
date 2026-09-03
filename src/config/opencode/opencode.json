@@ -37,8 +37,8 @@
         "claude-sonnet-4-6": { "name": "Claude Sonnet 4.6" },
         "claude-sonnet-5": { "name": "Claude Sonnet 5" },
         "gemini-3.7-flash": { "name": "Gemini 3.7 Flash" },
-        "glm-5p3": { name: "GLM 5.3" },
-        "glm-5p3-flash": { name: "GLM 5.3 Flash" },
+        "glm-5p3": { "name": "GLM 5.3" },
+        "glm-5p3-flash": { "name": "GLM 5.3 Flash" },
         "grok-4-20-reasoning": {
           "name": "Grok 4.20 (reasoning)",
           "variants": {
