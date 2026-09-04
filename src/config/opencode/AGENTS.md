@@ -7,6 +7,7 @@
 - Choose alternatives for the following words and phrases, which are uncommon:
   - "watermark"
   - "carries" (replace with "has", e.g., "A mutation in the `error` state always carries a non-null `error`." -> "A mutation in the `error` state always has a non-null `error`.")
+  - "load-bearing"
 
 ## Writing code
 
@@ -15,7 +16,7 @@
 ### General development workflow
 
 - Always test your work to make sure that it passes the user's intentions. Unit tests are preferred, but any kinds of tests will do.
-  - If you find yourself creating smoke tests in temporary files, stop and consider adding real files so that the behavior being added or the fix being made won't break in the future.
+  - If you find yourself creating scratch tests, stop and consider adding real tests so that the behavior being added or the fix being made won't break in the future.
 - Always write tests first, watch them fail, then implement the code to make them pass. (See "General testing guidelines" for more.)
 - When you complete a task and reach a point where you would print a summary of changes to the user, create a commit.
 
@@ -32,7 +33,7 @@
   - Don't shorten `networkConfiguration` to `networkConfig` or `config`
   - Don't shorten `context` to `ctx`
   - Don't shorten `transaction` to `tx`
-  The only cases in which it's acceptable to use an abbrevation is `i` for `index`, but only do so if it's the only argument to a function.
+    The only cases in which it's acceptable to use an abbrevation is `i` for `index`, but only do so if it's the only argument to a function.
 
 ### General testing guidelines
 
@@ -42,20 +43,20 @@
 - If a function isn't exported, don't export it just so you can test it. Test it indirectly through something else that's already exported.
 - Don't test constants or variables that return static values (strings, numbers, etc.). Only test logic, which would only be contained in functions or methods.
 - If data that is set up in a test matters to the test — i.e., if it's referenced directly or indirectly in an assertion — then state it explicitly in the test itself, do not define it in a test helper which is shared by other tests.
-  ``` typescript
+  ```typescript
   // ❌ BAD
-  it('parses wallet-library migration rows', () => {
+  it("parses wallet-library migration rows", () => {
     const metrics = parseMetricsData(createPersistedMetrics());
 
     expect(metrics.walletLibraryMigrations[0]).toStrictEqual({
-      id: 'MetaMask/metamask-extension:AccountsController:2026-01-01',
-      repository: 'MetaMask/metamask-extension',
-      createdAt: new Date('2026-01-01T00:00:00.000Z'),
-      occurredAt: new Date('2026-01-01T00:00:00.000Z'),
-      messengerClientName: 'AccountsController',
+      id: "MetaMask/metamask-extension:AccountsController:2026-01-01",
+      repository: "MetaMask/metamask-extension",
+      createdAt: new Date("2026-01-01T00:00:00.000Z"),
+      occurredAt: new Date("2026-01-01T00:00:00.000Z"),
+      messengerClientName: "AccountsController",
       isPresentInWalletLibrary: true,
-      commitSha: 'abc123',
-      walletLibraryVersion: '10.0.0',
+      commitSha: "abc123",
+      walletLibraryVersion: "10.0.0",
     });
   });
 
@@ -64,47 +65,49 @@
       // ...
       walletLibraryMigrations: [
         {
-          id: 'MetaMask/metamask-extension:AccountsController:2026-01-01',
-          repository: 'MetaMask/metamask-extension',
-          createdAt: '2026-01-01T00:00:00.000Z',
-          occurredAt: '2026-01-01T00:00:00.000Z',
-          messengerClientName: 'AccountsController',
+          id: "MetaMask/metamask-extension:AccountsController:2026-01-01",
+          repository: "MetaMask/metamask-extension",
+          createdAt: "2026-01-01T00:00:00.000Z",
+          occurredAt: "2026-01-01T00:00:00.000Z",
+          messengerClientName: "AccountsController",
           isPresentInWalletLibrary: true,
-          commitSha: 'abc123',
-          walletLibraryVersion: '10.0.0',
+          commitSha: "abc123",
+          walletLibraryVersion: "10.0.0",
         },
       ],
-    }
+    };
   }
 
   // ✅ GOOD
-  it('parses wallet-library migration rows', () => {
+  it("parses wallet-library migration rows", () => {
     const metrics = parseMetricsData(
       createPersistedMetrics({
-        id: 'MetaMask/metamask-extension:AccountsController:2026-01-01',
-        repository: 'MetaMask/metamask-extension',
-        createdAt: '2026-01-01T00:00:00.000Z',
-        occurredAt: '2026-01-01T00:00:00.000Z',
-        messengerClientName: 'AccountsController',
+        id: "MetaMask/metamask-extension:AccountsController:2026-01-01",
+        repository: "MetaMask/metamask-extension",
+        createdAt: "2026-01-01T00:00:00.000Z",
+        occurredAt: "2026-01-01T00:00:00.000Z",
+        messengerClientName: "AccountsController",
         isPresentInWalletLibrary: true,
-        commitSha: 'abc123',
-        walletLibraryVersion: '10.0.0',
-      })
+        commitSha: "abc123",
+        walletLibraryVersion: "10.0.0",
+      }),
     );
 
     expect(metrics.walletLibraryMigrations[0]).toStrictEqual({
-      id: 'MetaMask/metamask-extension:AccountsController:2026-01-01',
-      repository: 'MetaMask/metamask-extension',
-      createdAt: new Date('2026-01-01T00:00:00.000Z'),
-      occurredAt: new Date('2026-01-01T00:00:00.000Z'),
-      messengerClientName: 'AccountsController',
+      id: "MetaMask/metamask-extension:AccountsController:2026-01-01",
+      repository: "MetaMask/metamask-extension",
+      createdAt: new Date("2026-01-01T00:00:00.000Z"),
+      occurredAt: new Date("2026-01-01T00:00:00.000Z"),
+      messengerClientName: "AccountsController",
       isPresentInWalletLibrary: true,
-      commitSha: 'abc123',
-      walletLibraryVersion: '10.0.0',
+      commitSha: "abc123",
+      walletLibraryVersion: "10.0.0",
     });
   });
 
-  function createPersistedMetrics(overrides?: Partial<PersistedMetricsFixture> = {}): PersistedMetricsFixture {
+  function createPersistedMetrics(
+    overrides?: Partial<PersistedMetricsFixture> = {},
+  ): PersistedMetricsFixture {
     const defaults = {
       // ...
       walletLibraryMigrations: [],
@@ -143,7 +146,7 @@
      * The bar.
      */
     bar: number;
-  }
+  };
   ```
   not this:
   ```typescript
@@ -151,7 +154,7 @@
     // ❌ BAD
     /** The bar. */
     bar: number;
-  }
+  };
   ```
 - Prefer using arrow functions (`() => { ... }`) over function expressions (`function () { ... }`), particularly when passing functions to other functions (e.g. `it` / `test` in test files). Only use `function () { ... }` if you need a function whose `this` needs to be rebound.
 - When adding or modifying a function or method so that it takes more than three arguments, convert the arguments to an options bag rather than use positional arguments.
@@ -159,12 +162,12 @@
 - When adding a dependency to a project, make sure to add the latest version of the package, unless there is a specific reason not to do so (e.g. project requires CommonJS but package is only ESM-compatible).
 - When writing or updating tests, check to see if the test harness has been configured to automatically reset mocks, and if so, then do not call `jest.resetAllMocks`/`jest.restoreAllMocks` or `vi.clearAllMocks`/`vi.restoreAllMocks` (or some variation of this) in `beforeEach`/`afterEach` hooks.
 - Don't use `await` to call an asynchronous function/method and then act on the result within the same statement. Make the asynchronous call in one statement and then act on the result in another.
-- When calling an asynchronous function/method but *not* using `await` but rather capturing the promise, call the variable `promiseFor${nameOfAction` (e.g. `promiseForScanning`, `promiseForFetching`, etc.).
+- When calling an asynchronous function/method but _not_ using `await` but rather capturing the promise, call the variable `promiseFor${nameOfAction` (e.g. `promiseForScanning`, `promiseForFetching`, etc.).
 - TypeScript: Don't use type assertions (`as ...`) or non-null assertions (`foo!`) unless absolutely necessary. If you do need to use either, add a comment above the line such as `Type assertion: <Reason>` or `Non-null assertion: <Reason>`.
 - TypeScript: Instead of using type annotations, have TypeScript infer the type as much as possible. Use `as const` for statically defined data. If you really need to use a type annotation, try using `satisfies` instead.
   - The only exception to this rule is return types on functions/methods — type annotations are acceptable there (and even required for some projects).
 - TypeScript: Don't extract function/method argument types or return types by default; wait until we get to a point where we need to use the type in more than one place.
-- TypeScript: Don't use the `private` keyword, use ES private fields instead. 
+- TypeScript: Don't use the `private` keyword, use ES private fields instead.
 
 ## Shell Scripting
 
@@ -182,16 +185,15 @@
 
 ## How to use memories
 
-When a task relates to a topic listed below, call `memory_read_topic` with the filename and namespace to load the full detail before proceeding.
-
-After completing a non-trivial task — especially debugging, a workaround, or a non-obvious decision — suggest running `/remember` to preserve the solution.
+When a task relates to a topic below, call `memory_read_topic` with the filename and namespace to load the full detail. After a non-trivial task (debugging, a workaround, a non-obvious decision), suggest `/remember`.
 
 ## Known topic files
 
-<!-- memory_update appends entries here in the format: -->
-<!-- - [[filename]] (namespace): one-line summary -->
-- [[messenger-adapter-minimal-namespace-support]] (procedural): How to type a function/class that requires a MetaMask Messenger to minimally support certain namespaces while allowing extra ones (canonical BaseController capability-check pattern, not open-template structural adapter)
-- [[typescript-subclass-structural-checking]] (semantic): Why a subclass of a generic base class can fail an `extends BaseClass<...wide args...>` constraint that the base class itself passes (structural check on private fields), and how to work around it by inferring type args instead of constraining
-- [[typescript-deferred-any-circular-imports]] (procedural): How to detect a "deferred" `any` from circular imports (a union collapsing to `any`), why structural `IsAny` (`0 extends 1 & T`) fails on it, and the `[T] extends [Brand]` assignability fix plus per-key-object diagnostic.
-- [[sqlite-in-git-for-metrics]] (procedural): How to store a small structured dataset as SQLite committed to Git, feeding a browser dashboard
-- [[version-accurate-historical-dependency-scanning]] (procedural): Scan a dependency's API across git history version-accurately without per-commit installs
+<!-- memory_update appends entries here as: - [[filename]] (namespace): one-line summary -->
+
+- [[messenger-adapter-minimal-namespace-support]] (procedural): Typing a function/class that needs a MetaMask Messenger to minimally support certain namespaces while allowing extras (BaseController capability-check pattern, not structural adapter)
+- [[typescript-subclass-structural-checking]] (semantic): Why a subclass of a generic base can fail an `extends BaseClass<...wide...>` constraint the base itself passes (structural private-field check); fix by inferring type args instead of constraining
+- [[typescript-deferred-any-circular-imports]] (procedural): Detecting a "deferred" `any` from circular imports (union collapsing to `any`), why structural `IsAny` fails on it, and the `[T] extends [Brand]` fix
+- [[sqlite-in-git-for-metrics]] (procedural): Storing a small structured dataset as SQLite committed to Git, feeding a browser dashboard
+- [[version-accurate-historical-dependency-scanning]] (procedural): Scanning a dependency's API across git history version-accurately without per-commit installs
+- [[typescript-generics-deferred-conditionals-and-narrowing]] (semantic): Why generic params are unresolved in a function body, why conditional return types over them are deferred (forcing `as unknown as`), and why value-narrowing can't narrow a type parameter
