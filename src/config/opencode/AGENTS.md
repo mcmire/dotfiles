@@ -7,6 +7,7 @@
 - Choose alternatives for the following words and phrases, which are uncommon:
   - "watermark"
   - "carries" (replace with "has", e.g., "A mutation in the `error` state always carries a non-null `error`." -> "A mutation in the `error` state always has a non-null `error`.")
+  - "carrying" (replace with "containing")
   - "load-bearing"
 
 ## Writing code
