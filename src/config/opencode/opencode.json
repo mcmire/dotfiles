@@ -23,19 +23,72 @@
         }
       }
     },
-    "litellm": {
+    "litellm-anthropic": {
+      "npm": "@ai-sdk/anthropic",
+      "name": "LiteLLM (Anthropic)",
+      "options": {
+        "baseURL": "https://litellm.consensys.info/anthropic/v1",
+      },
+      "models": {
+        "claude-fable-5": {
+          "name": "Claude Fable 5",
+          "options": {
+            "thinking": {
+              "type": "adaptive",
+              "display": "summarized"
+            },
+            "effort": "high"
+          }
+        },
+        "claude-opus-4-8": {
+          "name": "Claude Opus 4.8",
+          "options": {
+            "thinking": {
+              "type": "adaptive",
+              "display": "summarized"
+            },
+            "effort": "high"
+          }
+        },
+        "claude-opus-5": {
+          "name": "Claude Opus 5",
+          "options": {
+            "thinking": {
+              "type": "adaptive",
+              "display": "summarized"
+            },
+            "effort": "high"
+          }
+        },
+        "claude-sonnet-4-6": {
+          "name": "Claude Sonnet 4.6",
+          "options": {
+            "thinking": {
+              "type": "adaptive",
+              "display": "summarized"
+            },
+            "effort": "high"
+          }
+        },
+        "claude-sonnet-5": {
+          "name": "Claude Sonnet 5",
+          "options": {
+            "thinking": {
+              "type": "adaptive",
+              "display": "summarized"
+            },
+            "effort": "high"
+          }
+        }
+      }
+    },
+    "litellm-openai-compatible": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "LiteLLM",
       "options": {
         "baseURL": "https://litellm.consensys.info/v1"
       },
       "models": {
-        "claude-fable-5": { "name": "Claude Fable 5" },
-        "claude-opus-4-8": { "name": "Claude Opus 4.8" },
-        "claude-opus-5": { "name": "Claude Opus 5" },
-        "claude-opus-5": { "name": "Claude Opus 5" },
-        "claude-sonnet-4-6": { "name": "Claude Sonnet 4.6" },
-        "claude-sonnet-5": { "name": "Claude Sonnet 5" },
         "gemini-3.8-flash": { "name": "Gemini 3.8 Flash" },
         "glm-5p3": { "name": "GLM 5.3" },
         "glm-5p3-flash": { "name": "GLM 5.3 Flash" },
@@ -131,7 +184,7 @@
               "reasoningEffort": "xhigh"
             }
           }
-        },
+        }
       }
     }
   }
