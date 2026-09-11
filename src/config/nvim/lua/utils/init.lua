@@ -49,6 +49,34 @@ function M.get_typescript_project_dir(bufnr)
   return root_dir
 end
 
+---@param root_dir string
+---@return string|nil
+function M.get_typescript_7_binary(root_dir)
+  local local_binaries = {
+    vim.fs.joinpath(root_dir, 'node_modules/.bin/tsc'),
+    vim.fs.joinpath(root_dir, 'node_modules/.bin/tsgo'),
+  }
+  local binaries = { 'tsc', 'tsgo' }
+
+  for _, binary in ipairs(local_binaries) do
+    if vim.fn.executable(binary) == 1 then
+      binaries = local_binaries
+      break
+    end
+  end
+
+  for _, binary in ipairs(binaries) do
+    if vim.fn.executable(binary) == 1 then
+      local result = vim.system({ binary, '--version' }, { text = true }):wait()
+      local version = vim.version.parse(result.stdout or '')
+
+      if result.code == 0 and version ~= nil and version.major >= 7 then
+        return binary
+      end
+    end
+  end
+end
+
 ---@param bufnr integer
 ---@return string|nil
 function M.get_deno_project_dir(bufnr)

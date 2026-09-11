@@ -68,6 +68,13 @@ return {
 
       -- JavaScript/TypeScript
       ts_ls = {
+        root_dir = function(bufnr, on_dir)
+          local root_dir = utils.get_typescript_project_dir(bufnr)
+
+          if root_dir ~= nil and utils.get_typescript_7_binary(root_dir) == nil then
+            on_dir(root_dir)
+          end
+        end,
         init_options = {
           hostInfo = 'neovim',
           preferences = {
@@ -90,7 +97,25 @@ return {
           },
         },
       },
-      -- tsc = {},
+      tsc = {
+        cmd = function(dispatchers, config)
+          local root_dir = config and config.root_dir
+          local binary = 'tsc'
+
+          if root_dir then
+            binary = utils.get_typescript_7_binary(root_dir) or binary
+          end
+
+          return vim.lsp.rpc.start({ binary, '--lsp', '--stdio' }, dispatchers)
+        end,
+        root_dir = function(bufnr, on_dir)
+          local root_dir = utils.get_typescript_project_dir(bufnr)
+
+          if root_dir ~= nil and utils.get_typescript_7_binary(root_dir) ~= nil then
+            on_dir(root_dir)
+          end
+        end,
+      },
       eslint = {
         before_init = function(_, config)
           local root_dir = config.root_dir
@@ -297,6 +322,13 @@ return {
     end
 
     -- Automatically enable all of the Mason-installed packages.
-    require('mason-lspconfig').setup {}
+    require('mason-lspconfig').setup {
+      automatic_enable = {
+        exclude = { 'ts_ls', 'tsc' },
+      },
+    }
+
+    vim.lsp.enable('ts_ls')
+    vim.lsp.enable('tsc')
   end,
 }
