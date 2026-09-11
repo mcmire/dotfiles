@@ -164,6 +164,15 @@
 - When writing or updating tests, check to see if the test harness has been configured to automatically reset mocks, and if so, then do not call `jest.resetAllMocks`/`jest.restoreAllMocks` or `vi.clearAllMocks`/`vi.restoreAllMocks` (or some variation of this) in `beforeEach`/`afterEach` hooks.
 - Don't use `await` to call an asynchronous function/method and then act on the result within the same statement. Make the asynchronous call in one statement and then act on the result in another.
 - When calling an asynchronous function/method but _not_ using `await` but rather capturing the promise, call the variable `promiseFor${nameOfAction` (e.g. `promiseForScanning`, `promiseForFetching`, etc.).
+- When making assertions in tests, don't use `?.` to look up properties on values that may or may not be present; use `assert` first to narrow the type.
+  ```
+  // ❌ BAD
+  expect(foo?.bar).toStrictEqual('baz')
+  // ✅ GOOD
+  assert(foo);
+  expect(foo.bar).toStrictEqual('baz')
+  ```
+  This provides a better error message if the object we're looking through isn't what we expect in practice.
 - TypeScript: Don't use type assertions (`as ...`) or non-null assertions (`foo!`) unless absolutely necessary. If you do need to use either, add a comment above the line such as `Type assertion: <Reason>` or `Non-null assertion: <Reason>`.
 - TypeScript: Instead of using type annotations, have TypeScript infer the type as much as possible. Use `as const` for statically defined data. If you really need to use a type annotation, try using `satisfies` instead.
   - The only exception to this rule is return types on functions/methods — type annotations are acceptable there (and even required for some projects).
