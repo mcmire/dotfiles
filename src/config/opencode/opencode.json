@@ -84,7 +84,7 @@
     },
     "litellm-openai-compatible": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "LiteLLM",
+      "name": "LiteLLM (OpenAI-compatible)",
       "options": {
         "baseURL": "https://litellm.consensys.info/v1"
       },
