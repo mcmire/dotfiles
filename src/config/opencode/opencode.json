@@ -89,6 +89,7 @@
         "baseURL": "https://litellm.consensys.info/v1"
       },
       "models": {
+        "DeepSeek-V4-Pro": { "name": "DeepSeek v4 Pro" },
         "gemini-3.8-flash": { "name": "Gemini 3.8 Flash" },
         "glm-5p3": { "name": "GLM 5.3" },
         "glm-5p3-flash": { "name": "GLM 5.3 Flash" },
