@@ -276,6 +276,10 @@ ywdh() {
   yw "$1" run since-latest-release --include-head -- diff
 }
 
+ni() {
+  asdf install && npm install -g corepack && corepack enable && asdf reshim nodejs
+}
+
 real_tinty_path="$(which tinty)"
 
 # This is a wrapper around tinty that manually runs hooks.
