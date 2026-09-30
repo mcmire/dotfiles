@@ -35,6 +35,7 @@ require('lazy').setup {
     -- require 'plugins.typescript-tools',
     --require 'plugins.todo-comments',
     require 'plugins.which-key',
+    require 'plugins.vim-inform7',
     require 'plugins.vim-rzip',
     require 'plugins.zen-mode',
   },
