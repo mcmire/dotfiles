@@ -309,3 +309,32 @@ function tinty() {
 random-hash() {
   openssl rand -base64 6
 }
+
+# Diff two versions of a package
+dp() {
+  local package="$1"
+  local version1_or_version_specifier="$2"
+  local version1
+  local version2="$3"
+
+  if [[ -n "$version2" ]]; then
+    version1="$version1_or_version_specifier"
+  else
+    if [[ $version1_or_version_specifier =~ ^\\^(.+)$ ]]; then
+      version2="${match[1]}"
+      echo "Retrieving version prior to $version2 for $package..."
+      version1="$(npm info "$package" versions --json | jq --raw-output --arg version "$version2" '.[index($version) - 1]')"
+    else
+      echo "ERROR: Must pass either two versions, or one version preceded by ^"
+      return -1
+    fi
+  fi
+
+  if [[ -z "$version1" ]]; then
+    echo "ERROR: Couldn't determine version prior to $version2"
+    return -2
+  fi
+
+  echo "Diffing $version1...$version2 for $package..."
+  npm diff --diff=$package@$version1 --diff=$package@$version2 | delta
+}
