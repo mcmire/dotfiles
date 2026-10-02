@@ -135,11 +135,11 @@ get-package-version() {
 # full ref name (e.g. prefix "v" + version "1.2.3" -> tag "v1.2.3").
 # The package name placeholder "__PKG__" is substituted at runtime.
 REF_FAMILIES=(
+  "__PKG__@:refs/tags"
   "v:refs/tags"
   "release/v:refs/tags"
   "release/:refs/tags"
   "Version-v:refs/heads"
-  "__PKG__@:refs/tags"
 )
 
 # Attempt to resolve a git ref (tag or branch) for a given version string by
