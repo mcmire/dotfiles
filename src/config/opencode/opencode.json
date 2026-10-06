@@ -172,7 +172,27 @@
               "reasoningEffort": "xhigh"
             }
           }
-        }
+        },
+        "claude-opus-4-8": {
+          "name": "Claude Opus 4.8",
+          "options": {
+            "thinking": {
+              "type": "adaptive",
+              "display": "summarized"
+            },
+            "effort": "high"
+          }
+        },
+        "claude-opus-5-5": {
+          "name": "Claude Opus 5.5",
+          "options": {
+            "thinking": {
+              "type": "adaptive",
+              "display": "summarized"
+            },
+            "effort": "high"
+          }
+        },
       }
     }
   }
