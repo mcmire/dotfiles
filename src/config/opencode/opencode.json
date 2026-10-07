@@ -173,6 +173,29 @@
             }
           }
         },
+        "gpt-6-1-sol": {
+          "name": "GPT 6.1 Sol",
+          "variants": {
+            "none": {
+              "reasoningEffort": "none"
+            },
+            "minimal": {
+              "reasoningEffort": "minimal"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            }
+          }
+        },
         "claude-opus-4-8": {
           "name": "Claude Opus 4.8",
           "options": {
