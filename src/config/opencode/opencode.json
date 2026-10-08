@@ -89,6 +89,16 @@
             },
             "effort": "high"
           }
+        },
+        "claude-sonnet-5-5": {
+          "name": "Claude Sonnet 5.5",
+          "options": {
+            "thinking": {
+              "type": "adaptive",
+              "display": "summarized"
+            },
+            "effort": "high"
+          }
         }
       }
     },
@@ -150,30 +160,7 @@
             }
           }
         },
-        "gpt-6-sol": {
-          "name": "GPT 6 Sol",
-          "variants": {
-            "none": {
-              "reasoningEffort": "none"
-            },
-            "minimal": {
-              "reasoningEffort": "minimal"
-            },
-            "low": {
-              "reasoningEffort": "low"
-            },
-            "medium": {
-              "reasoningEffort": "medium"
-            },
-            "high": {
-              "reasoningEffort": "high"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh"
-            }
-          }
-        },
-        "gpt-6-1-sol": {
+        "gpt-6.1-sol": {
           "name": "GPT 6.1 Sol",
           "variants": {
             "none": {
@@ -216,6 +203,16 @@
             "effort": "high"
           }
         },
+        "claude-sonnet-5-5": {
+          "name": "Claude Sonnet 5.5",
+          "options": {
+            "thinking": {
+              "type": "adaptive",
+              "display": "summarized"
+            },
+            "effort": "high"
+          }
+        }
       }
     }
   }
