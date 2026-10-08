@@ -52,11 +52,27 @@ return {
     },
     formatters = {
       oxfmt = {
+        args = function(self, ctx)
+          local project_with_oxfmt_config = vim.fs.root(ctx.dirname, {
+            'oxfmt.config.mts',
+          })
+          if project_with_oxfmt_config then
+            return {
+              '-c',
+              vim.fs.joinpath(project_with_oxfmt_config, 'oxfmt.config.mts'),
+              '--stdin-filepath',
+              '$FILENAME',
+            }
+          end
+
+          return { '--stdin-filepath', '$FILENAME' }
+        end,
         condition = function(self, ctx)
           local project_with_oxfmt_config = vim.fs.root(ctx.dirname, {
             '.oxfmtrc.json',
             '.oxfmtrc.jsonc',
             'oxfmt.config.ts',
+            'oxfmt.config.mts',
           })
           if project_with_oxfmt_config then
             return true
