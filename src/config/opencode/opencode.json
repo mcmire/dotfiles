@@ -23,23 +23,14 @@
         }
       }
     },
-    "litellm-anthropic": {
-      "npm": "@ai-sdk/anthropic",
-      "name": "LiteLLM (Anthropic)",
+    "litellm-openai-compatible": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LiteLLM (OpenAI-compatible)",
       "options": {
-        "baseURL": "https://litellm.consensys.info/anthropic/v1",
+        "baseURL": "https://litellm.consensys.info/v1"
       },
       "models": {
-        "claude-fable-5": {
-          "name": "Claude Fable 5",
-          "options": {
-            "thinking": {
-              "type": "adaptive",
-              "display": "summarized"
-            },
-            "effort": "high"
-          }
-        },
+        "DeepSeek-V4-Pro": { "name": "DeepSeek v4 Pro" },
         "claude-opus-4-8": {
           "name": "Claude Opus 4.8",
           "options": {
@@ -47,17 +38,6 @@
               "type": "adaptive",
               "display": "summarized"
             },
-            "effort": "high"
-          }
-        },
-        "claude-opus-5": {
-          "name": "Claude Opus 5",
-          "options": {
-            "thinking": {
-              "type": "adaptive",
-              "display": "summarized"
-            },
-            "effort": "high"
           }
         },
         "claude-opus-5-5": {
@@ -67,27 +47,6 @@
               "type": "adaptive",
               "display": "summarized"
             },
-            "effort": "high"
-          }
-        },
-        "claude-sonnet-4-6": {
-          "name": "Claude Sonnet 4.6",
-          "options": {
-            "thinking": {
-              "type": "adaptive",
-              "display": "summarized"
-            },
-            "effort": "high"
-          }
-        },
-        "claude-sonnet-5": {
-          "name": "Claude Sonnet 5",
-          "options": {
-            "thinking": {
-              "type": "adaptive",
-              "display": "summarized"
-            },
-            "effort": "high"
           }
         },
         "claude-sonnet-5-5": {
@@ -97,19 +56,8 @@
               "type": "adaptive",
               "display": "summarized"
             },
-            "effort": "high"
           }
         }
-      }
-    },
-    "litellm-openai-compatible": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "LiteLLM (OpenAI-compatible)",
-      "options": {
-        "baseURL": "https://litellm.consensys.info/v1"
-      },
-      "models": {
-        "DeepSeek-V4-Pro": { "name": "DeepSeek v4 Pro" },
         "gemini-3.8-flash": { "name": "Gemini 3.8 Flash" },
         "glm-5p3": { "name": "GLM 5.3" },
         "glm-5p3-flash": { "name": "GLM 5.3 Flash" },
@@ -183,36 +131,6 @@
             }
           }
         },
-        "claude-opus-4-8": {
-          "name": "Claude Opus 4.8",
-          "options": {
-            "thinking": {
-              "type": "adaptive",
-              "display": "summarized"
-            },
-            "effort": "high"
-          }
-        },
-        "claude-opus-5-5": {
-          "name": "Claude Opus 5.5",
-          "options": {
-            "thinking": {
-              "type": "adaptive",
-              "display": "summarized"
-            },
-            "effort": "high"
-          }
-        },
-        "claude-sonnet-5-5": {
-          "name": "Claude Sonnet 5.5",
-          "options": {
-            "thinking": {
-              "type": "adaptive",
-              "display": "summarized"
-            },
-            "effort": "high"
-          }
-        }
       }
     }
   }
