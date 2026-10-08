@@ -166,12 +166,12 @@
 - Don't use `await` to call an asynchronous function/method and then act on the result within the same statement. Make the asynchronous call in one statement and then act on the result in another.
 - When calling an asynchronous function/method but _not_ using `await` but rather capturing the promise, call the variable `promiseFor${nameOfAction` (e.g. `promiseForScanning`, `promiseForFetching`, etc.).
 - When making assertions in tests, don't use `?.` to look up properties on values that may or may not be present; use `assert` first to narrow the type.
-  ```
+  ```typescript
   // ❌ BAD
-  expect(foo?.bar).toStrictEqual('baz')
+  expect(foo?.bar).toStrictEqual("baz");
   // ✅ GOOD
   assert(foo);
-  expect(foo.bar).toStrictEqual('baz')
+  expect(foo.bar).toStrictEqual("baz");
   ```
   This provides a better error message if the object we're looking through isn't what we expect in practice.
 - TypeScript: Don't use type assertions (`as ...`) or non-null assertions (`foo!`) unless absolutely necessary. If you do need to use either, add a comment above the line such as `Type assertion: <Reason>` or `Non-null assertion: <Reason>`.
@@ -179,6 +179,38 @@
   - The only exception to this rule is return types on functions/methods — type annotations are acceptable there (and even required for some projects).
 - TypeScript: Don't extract function/method argument types or return types by default; wait until we get to a point where we need to use the type in more than one place.
 - TypeScript: Don't use the `private` keyword, use ES private fields instead.
+- TypeScript: When using the TypeScript API to parse code into an AST and walk it, use comments to highlight parts of syntax. For instance:
+  ```typescript
+  // EXAMPLE (each member of the class):
+  // export class LegacyBackgroundApiService {
+  //   readonly #messenger: LegacyBackgroundApiServiceMessenger;
+  //   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  //   async addToken(options) { ... }
+  //   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  //   #getGlobalProvider() { ... }
+  //   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  // }
+  for (const member of service.members) {
+    // EXAMPLES:
+    // isAssetsUnifyStateEnabled() { ... }
+    // get mode() { ... }
+    // addToken = async (options) => { ... }
+    //
+    // ANTI-EXAMPLES:
+    // readonly messenger: LegacyBackgroundApiServiceMessenger;
+    // #getGlobalProvider() { ... }
+    // private helper() { ... }
+    // protected helper() { ... }
+    if (!isPublicCallableMember(member)) {
+      continue;
+    }
+
+    // EXAMPLE:
+    // async addToken(options) { ... }
+    //       ^^^^^^^^ (member.name)
+    names.add(member.name.getText(sourceFile));
+  }
+  ```
 
 ## Shell Scripting
 
