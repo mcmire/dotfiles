@@ -338,3 +338,25 @@ dp() {
   echo "Diffing $version1...$version2 for $package..."
   npm diff --diff=$package@$version1 --diff=$package@$version2 | delta
 }
+
+# Source: https://github.com/anomalyco/opencode/issues/43056
+opencode-all-sessions() {
+  (
+    echo "ID|TITLE|DIRECTORY"
+    sqlite3 ~/.local/share/opencode/opencode.db \
+      "SELECT id || '|' || title || '|' || directory FROM session" |
+    sed -E 's#^([^|]*\|[^|]*\|).*/([^/]*/[^/]*/[^/]*)$#\1\2#'
+  ) | awk -F'|' '
+  BEGIN {
+      cyan="\033[96m"
+      reset="\033[0m"
+  }
+  NR==1 {
+      printf "%-32s %-45s %s\n", $1, $2, $3
+      printf "%-32s %-45s %s\n", "--------------------------------", "---------------------------------------------", "----------------------------------------"
+      next
+  }
+  {
+      printf "%-32s %s%-45s%s %s\n", $1, cyan, $2, reset, $3
+  }'
+}
