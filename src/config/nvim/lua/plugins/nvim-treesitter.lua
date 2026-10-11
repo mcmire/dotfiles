@@ -24,8 +24,9 @@ return {
     auto_install = true,
     highlight = {
       enable = true,
+      -- Disable Markdown as it's slow
       -- Disable Treesitter in tmux files as the highlighting isn't right
-      disable = { 'tmux' },
+      disable = { 'markdown', 'tmux' },
       -- Some languages depend on vim's regex highlighting system (such as Ruby)
       -- for indent rules.
       --
