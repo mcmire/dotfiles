@@ -1,11 +1,10 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["@slkiser/opencode-quota"],
-  "provider": {
+  "providers": {
     "ollama": {
-      "npm": "@ai-sdk/openai-compatible",
+      "package": "aisdk:@ai-sdk/openai-compatible",
       "name": "Ollama (local)",
-      "options": {
+      "settings": {
         "baseURL": "http://localhost:11434/v1"
       },
       "models": {
@@ -24,38 +23,38 @@
       }
     },
     "litellm-openai-compatible": {
-      "npm": "@ai-sdk/openai-compatible",
+      "package": "aisdk:@ai-sdk/openai-compatible",
       "name": "LiteLLM (OpenAI-compatible)",
-      "options": {
+      "settings": {
         "baseURL": "https://litellm.consensys.info/v1"
       },
       "models": {
         "DeepSeek-V4-Pro": { "name": "DeepSeek v4 Pro" },
         "claude-opus-4-8": {
           "name": "Claude Opus 4.8",
-          "options": {
+          "settings": {
             "thinking": {
               "type": "adaptive",
               "display": "summarized"
-            },
+            }
           }
         },
         "claude-opus-5-5": {
           "name": "Claude Opus 5.5",
-          "options": {
+          "settings": {
             "thinking": {
               "type": "adaptive",
               "display": "summarized"
-            },
+            }
           }
         },
         "claude-sonnet-5-5": {
           "name": "Claude Sonnet 5.5",
-          "options": {
+          "settings": {
             "thinking": {
               "type": "adaptive",
               "display": "summarized"
-            },
+            }
           }
         },
         "gemini-3.8-flash": { "name": "Gemini 3.8 Flash" },
@@ -64,72 +63,126 @@
         "grok-4.6": { "name": "Grok 4.6" },
         "grok-4-20-reasoning": {
           "name": "Grok 4.20 (reasoning)",
-          "variants": {
-            "none": {
-              "reasoningEffort": "none"
+          "variants": [
+            {
+              "id": "none",
+              "settings": {
+                "reasoningEffort": "none"
+              }
             },
-            "minimal": {
-              "reasoningEffort": "minimal"
+            {
+              "id": "minimal",
+              "settings": {
+                "reasoningEffort": "minimal"
+              }
             },
-            "low": {
-              "reasoningEffort": "low"
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
             },
-            "medium": {
-              "reasoningEffort": "medium"
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
             },
-            "high": {
-              "reasoningEffort": "high"
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
             },
-            "xhigh": {
-              "reasoningEffort": "xhigh"
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
             }
-          }
+          ]
         },
         "gpt-6-luna": {
           "name": "GPT 6 Luna",
-          "variants": {
-            "none": {
-              "reasoningEffort": "none"
+          "variants": [
+            {
+              "id": "none",
+              "settings": {
+                "reasoningEffort": "none"
+              }
             },
-            "minimal": {
-              "reasoningEffort": "minimal"
+            {
+              "id": "minimal",
+              "settings": {
+                "reasoningEffort": "minimal"
+              }
             },
-            "low": {
-              "reasoningEffort": "low"
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
             },
-            "medium": {
-              "reasoningEffort": "medium"
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
             },
-            "high": {
-              "reasoningEffort": "high"
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
             },
-            "xhigh": {
-              "reasoningEffort": "xhigh"
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
             }
-          }
+          ]
         },
         "gpt-6.1-sol": {
           "name": "GPT 6.1 Sol",
-          "variants": {
-            "none": {
-              "reasoningEffort": "none"
+          "variants": [
+            {
+              "id": "none",
+              "settings": {
+                "reasoningEffort": "none"
+              }
             },
-            "minimal": {
-              "reasoningEffort": "minimal"
+            {
+              "id": "minimal",
+              "settings": {
+                "reasoningEffort": "minimal"
+              }
             },
-            "low": {
-              "reasoningEffort": "low"
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
             },
-            "medium": {
-              "reasoningEffort": "medium"
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
             },
-            "high": {
-              "reasoningEffort": "high"
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
             },
-            "xhigh": {
-              "reasoningEffort": "xhigh"
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
             }
-          }
+          ]
         }
       }
     }

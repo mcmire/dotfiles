@@ -221,18 +221,18 @@
 
 # Memory Index
 
-<!-- This section is maintained automatically by the memory_update tool via /remember. -->
-<!-- Keep the total file under 200 lines. If this section grows large, memory_update will -->
+<!-- This section is maintained automatically by the memory.update tool via /remember. -->
+<!-- Keep the total file under 200 lines. If this section grows large, memory.update will -->
 <!-- compact it automatically. If the file still exceeds 200 lines after compaction, you -->
 <!-- will be warned — OpenCode will never touch the Personal Rules section above. -->
 
 ## How to use memories
 
-When a task relates to a topic below, call `memory_read_topic` with the filename and namespace to load the full detail. After a non-trivial task (debugging, a workaround, a non-obvious decision), suggest `/remember`.
+When a task relates to a topic below, call `memory.read_topic` with the filename and namespace to load the full detail. After a non-trivial task (debugging, a workaround, a non-obvious decision), suggest `/remember`.
 
 ## Known topic files
 
-<!-- memory_update appends entries here as: - [[filename]] (namespace): one-line summary -->
+<!-- memory.update appends entries here as: - [[filename]] (namespace): one-line summary -->
 
 - [[messenger-adapter-minimal-namespace-support]] (procedural): Typing a function/class that needs a MetaMask Messenger to minimally support certain namespaces while allowing extras (BaseController capability-check pattern, not structural adapter)
 - [[typescript-subclass-structural-checking]] (semantic): Why a subclass of a generic base can fail an `extends BaseClass<...wide...>` constraint the base itself passes (structural private-field check); fix by inferring type args instead of constraining

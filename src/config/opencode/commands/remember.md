@@ -20,7 +20,7 @@ If nothing in the conversation is worth preserving, say so and stop.
 
 ## Step 2 — Choose a target file
 
-List the existing files in `~/.config/opencode/memories/procedural/` using the Bash tool:
+List the existing files in `~/.config/opencode/memories/procedural/` using the shell tool:
 
 ```
 ls ~/.config/opencode/memories/procedural/
@@ -73,7 +73,7 @@ Do not call any tools until the user confirms with "yes" or equivalent.
 
 ## Step 5 — Save
 
-Once confirmed, call `memory_update` with all the drafted arguments.
+Once confirmed, call `memory.update` with all the drafted arguments.
 
 ### If the result contains `COMPACTION_REQUIRED`:
 
@@ -86,7 +86,7 @@ Memory Index automatically — do not ask the user for permission:
 3. Rewrite the Memory Index entry list so that all topic file references are preserved
    but summaries are shorter or related entries are merged. The goal is to bring the
    total file under 200 lines while losing as little meaning as possible.
-4. Write the updated AGENTS.md back using the `write` built-in tool.
+4. Write the updated AGENTS.md back using the `edit` tool.
 
 If AGENTS.md is still over 200 lines after compaction, warn the user:
 
