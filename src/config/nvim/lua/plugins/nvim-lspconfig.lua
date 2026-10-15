@@ -68,6 +68,30 @@ return {
 
       -- JavaScript/TypeScript
       ts_ls = {
+        init_options = {
+          hostInfo = 'neovim',
+          preferences = {
+            importModuleSpecifierPreference = 'project-relative',
+          },
+          javascript = {
+            preferences = {
+              importModuleSpecifier = 'project-relative',
+            },
+          },
+          typescript = {
+            preferences = {
+              importModuleSpecifier = 'project-relative',
+            },
+          },
+          ['js/ts'] = {
+            preferences = {
+              importModuleSpecifier = 'project-relative',
+            },
+          },
+        },
+      },
+      --[[
+      ts_ls = {
         root_dir = function(bufnr, on_dir)
           local root_dir = utils.get_typescript_project_dir(bufnr)
 
@@ -116,6 +140,7 @@ return {
           end
         end,
       },
+      ]]
       eslint = {
         before_init = function(_, config)
           local root_dir = config.root_dir
@@ -324,11 +349,12 @@ return {
     -- Automatically enable all of the Mason-installed packages.
     require('mason-lspconfig').setup {
       automatic_enable = {
-        exclude = { 'ts_ls', 'tsc' },
+        -- exclude = { 'ts_ls', 'tsc' },
+        exclude = { 'ts_ls' },
       },
     }
 
-    vim.lsp.enable('ts_ls')
-    vim.lsp.enable('tsc')
+    vim.lsp.enable 'ts_ls'
+    -- vim.lsp.enable 'tsc'
   end,
 }
