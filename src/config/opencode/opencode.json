@@ -29,7 +29,12 @@
         "baseURL": "https://litellm.consensys.info/v1"
       },
       "models": {
-        "DeepSeek-V4-Pro": { "name": "DeepSeek v4 Pro" },
+        "DeepSeek-V4-Pro": {
+          "name": "DeepSeek v4 Pro",
+          "limit": {
+            "context": 500000
+          }
+        },
         "claude-opus-4-8": {
           "name": "Claude Opus 4.8",
           "settings": {
@@ -37,6 +42,9 @@
               "type": "adaptive",
               "display": "summarized"
             }
+          },
+          "limit": {
+            "context": 500000
           }
         },
         "claude-opus-5-5": {
@@ -46,6 +54,9 @@
               "type": "adaptive",
               "display": "summarized"
             }
+          },
+          "limit": {
+            "context": 500000
           }
         },
         "claude-sonnet-5-5": {
@@ -55,12 +66,35 @@
               "type": "adaptive",
               "display": "summarized"
             }
+          },
+          "limit": {
+            "context": 500000
           }
         },
-        "gemini-3.8-flash": { "name": "Gemini 3.8 Flash" },
-        "glm-5p3": { "name": "GLM 5.3" },
-        "glm-5p3-flash": { "name": "GLM 5.3 Flash" },
-        "grok-4.6": { "name": "Grok 4.6" },
+        "gemini-3.8-flash": {
+          "name": "Gemini 3.8 Flash",
+          "limit": {
+            "context": 500000
+          }
+        },
+        "glm-5p3": {
+          "name": "GLM 5.3",
+          "limit": {
+            "context": 500000
+          }
+        },
+        "glm-5p3-flash": {
+          "name": "GLM 5.3 Flash",
+          "limit": {
+            "context": 500000
+          }
+        },
+        "grok-4.6": {
+          "name": "Grok 4.6",
+          "limit": {
+            "context": 500000
+          }
+        },
         "grok-4-20-reasoning": {
           "name": "Grok 4.20 (reasoning)",
           "variants": [
@@ -100,7 +134,10 @@
                 "reasoningEffort": "xhigh"
               }
             }
-          ]
+          ],
+          "limit": {
+            "context": 500000
+          }
         },
         "gpt-6-luna": {
           "name": "GPT 6 Luna",
@@ -141,7 +178,10 @@
                 "reasoningEffort": "xhigh"
               }
             }
-          ]
+          ],
+          "limit": {
+            "context": 500000
+          }
         },
         "gpt-6.1-sol": {
           "name": "GPT 6.1 Sol",
@@ -182,7 +222,10 @@
                 "reasoningEffort": "xhigh"
               }
             }
-          ]
+          ],
+          "limit": {
+            "context": 500000
+          }
         }
       }
     }
