@@ -44,7 +44,7 @@
             }
           },
           "limit": {
-            "context": 500000
+            "context": 1000000
           }
         },
         "claude-opus-5-5": {
@@ -56,7 +56,7 @@
             }
           },
           "limit": {
-            "context": 500000
+            "context": 1000000
           }
         },
         "claude-sonnet-5-5": {
@@ -68,7 +68,7 @@
             }
           },
           "limit": {
-            "context": 500000
+            "context": 1000000
           }
         },
         "gemini-3.8-flash": {
@@ -180,7 +180,7 @@
             }
           ],
           "limit": {
-            "context": 500000
+            "context": 1000000
           }
         },
         "gpt-6.1-sol": {
@@ -224,7 +224,7 @@
             }
           ],
           "limit": {
-            "context": 500000
+            "context": 1000000
           }
         }
       }
