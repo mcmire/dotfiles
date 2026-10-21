@@ -228,6 +228,51 @@
           }
         }
       }
+    },
+    "litellm-anthropic": {
+      "package": "aisdk:@ai-sdk/anthropic",
+      "name": "LiteLLM (Anthropic)",
+      "settings": {
+        "baseURL": "https://litellm.consensys.info/anthropic/v1",
+      },
+      "models": {
+        "claude-opus-4-8": {
+          "name": "Claude Opus 4.8",
+          "settings": {
+            "thinking": {
+              "type": "adaptive",
+              "display": "summarized"
+            }
+          },
+          "limit": {
+            "context": 1000000
+          }
+        },
+        "claude-opus-5-5": {
+          "name": "Claude Opus 5.5",
+          "settings": {
+            "thinking": {
+              "type": "adaptive",
+              "display": "summarized"
+            }
+          },
+          "limit": {
+            "context": 1000000
+          }
+        },
+        "claude-sonnet-5-5": {
+          "name": "Claude Sonnet 5.5",
+          "settings": {
+            "thinking": {
+              "type": "adaptive",
+              "display": "summarized"
+            }
+          },
+          "limit": {
+            "context": 1000000
+          }
+        },
+      }
     }
   }
 }
