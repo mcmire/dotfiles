@@ -7,6 +7,7 @@ vim.wo.linebreak = true
 -- Make sure this is set too
 vim.opt.listchars = { tab = '->', trail = '·', nbsp = '␣', extends = '⨠' }
 -- Override indentation size
+vim.o.expandtab = false
 vim.o.softtabstop = 0
 vim.o.tabstop = 2
 vim.o.shiftwidth = 2
