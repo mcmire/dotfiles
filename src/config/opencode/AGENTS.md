@@ -20,7 +20,11 @@
   - If you find yourself creating scratch tests, stop and consider adding real tests so that the behavior being added or the fix being made won't break in the future.
 - Always write tests first, watch them fail, then implement the code to make them pass. (See "General testing guidelines" for more.)
 - When you complete a task and reach a point where you would print a summary of changes to the user, create a commit.
-  - When creating a commit, make sure to not only supply a subject line, but also supply a commit body. Please include the rationale for the change in the commit body: the problems encountered and the solutions implemented. There is no need to give a TODO list of changes, but if there are any changes which required multiple attempts or are particularly difficult to understand, feel free to call them out.
+
+### Git guidelines
+
+- When creating a commit, make sure to not only supply a subject line, but also supply a commit body. Please include the rationale for the change in the commit body: the problems encountered and the solutions implemented. There is no need to give a TODO list of changes, but if there are any changes which required multiple attempts or are particularly difficult to understand, feel free to call them out.
+- Don't let commit message subjects exceed 72 characters. Wrap commit message bodies to 72 characters.
 
 ### General code guidelines
 
