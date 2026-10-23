@@ -179,6 +179,7 @@
   ```
   This provides a better error message if the object we're looking through isn't what we expect in practice.
 - TypeScript: Don't use type assertions (`as ...`) or non-null assertions (`foo!`) unless absolutely necessary. If you do need to use either, add a comment above the line such as `Type assertion: <Reason>` or `Non-null assertion: <Reason>`.
+- TypeScript: Don't use `as any` or `as never` to purposefully pass a partial object in a test; add a `// @ts-expect-error` line above it with a brief explanation.
 - TypeScript: Instead of using type annotations, have TypeScript infer the type as much as possible. Use `as const` for statically defined data. If you really need to use a type annotation, try using `satisfies` instead.
   - The only exception to this rule is return types on functions/methods — type annotations are acceptable there (and even required for some projects).
 - TypeScript: Don't extract function/method argument types or return types by default; wait until we get to a point where we need to use the type in more than one place.
