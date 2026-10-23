@@ -16,6 +16,7 @@
 [commit]
   template = ~/.gitmessage
   gpgsign = false
+  verbose = true
 [core]
   excludesFile = ~/.gitignore
   # pager = delta
@@ -61,10 +62,10 @@
   cmd = opendiff \"$LOCAL\" \"$REMOTE\"
   path = 
 [filter "lfs"]
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
 [include]
   path = /opt/homebrew/share/git-delta/themes.gitconfig
 # [interactive]
