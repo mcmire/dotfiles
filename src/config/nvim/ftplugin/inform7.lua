@@ -5,10 +5,10 @@ vim.wo.list = true
 -- ...and linebreak settings
 vim.wo.linebreak = true
 -- Make sure this is set too
-vim.opt.listchars = { tab = '->', trail = '·', nbsp = '␣', extends = '⨠' }
+vim.opt_local.listchars = { tab = '->', trail = '·', nbsp = '␣', extends = '⨠' }
 -- Override indentation size
-vim.o.expandtab = false
-vim.o.softtabstop = 0
-vim.o.tabstop = 2
-vim.o.shiftwidth = 2
-vim.o.textwidth = 80
+vim.bo.expandtab = false
+vim.bo.softtabstop = 0
+vim.bo.tabstop = 2
+vim.bo.shiftwidth = 2
+vim.bo.textwidth = 0
