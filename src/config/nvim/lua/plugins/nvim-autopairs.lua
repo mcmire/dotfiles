@@ -2,6 +2,11 @@ return {
   'windwp/nvim-autopairs',
   event = 'InsertEnter',
   opts = {},
-  -- use opts = {} for passing setup options
-  -- this is equivalent to setup({}) function
+  init = function()
+    local autoPairs = require 'nvim-autopairs'
+    vim.keymap.set('n', '<Leader>apt', function()
+      print 'Toggling auto-pairs'
+      autoPairs.toggle()
+    end)
+  end,
 }
