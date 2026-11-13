@@ -90,10 +90,10 @@ gwa() {
 
   if [[ $branch_exists -eq 1 ]]; then
     echo "Branch already exists, not re-creating."
-    git worktree add "$target_dir" "$branch"
+    git cow-worktree add "$target_dir" "$branch"
   else
     echo "Creating branch $branch."
-    git worktree add -b "$branch" "$target_dir"
+    git cow-worktree add -b "$branch" "$target_dir"
   fi
 
   echo "Worktree created for $branch at $target_dir."
