@@ -184,10 +184,10 @@ jf() {
   local parse_rest_as_command_args=0
 
   workspaces="$(cat package.json | jq '.workspaces')"
-  if [[ $workspaces == "null" ]]; then
-    is_monorepo=0
-  else
+  if [[ $workspaces != "null" && -d packages ]]; then
     is_monorepo=1
+  else
+    is_monorepo=0
   fi
 
   command_args=()
