@@ -1,10 +1,10 @@
 [alias]
   authors = log --pretty=format:'%<(80,trunc)%s %C(blue)%<(20)%an%Creset %C(yellow)%ci%Creset'
-  ctags = !.git/hooks/ctags
   tree = log --graph --pretty=oneline --abbrev-commit --decorate --color
   tree-all = log --graph --pretty=format:'%h %Cred(%cD)%Creset%Cgreen%d%Creset %s' --color --all --decorate=full
   tree-by-date = log --pretty=format:'%h | %cD | %Cgreen%d%Creset %s' --date-order --graph --all --color --decorate=full
   unstage = reset HEAD
+  verified-commits = log --pretty="format:'commit %H (%G?) %d%nAuthor: %ae%nDate: %cd%n%s%n'"
 [blame]
   # pager = delta
 [checkout]
