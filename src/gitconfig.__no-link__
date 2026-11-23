@@ -15,7 +15,7 @@
   untracked = cyan
 [commit]
   template = ~/.gitmessage
-  gpgsign = false
+  gpgsign = true
   verbose = true
 [core]
   excludesFile = ~/.gitignore
@@ -87,3 +87,5 @@
 [push]
   autoSetupRemote = true
   default = upstream
+[tag]
+  gpgSign = true
