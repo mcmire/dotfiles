@@ -76,10 +76,19 @@ sync-cursor-extensions() {
   fi
 }
 
+# We added a custom Selenized theme for Bat (which is used by Delta). This is
+# useful to ensure that Bat is aware of that theme.
+build-bat-cache() {
+  if type bat &>/dev/null; then
+    bat cache --build
+  fi
+}
+
 main() {
   set-git-name-and-email
   create-launch-agents-and-daemons
   sync-cursor-extensions
+  build-bat-cache
 
   success "Done!"
 }

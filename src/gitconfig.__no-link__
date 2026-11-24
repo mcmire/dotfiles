@@ -23,6 +23,7 @@
 [delta]
   # diff-so-fancy = true
   features = navigate selenized
+  syntax-theme = Selenized Dark
   # hyperlinks = true
   line-numbers = true
   # map-styles = bold purple => syntax magenta, bold cyan => syntax blue
@@ -30,11 +31,11 @@
   # side-by-side = true
 [delta "selenized"]
   dark = true
-  # diff backgrounds: dark red/green tints against the teal base00 (#103c48)
-  minus-style                   = syntax "#2d1515"
-  minus-emph-style              = syntax "#3d1f1f"
-  plus-style                    = syntax "#152d15"
-  plus-emph-style               = syntax "#1f3d1f"
+  # muted red/green diff backgrounds against the teal base00 (#103c48)
+  minus-style                   = syntax "#292d35"
+  minus-emph-style              = syntax "#363943"
+  plus-style                    = syntax "#22382e"
+  plus-emph-style               = syntax "#2d4438"
   zero-style                    = syntax
   # line number gutter: fg from base08/base0B, bg matches diff bg
   line-numbers-minus-style      = "#fa5750" "#200f0f"
